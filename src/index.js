@@ -6,7 +6,7 @@ import { View, Keyboard, Text } from "react-native";
 import baseTheme from "./theme";
 
 import TextInputField from "./fields/textInput";
-import { getInitialState, getDefaultValue } from "./utils";
+import { getInitialState, getDefaultValue } from "./utils/helper";
 
 const _ = require("lodash");
 
