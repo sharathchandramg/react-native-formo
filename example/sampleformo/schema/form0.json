@@ -1,0 +1,27 @@
+[
+    {
+        "type": "text",
+        "name": "user_name",
+        "required": true,
+        "icon": "ios-person",
+        "label": "Username"
+    },
+    {
+        "type": "email",
+        "name": "email",
+        "required": true,
+        "label": "Email"
+    },
+    {
+        "type": "number",
+        "name": "phone_number",
+        "required": true,
+        "label": "Phone number"
+    },
+    {
+        "type": "password",
+        "name": "password",
+        "required": true,
+        "label": "Password"
+    }
+]
