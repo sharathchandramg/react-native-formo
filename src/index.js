@@ -11,7 +11,7 @@ import SwitchField from "./fields/switch";
 import DateField from "./fields/date";
 import PickerField from "./fields/picker";
 
-import { getInitialState, getDefaultValue } from "./utils/helper";
+import { getInitialState, getDefaultValue, getResetValue } from "./utils/helper";
 
 const DefaultErrorComponent = (props) => {
     const attributes = props.attributes;
@@ -108,7 +108,22 @@ export default class Form0 extends Component {
     }
 
     resetForm() {
-
+        const newFields = {};
+        Object.keys(this.state).forEach((fieldName) => {
+            const field = this.state[fieldName];
+            if (field) {
+                field.value = (field.editable !== undefined && !field.editable) ?
+                    getDefaultValue(field) :
+                    getResetValue(field);
+                field.error = false;
+                field.errorMsg = '';
+                if (field.type === 'group') {
+                    this[field.name].group.resetForm();
+                }
+                newFields[field.name] = field;
+            }
+        });
+        this.setState({ ...newFields });
     }
 
     componentDidMount() {

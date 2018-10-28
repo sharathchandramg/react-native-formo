@@ -4,28 +4,12 @@ import { Platform, StyleSheet, Text, View } from 'react-native';
 import Form0 from "react-native-form0";
 import { Button } from 'native-base';
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
-
 export default class App extends Component {
-
-  componentDidMount() {
-
-  }
 
   render() {
     const fields = require("./schema/form0.json");
     console.log(fields);
     return (
-      // <View style={styles.container}>
-      //   <Text style={styles.welcome}>Welcome to React Native!</Text>
-      //   <Text style={styles.instructions}>To get started, edit App.js</Text>
-      //   <Text style={styles.instructions}>{instructions}</Text>
-      // </View>
 
       <View>
         <Form0 fields={fields}
@@ -33,7 +17,8 @@ export default class App extends Component {
             this.formGenerator = c;
           }} />
 
-        <Button primary onPress={() => console.log(this.formGenerator.getValues())}><Text>Submit</Text></Button>
+        <Button onPress={() => console.log(this.formGenerator.getValues())}><Text>Submit</Text></Button>
+        <Button onPress={() => this.formGenerator.resetForm()}><Text>Clear Form</Text></Button>
       </View>
     );
   }

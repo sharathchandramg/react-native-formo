@@ -45,13 +45,6 @@
         "mode": "time"
     },
     {
-        "type": "date",
-        "name": "followup_datetime",
-        "required": true,
-        "label": "Followup On",
-        "mode": "datetime"
-    },
-    {
         "type": "picker",
         "name": "address_proof",
         "required": true,
@@ -64,5 +57,15 @@
             "Rental Agreement",
             "Passport"
         ]
+    },
+    {
+        "type": "text",
+        "name": "comments",
+        "label": "Comments",
+        "required": true,
+        "props": {
+            "multiline": true,
+            "numberOfLines": 3,
+        },
     }
 ]

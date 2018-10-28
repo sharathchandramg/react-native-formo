@@ -37,7 +37,7 @@ export default class SwitchField extends Component {
                     }}>
                     <Text style={{ color: theme.labelActiveColor }}>{attributes.label}</Text>
                     <Switch
-                        onTintColor={"blue"}
+                        onTrackColor={"blue"}
                         onValueChange={value => this.handleChange(value)}
                         value={attributes.value} />
                 </View>
