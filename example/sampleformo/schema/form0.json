@@ -19,7 +19,7 @@
         "label": "Phone number"
     },
     {
-        "type": "aadhar",
+        "type": "password",
         "name": "aadhar",
         "required": true,
         "label": "Aadhar Number"
@@ -35,20 +35,34 @@
         "name": "dob",
         "required": true,
         "label": "Date of Birth",
-        "mode" : "date"
+        "mode": "date"
     },
     {
         "type": "date",
         "name": "preferred_time",
         "required": true,
         "label": "Preferred Time to Call",
-        "mode" : "time"
+        "mode": "time"
     },
     {
         "type": "date",
         "name": "followup_datetime",
         "required": true,
         "label": "Followup On",
-        "mode" : "datetime"
+        "mode": "datetime"
+    },
+    {
+        "type": "picker",
+        "name": "address_proof",
+        "required": true,
+        "label": "Address Proof",
+        "mode": "dropdown",
+        "options": [
+            "Aadhar",
+            "Driving License",
+            "Electricity Bill",
+            "Rental Agreement",
+            "Passport"
+        ]
     }
 ]

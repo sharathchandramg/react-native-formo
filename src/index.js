@@ -9,6 +9,7 @@ import baseTheme from "./theme";
 import TextInputField from "./fields/textInput";
 import SwitchField from "./fields/switch";
 import DateField from "./fields/date";
+import PickerField from "./fields/picker";
 
 import { getInitialState, getDefaultValue } from "./utils/helper";
 
@@ -159,6 +160,15 @@ export default class Form0 extends Component {
                                 {...commonProps}
                             />
                         );
+
+                    case "picker":
+                        return (
+                            <PickerField
+                                ref={(c) => { this[field.name] = c; }}
+                                {...commonProps}
+                            />
+                        );
+
                 }
 
             }
