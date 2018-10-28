@@ -1,3 +1,5 @@
+import _ from "lodash";
+
 export function getKeyboardType(textType) {
     switch (textType) {
         case "email":

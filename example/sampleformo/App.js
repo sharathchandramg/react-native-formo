@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 
-import { Form0 as Form0 } from "react-native-form0";
+import Form0 from "react-native-form0";
+import { Button } from 'native-base';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -13,10 +14,12 @@ const instructions = Platform.select({
 export default class App extends Component {
 
   componentDidMount() {
-    const fields = require("./schema/form0.json");
+
   }
 
   render() {
+    const fields = require("./schema/form0.json");
+    console.log(fields);
     return (
       // <View style={styles.container}>
       //   <Text style={styles.welcome}>Welcome to React Native!</Text>
@@ -25,7 +28,12 @@ export default class App extends Component {
       // </View>
 
       <View>
-        <Form0 fields={this.fields} />
+        <Form0 fields={fields}
+          ref={(c) => {
+            this.formGenerator = c;
+          }} />
+
+        <Button primary onPress={() => console.log(this.formGenerator.getValues())}><Text>Submit</Text></Button>
       </View>
     );
   }

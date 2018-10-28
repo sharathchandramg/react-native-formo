@@ -19,9 +19,36 @@
         "label": "Phone number"
     },
     {
-        "type": "password",
-        "name": "password",
+        "type": "aadhar",
+        "name": "aadhar",
         "required": true,
-        "label": "Password"
+        "label": "Aadhar Number"
+    },
+    {
+        "type": "switch",
+        "name": "working_status",
+        "required": true,
+        "label": "Currently Working?"
+    },
+    {
+        "type": "date",
+        "name": "dob",
+        "required": true,
+        "label": "Date of Birth",
+        "mode" : "date"
+    },
+    {
+        "type": "date",
+        "name": "preferred_time",
+        "required": true,
+        "label": "Preferred Time to Call",
+        "mode" : "time"
+    },
+    {
+        "type": "date",
+        "name": "followup_datetime",
+        "required": true,
+        "label": "Followup On",
+        "mode" : "datetime"
     }
 ]

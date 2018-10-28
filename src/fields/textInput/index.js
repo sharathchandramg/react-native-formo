@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { Platform } from "react-native";
 
 import { View, Item, Input, Icon, ListItem, Text } from "native-base";
+
 import { getKeyboardType } from "./../../utils/helper";
 
 export default class TextInputField extends Component {
@@ -12,6 +13,7 @@ export default class TextInputField extends Component {
         theme: PropTypes.object,
         onSummitTextInput: PropTypes.func,
         ErrorComponent: PropTypes.func,
+        updateValue: PropTypes.func,
     }
 
     constructor(props) {
@@ -36,6 +38,11 @@ export default class TextInputField extends Component {
                         <Item error={theme.changeTextInputColorOnError ? attributes.error : null}>
                             {attributes.icon && <Icon color={theme.textInputIconColor} name={attributes.icon} />}
                             <Input
+                                style={{
+                                    height: inputProps && inputProps.multiline && (Platform.OS === 'ios' ? undefined : null),
+                                    padding: 0,
+                                }}
+                                ref={(c) => { this.textInput = c; }}
                                 keyboardType={keyboardType}
                                 underlineColorAndroid="transparent"
                                 numberOfLines={3}
@@ -44,8 +51,8 @@ export default class TextInputField extends Component {
                                 blurOnSubmit={false}
                                 placeholderTextColor={theme.inputColorPlaceholder}
                                 editable={attributes.editable}
-                                value={attributes.value && attributes.value.toString()}
                                 onChangeText={text => this.handleChange(text)}
+                                //value={attributes.value && attributes.value.toString()}
                                 {...inputProps}
                             />
                             {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null}
