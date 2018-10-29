@@ -17,9 +17,9 @@ export default class App extends Component {
             this.formGenerator = c;
           }} />
 
-        <View styles={styles.container}>
-          <Button onPress={() => console.log(this.formGenerator.getValues())}><Text>Submit</Text></Button>
-          <Button onPress={() => this.formGenerator.resetForm()}><Text>Clear Form</Text></Button>
+        <View>
+          <Button full info onPress={() => console.log(this.formGenerator.getValues())}><Text>Submit</Text></Button>
+          <Button full warning onPress={() => this.formGenerator.resetForm()}><Text>Clear Form</Text></Button>
         </View>
       </ScrollView>
     );
