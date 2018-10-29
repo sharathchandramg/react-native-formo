@@ -64,7 +64,7 @@
         "required": true,
         "props": {
             "multiline": true,
-            "numberOfLines": 3,
-        },
+            "numberOfLines": 3
+        }
     }
 ]
