@@ -8,11 +8,15 @@ export default class App extends Component {
 
   render() {
     const fields = require("./schema/form0.json");
+    const formData = {
+      "user_name" : "Sharath",
+      "phone_number" : "9845722000"
+    }
     console.log(fields);
     return (
 
       <ScrollView>
-        <Form0 fields={fields}
+        <Form0 fields={fields} formData = {formData}
           ref={(c) => {
             this.formGenerator = c;
           }} />

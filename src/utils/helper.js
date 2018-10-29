@@ -1,4 +1,5 @@
 import _ from "lodash";
+import { isEmail, isEmpty } from './validators';
 
 export function getKeyboardType(textType) {
     switch (textType) {
@@ -106,4 +107,42 @@ export function getInitialState(fields) {
         }
     });
     return state;
+}
+
+export function autoValidate(field) {
+    let error = false;
+    let errorMsg = '';
+    if (field.required) {
+        switch (field.type) {
+            case "email":
+                if (isEmpty(field.value)) {
+                    error = true;
+                    errorMsg = `${field.label} is required`;
+                } else if (!isEmail(field.value)) {
+                    error = true;
+                    errorMsg = 'Please enter a valid email';
+                }
+                break;
+            case "text":
+            case "url":
+            case "password":
+                if (isEmpty(field.value)) {
+                    error = true;
+                    errorMsg = `${field.label} is required`;
+                }
+                break;
+            case "number":
+                if (field.type === "number") {
+                    if (isEmpty(field.value)) {
+                        error = true;
+                        errorMsg = `${field.label} is required`;
+                    } else if (isNaN(field.value)) {
+                        errorMsg = `${field.label} should be a number`;
+                    }
+                }
+                break;
+            default:
+        }
+    }
+    return { error, errorMsg };
 }

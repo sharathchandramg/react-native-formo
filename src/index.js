@@ -11,7 +11,7 @@ import SwitchField from "./fields/switch";
 import DateField from "./fields/date";
 import PickerField from "./fields/picker";
 
-import { getInitialState, getDefaultValue, getResetValue } from "./utils/helper";
+import { autoValidate, getInitialState, getDefaultValue, getResetValue } from "./utils/helper";
 
 const DefaultErrorComponent = (props) => {
     const attributes = props.attributes;
@@ -34,12 +34,15 @@ export default class Form0 extends Component {
         formData: PropTypes.object,
         errorComponent: PropTypes.func,
         autoValidation: PropTypes.bool,
-
+        autoValidation: PropTypes.bool,
+        customValidation: PropTypes.func,
+        onValueChange: PropTypes.func
     }
 
     constructor(props) {
         super(props);
 
+        //This gets all the field defintions an an arrary and store in state
         const initialState = getInitialState(props.fields);
 
         this.state = {
@@ -60,22 +63,29 @@ export default class Form0 extends Component {
 
     }
 
+    componentDidMount() {
+
+        const { formData } = this.props;
+        this.setValues(formData);
+    }
+
     onValueChange(name, value) {
         const valueObj = this.state[name];
         if (valueObj) {
             valueObj.value = value;
-            // Not Validate fields only when autoValidation prop is false
-            // if (this.props.autoValidation === undefined || this.props.autoValidation) {
-            //     Object.assign(valueObj, autoValidate(valueObj));
-            // }
-            // // Validate through customValidation if it is present in props
-            // if (this.props.customValidation
-            //     && typeof this.props.customValidation === 'function') {
-            //     Object.assign(valueObj, this.props.customValidation(valueObj));
-            // }
+            
+            //autovalidate the fields
+            if (this.props.autoValidation === undefined || this.props.autoValidation) {
+                Object.assign(valueObj, autoValidate(valueObj));
+            }
+
+            // apply some custom logic for validation
+            if (this.props.customValidation
+                && typeof this.props.customValidation === 'function') {
+                Object.assign(valueObj, this.props.customValidation(valueObj));
+            }
             const newField = {};
             newField[valueObj.name] = valueObj;
-            // this.props.customValidation(valueObj);
             if (this.props.onValueChange &&
                 typeof this.props.onValueChange === 'function') {
                 this.setState({ ...newField }, () => this.props.onValueChange());
@@ -126,9 +136,43 @@ export default class Form0 extends Component {
         this.setState({ ...newFields });
     }
 
-    componentDidMount() {
-        const { formData } = this.props;
-        console.log(formData);
+    // Helper function for setValues
+    getFieldValue(fieldObj, value) {
+        const field = fieldObj;
+        if (field.type === 'group') {
+            const subFields = {};
+            Object.keys(value).forEach((fieldName) => {
+                subFields[fieldName] = value[fieldName];
+            });
+            this[field.name].group.setValues(subFields);
+            field.value = this[field.name].group.getValues();
+            // Remaing thing is error Handling Here
+        } else {
+            field.value = value;
+            //Validate and check for errors
+            if (this.props.autoValidation === undefined || this.props.autoValidation) {
+                Object.assign(field, autoValidate(field));
+            }
+            // Validate through customValidation if it is present in props
+            if (this.props.customValidation
+                && typeof this.props.customValidation === 'function') {
+                Object.assign(field, this.props.customValidation(field));
+            }
+        }
+        return field;
+    }
+
+    setValues(...args) {
+        if (args && args.length && args[0]) {
+            const newFields = {};
+            Object.keys(args[0]).forEach((fieldName) => {
+                const field = this.state[fieldName];
+                if (field) {
+                    newFields[field.name] = this.getFieldValue(field, args[0][fieldName]);
+                }
+            });
+            this.setState({ ...newFields });
+        }
     }
 
     generateFields() {
