@@ -9,13 +9,33 @@ Build model based simple forms for React Native
 - Support nested forms and validations
 
 # Getting Started
+<!-- TOC -->
 
-- Installation 
-- Basic Usage
-- Form Properties & Methods
-- Form Fields
-- Field Types
+- [react-native-form0](#react-native-form0)
+- [Objective](#objective)
+- [Getting Started](#getting-started)
+    - [Installation](#installation)
+    - [Usage](#usage)
+    - [Form Properties & Methods](#form-properties--methods)
+        - [Properties](#properties)
+        - [Methods](#methods)
+            - [getValues](#getvalues)
+            - [setValues](#setvalues)
+            - [resetForm](#resetform)
+            - [setToDefault](#settodefault)
+    - [Form Fields](#form-fields)
+        - [Properties](#properties-1)
+        - [Field Types](#field-types)
+            - [TextInput](#textinput)
+            - [Switch](#switch)
+            - [Date](#date)
+            - [Select](#select)
+            - [Lookup](#lookup)
+            - [Location](#location)
+            - [Image](#image)
+            - [Document](#document)
 
+<!-- /TOC -->
 
 ## Installation 
 
@@ -110,15 +130,50 @@ const styles = StyleSheet.create({
 
 ## Form Fields
 
-- TextInput
-- Date
-- Picker
-- Switch
-- Select
-- Location
-- Image
+Field is the basic unit of the form which generates an UI components. The basic structure of the field is 
 
-### Field Properties
+```
+{
+    "type" : "text",
+    "name" : "",
+    "label": ""
+    ... 
+}    
+
+```
+
+### Properties
+
+The different properties for the fields are 
+
+
+
+### Field Types
+
+#### TextInput
+
+#### Switch
+
+
+#### Date
+
+
+#### Select
+
+#### Lookup
+
+
+#### Location 
+
+#### Image
+
+#### Document
+
+
+
+
+
+
 
 
 
