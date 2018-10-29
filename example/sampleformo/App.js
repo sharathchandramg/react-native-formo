@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import { Platform, StyleSheet, Text, View, ScrollView } from 'react-native';
 
 import Form0 from "react-native-form0";
 import { Button } from 'native-base';
@@ -11,15 +11,17 @@ export default class App extends Component {
     console.log(fields);
     return (
 
-      <View>
+      <ScrollView>
         <Form0 fields={fields}
           ref={(c) => {
             this.formGenerator = c;
           }} />
 
-        <Button onPress={() => console.log(this.formGenerator.getValues())}><Text>Submit</Text></Button>
-        <Button onPress={() => this.formGenerator.resetForm()}><Text>Clear Form</Text></Button>
-      </View>
+        <View styles={styles.container}>
+          <Button onPress={() => console.log(this.formGenerator.getValues())}><Text>Submit</Text></Button>
+          <Button onPress={() => this.formGenerator.resetForm()}><Text>Clear Form</Text></Button>
+        </View>
+      </ScrollView>
     );
   }
 }
@@ -27,18 +29,8 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: 'row',
     backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+    justifyContent: 'space-between'
+  }
 });

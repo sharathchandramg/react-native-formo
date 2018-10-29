@@ -3,7 +3,6 @@
         "type": "text",
         "name": "user_name",
         "required": true,
-        "icon": "ios-person",
         "label": "Username"
     },
     {
