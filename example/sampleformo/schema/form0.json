@@ -66,5 +66,49 @@
             "multiline": true,
             "numberOfLines": 3
         }
+    },
+    {
+        "type": "select",
+        "name": "status",
+        "label": "Status",
+        "options": [
+            "Pending",
+            "Rejected",
+            "Shortlisted"
+        ],
+        "defaultValue": [
+            "Pending"
+        ]
+    },
+    {
+        "type": "select",
+        "name": "assiggee",
+        "label": "Assignee",
+        "multiple" : false,
+        "labelKey" : "name",
+        "primaryKey" : "id",
+        "objectType" : true,
+        "options" : [
+            {
+                "id" : 1,
+                "name" : "Sharath"
+            },
+            {
+                "id" : 2,
+                "name" : "Rabindra"
+            },
+            {
+                "id" : 3,
+                "name" : "Nitheesh"
+            }
+        ],
+        "defaultValue": [
+            {
+                "id" : 3,
+                "name" : "Nitheesh"
+            }
+        ]
     }
+
+
 ]

@@ -10,6 +10,7 @@ import TextInputField from "./fields/textInput";
 import SwitchField from "./fields/switch";
 import DateField from "./fields/date";
 import PickerField from "./fields/picker";
+import SelectField from "./fields/select";
 
 import { autoValidate, getInitialState, getDefaultValue, getResetValue } from "./utils/helper";
 
@@ -73,7 +74,7 @@ export default class Form0 extends Component {
         const valueObj = this.state[name];
         if (valueObj) {
             valueObj.value = value;
-            
+
             //autovalidate the fields
             if (this.props.autoValidation === undefined || this.props.autoValidation) {
                 Object.assign(valueObj, autoValidate(valueObj));
@@ -226,6 +227,13 @@ export default class Form0 extends Component {
                                 ref={(c) => { this[field.name] = c; }}
                                 {...commonProps}
                             />
+                        );
+
+                    case "select":
+                        return (
+                            <SelectField
+                                ref={(c) => { this[field.name] = c; }}
+                                {...commonProps} />
                         );
 
                 }
