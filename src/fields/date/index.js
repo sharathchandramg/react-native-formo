@@ -89,7 +89,7 @@ export default class DateField extends Component {
                     marginHorizontal: 5,
                 }}>
                 <Text onPress={this.showDatePicker}>
-                    {(value && moment(value, "Do MMM YYYY").format("Do MMM YYYY")) || moment().format("Do MMM YYYY")}
+                    {(value && moment(value, "Do MMM YYYY").format("Do MMM YYYY")) || "None"}
                 </Text>
             </TouchableOpacity>
         )
@@ -106,7 +106,7 @@ export default class DateField extends Component {
                     marginHorizontal: 5,
                 }}>
                 <Text onPress={this.showTimePicker}>
-                    {(value && moment(value, 'hh:mm a').format("hh:mm a")) || moment().format("hh:mm a")}
+                    {(value && moment(value, 'hh:mm a').format("hh:mm a")) || "None"}
                 </Text>
             </TouchableOpacity>
         );
@@ -123,7 +123,7 @@ export default class DateField extends Component {
                     marginHorizontal: 5,
                 }}>
                 <Text>
-                    {(value && moment(value, "Do MMM YYYY").format("Do MMM YYYY")) || moment().format("Do MMM YYYY")}
+                    {(value && moment(value, "Do MMM YYYY").format("Do MMM YYYY")) || "None"}
                 </Text>
             </View>
         );
@@ -140,7 +140,7 @@ export default class DateField extends Component {
                     marginHorizontal: 5,
                 }}>
                 <Text>
-                    {(value && moment(value, 'hh:mm a').format("hh:mm a")) || moment().format("hh:mm a")}
+                    {(value && moment(value, 'hh:mm a').format("hh:mm a")) || "None"}
                 </Text>
             </View>
         );

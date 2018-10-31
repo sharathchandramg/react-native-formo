@@ -157,6 +157,12 @@ The different properties for the fields are
 
 #### Date
 
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+|mode              |string (date, time)                |date         | Mode for the date picker             |
+|minDate      |string (date in format "YYYY-MM-DD", "today", "tomorrow") or JS Date     |N/A               |Minimum date in datepicker           |
+|maxDate            |string (date in format "YYYY-MM-DD", "today", "tomorrow") or JS Date              |N/A              |Miximum date in datepicker            |
+|defaultValue            |string (date in format "YYYY-MM-DD", "today", "tomorrow") or JS Date               |N/A              |Default value to be displayed on date picker |
 
 #### Select
 

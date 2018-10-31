@@ -1,16 +1,15 @@
 [
     {
         "type": "text",
-        "name": "user_name",
+        "name": "data_source",
         "required": true,
-        "icon": "ios-person",
-        "label": "Username"
+        "label": "Data Source"
     },
     {
-        "type": "email",
-        "name": "email",
+        "type": "text",
+        "name": "prospect_name",
         "required": true,
-        "label": "Email"
+        "label": "Name"
     },
     {
         "type": "number",
@@ -19,9 +18,137 @@
         "label": "Phone number"
     },
     {
-        "type": "password",
-        "name": "password",
+        "type": "email",
+        "name": "email",
         "required": true,
-        "label": "Password"
+        "label": "Email"
+    },
+    {
+        "type": "text",
+        "name": "apartment_name",
+        "required": false,
+        "label": "Apartment Name"
+    },
+    {
+        "type": "number",
+        "name": "num_of_flats",
+        "required": false,
+        "label": "Number Of Flats"        
+    },
+    {
+        "type": "date",
+        "name": "date_of_birth",
+        "required": false,
+        "label": "Date of Birth",
+        "mode": "date"
+    },
+    {
+        "type": "text",
+        "name": "highest_qualification",
+        "required": false,
+        "label": "Highest Qualification"
+    },
+    {
+        "type": "text",
+        "name": "relocated_to",
+        "required": false,
+        "label": "Relocated To"
+    },
+    {
+        "type": "text",
+        "name": "working_status",
+        "required": false,
+        "label": "Working Status"
+    },
+    {
+        "type": "date",
+        "name": "preferred_date",
+        "required": false,
+        "label": "Preferred Date",
+        "mode" : "date"
+    },
+    {
+        "type": "date",
+        "name": "preferred_time",
+        "required": false,
+        "label": "Preferred Time",
+        "mode" : "time"
+    },
+    {
+        "type": "picker",
+        "name": "stage",
+        "required": true,
+        "label": "Stage",
+        "mode": "dropdown",
+        "options": [
+            "Level 1",
+            "Level 2"
+        ]
+    },
+    {
+        "type": "picker",
+        "name": "status",
+        "required": true,
+        "label": "Status",
+        "mode": "dropdown",
+        "options": [
+            "Pending",
+            "On Hold",
+            "Shortlisted",
+            "Rejected"
+        ]
+    },
+    {
+        "type": "text",
+        "name": "reject_reason",
+        "label": "Reject Reason",
+        "required": false,
+        "props": {
+            "multiline": true,
+            "numberOfLines": 1
+        }
+    },
+    {
+        "type": "date",
+        "name": "orientation_date",
+        "required": false,
+        "label": "Orientation Date",
+        "mode" : "date"
+    },
+    {
+        "type": "date",
+        "name": "orientation_time",
+        "required": false,
+        "label": "Orientation Time",
+        "mode" : "time"
+    },
+    {
+        "type": "select",
+        "name": "assiggee",
+        "label": "Assignee",
+        "multiple" : false,
+        "labelKey" : "user_name",
+        "primaryKey" : "user_id",
+        "objectType" : true,
+        "options" : [
+            {
+                "user_id" : 1,
+                "user_name" : "Sharath"
+            },
+            {
+                "user_id" : 2,
+                "user_name" : "Rabindra"
+            },
+            {
+                "user_id" : 3,
+                "user_name" : "Nitheesh"
+            }
+        ],
+        "defaultValue": [
+            {
+                "user_id" : 3,
+                "user_name" : "Nitheesh"
+            }
+        ]
     }
 ]

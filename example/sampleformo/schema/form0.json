@@ -3,7 +3,8 @@
         "type": "text",
         "name": "user_name",
         "required": true,
-        "label": "Username"
+        "label": "Username",
+        "editable": false
     },
     {
         "type": "email",
@@ -34,7 +35,9 @@
         "name": "dob",
         "required": true,
         "label": "Date of Birth",
-        "mode": "date"
+        "mode": "date",
+        "defaultValue": "tomorrow",
+        "maxDate": "2018-10-10"
     },
     {
         "type": "date",
@@ -84,31 +87,29 @@
         "type": "select",
         "name": "assiggee",
         "label": "Assignee",
-        "multiple" : false,
-        "labelKey" : "name",
-        "primaryKey" : "id",
-        "objectType" : true,
-        "options" : [
+        "multiple": true,
+        "labelKey": "name",
+        "primaryKey": "id",
+        "objectType": true,
+        "options": [
             {
-                "id" : 1,
-                "name" : "Sharath"
+                "id": 1,
+                "name": "Sharath"
             },
             {
-                "id" : 2,
-                "name" : "Rabindra"
+                "id": 2,
+                "name": "Rabindra"
             },
             {
-                "id" : 3,
-                "name" : "Nitheesh"
+                "id": 3,
+                "name": "Nitheesh"
             }
         ],
         "defaultValue": [
             {
-                "id" : 3,
-                "name" : "Nitheesh"
+                "id": 3,
+                "name": "Nitheesh"
             }
         ]
     }
-
-
 ]

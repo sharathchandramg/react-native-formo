@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { isEmail, isEmpty } from './validators';
+const moment = require("moment");
 
 export function getKeyboardType(textType) {
     switch (textType) {
@@ -62,7 +63,17 @@ export function getDefaultValue(field) {
                 if (dateDefaultValue && !_.isNaN(dateDefaultValue.getTime())) {
                     return dateDefaultValue;
                 }
-                return null;
+                else if (field.defaultValue === "")
+                    return "Select";
+
+                else if (field.defaultValue === "today")
+                    return moment().format("YYYY-MM-DD");
+
+                else if (field.defaultValue === "tomorrow")
+                    return moment().add(1, "day").format("YYYY-MM-DD");
+
+                else
+                    return null;
             }
         case "group":
             if (field.fields) {
