@@ -29,6 +29,9 @@ Build model based simple forms for React Native
             - [TextInput](#textinput)
             - [Switch](#switch)
             - [Date](#date)
+                - [Additional Properties](#additional-properties)
+                - [Value Type : String](#value-type--string)
+                - [Default Value Type : string (date in format "YYYY-MM-DD", "today", "tomorrow") or JS Date](#default-value-type--string-date-in-format-yyyy-mm-dd-today-tomorrow-or-js-date)
             - [Select](#select)
             - [Lookup](#lookup)
             - [Location](#location)
@@ -157,12 +160,19 @@ The different properties for the fields are
 
 #### Date
 
+(type: string)
+
+##### Additional Properties
+
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
 |mode              |string (date, time)                |date         | Mode for the date picker             |
 |minDate      |string (date in format "YYYY-MM-DD", "today", "tomorrow") or JS Date     |N/A               |Minimum date in datepicker           |
 |maxDate            |string (date in format "YYYY-MM-DD", "today", "tomorrow") or JS Date              |N/A              |Miximum date in datepicker            |
-|defaultValue            |string (date in format "YYYY-MM-DD", "today", "tomorrow") or JS Date               |N/A              |Default value to be displayed on date picker |
+
+##### Value Type : String
+
+##### Default Value Type : string (date in format "YYYY-MM-DD", "today", "tomorrow") or JS Date
 
 #### Select
 
