@@ -24,12 +24,14 @@ Build model based simple forms for React Native
             - [resetForm](#resetform)
             - [setToDefault](#settodefault)
     - [Form Fields](#form-fields)
-        - [Properties](#properties-1)
+        - [Common Properties](#common-properties)
         - [Field Types](#field-types)
             - [TextInput](#textinput)
+                - [Additional Properties](#additional-properties)
+                - [Value Type](#value-type)
             - [Switch](#switch)
             - [Date](#date)
-                - [Additional Properties](#additional-properties)
+                - [Additional Properties](#additional-properties-1)
                 - [Value Type : String](#value-type--string)
                 - [Default Value Type : string (date in format "YYYY-MM-DD", "today", "tomorrow") or JS Date](#default-value-type--string-date-in-format-yyyy-mm-dd-today-tomorrow-or-js-date)
             - [Select](#select)
@@ -145,15 +147,39 @@ Field is the basic unit of the form which generates an UI components. The basic 
 
 ```
 
-### Properties
+### Common Properties
 
-The different properties for the fields are 
+The common properties for all the fields are :
+
+| Prop | Type | Required | Description |
+|------|------|---------|-------------|
+|type              | text, email, url, password, number, select, switch, date              |Yes         | Type of field             |
+|name      |string     |Yes               |Internal name of the field         |
+|label            |string             |Yes            |Display field lable           |
+|required            |boolean             |No            |Field is mandatory or not ?          |
+|editable            |boolean             |No            |Field is editable or not?           |
+|hidden            |boolean             |No            |Field is visible or not?           |
+|defaultValue            |             |No            |Sets the default value of the field           |
 
 
 
 ### Field Types
 
 #### TextInput
+
+Text input field allows to enter the text. The types of text fields allowed are, text, email, url, password, number, phone_number, currency
+
+##### Additional Properties
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+|iconName              |string               |N/A         | Sets the icon name from react-native-vector-icons             |
+|iconOrientaion      |string  |left              |Display icon to left or right           |
+|props            |Object           |N/A              |Additional properties for the text input            |
+
+##### Value Type 
+- String (text, email, url, password)
+- Number (number,phone_number,currency)
 
 #### Switch
 

@@ -3,7 +3,8 @@
         "type": "text",
         "name": "data_source",
         "required": true,
-        "label": "Data Source"
+        "label": "Data Source",
+        "editable" : false
     },
     {
         "type": "text",
@@ -40,7 +41,8 @@
         "name": "date_of_birth",
         "required": false,
         "label": "Date of Birth",
-        "mode": "date"
+        "mode": "date",
+        "maxDate" : "today"
     },
     {
         "type": "text",
@@ -65,7 +67,9 @@
         "name": "preferred_date",
         "required": false,
         "label": "Preferred Date",
-        "mode" : "date"
+        "mode" : "date",
+        "minDate" : "today",
+        "defaultDate" : "tomorrow"
     },
     {
         "type": "date",
@@ -78,12 +82,13 @@
         "type": "picker",
         "name": "stage",
         "required": true,
-        "label": "Stage",
+        "label": "Status",
         "mode": "dropdown",
         "options": [
-            "Level 1",
-            "Level 2"
-        ]
+            "Stage 1",
+            "Stage 2"
+        ],
+        "defaultValue" : "Stage 1"
     },
     {
         "type": "picker",
@@ -96,12 +101,13 @@
             "On Hold",
             "Shortlisted",
             "Rejected"
-        ]
+        ],
+        "defaultValue" : "Pending"
     },
     {
         "type": "text",
-        "name": "reject_reason",
-        "label": "Reject Reason",
+        "name": "notes",
+        "label": "Notes",
         "required": false,
         "props": {
             "multiline": true,
@@ -113,7 +119,8 @@
         "name": "orientation_date",
         "required": false,
         "label": "Orientation Date",
-        "mode" : "date"
+        "mode" : "date",
+        "minDate" : "today"
     },
     {
         "type": "date",

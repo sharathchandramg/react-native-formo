@@ -201,6 +201,8 @@ export default class Form0 extends Component {
                     case "number":
                     case "url":
                     case "password":
+                    case "phone":
+                    case "currency":
                         return <TextInputField
                             ref={(c) => { this[field.name] = c; }}
                             {...commonProps}
