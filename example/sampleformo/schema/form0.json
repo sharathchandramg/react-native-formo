@@ -1,115 +1,158 @@
 [
     {
         "type": "text",
-        "name": "user_name",
+        "name": "data_source",
+        "label": "Data Source",
         "required": true,
-        "label": "Username",
-        "editable": false
+        "editable": false,
+        "hidden": false
+    },
+    {
+        "type": "text",
+        "name": "prospect_name",
+        "label": "Prospect Name",
+        "required": true,
+        "editable": true,
+        "hidden": false
+    },
+    {
+        "type": "phone",
+        "name": "phone_number",
+        "label": "Phone Number",
+        "required": true,
+        "editable": true,
+        "hidden": false
     },
     {
         "type": "email",
         "name": "email",
+        "label": "Email",
         "required": true,
-        "label": "Email"
+        "editable": true,
+        "hidden": false
+    },
+    {
+        "type": "text",
+        "name": "apartment_name",
+        "label": "Apartment Name",
+        "required": false,
+        "editable": true,
+        "hidden": false
     },
     {
         "type": "number",
-        "name": "phone_number",
-        "required": true,
-        "label": "Phone number"
-    },
-    {
-        "type": "password",
-        "name": "aadhar",
-        "required": true,
-        "label": "Aadhar Number"
-    },
-    {
-        "type": "switch",
-        "name": "working_status",
-        "required": true,
-        "label": "Currently Working?"
+        "name": "number_of_flats",
+        "label": "Number Of Flats",
+        "required": false,
+        "editable": true,
+        "hidden": false
     },
     {
         "type": "date",
-        "name": "dob",
-        "required": true,
-        "label": "Date of Birth",
+        "name": "date_of_birth",
+        "label": "Date Of Birth",
+        "required": false,
+        "editable": true,
+        "hidden": false,
         "mode": "date",
-        "defaultValue": "tomorrow",
-        "maxDate": "2018-10-10"
+        "maxDate": "today"
+    },
+    {
+        "type": "text",
+        "name": "highest_qualification",
+        "label": "Highest Qualification",
+        "required": false,
+        "editable": true,
+        "hidden": false
+    },
+    {
+        "type": "text",
+        "name": "relocated_to",
+        "label": "Relocated To",
+        "required": false,
+        "editable": true,
+        "hidden": false
+    },
+    {
+        "type": "text",
+        "name": "working_status",
+        "label": "Working Status",
+        "required": false,
+        "editable": true,
+        "hidden": false
+    },
+    {
+        "type": "date",
+        "name": "preferred_date",
+        "label": "Preferred Date",
+        "required": false,
+        "editable": true,
+        "hidden": false,
+        "mode": "date",
+        "minDate": "today",
+        "defaultDate": "tomorrow"
     },
     {
         "type": "date",
         "name": "preferred_time",
-        "required": true,
-        "label": "Preferred Time to Call",
+        "label": "Preferred Time",
+        "required": false,
+        "editable": true,
+        "hidden": false,
         "mode": "time"
     },
     {
         "type": "picker",
-        "name": "address_proof",
-        "required": true,
-        "label": "Address Proof",
-        "mode": "dropdown",
+        "name": "status",
+        "label": "Status",
+        "required": false,
+        "editable": true,
+        "hidden": false,
         "options": [
-            "Aadhar",
-            "Driving License",
-            "Electricity Bill",
-            "Rental Agreement",
-            "Passport"
+            "Pending",
+            "On Hold",
+            "Shortlisted",
+            "Rejected"
+        ]
+    },
+    {
+        "type": "picker",
+        "name": "stage",
+        "label": "Stage",
+        "required": false,
+        "editable": true,
+        "hidden": false,
+        "options": [
+            "Stage 1",
+            "Stage 2"
         ]
     },
     {
         "type": "text",
-        "name": "comments",
-        "label": "Comments",
-        "required": true,
-        "props": {
-            "multiline": true,
-            "numberOfLines": 3
-        }
+        "name": "notes",
+        "label": "Notes",
+        "required": false,
+        "editable": true,
+        "hidden": false
     },
     {
-        "type": "select",
-        "name": "status",
-        "label": "Status",
-        "options": [
-            "Pending",
-            "Rejected",
-            "Shortlisted"
-        ],
-        "defaultValue": [
-            "Pending"
-        ]
+        "type": "date",
+        "name": "orientation_date",
+        "label": "Orientation Date",
+        "required": false,
+        "editable": true,
+        "hidden": false,
+        "mode": "date",
+        "minDate": "today"
     },
     {
-        "type": "select",
-        "name": "assiggee",
-        "label": "Assignee",
-        "multiple": true,
-        "labelKey": "name",
-        "primaryKey": "id",
-        "objectType": true,
-        "options": [
-            {
-                "id": 1,
-                "name": "Sharath"
-            },
-            {
-                "id": 2,
-                "name": "Rabindra"
-            },
-            {
-                "id": 3,
-                "name": "Nitheesh"
-            }
-        ],
-        "defaultValue": [
-            {
-                "id": 3,
-                "name": "Nitheesh"
-            }
-        ]
+        "type": "date",
+        "name": "orientation_time",
+        "label": "Orientation Time",
+        "required": false,
+        "editable": true,
+        "hidden": false,
+        "mode": "time"
     }
+    
 ]
