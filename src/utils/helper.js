@@ -6,8 +6,12 @@ export function getKeyboardType(textType) {
     switch (textType) {
         case "email":
             return "email-address";
+
         case "number":
+        case "phone":
+        case "currency":
             return 'numeric';
+
         default:
             return "default";
     }
@@ -20,7 +24,10 @@ export function getDefaultValue(field) {
         case "email":
         case "password":
         case "url":
+        case "phone":
+        case "currency":
             return field.defaultValue || '';
+
         case "picker": {
             if ((field.options).indexOf(field.defaultValue) !== -1) {
                 return field.defaultValue;
@@ -57,6 +64,7 @@ export function getDefaultValue(field) {
                 return field.defaultValue;
             }
             return false;
+
         case "date":
             {
                 const dateDefaultValue = field.defaultValue && new Date(field.defaultValue);
@@ -92,15 +100,22 @@ export function getResetValue(field) {
         case "email":
         case "password":
         case "url":
+        case "phone":
+        case "currency":
             return '';
+
         case "picker":
             return field.options[0];
+
         case "select":
             return field.multiple ? [] : null;
+
         case "switch":
             return false;
+
         case "date":
             return null;
+            
         default:
             return null;
     }
