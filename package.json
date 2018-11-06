@@ -27,7 +27,9 @@
     "prop-types": "^15.6.2",
     "react-native-fontawesome": "^5.7.0",
     "react-native-image-crop-picker": "^0.21.3",
-    "react-native-js-bottom-sheet": "^1.0.0"
+    "react-native-js-bottom-sheet": "^1.0.0",
+    "react-native-modalbox": "^1.6.0",
+    "react-native-vector-icons": "^6.0.2"
   },
   "peerDependencies": {
     "react-native": ">=0.55.0",
