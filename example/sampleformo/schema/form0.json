@@ -1,4 +1,12 @@
-[
+[   {
+        "type": "image",
+        "name": "bill",
+        "label": "Bill",
+        "required": true,
+        "editable": true,
+        "hidden": false
+
+    },
     {
         "type": "text",
         "name": "data_source",

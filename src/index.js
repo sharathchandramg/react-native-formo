@@ -11,6 +11,7 @@ import SwitchField from "./fields/switch";
 import DateField from "./fields/date";
 import PickerField from "./fields/picker";
 import SelectField from "./fields/select";
+import ImageField from "./fields/image";
 
 import { autoValidate, getInitialState, getDefaultValue, getResetValue } from "./utils/helper";
 
@@ -237,6 +238,13 @@ export default class Form0 extends Component {
                                 ref={(c) => { this[field.name] = c; }}
                                 {...commonProps} />
                         );
+
+                    case "image":
+                        return (
+                                <ImageField
+                                    ref={(c) => { this[field.name] = c; }}
+                                    {...commonProps} />
+                            );
 
                 }
 
