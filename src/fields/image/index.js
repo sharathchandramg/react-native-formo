@@ -86,12 +86,12 @@ export default class ImageField extends Component {
             {
 				title: options[0],
                 onPress: () => this._openCamera(),
-                icon: (<Icon name="camera" size={24} type='solid' color={colors.MD_LIGHT_GREY} />)
+                icon: (<Icon name="camera" size={24} type='solid' color={'#828282'} />)
 			},
 			{
 				title: options[1],
 				onPress: () =>this._openPicker(),
-				icon: (<Icon name="images" size={24} type='solid' color={colors.MD_LIGHT_GREY}/>)
+				icon: (<Icon name="images" size={24} type='solid' color={'#828282'}/>)
 			}
 		];
 	};
@@ -127,7 +127,7 @@ export default class ImageField extends Component {
 					style={[styles.image,{height: this.state.height}]}
 				/>
 				<View style={[styles.container,{overflow: this.state.overflow,backgroundColor: "#E28E8E"}]}>
-					<Icon name="camera" size={28}  type='solid' color={colors.MD_LIGHT_GREY}/>
+					<Icon name="camera" size={28}  type='solid' color={'#828282'}/>
 				</View>
 			</TouchableOpacity>
 		);
@@ -150,7 +150,7 @@ export default class ImageField extends Component {
                         ref={ref => {
                             this.bottomSheet = ref;
                         }}
-                        title={locals.config.title}
+                        title={attributes.label}
                         options={this._renderOptions()}
                         coverScreen={true}
                         titleFontFamily={style.titleFontFamily}
