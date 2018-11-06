@@ -7,6 +7,7 @@ import {
 	Platform,
 	TouchableOpacity
 } from "react-native";
+
 import ImagePicker from "react-native-image-crop-picker";
 import BottomSheet from "react-native-js-bottom-sheet";
 import FontAwesome, { Icons } from 'react-native-fontawesome';
