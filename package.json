@@ -25,6 +25,7 @@
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
     "prop-types": "^15.6.2",
+    "react-native-fontawesome": "^5.7.0",
     "react-native-image-crop-picker": "^0.21.3",
     "react-native-js-bottom-sheet": "^1.0.0"
   },

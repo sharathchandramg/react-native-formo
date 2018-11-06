@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import ImagePicker from "react-native-image-crop-picker";
 import BottomSheet from "react-native-js-bottom-sheet";
+import FontAwesome, { Icons } from 'react-native-fontawesome';
 import styles from "./styles";
 
 export default class ImageField extends Component {
@@ -86,12 +87,12 @@ export default class ImageField extends Component {
             {
 				title: options[0],
                 onPress: () => this._openCamera(),
-                icon: (<Icon name="camera" size={24} type='solid' color={'#828282'} />)
+                icon: (<FontAwesome>{Icons.camera}</FontAwesome>)
 			},
 			{
 				title: options[1],
 				onPress: () =>this._openPicker(),
-				icon: (<Icon name="images" size={24} type='solid' color={'#828282'}/>)
+				icon: ( <FontAwesome>{Icons.image}</FontAwesome>)
 			}
 		];
 	};
@@ -127,7 +128,7 @@ export default class ImageField extends Component {
 					style={[styles.image,{height: this.state.height}]}
 				/>
 				<View style={[styles.container,{overflow: this.state.overflow,backgroundColor: "#E28E8E"}]}>
-					<Icon name="camera" size={28}  type='solid' color={'#828282'}/>
+                    <FontAwesome>{Icons.camera}</FontAwesome>
 				</View>
 			</TouchableOpacity>
 		);
