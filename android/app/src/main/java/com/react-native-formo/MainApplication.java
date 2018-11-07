@@ -1,4 +1,4 @@
-package com.sampleformo;
+package com.react-native-formo;
 
 import android.app.Application;
 

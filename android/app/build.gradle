@@ -98,12 +98,12 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.sampleformo"
+        applicationId "com.react-native-formo"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        vectorDrawables.useSupportLibrary = true
         versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
