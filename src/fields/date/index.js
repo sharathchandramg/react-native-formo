@@ -211,7 +211,7 @@ export default class DateField extends Component {
                     justifyContent: 'space-between',
                 }}>
 
-                <Text style={{ color: theme.labelActiveColor }}>{attributes.label}</Text>
+                <Text style={{ color: theme.inputColorPlaceholder }}>{attributes.label}</Text>
                 <View
                     style={{
                         flexDirection: 'row',
