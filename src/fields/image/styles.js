@@ -41,13 +41,9 @@ const styles = StyleSheet.create({
         alignSelf: 'stretch',
         justifyContent: 'center'
     },
-    textStyle:{
-        color:'blue',
+    iconStyle:{
         fontFamily:'roboto',
         alignSelf:'flex-start',
-        fontSize:12,
-        height:16,
-        flex:1,
     },
 });
 

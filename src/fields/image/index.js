@@ -59,7 +59,10 @@ export default class ImageField extends Component {
         this.setState({
                 path: value, 
                 overflow: "hidden" 
-            }, () =>this._startAnimation());
+            }, () =>{
+                if(Platform.OS !== "ios") this.bottomSheet.close();
+                this._startAnimation()
+            });
         
         this.props.updateValue(this.props.attributes.name, value);
     };
@@ -72,7 +75,10 @@ export default class ImageField extends Component {
             includeBase64: true,
         }).then(image =>
             this._getImageFromStorage(image.path)
-        ) && this.bottomSheet.close()
+        ).catch(e => {
+            if(Platform.OS !== "ios") this.bottomSheet.close();
+            console.log(e)
+        }) 
     }
     _openPicker =()=>{
         ImagePicker.openPicker({
@@ -82,7 +88,10 @@ export default class ImageField extends Component {
             includeBase64: true,
         }).then(image =>
             this._getImageFromStorage(image.path)
-        ) && this.bottomSheet.close()
+        ).catch(e => {
+            if(Platform.OS !== "ios") this.bottomSheet.close();
+            console.log(e)
+        }) 
     }
 
     _renderOptions = () => {
@@ -147,7 +156,7 @@ export default class ImageField extends Component {
                         ? this._onPressImage
                         : () => this.bottomSheet.open()
                 }>
-                <Text style={styles.textStyle} numberOfLines={1}>{'Add photo'}</Text> 
+                <Icon name="image" size={24} type={'regular'} color ={'#828282'} style={styles.iconStyle}/>
             </TouchableOpacity>
         );
     }
