@@ -42,7 +42,7 @@ export default class LocationField extends Component {
                 .then(data => {
                     this.pickLocation();
                 }).catch(err => {
-                    console.log(err)
+                    this.setState({ isPickingLocation: false })
                 });
         }else {
             this.pickLocation();
@@ -121,7 +121,7 @@ export default class LocationField extends Component {
                 </TouchableOpacity>
             );
         }else{
-            return <Text style={styles.textStyle} numberOfLines={1}>{'Picking...'}</Text> 
+            return <Text style={styles.textStyle} numberOfLines={1}>{this.state.isPickingLocation?'Picking...':''}</Text> 
         }
     }
 

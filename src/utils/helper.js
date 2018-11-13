@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { isEmail, isEmpty } from './validators';
+import { PermissionsAndroid } from 'react-native';
 const moment = require("moment");
 
 export function getKeyboardType(textType) {
@@ -228,5 +229,33 @@ export const getGeoLocation = (options, cb) => {
                 getLowAccuracyPosition()
             }
         }, timeout)
+    }
+}
+
+
+
+export async function requestLocationPermission() {
+    let response ={ permission:false,err:null}
+    try {
+        const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+            {
+                'title': 'Location Permission',
+                'message':'This form required location'
+            }
+        )
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            response.permission= true;
+            response.err = null;
+            return response;
+        } else {
+            response.err = 'Location permission denied';
+            response.permission= false;
+            return response;
+        }
+    } catch (err) {
+        response.err = err;
+        response.permission= false;
+        return response;
     }
 }

@@ -1,4 +1,21 @@
-[
+[ {
+        "type": "location",
+        "name": "office_location",
+        "label": "Office Location",
+        "required": true,
+        "editable": true,
+        "hidden": false
+    },
+
+    {
+        "type": "image",
+        "name": "bill",
+        "label": "Bill",
+        "required": true,
+        "editable": true,
+        "hidden": false
+
+    },
     {
         "type": "text",
         "name": "data_source",
