@@ -1,6 +1,6 @@
 {
   "name": "react-native-form0",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Build model based simple forms for React Native",
   "main": "src/index.js",
   "scripts": {
@@ -30,6 +30,11 @@
     "react-native": ">=0.55.0",
     "react": ">=16.0.0",
     "native-base": "^2.7.2",
-    "lodash": ">=4.0.0"
+    "lodash": ">=4.0.0",
+    "react-native-android-location-enabler": ">=1.0.8",
+    "react-native-image-crop-picker": ">=0.21.3",
+    "react-native-js-bottom-sheet": ">=1.0.0",
+    "react-native-modalbox": ">=1.6.0",
+    "react-native-vector-icons": ">=6.0.2"
   }
 }

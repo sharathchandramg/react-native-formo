@@ -15,4 +15,5 @@ export default {
     errorMsgColor: '#ed2f2f',
     changeTextInputColorOnError: true,
     textInputErrorIcon: 'close-circle',
+    textlinkColor:'#0097EB'
 };

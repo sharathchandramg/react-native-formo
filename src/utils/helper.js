@@ -1,5 +1,6 @@
 import _ from "lodash";
 import { isEmail, isEmpty } from './validators';
+import { PermissionsAndroid } from 'react-native';
 const moment = require("moment");
 
 export function getKeyboardType(textType) {
@@ -171,4 +172,90 @@ export function autoValidate(field) {
         }
     }
     return { error, errorMsg };
+}
+
+export const getGeoLocation = (options, cb) => {
+
+    let highAccuracySuccess = false
+    let highAccuracyError = false
+    let highAccuracy = !options || options.highAccuracy === undefined ? true : options.highAccuracy
+    let timeout = !options || options.timeout === undefined ? 10000 : options.timeout
+
+    let getLowAccuracyPosition = () => {
+        console.log('REQUESTING POSITION', 'HIGH ACCURACY FALSE')
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                console.log('POSITION NETWORK OK', position)
+                cb(position.coords)
+            },
+            error => {
+                console.log(error)
+                cb(null, error);
+            },
+            {
+                enableHighAccuracy: false,
+                timeout: 10000,
+                maxAge: 0
+            }
+        )
+    }
+
+    if (highAccuracy) {
+        console.log('REQUESTING POSITION', 'HIGH ACCURACY TRUE')
+        const watchId = navigator.geolocation.watchPosition(
+            position => {
+                // location retrieved
+                highAccuracySuccess = true
+                console.log('POSITION GPS OK', position)
+                navigator.geolocation.clearWatch(watchId)
+                cb(position.coords)
+            },
+            error => {
+                console.log(error)
+                highAccuracyError = true
+                navigator.geolocation.clearWatch(watchId)
+                getLowAccuracyPosition()
+            },
+            {
+                enableHighAccuracy: true,
+                timeout: 20000,
+                maxAge: 0,
+                distanceFilter: 1
+            }
+        )
+
+        setTimeout(() => {
+            if (!highAccuracySuccess && !highAccuracyError) {
+                getLowAccuracyPosition()
+            }
+        }, timeout)
+    }
+}
+
+
+
+export async function requestLocationPermission() {
+    let response ={ permission:false,err:null}
+    try {
+        const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+            {
+                'title': 'Location Permission',
+                'message':'This form required location'
+            }
+        )
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            response.permission= true;
+            response.err = null;
+            return response;
+        } else {
+            response.err = 'Location permission denied';
+            response.permission= false;
+            return response;
+        }
+    } catch (err) {
+        response.err = err;
+        response.permission= false;
+        return response;
+    }
 }
