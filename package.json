@@ -1,6 +1,6 @@
 {
   "name": "react-native-form0",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Build model based simple forms for React Native",
   "main": "src/index.js",
   "scripts": {
@@ -24,7 +24,7 @@
   "dependencies": {
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
-    "prop-types": "^15.6.2"   
+    "prop-types": "^15.6.2"
   },
   "peerDependencies": {
     "react-native": ">=0.55.0",
