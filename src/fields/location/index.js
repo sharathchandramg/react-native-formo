@@ -1,18 +1,16 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Platform,Alert } from "react-native";
+import { Platform,Alert,TouchableOpacity,Linking } from "react-native";
 import { View, Item, Input, Icon, ListItem, Text } from "native-base";
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 
-import { getGeoLocation } from "./../../utils/helper";
+import { getGeoLocation,requestLocationPermission } from "./../../utils/helper";
 import styles from "./styles";
 
 const GPS_ALERT_MESSAGE = "Poor GPS accuracy. Wait until accuracy improves";
 const GPS_ALERT = "GPS Accuracy Alert";
 
-
 export default class LocationField extends Component {
-
     static propTypes = {
         attributes: PropTypes.object,
         theme: PropTypes.object,
@@ -24,8 +22,8 @@ export default class LocationField extends Component {
     constructor(props) {
         super(props);
         this.state={
-            isPickingLocation:false,
-            url : "",
+            isPickingLocation:true,
+            url :null,
         }
     }
 
@@ -52,13 +50,19 @@ export default class LocationField extends Component {
     }
 
     pickLocation = () => {
-        getGeoLocation({ highAccuracy: true, timeout: 10000 }, (position, err) => {
-            if (err){
-                this.locationPickupFailure(err);
+        requestLocationPermission().then(response => {
+            if(response.permission){
+                getGeoLocation({ highAccuracy: true, timeout: 10000 }, (position, err) => {
+                    if (err){
+                        this.locationPickupFailure(err);
+                    }else{
+                        this.locationPickupSuccess(position)
+                    }
+                });
             }else{
-                this.locationPickupSuccess(position)
+                this.locationPickupFailure(response.err)
             }
-        });
+        }).catch(response => this.locationPickupFailure(response.err))
     }
 
     locationPickupFailure = (err) => {
@@ -85,8 +89,8 @@ export default class LocationField extends Component {
     locationPickupSuccess = (position) => {
         if (typeof position !== 'undefined' && position !== null) {
             let url = Platform.select({
-                ios: `http://maps.apple.com/?ll=${location.latitude},${location.longitude}`,
-                android: `http://maps.google.com/?q=${location.latitude},${location.longitude}`
+                ios: `http://maps.apple.com/?ll=${position.latitude},${position.longitude}`,
+                android: `http://maps.google.com/?q=${position.latitude},${position.longitude}`
             });
             this.setState({
                 url : url,
@@ -100,36 +104,36 @@ export default class LocationField extends Component {
     }
 
     renderPostionUrl =(attributes)=>{
-        let url = attributes? attributes.value: this.state.url;
-        return (
-            <TouchableOpacity style={styles.container}
-                onPress={() => {
-                    Linking.canOpenURL(url).then(supported => {
-                        if (supported) {
-                            return Linking.openURL(url);
-                        }
-                    }).catch(err => {
-                        console.error('An error occurred', err);
-                    });
-                }}>
-                    <Text style ={styles.textStyle}>{url}</Text>
-            </TouchableOpacity>
-        );
+        let url = attributes.value? attributes.value: this.state.url;
+        if(url){
+            return (
+                <TouchableOpacity style={styles.valueContainer}
+                    onPress={() => {
+                        Linking.canOpenURL(url).then(supported => {
+                            if (supported) {
+                                return Linking.openURL(url);
+                            }
+                        }).catch(err => {
+                            console.error('An error occurred', err);
+                        });
+                    }}>
+                        <Text style={styles.textStyle} numberOfLines={1}>{url}</Text>
+                </TouchableOpacity>
+            );
+        }else{
+            return <Text style={styles.textStyle} numberOfLines={1}>{'Picking...'}</Text> 
+        }
     }
 
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
             <ListItem style={{ borderBottomWidth: 0, paddingVertical: 5 }}>
-                <View style={{ flex: 1 }}>
-                    <View>
-                        <Item error={theme.changeTextInputColorOnError ? attributes.error : null}>
-                            {attributes.icon && <Icon color={theme.textInputIconColor} name={attributes.icon} />}
-                            {this.renderPostionUrl(attributes)}
-                            {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null}
-                        </Item>
+                <View style={{flexDirection:'row',flex:2,}}>
+                    <Text style={{flex:1,color: theme.inputColorPlaceholder }}>{attributes.label}</Text>
+                    <View style={{flexDirection:'row',flex:1}}>
+                        {this.renderPostionUrl(attributes)}
                     </View>
-                    <ErrorComponent {...{ attributes, theme }} />
                 </View>
             </ListItem>
         );

@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         marginBottom: 12,
         height: 150,
+        width:'90%',
         marginHorizontal:20,
         
     },
@@ -23,16 +24,30 @@ const styles = StyleSheet.create({
         borderWidth:1,
         borderColor: 'grey',
     },
-
     image: {
-        height: 100
+        height:100,
+        
     },
+    valueContainer:{
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        flex:1,
+    },
+
     button: {
         height: 50,
         backgroundColor: '#48BBEC',
         margin: 0,
         alignSelf: 'stretch',
         justifyContent: 'center'
+    },
+    textStyle:{
+        color:'blue',
+        fontFamily:'roboto',
+        alignSelf:'flex-start',
+        fontSize:12,
+        height:16,
+        flex:1,
     },
 });
 

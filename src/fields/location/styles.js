@@ -7,10 +7,17 @@ import {
 
 const styles = StyleSheet.create({
     textStyle:{
-        color:'#828282',
+        color:'blue',
         fontFamily:'roboto',
+        alignSelf:'flex-start',
         fontSize:12,
         height:16,
+        flex:1,
+    },
+    valueContainer:{
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        flex:1,
     }
 });
 

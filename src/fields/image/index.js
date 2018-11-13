@@ -4,12 +4,13 @@ import React,{Component} from "react";
 
 import {
 	ActionSheetIOS,
-	View,
-	Text,
-	Animated,
+    Animated,
+    Image,
 	Platform,
 	TouchableOpacity
 } from "react-native";
+
+import { View, ListItem, Text } from "native-base";
 
 import ImagePicker from "react-native-image-crop-picker";
 import BottomSheet from "react-native-js-bottom-sheet";
@@ -138,15 +139,36 @@ export default class ImageField extends Component {
 		);
     };
 
+    renderAddImageIcon = ()=>{
+        return (
+            <TouchableOpacity style={styles.valueContainer}
+                onPress={
+                    Platform.OS === "ios"
+                        ? this._onPressImage
+                        : () => this.bottomSheet.open()
+                }>
+                <Text style={styles.textStyle} numberOfLines={1}>{'Add photo'}</Text> 
+            </TouchableOpacity>
+        );
+    }
+
     
     render(){
         const { theme, attributes, ErrorComponent } = this.props;
-
         return (
             <View>
-                <Text style={{ marginLeft:20,padding:5,color: theme.inputColorPlaceholder }}>{attributes.label}</Text>
-                {this.renderPreview(attributes)}
-
+                <ListItem style={{ borderBottomWidth: 0, paddingVertical: 5 }}>
+                    <View style={{flexDirection:'row',flex:2,}}>
+                        <Text style={{flex:1,color: theme.inputColorPlaceholder }}>{attributes.label}</Text>
+                        <View style={{flexDirection:'row',flex:1}}>
+                            {this.renderAddImageIcon()}
+                        </View>
+                        <ErrorComponent {...{ attributes, theme }} />
+                    </View>
+                </ListItem>
+                <View style={{flexDirection:'row',flex:1}}>
+                    {typeof this.state.path !=='undefined' || attributes.value !== null? this.renderPreview(attributes):null}
+                </View>
                 {Platform.OS === "android" ? (
                     <BottomSheet
                         ref={ref => {
@@ -160,10 +182,7 @@ export default class ImageField extends Component {
                         fontFamily={styles.fontFamily}
                     />
                 ) : null}
-                <ErrorComponent {...{ attributes, theme }} />
             </View>
         );
     }
 }
-
-
