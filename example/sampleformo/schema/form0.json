@@ -22,7 +22,7 @@
         "name": "data_source",
         "label": "Data Source",
         "required": true,
-        "editable": false,
+        "editable": true,
         "hidden": false
     },
     {

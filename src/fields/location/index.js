@@ -95,12 +95,8 @@ export default class LocationField extends Component {
             this.setState({
                 url : url,
                 isPickingLocation: false,
-            })
+            },()=> this.props.updateValue(this.props.attributes.name,url))
         }
-    }
-
-    handleChange(text) {
-        this.props.updateValue(this.props.attributes.name, text);
     }
 
     renderPostionUrl =(attributes)=>{
