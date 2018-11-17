@@ -13,6 +13,7 @@ import PickerField from "./fields/picker";
 import SelectField from "./fields/select";
 import ImageField from "./fields/image";
 import LocationField from "./fields/location";
+import FormField from "./fields/form";
 
 import { autoValidate, getInitialState, getDefaultValue, getResetValue } from "./utils/helper";
 
@@ -140,6 +141,7 @@ export default class Form0 extends Component {
             }
         });
         if (isValidFields) {
+            console.log(values);
             return values;
         } else {
             return null;
@@ -279,6 +281,15 @@ export default class Form0 extends Component {
                             <LocationField
                                 ref={(c) => { this[field.name] = c; }}
                                 {...commonProps} />
+                        );
+
+                    case "group":
+                        return (
+                            <FormField
+                                ref={(c) => { this[field.name] = c; }}
+                                {...commonProps}
+                                {...this.props}
+                            />
                         );
                 }
 
