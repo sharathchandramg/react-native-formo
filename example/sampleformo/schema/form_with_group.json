@@ -1,0 +1,28 @@
+[
+    {
+        "type": "text",
+        "name": "prospect_name",
+        "label": "Prospect Name",
+        "required": true,
+        "editable": true,
+        "hidden": false
+    },
+    {
+        "type": "group",
+        "name": "work_address",
+        "label": "Address",
+        "fields": [
+            {
+                "type": "text",
+                "name": "city",
+                "label": "City",
+                "required": true
+            },
+            {
+                "type": "text",
+                "name": "ccountry",
+                "label": "Country"
+            }
+        ]
+    }
+]

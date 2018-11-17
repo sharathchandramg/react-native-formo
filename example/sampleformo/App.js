@@ -7,7 +7,7 @@ import { Button } from 'native-base';
 export default class App extends Component {
 
   render() {
-    const fields = require("./schema/form0.json");
+    const fields = require("./schema/form_with_group.json");
     const formData = {
       // "user_name" : "Sharath",
       // "phone_number" : "9845722000"
