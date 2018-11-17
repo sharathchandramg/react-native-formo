@@ -74,12 +74,12 @@ export default class Form0 extends Component {
         this.setValues(formData);
     }
 
-    onValidateFields(){
+    onValidateFields() {
         const newFields = {};
         Object.keys(this.state).forEach((fieldName) => {
             const field = this.state[fieldName];
             if (field) {
-                if(field.required !== undefined && field.required){
+                if (field.required !== undefined && field.required) {
                     let validate = autoValidate(field);
                     field.error = validate.error;
                     field.errorMsg = validate.errorMsg;
@@ -133,15 +133,15 @@ export default class Form0 extends Component {
         Object.keys(this.state).forEach((fieldName) => {
             const field = this.state[fieldName];
             if (field) {
-                if(field.error !== undefined && field.error){
+                if (field.error !== undefined && field.error) {
                     isValidFields = false;
                 }
                 values[field.name] = field.value;
             }
         });
-        if(isValidFields){
+        if (isValidFields) {
             return values;
-        }else{
+        } else {
             return null;
         }
     }
@@ -270,16 +270,16 @@ export default class Form0 extends Component {
 
                     case "image":
                         return (
-                                <ImageField
-                                    ref={(c) => { this[field.name] = c; }}
-                                    {...commonProps} />
-                            );
+                            <ImageField
+                                ref={(c) => { this[field.name] = c; }}
+                                {...commonProps} />
+                        );
                     case "location":
-                    return (
-                        <LocationField
-                            ref={(c) => { this[field.name] = c; }}
-                            {...commonProps} />
-                    );
+                        return (
+                            <LocationField
+                                ref={(c) => { this[field.name] = c; }}
+                                {...commonProps} />
+                        );
                 }
 
             }

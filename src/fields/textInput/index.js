@@ -45,7 +45,7 @@ export default class TextInputField extends Component {
                                 ref={(c) => { this.textInput = c; }}
                                 keyboardType={keyboardType}
                                 underlineColorAndroid="transparent"
-                                numberOfLines={3}
+                                numberOfLines={2}
                                 secureTextEntry={attributes.secureTextEntry || attributes.type === "password"}
                                 placeholder={attributes.label}
                                 blurOnSubmit={false}
