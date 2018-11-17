@@ -64,12 +64,30 @@ export default class Form0 extends Component {
         // Invoked every time whenever any fields's value changes
         this.onValueChange = this.onValueChange.bind(this);
 
+        this.onValidateFields = this.onValidateFields.bind(this)
+
     }
 
     componentDidMount() {
 
         const { formData } = this.props;
         this.setValues(formData);
+    }
+
+    onValidateFields(){
+        const newFields = {};
+        Object.keys(this.state).forEach((fieldName) => {
+            const field = this.state[fieldName];
+            if (field) {
+                if(field.required !== undefined && field.required){
+                    let validate = autoValidate(field);
+                    field.error = validate.error;
+                    field.errorMsg = validate.errorMsg;
+                }
+                newFields[field.name] = field;
+            }
+        });
+        this.setState({ ...newFields });
     }
 
     onValueChange(name, value) {
@@ -109,15 +127,23 @@ export default class Form0 extends Component {
     }
 
     getValues() {
+        this.onValidateFields();
         const values = {};
+        let isValidFields = true;
         Object.keys(this.state).forEach((fieldName) => {
             const field = this.state[fieldName];
             if (field) {
+                if(field.error !== undefined && field.error){
+                    isValidFields = false;
+                }
                 values[field.name] = field.value;
             }
         });
-        console.log(values);
-        return values;
+        if(isValidFields){
+            return values;
+        }else{
+            return null;
+        }
     }
 
     resetForm() {
@@ -177,6 +203,8 @@ export default class Form0 extends Component {
             this.setState({ ...newFields });
         }
     }
+
+
 
     generateFields() {
 

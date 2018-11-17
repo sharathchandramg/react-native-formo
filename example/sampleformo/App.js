@@ -24,6 +24,7 @@ export default class App extends Component {
         <View>
           <Button full info onPress={() => console.log(this.formGenerator.getValues())}><Text>Submit</Text></Button>
           <Button full warning onPress={() => this.formGenerator.resetForm()}><Text>Clear Form</Text></Button>
+          <Button full info onPress={() => console.log(this.formGenerator.onValidateFields())}><Text>Validate Form</Text></Button>
         </View>
       </ScrollView>
     );

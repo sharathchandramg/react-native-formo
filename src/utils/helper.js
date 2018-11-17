@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { isEmail, isEmpty } from './validators';
+import { isEmail, isEmpty,validateMobileNumber} from './validators';
 import { PermissionsAndroid } from 'react-native';
 const moment = require("moment");
 
@@ -152,6 +152,8 @@ export function autoValidate(field) {
                 break;
             case "text":
             case "url":
+            case "location":
+            case "image":
             case "password":
                 if (isEmpty(field.value)) {
                     error = true;
@@ -164,7 +166,19 @@ export function autoValidate(field) {
                         error = true;
                         errorMsg = `${field.label} is required`;
                     } else if (isNaN(field.value)) {
+                        error = true;
                         errorMsg = `${field.label} should be a number`;
+                    }
+                }
+                break;
+            case "phone":
+                if (field.type === "phone") {
+                    if (isEmpty(field.value)) {
+                        error = true;
+                        errorMsg = `${field.label} is required`;
+                    } else if (!validateMobileNumber(field.value)) {
+                        error = true;
+                        errorMsg = `${field.label} should be valid mobile number`;
                     }
                 }
                 break;
