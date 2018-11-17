@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Platform, DatePickerIOS, DatePickerAndroid, TouchableOpacity, TimePickerAndroid } from "react-native";
 
-import { View, Text } from "native-base";
+import { View, Text, Item } from "native-base";
 
 const moment = require("moment");
 
@@ -79,7 +79,7 @@ export default class DateField extends Component {
 
     showAndroidDateOnlyPicker = () => {
 
-        const { attributes } = this.props;
+        const { theme, attributes } = this.props;
         const value = (attributes.value && new Date(attributes.value)) || null;
 
         return (
@@ -90,7 +90,7 @@ export default class DateField extends Component {
                 }}>
                 <Text onPress={this.showDatePicker}>
                     {(value && moment(value, "Do MMM YYYY").format("Do MMM YYYY")) || "None"}
-                </Text>
+                </Text>                
             </TouchableOpacity>
         )
     }
@@ -202,10 +202,10 @@ export default class DateField extends Component {
                     backgroundColor: theme.pickerBgColor,
                     borderBottomColor: theme.inputBorderColor,
                     borderBottomWidth: theme.borderWidth,
-                    marginHorizontal: 10,
+                    marginHorizontal: 15,
                     marginVertical: 0,
-                    paddingVertical: 10,
-                    marginLeft: 15,
+                    paddingVertical: 15,
+                    marginLeft: 23,                    
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'space-between',
@@ -219,8 +219,9 @@ export default class DateField extends Component {
 
                     {(attributes.mode === "date") ? this.showAndroidDateOnlyPicker() : this.showAndroidTimeOnlyPicker()}
                 </View>
-
+                
             </TouchableOpacity>
+            
         );
     }
 

@@ -1,5 +1,5 @@
 import _ from "lodash";
-import { isEmail, isEmpty,validateMobileNumber} from './validators';
+import { isEmail, isEmpty, validateMobileNumber, isNull } from './validators';
 import { PermissionsAndroid } from 'react-native';
 const moment = require("moment");
 
@@ -116,7 +116,7 @@ export function getResetValue(field) {
 
         case "date":
             return null;
-            
+
         default:
             return null;
     }
@@ -139,6 +139,7 @@ export function getInitialState(fields) {
 export function autoValidate(field) {
     let error = false;
     let errorMsg = '';
+
     if (field.required) {
         switch (field.type) {
             case "email":
@@ -160,28 +161,34 @@ export function autoValidate(field) {
                     errorMsg = `${field.label} is required`;
                 }
                 break;
+
             case "number":
-                if (field.type === "number") {
-                    if (isEmpty(field.value)) {
-                        error = true;
-                        errorMsg = `${field.label} is required`;
-                    } else if (isNaN(field.value)) {
-                        error = true;
-                        errorMsg = `${field.label} should be a number`;
-                    }
+                if (isEmpty(field.value)) {
+                    error = true;
+                    errorMsg = `${field.label} is required`;
+                } else if (isNaN(field.value)) {
+                    error = true;
+                    errorMsg = `${field.label} should be a number`;
                 }
+
                 break;
+
             case "phone":
-                if (field.type === "phone") {
-                    if (isEmpty(field.value)) {
-                        error = true;
-                        errorMsg = `${field.label} is required`;
-                    } else if (!validateMobileNumber(field.value)) {
-                        error = true;
-                        errorMsg = `${field.label} should be valid mobile number`;
-                    }
+                if (isEmpty(field.value)) {
+                    error = true;
+                    errorMsg = `${field.label} is required`;
+                } else if (!validateMobileNumber(field.value)) {
+                    error = true;
+                    errorMsg = `${field.label} should be valid mobile number`;
                 }
                 break;
+
+            case "date":
+                if (isNull(field.value)) {
+                    error = true;
+                    errorMsg = `${field.label} is required`;
+                }
+
             default:
         }
     }
@@ -246,30 +253,28 @@ export const getGeoLocation = (options, cb) => {
     }
 }
 
-
-
 export async function requestLocationPermission() {
-    let response ={ permission:false,err:null}
+    let response = { permission: false, err: null }
     try {
         const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
             {
                 'title': 'Location Permission',
-                'message':'This form required location'
+                'message': 'This form required location'
             }
         )
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            response.permission= true;
+            response.permission = true;
             response.err = null;
             return response;
         } else {
             response.err = 'Location permission denied';
-            response.permission= false;
+            response.permission = false;
             return response;
         }
     } catch (err) {
         response.err = err;
-        response.permission= false;
+        response.permission = false;
         return response;
     }
 }
