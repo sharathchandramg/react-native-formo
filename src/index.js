@@ -14,6 +14,7 @@ import SelectField from "./fields/select";
 import ImageField from "./fields/image";
 import LocationField from "./fields/location";
 import FormField from "./fields/form";
+import SubForm from "./fields/subForm"
 
 import { autoValidate, getInitialState, getDefaultValue, getResetValue } from "./utils/helper";
 
@@ -65,7 +66,7 @@ export default class Form0 extends Component {
         // Invoked every time whenever any fields's value changes
         this.onValueChange = this.onValueChange.bind(this);
 
-        this.onValidateFields = this.onValidateFields.bind(this)
+        this.onAddNewFields = this.onAddNewFields.bind(this);
 
     }
 
@@ -75,27 +76,30 @@ export default class Form0 extends Component {
         this.setValues(formData);
     }
 
-    onValidateFields() {
-        const newFields = {};
-        Object.keys(this.state).forEach((fieldName) => {
-            const field = this.state[fieldName];
-            if (field) {
-                if (field.required !== undefined && field.required) {
-                    let validate = autoValidate(field);
-                    field.error = validate.error;
-                    field.errorMsg = validate.errorMsg;
+    onAddNewFields(fieldObj,value){
+        if(fieldObj){
+            if (fieldObj.type ==='group') {
+                if(typeof fieldObj.value ==='undefined' || fieldObj.value === null || fieldObj.value.length ===0 ){
+                    fieldObj.value = value;
+                }else{
+                    const index = Object.keys(this.state).indexOf(fieldObj.name);
+                    if(index !== -1){
+                        let preValue = Object.values(this.state)[index].value;
+                        value = value.concat(preValue);
+                    }
+                    fieldObj.value = value
                 }
-                newFields[field.name] = field;
+                const newField = {};
+                newField[fieldObj.name] = fieldObj;
+                this.setState({ ...newField });   
             }
-        });
-        this.setState({ ...newFields });
+        }
     }
 
     onValueChange(name, value) {
         const valueObj = this.state[name];
         if (valueObj) {
             valueObj.value = value;
-
             //autovalidate the fields
             if (this.props.autoValidation === undefined || this.props.autoValidation) {
                 Object.assign(valueObj, autoValidate(valueObj));
@@ -114,6 +118,7 @@ export default class Form0 extends Component {
             } else {
                 this.setState({ ...newField });
             }
+            
         }
     }
 
@@ -128,24 +133,15 @@ export default class Form0 extends Component {
     }
 
     getValues() {
-        this.onValidateFields();
         const values = {};
-        let isValidFields = true;
         Object.keys(this.state).forEach((fieldName) => {
             const field = this.state[fieldName];
             if (field) {
-                if (field.error !== undefined && field.error) {
-                    isValidFields = false;
-                }
                 values[field.name] = field.value;
             }
         });
-        if (isValidFields) {
-            console.log(values);
-            return values;
-        } else {
-            return null;
-        }
+        console.log(values);
+        return values;
     }
 
     resetForm() {
@@ -205,8 +201,6 @@ export default class Form0 extends Component {
             this.setState({ ...newFields });
         }
     }
-
-
 
     generateFields() {
 
@@ -272,20 +266,19 @@ export default class Form0 extends Component {
 
                     case "image":
                         return (
-                            <ImageField
-                                ref={(c) => { this[field.name] = c; }}
-                                {...commonProps} />
-                        );
+                                <ImageField
+                                    ref={(c) => { this[field.name] = c; }}
+                                    {...commonProps} />
+                            );
                     case "location":
                         return (
                             <LocationField
                                 ref={(c) => { this[field.name] = c; }}
                                 {...commonProps} />
                         );
-
                     case "group":
                         return (
-                            <FormField
+                            <SubForm 
                                 ref={(c) => { this[field.name] = c; }}
                                 {...commonProps}
                                 {...this.props}

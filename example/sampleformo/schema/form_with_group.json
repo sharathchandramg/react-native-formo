@@ -11,17 +11,76 @@
         "type": "group",
         "name": "work_address",
         "label": "Address",
+        "required": true,
+        "editable": true,
+        "hidden": false,
+
         "fields": [
             {
                 "type": "text",
                 "name": "city",
                 "label": "City",
-                "required": true
+                "required": true,
+                "editable": true,
+                "hidden": false
             },
             {
                 "type": "text",
-                "name": "ccountry",
-                "label": "Country"
+                "name": "country",
+                "label": "Country",
+                "required": true,
+                "editable": true,
+                "hidden": false
+            }
+        ]
+    },
+    {
+        "type": "group",
+        "name": "order_details",
+        "label": "Order details",
+        "required": true,
+        "editable": true,
+        "hidden": false,
+        "fields": [
+            {
+                "type": "text",
+                "name": "sku",
+                "label": "SKU",
+                "required": true,
+                "editable": true,
+                "hidden": false
+            },
+            {
+                "type": "number",
+                "name": "price",
+                "label": "Price",
+                "required": true,
+                "editable": true,
+                "hidden": false
+            },
+            {
+                "type": "number",
+                "name": "quantity",
+                "label": "Quantity",
+                "required": true,
+                "editable": true,
+                "hidden": false
+            },
+            {
+                "type": "number",
+                "name": "discount",
+                "label":"Discount",
+                "required": true,
+                "editable": true,
+                "hidden": false
+            },
+            {
+                "type": "number",
+                "name": "total",
+                "label":"Total",
+                "required": true,
+                "editable": true,
+                "hidden": false
             }
         ]
     }
