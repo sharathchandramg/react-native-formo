@@ -77,13 +77,13 @@ export default class Form0 extends Component {
     }
 
     onAddNewFields(name,value){
-        const fieldObj = this.state[name];
+        let fieldObj = this.state[name];
         if(fieldObj){
             if (fieldObj.type ==='group') {
                 if(typeof fieldObj.value ==='undefined' || fieldObj.value === null || fieldObj.value.length ===0 ){
                     fieldObj.value = value;
                 }else{
-                    const index = Object.keys(this.state).indexOf(fieldObj.name);
+                    let index = Object.keys(this.state).indexOf(fieldObj.name);
                     if(index !== -1){
                         let preValue = Object.values(this.state)[index].value;
                         value = value.concat(preValue);
@@ -100,27 +100,27 @@ export default class Form0 extends Component {
     onValueChange(name, value) {
         const valueObj = this.state[name];
         if (valueObj) {
-            valueObj.value = value;
-            //autovalidate the fields
-            if (this.props.autoValidation === undefined || this.props.autoValidation) {
-                Object.assign(valueObj, autoValidate(valueObj));
+            if(valueObj.type !=='group'){
+                valueObj.value = value;
+                //autovalidate the fields
+                if (this.props.autoValidation === undefined || this.props.autoValidation) {
+                    Object.assign(valueObj, autoValidate(valueObj));
+                }
+                // apply some custom logic for validation
+                if (this.props.customValidation
+                    && typeof this.props.customValidation === 'function') {
+                    Object.assign(valueObj, this.props.customValidation(valueObj));
+                }
+                const newField = {};
+                newField[valueObj.name] = valueObj;
+                if (this.props.onValueChange &&
+                    typeof this.props.onValueChange === 'function') {
+                    this.setState({ ...newField }, () => this.props.onValueChange());
+                } else {
+                    this.setState({ ...newField });
+                }
             }
-
-            // apply some custom logic for validation
-            if (this.props.customValidation
-                && typeof this.props.customValidation === 'function') {
-                Object.assign(valueObj, this.props.customValidation(valueObj));
-            }
-            const newField = {};
-            newField[valueObj.name] = valueObj;
-            if (this.props.onValueChange &&
-                typeof this.props.onValueChange === 'function') {
-                this.setState({ ...newField }, () => this.props.onValueChange());
-            } else {
-                this.setState({ ...newField });
-            }
-            
-        }
+        }  
     }
 
     onSummitTextInput(name) {

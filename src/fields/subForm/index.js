@@ -53,31 +53,14 @@ export default class SubForm extends Component {
     toggleModalVisible =()=> {
         this.setState({
             modalVisible: !this.state.modalVisible,
+            
         });
-    }
-
-    toggleSelect(value) {
-        const attributes = this.props.attributes;
-        const newSelected = attributes.multiple ? attributes.value : value;
-        if (attributes.multiple) {
-            const index = attributes.objectType ? newSelected.findIndex(option =>
-                option[attributes.primaryKey] === value[attributes.primaryKey]
-            ) : newSelected.indexOf(value);
-            if (index === -1) {
-                newSelected.push(value);
-            } else {
-                newSelected.splice(index, 1);
-            }
-        }
-        this.setState({
-            modalVisible: attributes.multiple ? this.state.modalVisible : false,
-        }, () => this.props.updateValue(this.props.attributes.name, newSelected));
     }
 
     renderlookupIcon = ()=>{
         return (
             <TouchableOpacity style={styles.valueContainer}
-                onPress={()=>this.toggleModalVisible()}>
+                onPress={()=>this.setState({subFormData:{}},()=>this.toggleModalVisible())}>
                 <Icon name="plus-circle" size={18} type={'regular'} color ={'#828282'} style={styles.iconStyle}/>
             </TouchableOpacity>
         );
