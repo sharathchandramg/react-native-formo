@@ -24,11 +24,11 @@ export default class FormField extends Component {
     }
 
     componentDidMount() {
-        this.props.updateValue(this.props.attributes.name, this.group.getValues());
+        this.props.updateValue(this.props.attributes.name, this.formGenerator.getValues());
     }
 
     onValueChange() {
-        this.props.updateValue(this.props.attributes.name, this.group.getValues());
+        this.props.updateValue(this.props.attributes.name, this.formGenerator.getValues());
     }
 
     handleChange(text) {
@@ -38,7 +38,8 @@ export default class FormField extends Component {
     }
 
     addNewFields(){
-        this.group.onAddNewFields(this.props.attributes,[this.group.getValues()])
+        let  value = this.formGenerator.getValues();
+        this.props.handleChange(this.props.attributes.name,[value])
         this.props.toggleModalVisible();
     
     }
@@ -56,7 +57,7 @@ export default class FormField extends Component {
             <View style={styles.mainContainer}>
                 <ScrollView style={[styles.mainContainer, { paddingEnd:5, paddingStart:5 }]}>
                     <Form0
-                        ref={(c) => { this.group = c; }}
+                        ref={(c) => {this.formGenerator = c;}}
                         onValueChange={this.onValueChange}
                         autoValidation={autoValidation}
                         customValidation={customValidation}

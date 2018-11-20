@@ -31,6 +31,7 @@ export default class SubForm extends Component {
         updateValue: PropTypes.func,
         theme: PropTypes.object,
         ErrorComponent: PropTypes.func,
+        onAddNewFields: PropTypes.func
     }
 
     constructor(props) {
@@ -39,6 +40,14 @@ export default class SubForm extends Component {
             modalVisible: false,
             subFormData:{},
         };
+
+        this.onAddNewFields ;
+        
+    }
+
+
+    handleChange =(name,value)=>{
+        this.props.onAddNewFields(name,value)
     }
 
     toggleModalVisible =()=> {
@@ -95,7 +104,7 @@ export default class SubForm extends Component {
     render() {
 
         const { theme, attributes, ErrorComponent } = this.props;
-        
+    
         return (
             <View style ={styles.container}>
                 <View style={[styles.inputField]}  error={theme.changeTextInputColorOnError ? attributes.error : null}>
@@ -130,6 +139,7 @@ export default class SubForm extends Component {
                                 {...this.props}
                                 formData={this.state.subFormData}
                                 toggleModalVisible={this.toggleModalVisible}
+                                handleChange={this.handleChange}
                             />
                         </Content>
                     </Container>

@@ -76,7 +76,8 @@ export default class Form0 extends Component {
         this.setValues(formData);
     }
 
-    onAddNewFields(fieldObj,value){
+    onAddNewFields(name,value){
+        const fieldObj = this.state[name];
         if(fieldObj){
             if (fieldObj.type ==='group') {
                 if(typeof fieldObj.value ==='undefined' || fieldObj.value === null || fieldObj.value.length ===0 ){
@@ -217,6 +218,7 @@ export default class Form0 extends Component {
                     theme,
                     attributes: this.state[field.name],
                     updateValue: this.onValueChange,
+                    onAddNewFields: this.onAddNewFields,
                     ErrorComponent: errorComponent || DefaultErrorComponent,
                 };
 
