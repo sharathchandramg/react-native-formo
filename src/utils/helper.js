@@ -188,6 +188,14 @@ export function autoValidate(field) {
                     error = true;
                     errorMsg = `${field.label} is required`;
                 }
+                break;
+            case "group":
+                let value = field.value?field.value[0]:'';
+                if(typeof value === "undefined" || !value || value === ''){
+                    error = true;
+                    errorMsg = `${field.label} is required`;
+                }
+                break;
 
             default:
         }
