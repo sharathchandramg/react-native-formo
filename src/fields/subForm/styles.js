@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
         alignItems:'flex-start',
         justifyContent:'center',
         marginBottom:10,
-        marginHorizontal:10,
+        marginHorizontal:15,
     },
     
     inputField:{
@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
         justifyContent:'flex-start',
         borderBottomColor: '#D9D5DC',
         borderBottomWidth:1,
+        marginHorizontal:5,
     },
 
     errorField:{
@@ -26,6 +27,7 @@ const styles = StyleSheet.create({
         width:'100%',
         alignItems:'flex-start',
         justifyContent:'flex-start',
+        
     },
 
     inputLabel:{
@@ -53,6 +55,7 @@ const styles = StyleSheet.create({
         fontFamily:'roboto',
         alignSelf: 'flex-start',
         fontWeight:'300',
+        marginHorizontal:5,
     },
 
     inputText:{
@@ -64,6 +67,7 @@ const styles = StyleSheet.create({
         fontFamily:'roboto',
         alignSelf: 'flex-start',
         fontWeight:'100',
+        marginHorizontal:5,
     },
 
     image: {
@@ -87,7 +91,8 @@ const styles = StyleSheet.create({
     iconStyle:{
         fontFamily:'roboto',
         alignSelf:'flex-end',
-        color:'#41E1FD'
+        color:'#41E1FD',
+        marginEnd:15,
     },
     topContainer: {
         overflow: 'hidden',

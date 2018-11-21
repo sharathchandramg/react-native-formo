@@ -63,6 +63,8 @@ export default class Form0 extends Component {
 
         this.onSummitTextInput = this.onSummitTextInput.bind(this);
 
+        this.onValidateFields = this.onValidateFields.bind(this)
+
         // Invoked every time whenever any fields's value changes
         this.onValueChange = this.onValueChange.bind(this);
 
@@ -75,6 +77,23 @@ export default class Form0 extends Component {
         const { formData } = this.props;
         this.setValues(formData);
     }
+
+    onValidateFields() {
+        const newFields = {};
+        Object.keys(this.state).forEach((fieldName) => {
+            const field = this.state[fieldName];
+            if (field) {
+                if (field.required !== undefined && field.required) {
+                    let validate = autoValidate(field);
+                    field.error = validate.error;
+                    field.errorMsg = validate.errorMsg;
+                }
+                newFields[field.name] = field;
+            }
+        });
+        this.setState({ ...newFields });
+    }
+
 
     onAddNewFields(name,value){
         let fieldObj = this.state[name];
@@ -134,13 +153,24 @@ export default class Form0 extends Component {
     }
 
     getValues() {
+        this.onValidateFields();
         const values = {};
+        let isValidFields = true;
         Object.keys(this.state).forEach((fieldName) => {
             const field = this.state[fieldName];
             if (field) {
+                if (field.error !== undefined && field.error) {
+                    isValidFields = false;
+                }
                 values[field.name] = field.value;
             }
         });
+        if (isValidFields) {
+            console.log(values);
+            return values;
+        } else {
+            return null;
+        }
         console.log(values);
         return values;
     }

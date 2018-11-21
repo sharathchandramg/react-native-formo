@@ -127,6 +127,10 @@ export default class SubForm extends Component {
                         </Content>
                     </Container>
                 </Modal>
+                
+                <View style={{ paddingHorizontal:5 }}>
+                    <ErrorComponent {...{ attributes, theme }} />
+                </View>
             </View>
         );
     }
