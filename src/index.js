@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+const _ = require("lodash");
 
 import { View, Keyboard, Text } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -15,6 +16,7 @@ import ImageField from "./fields/image";
 import LocationField from "./fields/location";
 import FormField from "./fields/form";
 import SubForm from "./fields/subForm"
+
 
 import { autoValidate, getInitialState, getDefaultValue, getResetValue } from "./utils/helper";
 
@@ -95,19 +97,28 @@ export default class Form0 extends Component {
     }
 
 
-    onAddNewFields(name,value){
+    onAddNewFields(name,newObj){
         let fieldObj = this.state[name];
         if(fieldObj){
             if (fieldObj.type ==='group') {
                 if(typeof fieldObj.value ==='undefined' || fieldObj.value === null || fieldObj.value.length ===0 ){
-                    fieldObj.value = value;
+                    fieldObj.value = [newObj];
                 }else{
-                    let index = Object.keys(this.state).indexOf(fieldObj.name);
-                    if(index !== -1){
-                        let preValue = Object.values(this.state)[index].value;
-                        value = value.concat(preValue);
+                    let gIndex = _.indexOf(Object.keys(this.state),fieldObj.name);
+                    let newValue ;
+                    if(gIndex !== -1){
+                        let preValue = Object.values(this.state)[gIndex].value;
+                        let oIndex = _.findIndex(preValue,item => item._id === newObj._id);
+                        if(oIndex !== -1){
+                            preValue[oIndex] = newObj;
+                            newValue = preValue;
+                        }else{
+                            newValue = _.concat(newObj,preValue);
+                        }
+                    }else{
+                        newValue = [newObj];
                     }
-                    fieldObj.value = value
+                    fieldObj.value = newValue;
                 }
                 const newField = {};
                 newField[fieldObj.name] = fieldObj;

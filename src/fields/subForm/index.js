@@ -19,6 +19,8 @@ import {
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 const deviceWidth = Dimensions.get('window').width;
+import shortid from 'shortid';
+
 import styles from "./styles";
 import Form0 from "./../../index";
 import FormField from "../form";
@@ -38,6 +40,7 @@ export default class SubForm extends Component {
         super(props);
         this.state = {
             modalVisible: false,
+            mode: 'create',
             subFormData:{},
         };
 
@@ -47,7 +50,12 @@ export default class SubForm extends Component {
 
 
     handleChange =(name,value)=>{
-        this.props.onAddNewFields(name,value)
+        if(value && typeof value._id !=='undefined' && value._id !== null){
+            this.props.onAddNewFields(name,value)
+        }else{
+            value["_id"] = shortid.generate();
+            this.props.onAddNewFields(name,value)
+        }
     }
 
     toggleModalVisible =()=> {
@@ -60,7 +68,7 @@ export default class SubForm extends Component {
     renderlookupIcon = ()=>{
         return (
             <TouchableOpacity style={styles.valueContainer}
-                onPress={()=>this.setState({subFormData:{}},()=>this.toggleModalVisible())}>
+                onPress={()=>this.setState({subFormData:{},mode:'create'},()=>this.toggleModalVisible())}>
                 <Icon name="plus-circle" size={18} type={'regular'} color ={'#828282'} style={styles.iconStyle}/>
             </TouchableOpacity>
         );
@@ -74,7 +82,7 @@ export default class SubForm extends Component {
                 <TouchableOpacity
                     key={index}
                     style={styles.inputValue}
-                    onPress={() => this.setState({subFormData:item},()=>this.toggleModalVisible())}>
+                    onPress={() => this.setState({subFormData:item,mode:'update'},()=>this.toggleModalVisible())}>
                         <Text style={styles.labelText}>{label}</Text>
                 </TouchableOpacity>
             );
@@ -95,7 +103,7 @@ export default class SubForm extends Component {
                         <Text style={[styles.labelText]}>{attributes.label}</Text>
                         {this.renderlookupIcon()}
                     </View>
-                    {typeof attributes.value !== "undefined" && attributes.value.length> 0?
+                    {typeof attributes.value !== "undefined" && attributes.value !== null && attributes.value.length> 0?
                         this.renderAddedSubForm(attributes.value,attributes.name)
                         :null
                     }
@@ -123,6 +131,7 @@ export default class SubForm extends Component {
                                 formData={this.state.subFormData}
                                 toggleModalVisible={this.toggleModalVisible}
                                 handleChange={this.handleChange}
+                                mode ={this.state.mode}
                             />
                         </Content>
                     </Container>

@@ -38,8 +38,9 @@ export default class FormField extends Component {
     }
 
     addNewFields(){
-        let  value = this.formGenerator.getValues();
-        this.props.handleChange(this.props.attributes.name,[value])
+        let  fValue = this.formGenerator.getValues();
+        let uValue = this.props.mode ==='update'? {...fValue,"_id":this.props.formData._id}:fValue;
+        this.props.handleChange(this.props.attributes.name,uValue)
         this.props.toggleModalVisible();
     
     }
@@ -69,7 +70,7 @@ export default class FormField extends Component {
                     />
                 </ScrollView>
                 <TouchableOpacity style={styles.button} onPress={() => this.addNewFields()}>
-                    <Text style={styles.buttonText}> Add </Text>
+                    <Text style={styles.buttonText}>{this.props.mode ==='create'? 'Add':'Update'} </Text>
                 </TouchableOpacity>
             </View>
             
