@@ -196,7 +196,7 @@ export default class Form0 extends Component {
                     getResetValue(field);
                 field.error = false;
                 field.errorMsg = '';
-                if (field.type === 'group') {
+                if (field.type === 'sub-form') {
                     this[field.name].group.resetForm();
                 }
                 newFields[field.name] = field;
@@ -208,7 +208,7 @@ export default class Form0 extends Component {
     // Helper function for setValues
     getFieldValue(fieldObj, value) {
         const field = fieldObj;
-        if (field.type === 'group') {
+        if (field.type === 'sub-form') {
             const subFields = {};
             Object.keys(value).forEach((fieldName) => {
                 subFields[fieldName] = value[fieldName];
