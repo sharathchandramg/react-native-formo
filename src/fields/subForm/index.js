@@ -18,12 +18,9 @@ import {
 } from "native-base";
 
 import Icon from 'react-native-vector-icons/FontAwesome';
-const deviceWidth = Dimensions.get('window').width;
 import shortid from 'shortid';
-
 import styles from "./styles";
-import Form0 from "./../../index";
-import FormField from "../form";
+import ChildField from "../childForm";
 
 
 export default class SubForm extends Component {
@@ -125,7 +122,7 @@ export default class SubForm extends Component {
                             <Right />
                         </Header>
                         <Content>
-                            <FormField
+                            <ChildField
                                 ref={(c) => { this.group = c; }}
                                 {...this.props}
                                 formData={this.state.subFormData}

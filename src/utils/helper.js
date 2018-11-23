@@ -189,7 +189,7 @@ export function autoValidate(field) {
                     errorMsg = `${field.label} is required`;
                 }
                 break;
-            case "group":
+            case "sub-form":
                 let value = field.value?field.value[0]:'';
                 if(typeof value === "undefined" || !value || value === ''){
                     error = true;

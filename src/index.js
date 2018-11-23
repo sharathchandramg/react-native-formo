@@ -100,7 +100,7 @@ export default class Form0 extends Component {
     onAddNewFields(name,newObj){
         let fieldObj = this.state[name];
         if(fieldObj){
-            if (fieldObj.type ==='group') {
+            if (fieldObj.type ==='sub-form') {
                 if(typeof fieldObj.value ==='undefined' || fieldObj.value === null || fieldObj.value.length ===0 ){
                     fieldObj.value = [newObj];
                 }else{
@@ -130,7 +130,7 @@ export default class Form0 extends Component {
     onValueChange(name, value) {
         const valueObj = this.state[name];
         if (valueObj) {
-            if(valueObj.type !=='group'){
+            if(valueObj.type !=='sub-form'){
                 valueObj.value = value;
                 //autovalidate the fields
                 if (this.props.autoValidation === undefined || this.props.autoValidation) {
@@ -196,7 +196,7 @@ export default class Form0 extends Component {
                     getResetValue(field);
                 field.error = false;
                 field.errorMsg = '';
-                if (field.type === 'sub-form') {
+                if (field.type === 'group') {
                     this[field.name].group.resetForm();
                 }
                 newFields[field.name] = field;
@@ -208,7 +208,7 @@ export default class Form0 extends Component {
     // Helper function for setValues
     getFieldValue(fieldObj, value) {
         const field = fieldObj;
-        if (field.type === 'sub-form') {
+        if (field.type === 'group') {
             const subFields = {};
             Object.keys(value).forEach((fieldName) => {
                 subFields[fieldName] = value[fieldName];
@@ -313,13 +313,24 @@ export default class Form0 extends Component {
                                     ref={(c) => { this[field.name] = c; }}
                                     {...commonProps} />
                             );
+
                     case "location":
                         return (
                             <LocationField
                                 ref={(c) => { this[field.name] = c; }}
                                 {...commonProps} />
                         );
+
                     case "group":
+                        return (
+                            <FormField
+                                ref={(c) => { this[field.name] = c; }}
+                                {...commonProps}
+                                {...this.props}
+                            />
+                        );
+
+                    case "sub-form":
                         return (
                             <SubForm 
                                 ref={(c) => { this[field.name] = c; }}
