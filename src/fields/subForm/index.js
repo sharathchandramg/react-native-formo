@@ -74,13 +74,13 @@ export default class SubForm extends Component {
     renderAddedSubForm =(data,name)=>{
         let subForms = <View></View>;
         subForms = data.map((item, index) => {
-            let label = `${name}${index}`;
+            let label = `${name} ${index}`;
             return (
                 <TouchableOpacity
                     key={index}
                     style={styles.inputValue}
                     onPress={() => this.setState({subFormData:item,mode:'update'},()=>this.toggleModalVisible())}>
-                        <Text style={styles.labelText}>{label}</Text>
+                        <Text style={styles.labelText} numberOfLines={1}>{label}</Text>
                 </TouchableOpacity>
             );
         })
