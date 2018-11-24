@@ -24,7 +24,8 @@
   "dependencies": {
     "lodash": "^4.17.11",
     "moment": "^2.22.2",
-    "prop-types": "^15.6.2"
+    "prop-types": "^15.6.2",
+    "shortid": "^2.2.14"
   },
   "peerDependencies": {
     "react-native": ">=0.55.0",

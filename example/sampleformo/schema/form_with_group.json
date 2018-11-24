@@ -8,13 +8,12 @@
         "hidden": false
     },
     {
-        "type": "group",
+        "type": "sub-form",
         "name": "work_address",
         "label": "Address",
         "required": true,
         "editable": true,
         "hidden": false,
-
         "fields": [
             {
                 "type": "text",
@@ -35,24 +34,36 @@
         ]
     },
     {
-        "type": "group",
-        "name": "order_details",
+        "type": "sub-form",
+        "name": "product",
         "label": "Order details",
         "required": true,
         "editable": true,
         "hidden": false,
         "fields": [
             {
-                "type": "text",
+                "type": "select",
                 "name": "sku",
                 "label": "SKU",
                 "required": true,
                 "editable": true,
-                "hidden": false
+                "hidden": false,
+                "multiple": false,
+                "labelKey": "product_name",
+                "primaryKey": "product_id",
+                "objectType": true,
+                "options":[{
+                    "product_name":"MM 1",
+                    "product_id":"MM 1"
+                },
+                {
+                    "product_name":"MM 2",
+                    "product_id":"MM 2"
+                }]
             },
             {
                 "type": "number",
-                "name": "price",
+                "name": "sku_unit_price",
                 "label": "Price",
                 "required": true,
                 "editable": true,
@@ -60,7 +71,7 @@
             },
             {
                 "type": "number",
-                "name": "quantity",
+                "name": "sku_quantity",
                 "label": "Quantity",
                 "required": true,
                 "editable": true,
@@ -68,20 +79,13 @@
             },
             {
                 "type": "number",
-                "name": "discount",
+                "name": "sku_discount",
                 "label":"Discount",
                 "required": true,
                 "editable": true,
                 "hidden": false
-            },
-            {
-                "type": "number",
-                "name": "total",
-                "label":"Total",
-                "required": true,
-                "editable": true,
-                "hidden": false
             }
+            
         ]
     }
 ]

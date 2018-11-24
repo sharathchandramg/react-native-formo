@@ -18,10 +18,9 @@ import {
 } from "native-base";
 
 import Icon from 'react-native-vector-icons/FontAwesome';
-const deviceWidth = Dimensions.get('window').width;
+import shortid from 'shortid';
 import styles from "./styles";
-import Form0 from "./../../index";
-import FormField from "../form";
+import ChildField from "../childForm";
 
 
 export default class SubForm extends Component {
@@ -38,6 +37,7 @@ export default class SubForm extends Component {
         super(props);
         this.state = {
             modalVisible: false,
+            mode: 'create',
             subFormData:{},
         };
 
@@ -47,7 +47,12 @@ export default class SubForm extends Component {
 
 
     handleChange =(name,value)=>{
-        this.props.onAddNewFields(name,value)
+        if(value && typeof value._id !=='undefined' && value._id !== null){
+            this.props.onAddNewFields(name,value)
+        }else{
+            value["_id"] = shortid.generate();
+            this.props.onAddNewFields(name,value)
+        }
     }
 
     toggleModalVisible =()=> {
@@ -60,7 +65,7 @@ export default class SubForm extends Component {
     renderlookupIcon = ()=>{
         return (
             <TouchableOpacity style={styles.valueContainer}
-                onPress={()=>this.setState({subFormData:{}},()=>this.toggleModalVisible())}>
+                onPress={()=>this.setState({subFormData:{},mode:'create'},()=>this.toggleModalVisible())}>
                 <Icon name="plus-circle" size={18} type={'regular'} color ={'#828282'} style={styles.iconStyle}/>
             </TouchableOpacity>
         );
@@ -69,13 +74,13 @@ export default class SubForm extends Component {
     renderAddedSubForm =(data,name)=>{
         let subForms = <View></View>;
         subForms = data.map((item, index) => {
-            let label = `${name}${index}`;
+            let label = `${name} ${index}`;
             return (
                 <TouchableOpacity
                     key={index}
                     style={styles.inputValue}
-                    onPress={() => this.setState({subFormData:item},()=>this.toggleModalVisible())}>
-                        <Text style={styles.labelText}>{label}</Text>
+                    onPress={() => this.setState({subFormData:item,mode:'update'},()=>this.toggleModalVisible())}>
+                        <Text style={styles.labelText} numberOfLines={1}>{label}</Text>
                 </TouchableOpacity>
             );
         })
@@ -95,7 +100,7 @@ export default class SubForm extends Component {
                         <Text style={[styles.labelText]}>{attributes.label}</Text>
                         {this.renderlookupIcon()}
                     </View>
-                    {typeof attributes.value !== "undefined" && attributes.value.length> 0?
+                    {typeof attributes.value !== "undefined" && attributes.value !== null && attributes.value.length> 0?
                         this.renderAddedSubForm(attributes.value,attributes.name)
                         :null
                     }
@@ -117,12 +122,13 @@ export default class SubForm extends Component {
                             <Right />
                         </Header>
                         <Content>
-                            <FormField
+                            <ChildField
                                 ref={(c) => { this.group = c; }}
                                 {...this.props}
                                 formData={this.state.subFormData}
                                 toggleModalVisible={this.toggleModalVisible}
                                 handleChange={this.handleChange}
+                                mode ={this.state.mode}
                             />
                         </Content>
                     </Container>
