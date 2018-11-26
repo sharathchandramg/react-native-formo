@@ -15,7 +15,8 @@ import SelectField from "./fields/select";
 import ImageField from "./fields/image";
 import LocationField from "./fields/location";
 import FormField from "./fields/form";
-import SubForm from "./fields/subForm"
+import SubForm from "./fields/subForm";
+import Lookupfield from "./fields/lookup"
 
 
 import { autoValidate, getInitialState, getDefaultValue, getResetValue } from "./utils/helper";
@@ -338,8 +339,16 @@ export default class Form0 extends Component {
                                 {...this.props}
                             />
                         );
-                }
 
+                    case "lookup":
+                        return (
+                            <Lookupfield
+                                ref={(c) => { this[field.name] = c; }}
+                                {...commonProps}
+                                {...this.props}
+                            />
+                        );
+                }                
             }
         });
 

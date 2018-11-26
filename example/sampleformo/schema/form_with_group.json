@@ -1,20 +1,33 @@
 [
     {
-        "type": "text",
-        "name": "prospect_name",
-        "label": "Prospect Name",
-        "required": true,
-        "editable": true,
-        "hidden": false
-    },
-    {
-        "type": "sub-form",
-        "name": "work_address",
-        "label": "Address",
-        "required": true,
-        "editable": true,
-        "hidden": false,
+        "type" : "lookup",
+        "name" : "users",
+        "label" : "Select User",
+        "multiple" : false,
+        "labelKey" : "user_name",
+        "primaryKey" : "user_id",
+        "objectType" : true,
+        "options":[{
+            "user_id" : "1",
+            "user_name" : "Sharath",
+            "city" : "bangalore",
+            "city_state" : "Karnataka"
+        },
+        {
+            "user_id" : "2",
+            "user_name" : "Rabindra",
+            "city" : "Mysore",
+            "city_state" : "Karnataka"
+        }],
         "fields": [
+            {
+                "type": "text",
+                "name": "user_name",
+                "label": "User Name",
+                "required": true,
+                "editable": true,
+                "hidden": false
+            },
             {
                 "type": "text",
                 "name": "city",
@@ -25,62 +38,8 @@
             },
             {
                 "type": "text",
-                "name": "country",
-                "label": "Country",
-                "required": true,
-                "editable": true,
-                "hidden": false
-            }
-        ]
-    },
-    {
-        "type": "sub-form",
-        "name": "product",
-        "label": "Order details",
-        "required": true,
-        "editable": true,
-        "hidden": false,
-        "fields": [
-            {
-                "type": "select",
-                "name": "sku",
-                "label": "SKU",
-                "required": true,
-                "editable": true,
-                "hidden": false,
-                "multiple": false,
-                "labelKey": "product_name",
-                "primaryKey": "product_id",
-                "objectType": true,
-                "options":[{
-                    "product_name":"MM 1",
-                    "product_id":"MM 1"
-                },
-                {
-                    "product_name":"MM 2",
-                    "product_id":"MM 2"
-                }]
-            },
-            {
-                "type": "number",
-                "name": "sku_unit_price",
-                "label": "Price",
-                "required": true,
-                "editable": true,
-                "hidden": false
-            },
-            {
-                "type": "number",
-                "name": "sku_quantity",
-                "label": "Quantity",
-                "required": true,
-                "editable": true,
-                "hidden": false
-            },
-            {
-                "type": "number",
-                "name": "sku_discount",
-                "label":"Discount",
+                "name": "city_state",
+                "label": "State",
                 "required": true,
                 "editable": true,
                 "hidden": false
@@ -89,3 +48,4 @@
         ]
     }
 ]
+
