@@ -29,19 +29,15 @@ export default class PickerField extends Component {
 
         if (Platform.OS !== "ios") {
             return (
-                <View
-                    style={{
-                        ...styles.pickerMainAndroid,
-                        ...{
-                            backgroundColor: theme.pickerBgColor,
-                            borderBottomColor: theme.inputBorderColor,
-                            borderBottomWidth: theme.borderWidth,
-                        }
-                    }}>
-                    <View style={{ flex: 7 }}>
-                        <Text style={{ color: theme.inputColorPlaceholder }}>{attributes.label}</Text>
+                <View style={{...styles.pickerMainAndroid,...{
+                        backgroundColor: theme.pickerBgColor,
+                        borderBottomColor: theme.inputBorderColor,
+                        borderBottomWidth: theme.borderWidth,
+                }}}>
+                    <View style={{ flex: 5 }}>
+                        <Text style={{ color: theme.inputColorPlaceholder,paddingStart:5}}>{attributes.label}</Text>
                     </View>
-                    <View style={{ flex: 3 }}>
+                    <View style={{ flex: 5 }}>
                         <Picker
                             style={{ padding: 2 }}
                             textStyle={{ color: theme.pickerColorSelected }}
@@ -78,7 +74,7 @@ export default class PickerField extends Component {
                             alignItems: "center",
                             paddingVertical: 10,
                         }}>
-                        <Text style={{ color: theme.inputColorPlaceholder }}>
+                        <Text style={{ color: theme.inputColorPlaceholder,paddingStart:5 }}>
                             {attributes.label}
                         </Text>
                         <Text style={{ color: theme.inputColorPlaceholder }}>

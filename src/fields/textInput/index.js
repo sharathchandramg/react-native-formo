@@ -33,14 +33,14 @@ export default class TextInputField extends Component {
         return (
 
             <ListItem style={{ borderBottomWidth: 0, paddingVertical: 5 }}>
-                <View style={{ flex: 1 }}>
+                <View style={{ flex: 1}}>
                     <View>
                         <Item error={theme.changeTextInputColorOnError ? attributes.error : null}>
                             {attributes.icon && <Icon color={theme.textInputIconColor} name={attributes.icon} />}
                             <Input
                                 style={{
                                     height: inputProps && inputProps.multiline && (Platform.OS === 'ios' ? undefined : null),
-                                    padding: 0,
+                                    paddingStart:5,
                                 }}
                                 ref={(c) => { this.textInput = c; }}
                                 keyboardType={keyboardType}

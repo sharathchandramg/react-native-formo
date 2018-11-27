@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Platform, Modal, Dimensions, TouchableOpacity } from "react-native";
+import Form0 from "./../../index";
 import {
     View,
     Text,
@@ -18,7 +19,9 @@ import {
 } from "native-base";
 
 const deviceWidth = Dimensions.get('window').width;
-export default class SelectField extends Component {
+import styles from "./styles";
+
+export default class LookupField extends Component {
 
     static propTypes = {
         attributes: PropTypes.object,
@@ -42,76 +45,60 @@ export default class SelectField extends Component {
 
     toggleSelect(value) {
         const attributes = this.props.attributes;
-        const newSelected = attributes.multiple ? attributes.value : value;
-        if (attributes.multiple) {
-            const index = attributes.objectType ? newSelected.findIndex(option =>
-                option[attributes.primaryKey] === value[attributes.primaryKey]
-            ) : newSelected.indexOf(value);
-            if (index === -1) {
-                newSelected.push(value);
-            } else {
-                newSelected.splice(index, 1);
-            }
-        }
+        let updateValue = {};
+        updateValue[attributes.labelKey] = value[attributes.labelKey];
+        updateValue[attributes.primaryKey] = value[attributes.primaryKey]
         this.setState({
             modalVisible: attributes.multiple ? this.state.modalVisible : false,
-        }, () => this.props.updateValue(this.props.attributes.name, newSelected));
+        },() => this.props.updateValue(this.props.attributes.name,updateValue));
+    }
+
+    renderlookupIcon = ()=>{
+        return (
+            <TouchableOpacity style={styles.labelText}
+                onPress={()=>this.toggleModalVisible()}>
+                <Icon name="ios-arrow-forward" size={14} type={'regular'} color ={'#828282'} style={styles.iconStyle}/>
+            </TouchableOpacity>
+        );
+    }
+
+    getLookupData = (value)=>{
+        let attributes = this.props.attributes;
+        let options = typeof attributes.options !=='undefined'?attributes.options: null;
+        let data = null;
+        if(options !== null && value !== null){
+            let primaryKey = value[attributes.primaryKey];
+            data = options.find(item =>item[attributes.primaryKey] === primaryKey)
+            return data;
+        }
     }
 
     render() {
-
         const { theme, attributes, ErrorComponent } = this.props;
-
-        //If multiple selections are allowed allow assignment via Id, Value or just a string value        
-        const selectedText = attributes.multiple ?
-            attributes.value.length || "None" :
-            attributes.objectType ?
-                (attributes.value && attributes.value[attributes.labelKey]) || "None"
-                : attributes.value || "None";
-
+        let value = typeof attributes.value !== 'undefined' && attributes.value !== null?attributes.value:null
+        let fields = typeof attributes.fields !== 'undefined' && attributes.fields !== null?attributes.fields:[]
+        let data = value !== null?this.getLookupData(value):{};
         return (
-            <View>
-                <TouchableOpacity style={{
-                    backgroundColor: theme.pickerBgColor,
-                    borderBottomColor: theme.inputBorderColor,
-                    borderBottomWidth: theme.borderWidth,
-                    marginHorizontal: 15,
-                    marginVertical: 0,
-                    paddingVertical: 15,
-                    marginLeft: 20,                    
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                }}>
-                    <Text style={{ color: theme.inputColorPlaceholder,paddingStart:5}}>{attributes.label}</Text>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            marginEnd:10,
-                            justifyContent:'flex-end',alignItems:'flex-end',
-                        }}>
-                        <TouchableOpacity  
-                            hitSlop={{ top: 10, bottom: 10, right: 50, left: 50 }}
-                            style={{marginHorizontal: 5,justifyContent:'flex-end',alignItems:'flex-end',flexDirection:'row'}} 
-                            onPress={() => this.toggleModalVisible()}>
-                            <Text>{selectedText}</Text>
-                            <Icon name="ios-arrow-forward" style={{fontSize:18,paddingStart:10,color:theme.inputColorPlaceholder}}/>
-                        </TouchableOpacity>
-                    </View>
-
-                </TouchableOpacity>
-                <View style={{ paddingHorizontal: 15 }}>
-                    <ErrorComponent {...{ attributes, theme }} />
+            <View style ={styles.container}>
+                <View style={[styles.inputLabel]} error={theme.changeTextInputColorOnError ? attributes.error : null}>
+                    <Text style={[styles.labelText]}>{attributes.label}</Text>
+                    {this.renderlookupIcon()}
+                </View>
+                <View style={{flex:1,width:'100%',marginStart:0}}>
+                    <Form0 
+                        ref={(c) => {this.lookup = c; }} 
+                        fields={fields} 
+                        formData={data}
+                    />
                 </View>
                 <Modal
                     visible={this.state.modalVisible}
                     animationType="none"
                     onRequestClose={() => this.toggleModalVisible()}>
                     <Container style={{ flex: 1 }}>
-
                         <Header>
                             <Left>
-                                <Button transparent onPress={() => this.toggleModalVisible()}>
+                                <Button transparent onPress={() =>this.toggleModalVisible()}>
                                     <Icon name="arrow-back" />
                                 </Button>
                             </Left>
@@ -150,11 +137,11 @@ export default class SelectField extends Component {
                                 })
                             }
                         </Content>
-
                     </Container>
-
-
                 </Modal>
+                <View style={{ paddingHorizontal:5 }}>
+                    <ErrorComponent {...{ attributes, theme }} />
+                </View>
             </View>
         );
     }

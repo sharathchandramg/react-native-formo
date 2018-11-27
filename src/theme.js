@@ -7,7 +7,7 @@ export default {
     textInputIconColor: '#000',
     pickerColorSelected: '#000',
     inputBorderColor: '#D9D5DC',
-    borderWidth: 1,
+    borderWidth:0.5,
     inputColorPlaceholder: '#ADADAD',
     inputColor: '#575757',
     inputFontSize: 15,

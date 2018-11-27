@@ -10,7 +10,6 @@ export function isEmpty(value) {
     }else{
         return false;
     }
-
 }
 
 export function isEmail(value) {

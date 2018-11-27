@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Platform, DatePickerIOS, DatePickerAndroid, TouchableOpacity, TimePickerAndroid } from "react-native";
 
-import { View, Text, Item } from "native-base";
+import { View, Text, Item,Icon, } from "native-base";
 
 const moment = require("moment");
 
@@ -87,10 +87,14 @@ export default class DateField extends Component {
                 hitSlop={{ top: 10, bottom: 10, right: 50, left: 50 }}
                 style={{
                     marginHorizontal: 5,
+                    justifyContent:'center',
+                    alignItems:'center',
+                    flexDirection:'row'
                 }}>
                 <Text onPress={this.showDatePicker}>
                     {(value && moment(value, "Do MMM YYYY").format("Do MMM YYYY")) || "None"}
-                </Text>                
+                </Text>
+                <Icon name="ios-arrow-forward" style={{fontSize:18,paddingStart:10,color:theme.inputColorPlaceholder}}/>
             </TouchableOpacity>
         )
     }
@@ -114,7 +118,7 @@ export default class DateField extends Component {
 
     showIOSDateOnlyPicker = () => {
 
-        const { attributes } = this.props;
+        const { attributes ,theme} = this.props;
         const value = (attributes.value && new Date(attributes.value)) || null;
 
         return (
@@ -205,16 +209,17 @@ export default class DateField extends Component {
                     marginHorizontal: 15,
                     marginVertical: 0,
                     paddingVertical: 15,
-                    marginLeft: 23,                    
+                    marginLeft: 20,                    
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                 }}>
 
-                <Text style={{ color: theme.inputColorPlaceholder }}>{attributes.label}</Text>
+                <Text style={{ color: theme.inputColorPlaceholder,paddingStart:5 }}>{attributes.label}</Text>
                 <View
                     style={{
                         flexDirection: 'row',
+                        marginEnd:10
                     }}>
 
                     {(attributes.mode === "date") ? this.showAndroidDateOnlyPicker() : this.showAndroidTimeOnlyPicker()}
