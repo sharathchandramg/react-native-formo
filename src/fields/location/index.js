@@ -124,9 +124,9 @@ export default class LocationField extends Component {
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
-            <ListItem style={{ borderBottomWidth: 0, paddingVertical: 5 }}>
-                <View style={{flexDirection:'row',flex:2,}}>
-                    <Text style={{flex:1,color: theme.inputColorPlaceholder }}>{attributes.label}</Text>
+            <ListItem style={{ borderBottomWidth: 0, paddingVertical:5,marginLeft:20 }}>
+                <View style={{flexDirection:'row',flex:2}}>
+                    <Text style={{flex:1,color: theme.inputColorPlaceholder,paddingStart:5 }}>{attributes.label}</Text>
                     <View style={{flexDirection:'row',flex:1}}>
                         {this.renderPostionUrl(attributes)}
                     </View>

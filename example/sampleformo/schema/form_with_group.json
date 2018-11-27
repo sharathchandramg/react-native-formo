@@ -1,5 +1,19 @@
 [
     {
+        "type": "picker",
+        "name": "status",
+        "label": "Status",
+        "required": false,
+        "editable": true,
+        "hidden": false,
+        "options": [
+            "Pending",
+            "On Hold",
+            "Shortlisted",
+            "Rejected"
+        ]
+    },
+    {
         "type": "text",
         "name": "prospect_name",
         "label": "Prospect Name",
@@ -8,84 +22,59 @@
         "hidden": false
     },
     {
-        "type": "sub-form",
-        "name": "work_address",
-        "label": "Address",
+        "type": "date",
+        "name": "date_of_birth",
+        "label": "Date Of Birth",
         "required": true,
         "editable": true,
         "hidden": false,
-        "fields": [
-            {
-                "type": "text",
-                "name": "city",
-                "label": "City",
-                "required": true,
-                "editable": true,
-                "hidden": false
-            },
-            {
-                "type": "text",
-                "name": "country",
-                "label": "Country",
-                "required": true,
-                "editable": true,
-                "hidden": false
-            }
-        ]
+        "mode": "date",
+        "maxDate": "today"
     },
     {
-        "type": "sub-form",
-        "name": "product",
-        "label": "Order details",
+        "type": "location",
+        "name": "office_location",
+        "label": "Office Location",
         "required": true,
         "editable": true,
-        "hidden": false,
-        "fields": [
+        "hidden": false
+    },
+    {
+        "type": "image",
+        "name": "bill",
+        "label": "Bill",
+        "required": true,
+        "editable": true,
+        "hidden": false
+
+    },
+    {
+        "type": "select",
+        "name": "assiggee",
+        "label": "Assignee",
+        "multiple" : false,
+        "labelKey" : "user_name",
+        "primaryKey" : "user_id",
+        "objectType" : true,
+        "options" : [
             {
-                "type": "select",
-                "name": "sku",
-                "label": "SKU",
-                "required": true,
-                "editable": true,
-                "hidden": false,
-                "multiple": false,
-                "labelKey": "product_name",
-                "primaryKey": "product_id",
-                "objectType": true,
-                "options":[{
-                    "product_name":"MM 1",
-                    "product_id":"MM 1"
-                },
-                {
-                    "product_name":"MM 2",
-                    "product_id":"MM 2"
-                }]
+                "user_id" : 1,
+                "user_name" : "Sharath"
             },
             {
-                "type": "number",
-                "name": "sku_unit_price",
-                "label": "Price",
-                "required": true,
-                "editable": true,
-                "hidden": false
+                "user_id" : 2,
+                "user_name" : "Rabindra"
             },
             {
-                "type": "number",
-                "name": "sku_quantity",
-                "label": "Quantity",
-                "required": true,
-                "editable": true,
-                "hidden": false
-            },
-            {
-                "type": "number",
-                "name": "sku_discount",
-                "label":"Discount",
-                "required": true,
-                "editable": true,
-                "hidden": false
+                "user_id" : 3,
+                "user_name" : "Nitheesh"
             }
-            
+        ],
+        "defaultValue": [
+            {
+                "user_id" : 3,
+                "user_name" : "Nitheesh"
+            }
         ]
     }
 ]

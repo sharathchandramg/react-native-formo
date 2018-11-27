@@ -41,7 +41,7 @@ export default class App extends Component {
 			<ScrollView>
 				<Form0
 					fields={fields}
-					formData={formData}
+					formData={{}}
 					ref={c => {
 						this.formGenerator = c;
 					}}

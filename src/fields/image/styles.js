@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     },
     valueContainer:{
         alignItems: 'center',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         flex:1,
     },
 
@@ -43,7 +43,9 @@ const styles = StyleSheet.create({
     },
     iconStyle:{
         fontFamily:'roboto',
-        alignSelf:'flex-start',
+        alignSelf:'flex-end',
+        marginEnd:15
+
     },
 });
 
