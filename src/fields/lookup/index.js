@@ -62,38 +62,35 @@ export default class LookupField extends Component {
         );
     }
 
-    renderlookupForm =(attributes)=>{
-        let data = {}
-        if(typeof attributes.options !=='undefined' && attributes.options !== null){
+    getLookupData = (value)=>{
+        let attributes = this.props.attributes;
+        let options = typeof attributes.options !=='undefined'?attributes.options: null;
+        let data = null;
+        if(options !== null && value !== null){
             let primaryKey = value[attributes.primaryKey];
-            data = attributes.options.find(item =>{
-                return item[attributes.primaryKey] === primaryKey
-            })
-        }  
-    
-        return <Form0 
-            ref={(c) => {this.lookup = c; }} 
-            fields={attributes.fields} 
-            formData ={data}
-            />
+            data = options.find(item =>item[attributes.primaryKey] === primaryKey)
+            return data;
+        }
     }
 
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
-    
+        let value = typeof attributes.value !== 'undefined' && attributes.value !== null?attributes.value:null
+        let fields = typeof attributes.fields !== 'undefined' && attributes.fields !== null?attributes.fields:[]
+        let data = value !== null?this.getLookupData(value):{};
         return (
             <View style ={styles.container}>
                 <View style={[styles.inputLabel]} error={theme.changeTextInputColorOnError ? attributes.error : null}>
                     <Text style={[styles.labelText]}>{attributes.label}</Text>
                     {this.renderlookupIcon()}
                 </View>
-                
-                {typeof attributes.value !== "undefined" && attributes.value !== null?
-                    <View style={{flex:1,width:'100%',marginStart:0}}>
-                        {this. renderlookupForm(attributes)}
-                    </View>
-                    :null
-                }
+                <View style={{flex:1,width:'100%',marginStart:0}}>
+                    <Form0 
+                        ref={(c) => {this.lookup = c; }} 
+                        fields={fields} 
+                        formData={data}
+                    />
+                </View>
                 <Modal
                     visible={this.state.modalVisible}
                     animationType="none"

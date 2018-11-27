@@ -25,7 +25,7 @@
                 "name": "user_name",
                 "label": "User Name",
                 "required": true,
-                "editable": true,
+                "editable": false,
                 "hidden": false
             },
             {
@@ -33,7 +33,7 @@
                 "name": "city",
                 "label": "City",
                 "required": true,
-                "editable": true,
+                "editable": false,
                 "hidden": false
             },
             {
@@ -41,7 +41,7 @@
                 "name": "city_state",
                 "label": "State",
                 "required": true,
-                "editable": true,
+                "editable": false,
                 "hidden": false
             }
             

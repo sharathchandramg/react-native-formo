@@ -76,9 +76,15 @@ export default class Form0 extends Component {
     }
 
     componentDidMount() {
-
         const { formData } = this.props;
         this.setValues(formData);
+    }
+
+    componentDidUpdate(prevProps){
+        const { formData } = this.props;
+        if(prevProps !== this.props){
+            this.setValues(formData);
+        }
     }
 
     onValidateFields() {
