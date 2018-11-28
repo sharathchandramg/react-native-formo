@@ -69,20 +69,32 @@ export function getDefaultValue(field) {
         case "date":
             {
                 const dateDefaultValue = field.defaultValue && new Date(field.defaultValue);
-                if (dateDefaultValue && !_.isNaN(dateDefaultValue.getTime())) {
-                    return dateDefaultValue;
-                }
-                else if (field.defaultValue === "")
-                    return "Select";
-
-                else if (field.defaultValue === "today")
-                    return moment().format("YYYY-MM-DD");
-
-                else if (field.defaultValue === "tomorrow")
-                    return moment().add(1, "day").format("YYYY-MM-DD");
-
-                else
-                    return null;
+                switch(field.mode){
+                    case 'date':
+                        if (field.defaultValue === "today")
+                            return moment().format("YYYY-MM-DD");
+                        else if(field.defaultValue === "tomorrow" ) 
+                            return moment().add(1, "day").format("YYYY-MM-DD"); 
+                        else    
+                            return null;
+                    case 'time':  
+                        if (dateDefaultValue && !_.isNaN(dateDefaultValue.getTime()))
+                            return dateDefaultValue;
+                        else    
+                            return null;
+                    case 'datetime':
+                    if (field.defaultValue === "today")
+                            return moment().format("YYYY-MM-DD HH:MM");
+                        else if(field.defaultValue === "tomorrow" ) 
+                            return moment().add(1, "day").format("YYYY-MM-DD HH:MM"); 
+                        else    
+                            return null;
+                    default:
+                        if (field.defaultValue === "")
+                            return "Select";
+                        else   
+                            return null;  
+                }  
             }
         case "group":
             if (field.fields) {
