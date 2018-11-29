@@ -71,10 +71,25 @@ export default class SubForm extends Component {
         );
     }
 
+    constructDisplayField = (item)=>{
+        let filtered = Object.keys(item)
+            .filter(key => key !=='_id')
+            .reduce((acc, key) => {
+                acc.push(item[key]);
+                return acc;
+            },[]);
+
+        let arr = filtered.filter(value => typeof value !=='object')   
+        if(arr .length >0)  
+            return arr.toString()
+        else 
+            return         
+    }
+
     renderAddedSubForm =(data,name)=>{
         let subForms = <View></View>;
         subForms = data.map((item, index) => {
-            let label = `${name} ${index}`;
+            let label = this.constructDisplayField(item);
             return (
                 <TouchableOpacity
                     key={index}
