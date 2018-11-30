@@ -30,12 +30,12 @@ export default class SwitchField extends Component {
                         marginHorizontal: 10,
                         marginVertical: 0,
                         paddingVertical: 10,
-                        marginLeft: 15,
+                        marginLeft: 20,
                         flexDirection: "row",
                         alignItems: "center",
                         justifyContent: "space-between",
                     }}>
-                    <Text style={{ color: theme.labelActiveColor }}>{attributes.label}</Text>
+                    <Text style={{ color:theme.inputColorPlaceholder,padding:5 }}>{attributes.label}</Text>
                     <Switch
                         onTrackColor={"blue"}
                         onValueChange={value => this.handleChange(value)}

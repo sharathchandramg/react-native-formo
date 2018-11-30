@@ -1,27 +1,5 @@
 [
     {
-        "type": "picker",
-        "name": "status",
-        "label": "Status",
-        "required": false,
-        "editable": true,
-        "hidden": false,
-        "options": [
-            "Pending",
-            "On Hold",
-            "Shortlisted",
-            "Rejected"
-        ]
-    },
-    {
-        "type": "text",
-        "name": "prospect_name",
-        "label": "Prospect Name",
-        "required": true,
-        "editable": true,
-        "hidden": false
-    },
-    {
         "type": "date",
         "name": "date_of_birth",
         "label": "Date Of Birth",
@@ -29,52 +7,85 @@
         "editable": true,
         "hidden": false,
         "mode": "date",
-        "maxDate": "today"
+        "minDate": "today"
     },
     {
-        "type": "location",
-        "name": "office_location",
-        "label": "Office Location",
+        "type": "date",
+        "name": "time_of_birth",
+        "label": "Time Of Birth",
         "required": true,
         "editable": true,
-        "hidden": false
+        "hidden": false,
+        "mode": "time",
+        "minDate": "today"
     },
     {
-        "type": "image",
-        "name": "bill",
-        "label": "Bill",
+        "type": "date",
+        "name": "datetime_of_birth",
+        "label": "Date And Time Of Birth",
         "required": true,
         "editable": true,
-        "hidden": false
-
+        "hidden": false,
+        "mode": "datetime",
+        "minDate": "today",
+        "defaultDate" : "tomorrow"
     },
     {
-        "type": "select",
-        "name": "assiggee",
-        "label": "Assignee",
+        "type": "sub-form",
+        "name": "address",
+        "label": "Address",
         "multiple" : false,
-        "labelKey" : "user_name",
-        "primaryKey" : "user_id",
-        "objectType" : true,
-        "options" : [
+        "required": true,
+        "editable": true,
+        "fields": [
             {
-                "user_id" : 1,
-                "user_name" : "Sharath"
+                "type": "select",
+                "name": "assiggee",
+                "label": "Assignee",
+                "multiple" : false,
+                "labelKey" : "user_name",
+                "primaryKey" : "user_id",
+                "objectType" : true,
+                "options" : [
+                    {
+                        "user_id" : 1,
+                        "user_name" : "Sharath"
+                    },
+                    {
+                        "user_id" : 2,
+                        "user_name" : "Rabindra"
+                    },
+                    {
+                        "user_id" : 3,
+                        "user_name" : "Nitheesh"
+                    }
+                ],
+                "defaultValue": [
+                    {
+                        "user_id" : 3,
+                        "user_name" : "Nitheesh"
+                    }
+                ]
+            },
+
+            {
+                "type": "text",
+                "name": "city",
+                "label": "City",
+                "required": true,
+                "editable": true,
+                "hidden": false
             },
             {
-                "user_id" : 2,
-                "user_name" : "Rabindra"
-            },
-            {
-                "user_id" : 3,
-                "user_name" : "Nitheesh"
+                "type": "text",
+                "name": "city_state",
+                "label": "State",
+                "required": true,
+                "editable": true,
+                "hidden": false
             }
-        ],
-        "defaultValue": [
-            {
-                "user_id" : 3,
-                "user_name" : "Nitheesh"
-            }
+
         ]
     }
+
 ]
