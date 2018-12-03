@@ -280,18 +280,18 @@ export default class DateField extends Component {
                     (attributes.mode === "time") ? this.showIOSTimeOnlyPicker():this.showIOSDateTimePicker()}
 
                     <ErrorComponent {...{ attributes, theme }} />
-                    <Panel
-                        ref={(c) => { this.panel = c; }}>
-                        <DatePickerIOS
-                            date={value}
-                            mode={attributes.mode}
-                            maximumDate={attributes.maxDate && new Date(attributes.maxDate)}
-                            minimumDate={attributes.minDate && new Date(attributes.minDate)}
-                            timeZoneOffsetInMinutes={this.props.timeZoneOffsetInHours * 60}
-                            onDateChange={this.onDateChange}
-                        />
-                    </Panel>
                 </TouchableOpacity>
+                <Panel
+                    ref={(c) => { this.panel = c; }}>
+                    <DatePickerIOS
+                        date={value}
+                        mode={attributes.mode}
+                        maximumDate={attributes.maxDate && new Date(attributes.maxDate)}
+                        minimumDate={attributes.minDate && new Date(attributes.minDate)}
+                        timeZoneOffsetInMinutes={this.props.timeZoneOffsetInHours * 60}
+                        onDateChange={this.onDateChange}
+                    />
+                    </Panel>
             </View>
         );
     }
