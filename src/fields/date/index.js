@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Platform, DatePickerIOS, DatePickerAndroid, TouchableOpacity, TimePickerAndroid } from "react-native";
 
-import { View, Text, Item,Icon, } from "native-base";
+import { View, Text, Item, Icon, } from "native-base";
 
 const moment = require("moment");
 
@@ -30,13 +30,13 @@ export default class DateField extends Component {
         this.props.updateValue(this.props.attributes.name, date);
     }
 
-    
-    showDateTimePicker = async (stateKey) =>{
+
+    showDateTimePicker = async (stateKey) => {
         const { attributes } = this.props;
         const currentDate = attributes.value ? new Date(attributes.value) : new Date();
         try {
             const { action, year, month, day } = await DatePickerAndroid.open(
-                {  
+                {
                     date: currentDate,
                     minDate: attributes.minDate && new Date(attributes.minDate),
                     maxDate: attributes.maxDate && new Date(attributes.maxDate),
@@ -53,14 +53,14 @@ export default class DateField extends Component {
                         date.setHours(hour);
                         date.setMinutes(minute);
                         this.onDateChange(date);
-                    }else{
+                    } else {
                         const currentHour = currentDate.getHours();
                         const currentMinutes = currentDate.getMinutes();
                         date.setHours(currentHour);
                         date.setMinutes(currentMinutes);
                         this.onDateChange(date);
                     }
-                }catch ({ code, message }) {
+                } catch ({ code, message }) {
                     console.warn(`Error in example '${stateKey}': `, message);
                 }
             }
@@ -95,7 +95,7 @@ export default class DateField extends Component {
         const currentDate = attributes.value ? new Date(attributes.value) : new Date();
         try {
             const { action, year, month, day } = await DatePickerAndroid.open(
-                {  
+                {
                     date: currentDate,
                     minDate: attributes.minDate && new Date(attributes.minDate),
                     maxDate: attributes.maxDate && new Date(attributes.maxDate),
@@ -119,7 +119,7 @@ export default class DateField extends Component {
     };
 
 
-    showAndroidDateTimePicker = ()=>{
+    showAndroidDateTimePicker = () => {
         const { theme, attributes } = this.props;
         const value = (attributes.value && new Date(attributes.value)) || null;
 
@@ -128,14 +128,14 @@ export default class DateField extends Component {
                 hitSlop={{ top: 10, bottom: 10, right: 50, left: 50 }}
                 style={{
                     marginHorizontal: 5,
-                    justifyContent:'center',
-                    alignItems:'center',
-                    flexDirection:'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'row',
                 }}>
                 <Text onPress={this.showDateTimePicker}>
                     {(value && moment(value, "Do MMM YYYY HH:MM").format("Do MMM YYYY HH:MM")) || "None"}
                 </Text>
-                <Icon name="ios-arrow-forward" style={{fontSize:18,paddingStart:10,color:theme.inputColorPlaceholder}}/>
+                <Icon name="ios-arrow-forward" style={{ fontSize: 18, paddingStart: 10, color: theme.inputColorPlaceholder }} />
             </TouchableOpacity>
         )
     }
@@ -150,41 +150,41 @@ export default class DateField extends Component {
                 hitSlop={{ top: 10, bottom: 10, right: 50, left: 50 }}
                 style={{
                     marginHorizontal: 5,
-                    justifyContent:'center',
-                    alignItems:'center',
-                    flexDirection:'row'
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'row'
                 }}>
                 <Text onPress={this.showDatePicker}>
                     {(value && moment(value, "Do MMM YYYY").format("Do MMM YYYY")) || "None"}
                 </Text>
-                <Icon name="ios-arrow-forward" style={{fontSize:18,paddingStart:10,color:theme.inputColorPlaceholder}}/>
+                <Icon name="ios-arrow-forward" style={{ fontSize: 18, paddingStart: 10, color: theme.inputColorPlaceholder }} />
             </TouchableOpacity>
         )
     }
 
     showAndroidTimeOnlyPicker = () => {
 
-        const { attributes,theme } = this.props;
+        const { attributes, theme } = this.props;
         const value = (attributes.value && new Date(attributes.value)) || null;
 
         return (
             <TouchableOpacity
                 style={{
                     marginHorizontal: 5,
-                    justifyContent:'center',
-                    alignItems:'center',
-                    flexDirection:'row'
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'row'
                 }}>
                 <Text onPress={this.showTimePicker}>
                     {(value && moment(value, 'hh:mm a').format("hh:mm a")) || "None"}
                 </Text>
-                <Icon name="ios-arrow-forward" style={{fontSize:18,paddingStart:10,color:theme.inputColorPlaceholder}}/>
+                <Icon name="ios-arrow-forward" style={{ fontSize: 18, paddingStart: 10, color: theme.inputColorPlaceholder }} />
             </TouchableOpacity>
         );
     }
 
 
-    showIOSDateTimePicker = ()=>{
+    showIOSDateTimePicker = () => {
         const { theme, attributes } = this.props;
         const value = (attributes.value && new Date(attributes.value)) || null;
 
@@ -193,34 +193,34 @@ export default class DateField extends Component {
                 hitSlop={{ top: 10, bottom: 10, right: 50, left: 50 }}
                 style={{
                     marginHorizontal: 5,
-                    justifyContent:'center',
-                    alignItems:'center',
-                    flexDirection:'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'row',
                 }}>
                 <Text onPress={this.showDateTimePicker}>
                     {(value && moment(value, "Do MMM YYYY HH:MM").format("Do MMM YYYY HH:MM")) || "None"}
                 </Text>
-                <Icon name="ios-arrow-forward" style={{fontSize:18,paddingStart:10,color:theme.inputColorPlaceholder}}/>
+                <Icon name="ios-arrow-forward" style={{ fontSize: 18, paddingStart: 10, color: theme.inputColorPlaceholder }} />
             </TouchableOpacity>
         )
     }
 
     showIOSDateOnlyPicker = () => {
 
-        const { attributes ,theme} = this.props;
+        const { attributes, theme } = this.props;
         const value = (attributes.value && new Date(attributes.value)) || null;
 
         return (
             <View
                 style={{
                     marginHorizontal: 5,
-                    justifyContent:'center',
-                    alignItems:'center',
-                    flexDirection:'row'
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'row'
                 }}>
                 <Text>
                     {(value && moment(value, "Do MMM YYYY").format("Do MMM YYYY")) || "None"}
-                    <Icon name="ios-arrow-forward" style={{fontSize:18,paddingStart:10,color:theme.inputColorPlaceholder}}/>
+                    <Icon name="ios-arrow-forward" style={{ fontSize: 18, paddingStart: 10, color: theme.inputColorPlaceholder }} />
                 </Text>
             </View>
         );
@@ -235,13 +235,13 @@ export default class DateField extends Component {
             <View
                 style={{
                     marginHorizontal: 5,
-                    justifyContent:'center',
-                    alignItems:'center',
-                    flexDirection:'row'
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    flexDirection: 'row'
                 }}>
                 <Text>
                     {(value && moment(value, 'hh:mm a').format("hh:mm a")) || "None"}
-                    <Icon name="ios-arrow-forward" style={{fontSize:18,paddingStart:10,color:theme.inputColorPlaceholder}}/>
+                    <Icon name="ios-arrow-forward" style={{ fontSize: 18, paddingStart: 10, color: theme.inputColorPlaceholder }} />
                 </Text>
             </View>
         );
@@ -275,22 +275,23 @@ export default class DateField extends Component {
                             flexDirection: 'row',
                         }}>
                     </View>
-                    {(attributes.mode === "date") ? this.showIOSDateOnlyPicker() : 
-                    (attributes.mode === "time") ? this.showIOSTimeOnlyPicker():this.showIOSDateTimePicker()}
+                    {(attributes.mode === "date") ? this.showIOSDateOnlyPicker() :
+                        (attributes.mode === "time") ? this.showIOSTimeOnlyPicker() : this.showIOSDateTimePicker()}
 
                     <ErrorComponent {...{ attributes, theme }} />
-                    <Panel
-                        ref={(c) => { this.panel = c; }}>
-                        <DatePickerIOS
-                            date={value || new Date()}
-                            mode={mode}
-                            maximumDate={attributes.maxDate && new Date(attributes.maxDate)}
-                            minimumDate={attributes.minDate && new Date(attributes.minDate)}
-                            timeZoneOffsetInMinutes={this.props.timeZoneOffsetInHours * 60}
-                            onDateChange={this.onDateChange}
-                        />
-                    </Panel>
                 </TouchableOpacity>
+                <Panel
+                    ref={(c) => { this.panel = c; }}>
+                    <DatePickerIOS
+                        date={value || new Date()}
+                        mode={mode}
+                        maximumDate={attributes.maxDate && new Date(attributes.maxDate)}
+                        minimumDate={attributes.minDate && new Date(attributes.minDate)}
+                        timeZoneOffsetInMinutes={this.props.timeZoneOffsetInHours * 60}
+                        onDateChange={this.onDateChange}
+                    />
+                </Panel>
+
             </View>
         );
     }
@@ -307,25 +308,25 @@ export default class DateField extends Component {
                     marginHorizontal: 15,
                     marginVertical: 0,
                     paddingVertical: 15,
-                    marginLeft: 20,                    
+                    marginLeft: 20,
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                 }}>
 
-                <Text style={{ color: theme.inputColorPlaceholder,paddingStart:5 }}>{attributes.label}</Text>
+                <Text style={{ color: theme.inputColorPlaceholder, paddingStart: 5 }}>{attributes.label}</Text>
                 <View
                     style={{
                         flexDirection: 'row',
-                        marginEnd:10
+                        marginEnd: 10
                     }}>
 
                     {(attributes.mode === "date") ? this.showAndroidDateOnlyPicker() :
-                    (attributes.mode === "time") ?this.showAndroidTimeOnlyPicker():this.showAndroidDateTimePicker()}
+                        (attributes.mode === "time") ? this.showAndroidTimeOnlyPicker() : this.showAndroidDateTimePicker()}
                 </View>
-                
+
             </TouchableOpacity>
-            
+
         );
     }
 
