@@ -228,7 +228,7 @@ export default class DateField extends Component {
 
     showIOSTimeOnlyPicker = () => {
 
-        const { attributes } = this.props;
+        const { attributes, theme } = this.props;
         const value = (attributes.value && new Date(attributes.value)) || null;
 
         return (
@@ -249,7 +249,8 @@ export default class DateField extends Component {
 
     renderIOSDatePicker = () => {
 
-        const { theme, attributes } = this.props;
+        const { theme, attributes, ErrorComponent } = this.props;
+        const value = (attributes.value && new Date(attributes.value)) || new Date();
         return (
             <View
                 style={{
@@ -279,18 +280,18 @@ export default class DateField extends Component {
                     (attributes.mode === "time") ? this.showIOSTimeOnlyPicker():this.showIOSDateTimePicker()}
 
                     <ErrorComponent {...{ attributes, theme }} />
-                    <Panel
-                        ref={(c) => { this.panel = c; }}>
-                        <DatePickerIOS
-                            date={value || new Date()}
-                            mode={mode}
-                            maximumDate={attributes.maxDate && new Date(attributes.maxDate)}
-                            minimumDate={attributes.minDate && new Date(attributes.minDate)}
-                            timeZoneOffsetInMinutes={this.props.timeZoneOffsetInHours * 60}
-                            onDateChange={this.onDateChange}
-                        />
-                    </Panel>
                 </TouchableOpacity>
+                <Panel
+                    ref={(c) => { this.panel = c; }}>
+                    <DatePickerIOS
+                        date={value}
+                        mode={attributes.mode}
+                        maximumDate={attributes.maxDate && new Date(attributes.maxDate)}
+                        minimumDate={attributes.minDate && new Date(attributes.minDate)}
+                        timeZoneOffsetInMinutes={this.props.timeZoneOffsetInHours * 60}
+                        onDateChange={this.onDateChange}
+                    />
+                    </Panel>
             </View>
         );
     }
@@ -332,7 +333,7 @@ export default class DateField extends Component {
     render() {
         return (
             <View>
-                {(Platform.OS === 'ios') ? this.renderIOSDatePicker() : this.renderAndroidDatePicker(this.props)}
+                 {(Platform.OS === 'ios') ? this.renderIOSDatePicker() : this.renderAndroidDatePicker(this.props)}
             </View>
         );
     }
