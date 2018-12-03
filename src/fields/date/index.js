@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Platform, DatePickerIOS, DatePickerAndroid, TouchableOpacity, TimePickerAndroid } from "react-native";
+import { Platform, DatePickerIOS, DatePickerAndroid, TouchableOpacity, TimePickerAndroid, Modal, TouchableHighlight } from "react-native";
 
 import { View, Text, Item,Icon, } from "native-base";
 
@@ -24,14 +24,21 @@ export default class DateField extends Component {
         this.onDateChange = this.onDateChange.bind(this);
         this.showTimePicker = this.showTimePicker.bind(this);
         this.showDatePicker = this.showDatePicker.bind(this);
+
+        this.state = {
+            modalVisible: false
+        }
     }
 
     onDateChange(date) {
         this.props.updateValue(this.props.attributes.name, date);
     }
 
-    
-    showDateTimePicker = async (stateKey) =>{
+    setModalVisible(visible) {
+        this.setState({ modalVisible: visible });
+    }
+
+    showDateTimePicker = async (stateKey) => {
         const { attributes } = this.props;
         const currentDate = attributes.value ? new Date(attributes.value) : new Date();
         try {
@@ -262,7 +269,7 @@ export default class DateField extends Component {
                     marginLeft: 15,
                 }}>
                 <TouchableOpacity
-                    onPress={() => this.panel.toggle()}
+                    onPress={() => this.setModalVisible(true)}
                     style={{
                         paddingVertical: 10,
                         flexDirection: 'row',
@@ -280,6 +287,7 @@ export default class DateField extends Component {
                     (attributes.mode === "time") ? this.showIOSTimeOnlyPicker():this.showIOSDateTimePicker()}
 
                     <ErrorComponent {...{ attributes, theme }} />
+
                 </TouchableOpacity>
                 <Panel
                     ref={(c) => { this.panel = c; }}>
@@ -291,7 +299,7 @@ export default class DateField extends Component {
                         timeZoneOffsetInMinutes={this.props.timeZoneOffsetInHours * 60}
                         onDateChange={this.onDateChange}
                     />
-                    </Panel>
+                </Panel>
             </View>
         );
     }
@@ -330,10 +338,67 @@ export default class DateField extends Component {
         );
     }
 
+    renderModal = () => {
+        const { attributes } = this.props;
+        const value = (attributes.value && new Date(attributes.value)) || new Date();
+        return (
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={this.state.modalVisible}
+                onRequestClose={() => this.setModalVisible(false)}
+                style={{ backgroundColor: '#00000052' }}
+            >
+
+                <View style={{
+                    flex: 1,
+                    flexDirection: 'column',
+                    justifyContent: 'flex-end',
+                    backgroundColor: '#00000052'
+                }}>
+                    <TouchableOpacity
+                        activeOpacity={1}
+                        onPressOut={() => this.setModalVisible(false)}
+                        style={{
+                            height: '100%', width: '100%', flexDirection: 'column-reverse', alignItems: 'flex-end'
+                        }}
+                    >
+                        <View style={{
+                            backgroundColor: '#fff',
+                            width: '100%',
+                        }}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <TouchableHighlight
+                                    onPress={() => this.setModalVisible(false)} style={{
+                                        flex: 1,
+                                        flexDirection: 'row',
+                                        justifyContent: 'flex-end',
+                                        marginTop: 10,
+                                        marginRight: 20
+                                    }}>
+                                    <View><Text style={{ fontSize: 20 }}> Done</Text></View>
+                                </TouchableHighlight>
+                            </View>
+                            <DatePickerIOS
+                                date={value}
+                                mode={attributes.mode}
+                                maximumDate={attributes.maxDate && new Date(attributes.maxDate)}
+                                minimumDate={attributes.minDate && new Date(attributes.minDate)}
+                                timeZoneOffsetInMinutes={this.props.timeZoneOffsetInHours * 60}
+                                onDateChange={this.onDateChange}
+                            />
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
+        )
+    }
+
     render() {
         return (
             <View>
-                 {(Platform.OS === 'ios') ? this.renderIOSDatePicker() : this.renderAndroidDatePicker(this.props)}
+                {(Platform.OS === 'ios') ? this.renderIOSDatePicker() : this.renderAndroidDatePicker(this.props)}
+                {this.renderModal()}
             </View>
         );
     }
