@@ -27,6 +27,7 @@ export function getDefaultValue(field) {
         case "url":
         case "phone":
         case "currency":
+        case "calculated":
             return field.defaultValue || '';
 
         case "picker": {

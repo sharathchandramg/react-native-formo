@@ -73,6 +73,8 @@ export default class Form0 extends Component {
 
         this.onAddNewFields = this.onAddNewFields.bind(this);
 
+        this.getValue = this.getValue.bind(this);
+
     }
 
     componentDidMount() {
@@ -84,6 +86,16 @@ export default class Form0 extends Component {
         const { formData } = this.props;
         if(prevProps !== this.props){
             this.setValues(formData);
+        }
+    }
+
+    getValue(fieldName){
+        let index = _.indexOf(Object.keys(this.state),fieldName);
+        if(index !== -1){
+            let value = Object.values(this.state)[index].value;
+            return value;
+        }else{
+            return null;
         }
     }
 
@@ -267,6 +279,7 @@ export default class Form0 extends Component {
                     attributes: this.state[field.name],
                     updateValue: this.onValueChange,
                     onAddNewFields: this.onAddNewFields,
+                    getValue: this.getValue,
                     ErrorComponent: errorComponent || DefaultErrorComponent,
                 };
 
@@ -279,6 +292,7 @@ export default class Form0 extends Component {
                     case "password":
                     case "phone":
                     case "currency":
+                    case "calculated":
                         return <TextInputField
                             ref={(c) => { this[field.name] = c; }}
                             {...commonProps}
