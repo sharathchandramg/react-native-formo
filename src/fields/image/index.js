@@ -129,6 +129,9 @@ export default class ImageField extends Component {
 
 
     renderPreview =(attributes) => {
+        if(attributes &&  typeof attributes.value !== null && typeof attributes.value !== 'undefined' ){
+            this._startAnimation()
+        }
 		return (
 			<TouchableOpacity style={[styles.topContainer,{ borderColor:"#a94442" }]}
 				onPress={
