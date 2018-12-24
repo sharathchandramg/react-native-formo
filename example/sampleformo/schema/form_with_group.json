@@ -1,91 +1,75 @@
 [
     {
-        "type": "date",
-        "name": "date_of_birth",
-        "label": "Date Of Birth",
+        "type": "lookup",
+        "name": "product",
+        "label": "Products",
+        "multiple": false,
         "required": true,
         "editable": true,
-        "hidden": false,
-        "mode": "date",
-        "minDate": "today"
-    },
-    {
-        "type": "date",
-        "name": "time_of_birth",
-        "label": "Time Of Birth",
-        "required": true,
-        "editable": true,
-        "hidden": false,
-        "mode": "time",
-        "minDate": "today"
-    },
-    {
-        "type": "date",
-        "name": "datetime_of_birth",
-        "label": "Date And Time Of Birth",
-        "required": true,
-        "editable": true,
-        "hidden": false,
-        "mode": "datetime",
-        "minDate": "today",
-        "defaultDate" : "tomorrow"
-    },
-    {
-        "type": "sub-form",
-        "name": "address",
-        "label": "Address",
-        "multiple" : false,
-        "required": true,
-        "editable": true,
+        "labelKey": "product_name",
+        "primaryKey": "product_id",
+        "objectType": true,
+        "options": [
+            {
+                "product_name":"MM 1",
+                "product_id":"MM 1",
+                "sku_discount": "0",
+				"sku_quantity": "10",
+				"sku_unit_price": "1000"
+
+            },
+            {
+                "product_name":"MM 2",
+                "product_id":"MM 2",
+                "sku_discount": "10",
+				"sku_quantity": "20",
+				"sku_unit_price": "500"
+            },
+            {
+                "product_name":"MM 3",
+                "product_id":"MM 3",
+                "sku_discount": "15",
+				"sku_quantity": "30",
+				"sku_unit_price": "600"
+
+            }
+        ],
         "fields": [
             {
-                "type": "select",
-                "name": "assiggee",
-                "label": "Assignee",
-                "multiple" : false,
-                "labelKey" : "user_name",
-                "primaryKey" : "user_id",
-                "objectType" : true,
-                "options" : [
-                    {
-                        "user_id" : 1,
-                        "user_name" : "Sharath"
-                    },
-                    {
-                        "user_id" : 2,
-                        "user_name" : "Rabindra"
-                    },
-                    {
-                        "user_id" : 3,
-                        "user_name" : "Nitheesh"
-                    }
-                ],
-                "defaultValue": [
-                    {
-                        "user_id" : 3,
-                        "user_name" : "Nitheesh"
-                    }
-                ]
-            },
-
-            {
-                "type": "text",
-                "name": "city",
-                "label": "City",
+                "type": "number",
+                "name": "sku_unit_price",
+                "label": "Price",
                 "required": true,
                 "editable": true,
                 "hidden": false
             },
             {
-                "type": "text",
-                "name": "city_state",
-                "label": "State",
+                "type": "number",
+                "name": "sku_quantity",
+                "label": "Quantity",
                 "required": true,
                 "editable": true,
                 "hidden": false
+            },
+            {
+                "type": "number",
+                "name": "sku_discount",
+                "label":"Discount",
+                "required": true,
+                "editable": true,
+                "hidden": false
+            },
+            {
+                "type": "calculated",
+                "name": "total",
+                "label":"Total",
+                "required": true,
+                "editable": true,
+                "hidden": false,
+                "fields":["sku_unit_price","sku_quantity","sku_discount"],
+                "expression":"sku_unit_price * sku_quantity * (100 - sku_discount)/100"
             }
-
         ]
     }
-
+    
 ]
