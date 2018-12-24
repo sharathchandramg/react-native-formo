@@ -78,9 +78,19 @@ export default class SubForm extends Component {
                 acc.push(item[key]);
                 return acc;
             },[]);
-
-        let arr = filtered.filter(value => typeof value !=='object')   
-        if(arr .length >0)  
+        
+            let arr = [];
+            filtered.forEach(function(item) {
+                if(typeof item ==='object'){
+                    let fArr = Object.values(item).filter(value => value)
+                    arr.push(fArr);
+                }
+                if(typeof item ==='string'){
+                    arr.push(item)
+                }
+            });
+                    
+        if(arr.length >0)  
             return arr.toString()
         else 
             return         
@@ -107,7 +117,7 @@ export default class SubForm extends Component {
     render() {
 
         const { theme, attributes, ErrorComponent } = this.props;
-    
+        
         return (
             <View style ={styles.container}>
                 <View style={[styles.inputField]}  error={theme.changeTextInputColorOnError ? attributes.error : null}>
