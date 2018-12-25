@@ -236,7 +236,7 @@ string (date in format "YYYY-MM-DD", "today", "tomorrow") or JS Date
 ##### Additional Properties
 
 | Prop | Type | Default | Required | Description |
-|------|------|---------|-------------|
+|------|------|---------|-------------|------------|
 |multiple       |bool   |false  | No                             |  Allow single or multiple selection   |
 |objectType     |string |false  | No                             | Minimum date in datepicker           |
 |labelKey       |string |N/A    | Yes, if Object Type is true    | To define the key which value need to be used as label.           |
@@ -304,7 +304,7 @@ see the example 10-lookup.json (https://github.com/sharathchandramg/react-native
 ##### Additional Properties
 
 | Prop | Type | Default | Required | Description |
-|------|------|---------|-------------|
+|------|------|---------|-------------|------------|
 |multiple       |bool   |false  | No                             |  Allow single or multiple selection   |
 |objectType     |string |false  | No                             | Minimum date in datepicker           |
 |labelKey       |string |N/A    | Yes, if Object Type is true    | To define the key which value need to be used as label.           |
