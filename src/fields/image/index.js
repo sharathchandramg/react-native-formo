@@ -112,7 +112,7 @@ export default class ImageField extends Component {
 	};
 
     _onPressImage = () => {
-		const options = this.props.options.config.options || this.defaultProps.options;
+		const options = this.props.attributes.options;
 		ActionSheetIOS.showActionSheetWithOptions({ options, cancelButtonIndex: 2},
 			buttonIndex => {
 				if (buttonIndex === 0) {
