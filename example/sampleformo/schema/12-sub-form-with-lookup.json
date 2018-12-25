@@ -1,0 +1,91 @@
+[
+    {
+        "type": "text",
+        "name": "data_source",
+        "label": "Data Source",
+        "required": true,
+        "editable": true,
+        "hidden": false
+    },
+    {
+        "type": "text",
+        "name": "prospect_name",
+        "label": "Prospect Name",
+        "required": true,
+        "editable": true,
+        "hidden": false
+    },
+    {
+        "type": "picker",
+        "name": "status",
+        "label": "Status",
+        "required": false,
+        "editable": true,
+        "hidden": false,
+        "options": [
+            "Pending",
+            "On Hold",
+            "Shortlisted",
+            "Rejected"
+        ]
+    },
+    {
+        "type": "sub-form",
+        "name": "customer",
+        "label": "Customer",
+        "fields": [
+            {
+                "type": "lookup",
+                "name": "select_name",
+                "label": "Select Customer",
+                "required": true,
+                "editable": true,
+                "hidden": false,
+                "multiple": false,
+                "labelKey": "customer_name",
+                "primaryKey": "customer_code",
+                "objectType": true,
+                "options": [
+                    {
+                        "customer_name": "Customer 1",
+                        "customer_code": "C-AQ-112345",
+                        "billing_address": "344, Jayanagar 1st Block, Bangalore - 85",
+                        "shipping_address": "344, Jayanagar 1st Block, Bangalore - 85"
+                    },
+                    {
+                        "customer_name": "Customer 2",
+                        "customer_code": "C-AQ-112346",
+                        "billing_address": "344, Jayanagar 1st Block, Bangalore - 85",
+                        "shipping_address": "344, Jayanagar 1st Block, Bangalore - 85"
+                    }
+                ],
+                "fields": [
+                    {
+                        "type": "text",
+                        "name": "customer_name",
+                        "label": "Customer Name",
+                        "required": true,
+                        "editable": false,
+                        "hidden": false
+                    },
+                    {
+                        "type": "text",
+                        "name": "customer_code",
+                        "label": "Customer Code",
+                        "required": true,
+                        "editable": false,
+                        "hidden": false
+                    },
+                    {
+                        "type": "text",
+                        "name": "billing_address",
+                        "label": "Billing Address",
+                        "required": true,
+                        "editable": false,
+                        "hidden": false
+                    }
+                ]
+            }
+        ]
+    }
+]

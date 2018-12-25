@@ -28,5 +28,39 @@
             "Shortlisted",
             "Rejected"
         ]
+    },
+    {
+        "type": "sub-form",
+        "name": "previous_work_history",
+        "label": "Work History",
+        "multiple": false,
+        "required": true,
+        "editable": true,
+        "fields": [
+            {
+                "type": "text",
+                "name": "org_name",
+                "label": "Organization",
+                "required": true,
+                "editable": true,
+                "hidden": false
+            },
+            {
+                "type": "text",
+                "name": "designation",
+                "label": "Designation",
+                "required": true,
+                "editable": true,
+                "hidden": false
+            },
+            {
+                "type": "number",
+                "name": "year_of_start",
+                "label": "Start Year",
+                "required": true,
+                "editable": true,
+                "hidden": false
+            }
+        ]
     }
 ]

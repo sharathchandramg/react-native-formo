@@ -27,19 +27,35 @@ Build model based simple forms for React Native
         - [Common Properties](#common-properties)
         - [Field Types](#field-types)
             - [TextInput](#textinput)
+                - [Type](#type)
                 - [Additional Properties](#additional-properties)
                 - [Value Type](#value-type)
             - [Switch](#switch)
+                - [Type](#type-1)
                 - [Value Type](#value-type-1)
             - [Date](#date)
                 - [Additional Properties](#additional-properties-1)
                 - [Value Type](#value-type-2)
                 - [Default Value Type](#default-value-type)
             - [Select](#select)
+                - [Type](#type-2)
+                - [Additional Properties](#additional-properties-2)
+                - [Value Type](#value-type-3)
+                - [Default Value Type](#default-value-type-1)
             - [Lookup](#lookup)
+                - [Type](#type-3)
+                - [Additional Properties](#additional-properties-3)
+                - [Value Type](#value-type-4)
+                - [Default Value Type](#default-value-type-2)
+            - [Sub Form](#sub-form)
+                - [Type](#type-4)
             - [Location](#location)
+                - [Type](#type-5)
+                - [Value Type](#value-type-5)
             - [Image](#image)
+                - [Type](#type-6)
             - [Document](#document)
+            - [Calculated](#calculated)
 
 <!-- /TOC -->
 
@@ -167,8 +183,10 @@ The common properties for all the fields are :
 ### Field Types
 
 #### TextInput
-
 Text input field allows to enter the text. The types of text fields allowed are, text, email, url, password, number, phone_number, currency
+
+##### Type  
+{ type: text }
 
 ##### Additional Properties
 
@@ -183,7 +201,11 @@ Text input field allows to enter the text. The types of text fields allowed are,
 - Number (number,phone_number,currency)
 
 #### Switch
+
 Implementation of react native switch component
+
+##### Type  
+{ type: switch }
 
 ##### Value Type 
 Boolean
@@ -208,15 +230,173 @@ string (date in format "YYYY-MM-DD", "today", "tomorrow") or JS Date
 
 #### Select
 
+##### Type  
+{ type: select }
+
+##### Additional Properties
+
+| Prop | Type | Default | Required | Description |
+|------|------|---------|-------------|
+|multiple       |bool   |false  | No                             |  Allow single or multiple selection   |
+|objectType     |string |false  | No                             | Minimum date in datepicker           |
+|labelKey       |string |N/A    | Yes, if Object Type is true    | To define the key which value need to be used as label.           |
+|primaryKey     |string |N/A    | Yes, if Object Type is true    | To define the key which is unique in all objects.           |
+|options        |string |N/A    | Yes                            |  To define the key which is unique in all objects.           |
+
+##### Value Type
+
+- Array of Strings
+
+```
+["Option 1", "Option 2, "Option 3"]
+```
+
+- Array of Objects
+
+```
+"options": [
+            {
+                "user_id": 1,
+                "user_name": "Sharath"
+            },
+            {
+                "user_id": 2,
+                "user_name": "Rabindra"
+            },
+            {
+                "user_id": 3,
+                "user_name": "Nitheesh"
+            }
+        ],
+```
+
+##### Default Value Type
+
+- String
+
+If the options are array of strings
+
+```
+["Option 1", "Option 3"]
+```
+
+- Object
+If options are array of objects
+
+```
+defaultValue : [
+    {
+        "user_id": 3,
+        "user_name": "Nitheesh"
+    }
+]
+```
 #### Lookup
 
+##### Type  
+{ type: lookup }
+
+Lookup is similar to select. Lookup is useful is auto-populating data from the master data.
+e.g if there is a master data of users, then lookup can be used to select the user and then other reference fields will be auto populated
+
+see the example 10-lookup.json (https://github.com/sharathchandramg/react-native-formo/blob/master/example/sampleformo/schema/10-lookup.json)
+
+##### Additional Properties
+
+| Prop | Type | Default | Required | Description |
+|------|------|---------|-------------|
+|multiple       |bool   |false  | No                             |  Allow single or multiple selection   |
+|objectType     |string |false  | No                             | Minimum date in datepicker           |
+|labelKey       |string |N/A    | Yes, if Object Type is true    | To define the key which value need to be used as label.           |
+|primaryKey     |string |N/A    | Yes, if Object Type is true    | To define the key which is unique in all objects.           |
+|options        |string |N/A    | Yes                            |  To define the key which is unique in all objects.           |
+
+##### Value Type
+
+- Array of Strings
+
+```
+["Option 1", "Option 2, "Option 3"]
+```
+
+- Array of Objects
+
+```
+"options": [
+            {
+                "user_id": 1,
+                "user_name": "Sharath",
+                "email" : "sharath@xyx.com",
+                "phone" : "1234567890"
+            },
+            {
+                "user_id": 2,
+                "user_name": "Rabindra",
+                "email" : "rabindra@xyx.com",
+                "phone" : "1234567890"
+            },
+            {
+                "user_id": 3,
+                "user_name": "Nitheesh",
+                "email" : "nitheesh@xyx.com",
+                "phone" : "1234567890"
+            }
+        ],
+```
+
+##### Default Value Type
+
+- String
+
+If the options are array of strings
+
+```
+["Option 1", "Option 3"]
+```
+
+- Object
+If options are array of objects
+
+```
+defaultValue : [
+    {
+        "user_id": 3,
+        "user_name": "Nitheesh",
+        "email" : "nitheesh@xyx.com",
+        "phone" : "1234567890"
+    }
+]
+```
+
+
+#### Sub Form 
+Allows to have multiple nested complex objects. This is useful if we need to record multiple instances of data
+e.g. see the example 10-lookup.json (https://github.com/sharathchandramg/react-native-formo/blob/master/example/sampleformo/schema/11-sub-form.json)
+
+##### Type  
+{ type: sub-form }
 
 #### Location 
 
+Allows to record the geo-location of the device. This requires the user to provide access to the read the location data
+
+##### Type  
+{ type: location }
+
+##### Value Type 
+Object ({ 
+    latitude : "",
+    longitude : ""
+})
+
 #### Image
+
+##### Type  
+{ type: image }
 
 #### Document
 
+#### Calculated 
 
 
 

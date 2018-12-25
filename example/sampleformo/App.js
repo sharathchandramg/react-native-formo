@@ -6,37 +6,37 @@ import { Button } from "native-base";
 
 export default class App extends Component {
 	render() {
-		const fields = require("./schema/form_with_group.json");
-		const formData = {
-			prospect_name: "MTV",
-			work_address: [
-				{
-					city: "BLR",
-					country: "IND"
-				}
-			],
-			product: [
-				{
-					sku_discount: "0",
-					sku_quantity: "10",
-					sku_unit_price: "1000",
-					sku: {
-						product_name: "MM 2",
-						product_id: "MM 2"
-					}
-				},
-				{
-					sku_discount: "10",
-					sku_quantity: "5",
-					sku_unit_price: "100",
-					sku: {
-						product_name: "MM 1",
-						product_id: "MM 1"
-					}
-				}
-			]
-		};
-		console.log(fields);
+		const fields = require("./schema/11-sub-form.json");
+		// const formData = {
+		// 	prospect_name: "MTV",
+		// 	work_address: [
+		// 		{
+		// 			city: "BLR",
+		// 			country: "IND"
+		// 		}
+		// 	],
+		// 	product: [
+		// 		{
+		// 			sku_discount: "0",
+		// 			sku_quantity: "10",
+		// 			sku_unit_price: "1000",
+		// 			sku: {
+		// 				product_name: "MM 2",
+		// 				product_id: "MM 2"
+		// 			}
+		// 		},
+		// 		{
+		// 			sku_discount: "10",
+		// 			sku_quantity: "5",
+		// 			sku_unit_price: "100",
+		// 			sku: {
+		// 				product_name: "MM 1",
+		// 				product_id: "MM 1"
+		// 			}
+		// 		}
+		// 	]
+		// };
+		// console.log(fields);
 		return (
 			<ScrollView>
 				<Form0
