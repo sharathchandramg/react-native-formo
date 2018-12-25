@@ -30,10 +30,11 @@ Build model based simple forms for React Native
                 - [Additional Properties](#additional-properties)
                 - [Value Type](#value-type)
             - [Switch](#switch)
+                - [Value Type](#value-type-1)
             - [Date](#date)
                 - [Additional Properties](#additional-properties-1)
-                - [Value Type : String](#value-type--string)
-                - [Default Value Type : string (date in format "YYYY-MM-DD", "today", "tomorrow") or JS Date](#default-value-type--string-date-in-format-yyyy-mm-dd-today-tomorrow-or-js-date)
+                - [Value Type](#value-type-2)
+                - [Default Value Type](#default-value-type)
             - [Select](#select)
             - [Lookup](#lookup)
             - [Location](#location)
@@ -182,7 +183,10 @@ Text input field allows to enter the text. The types of text fields allowed are,
 - Number (number,phone_number,currency)
 
 #### Switch
+Implementation of react native switch component
 
+##### Value Type 
+Boolean
 
 #### Date
 
@@ -196,9 +200,11 @@ Text input field allows to enter the text. The types of text fields allowed are,
 |minDate      |string (date in format "YYYY-MM-DD", "today", "tomorrow") or JS Date     |N/A               |Minimum date in datepicker           |
 |maxDate            |string (date in format "YYYY-MM-DD", "today", "tomorrow") or JS Date              |N/A              |Miximum date in datepicker            |
 
-##### Value Type : String
+##### Value Type 
+String
 
-##### Default Value Type : string (date in format "YYYY-MM-DD", "today", "tomorrow") or JS Date
+##### Default Value Type 
+string (date in format "YYYY-MM-DD", "today", "tomorrow") or JS Date
 
 #### Select
 

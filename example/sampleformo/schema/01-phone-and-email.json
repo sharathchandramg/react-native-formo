@@ -1,0 +1,34 @@
+[
+    {
+        "type": "text",
+        "name": "data_source",
+        "label": "Data Source",
+        "required": true,
+        "editable": true,
+        "hidden": false
+    },
+    {
+        "type": "text",
+        "name": "prospect_name",
+        "label": "Prospect Name",
+        "required": true,
+        "editable": true,
+        "hidden": false
+    },
+    {
+        "type": "phone",
+        "name": "phone_number",
+        "label": "Phone Number",
+        "required": true,
+        "editable": true,
+        "hidden": false
+    },
+    {
+        "type": "email",
+        "name": "email",
+        "label": "Email",
+        "required": true,
+        "editable": true,
+        "hidden": false
+    }
+]
