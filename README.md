@@ -30,32 +30,39 @@ Build model based simple forms for React Native
                 - [Type](#type)
                 - [Additional Properties](#additional-properties)
                 - [Value Type](#value-type)
-            - [Switch](#switch)
+            - [Picker](#picker)
                 - [Type](#type-1)
-                - [Value Type](#value-type-1)
-            - [Date](#date)
                 - [Additional Properties](#additional-properties-1)
-                - [Value Type](#value-type-2)
+                - [Value Type](#value-type-1)
                 - [Default Value Type](#default-value-type)
-            - [Select](#select)
+            - [Switch](#switch)
                 - [Type](#type-2)
+                - [Value Type](#value-type-2)
+            - [Date](#date)
                 - [Additional Properties](#additional-properties-2)
                 - [Value Type](#value-type-3)
                 - [Default Value Type](#default-value-type-1)
-            - [Lookup](#lookup)
+            - [Select](#select)
                 - [Type](#type-3)
                 - [Additional Properties](#additional-properties-3)
                 - [Value Type](#value-type-4)
                 - [Default Value Type](#default-value-type-2)
-            - [Sub Form](#sub-form)
+            - [Lookup](#lookup)
                 - [Type](#type-4)
-            - [Location](#location)
-                - [Type](#type-5)
+                - [Additional Properties](#additional-properties-4)
                 - [Value Type](#value-type-5)
-            - [Image](#image)
+                - [Default Value Type](#default-value-type-3)
+            - [Sub Form](#sub-form)
+                - [Type](#type-5)
+            - [Location](#location)
                 - [Type](#type-6)
+                - [Value Type](#value-type-6)
+            - [Image](#image)
+                - [Type](#type-7)
             - [Document](#document)
             - [Calculated](#calculated)
+    - [Prefill form data (Edit mode)](#prefill-form-data-edit-mode)
+    - [Add custom validations](#add-custom-validations)
 
 <!-- /TOC -->
 
@@ -143,12 +150,33 @@ const styles = StyleSheet.create({
 
 #### getValues
 
+Fetch the data from the form. 
+
+```
+{
+    "data_source" : "test",
+    "prospect_name" : "sharath"
+}
+
+```
+
 #### setValues
+
+Set the values of fields in the form. Ensure that the object setting the values has same name as form field name
+
+```
+{
+    "data_source" : "test",
+    "prospect_name" : "sharath"
+}
+
+```
 
 #### resetForm
 
-#### setToDefault
+Reset the form, clears data and errors
 
+#### setToDefault
 
 ## Form Fields
 
@@ -199,6 +227,25 @@ Text input field allows to enter the text. The types of text fields allowed are,
 ##### Value Type 
 - String (text, email, url, password)
 - Number (number,phone_number,currency)
+
+#### Picker
+
+##### Type  
+{ type: picker }
+
+##### Additional Properties
+
+| Prop | Type | Default | Required | Description |
+|------|------|---------|-------------|------------|
+|options        |array |N/A    | Yes                            |  Defines the options          |
+|props        |object |N/A    | Yes                            |  react native picker props like {mode : 'dropdown'}          |
+
+##### Value Type 
+String
+
+##### Default Value Type 
+String (The string value must be a valid options)
+
 
 #### Switch
 
@@ -397,6 +444,25 @@ Object ({
 #### Document
 
 #### Calculated 
+
+
+## Prefill form data (Edit mode)
+
+Pass the data to be prefilled as formData property
+
+```
+
+formData = {
+  first_name : 'Sha',
+  last_name: 'Snow',
+  house: 'Winterfell',
+  status: 'Sad'
+}
+
+```
+
+
+## Add custom validations
 
 
 
