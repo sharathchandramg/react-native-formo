@@ -6,7 +6,7 @@ import { Button } from "native-base";
 
 export default class App extends Component {
 	render() {
-		const fields = require("./schema/11-sub-form.json");
+		const fields = require("./schema/__test.json");
 		// const formData = {
 		// 	prospect_name: "MTV",
 		// 	work_address: [
@@ -51,7 +51,7 @@ export default class App extends Component {
 					<Button
 						full
 						info
-						onPress={() =>console.log(this.formGenerator.getValues())}
+						onPress={() => console.log(this.formGenerator.getValues())}
 					>
 						<Text>Submit</Text>
 					</Button>

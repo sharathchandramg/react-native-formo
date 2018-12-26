@@ -45,9 +45,6 @@ export default class LookupField extends Component {
 
     toggleSelect(value) {
         const attributes = this.props.attributes;
-        let updateValue = {};
-        updateValue[attributes.labelKey] = value[attributes.labelKey];
-        updateValue[attributes.primaryKey] = value[attributes.primaryKey]
         this.setState({
             modalVisible: attributes.multiple ? this.state.modalVisible : false,
         },() => this.props.updateValue(this.props.attributes.name,updateValue));
