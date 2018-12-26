@@ -47,7 +47,7 @@ export default class LookupField extends Component {
         const attributes = this.props.attributes;
         this.setState({
             modalVisible: attributes.multiple ? this.state.modalVisible : false,
-        },() => this.props.updateValue(this.props.attributes.name,updateValue));
+        },() => this.props.updateValue(this.props.attributes.name,value));
     }
 
     renderlookupIcon = ()=>{
