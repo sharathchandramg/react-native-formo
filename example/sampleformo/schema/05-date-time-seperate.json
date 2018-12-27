@@ -33,5 +33,14 @@
         "editable": true,
         "hidden": false,
         "mode": "time"
+    },
+    {
+        "type": "date",
+        "name": "followup_datetime",
+        "label": "Follow Up",
+        "required": false,
+        "editable": true,
+        "hidden": false,
+        "mode": "datetime"
     }
 ]
