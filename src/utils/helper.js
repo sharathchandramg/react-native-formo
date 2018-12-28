@@ -88,8 +88,8 @@ export function getDefaultValue(field) {
                             return moment().format("YYYY-MM-DD HH:MM");
                         else if (field.defaultValue === "tomorrow")
                             return moment().add(1, "day").format("YYYY-MM-DD HH:MM");
-                        else if (field.defaultValue) {
-                            let totalMinutes = Number.isInteger(field.defaultValue) ? parseInt(field.defaultValue) : 0;
+                        else if (typeof field.defaultValue !== "undefined" && Number.parseInt(field.defaultValue) >= 0) {
+                            let totalMinutes = Number.parseInt(field.defaultValue);
                             return moment().add(totalMinutes, "minutes").format("YYYY-MM-DD HH:MM");
                         }
                         else if (field.defaultValue === "")
