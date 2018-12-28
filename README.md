@@ -274,6 +274,7 @@ String
 
 ##### Default Value Type 
 string (date in format "YYYY-MM-DD", "today", "tomorrow") or JS Date
+integer(number of minutes to be added/subtracted from current date) e.g. +60 (means 60 minutes forward) -60 
 
 #### Select
 
