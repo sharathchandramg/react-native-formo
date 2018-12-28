@@ -89,7 +89,6 @@ export function getDefaultValue(field) {
                         else if (field.defaultValue === "tomorrow")
                             return moment().add(1, "day").format("YYYY-MM-DD HH:MM");
                         else if (typeof field.defaultValue !== "undefined" && Number.parseInt(field.defaultValue) >= 0) {
-                            console.log("ehere");
                             let totalMinutes = Number.parseInt(field.defaultValue);
                             return moment().add(totalMinutes, "minutes").format("YYYY-MM-DD HH:MM");
                         }
