@@ -41,6 +41,7 @@
         "required": false,
         "editable": true,
         "hidden": false,
-        "mode": "datetime"
+        "mode": "datetime",
+        "defaultValue" : 120 
     }
 ]

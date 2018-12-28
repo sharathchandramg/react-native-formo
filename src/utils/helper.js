@@ -70,32 +70,33 @@ export function getDefaultValue(field) {
         case "date":
             {
                 const dateDefaultValue = field.defaultValue && new Date(field.defaultValue);
-                switch(field.mode){
+                switch (field.mode) {
                     case 'date':
                         if (field.defaultValue === "today")
                             return moment().format("YYYY-MM-DD");
-                        else if(field.defaultValue === "tomorrow" ) 
-                            return moment().add(1, "day").format("YYYY-MM-DD"); 
-                        else    
+                        else if (field.defaultValue === "tomorrow")
+                            return moment().add(1, "day").format("YYYY-MM-DD");
+                        else
                             return null;
-                    case 'time':  
+                    case 'time':
                         if (dateDefaultValue && !_.isNaN(dateDefaultValue.getTime()))
                             return dateDefaultValue;
-                        else    
+                        else
                             return null;
                     case 'datetime':
-                    if (field.defaultValue === "today")
+                        if (field.defaultValue === "today")
                             return moment().format("YYYY-MM-DD HH:MM");
-                        else if(field.defaultValue === "tomorrow" ) 
-                            return moment().add(1, "day").format("YYYY-MM-DD HH:MM"); 
-                        else    
-                            return null;
-                    default:
-                        if (field.defaultValue === "")
+                        else if (field.defaultValue === "tomorrow")
+                            return moment().add(1, "day").format("YYYY-MM-DD HH:MM");
+                        else if (field.defaultValue) {
+                            let totalMinutes = Number.isInteger(field.defaultValue) ? parseInt(field.defaultValue) : 0;
+                            return moment().add(totalMinutes, "minutes").format("YYYY-MM-DD HH:MM");
+                        }
+                        else if (field.defaultValue === "")
                             return "Select";
-                        else   
-                            return null;  
-                }  
+                        else
+                            return null;
+                }
             }
         case "group":
             if (field.fields) {
@@ -203,8 +204,8 @@ export function autoValidate(field) {
                 }
                 break;
             case "sub-form":
-                let value = field.value?field.value[0]:'';
-                if(typeof value === "undefined" || !value || value === ''){
+                let value = field.value ? field.value[0] : '';
+                if (typeof value === "undefined" || !value || value === '') {
                     error = true;
                     errorMsg = `${field.label} is required`;
                 }
