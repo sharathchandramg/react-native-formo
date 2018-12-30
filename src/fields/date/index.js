@@ -140,7 +140,7 @@ export default class DateField extends Component {
                     flexDirection:'row',
                 }}>
                 <Text onPress={this.showDateTimePicker}>
-                    {(value && moment(value, "Do MMM YYYY HH:MM").format("Do MMM YYYY HH:MM")) || "None"}
+                    {(value && moment(value, "Do MMM YYYY HH:mm").format("Do MMM YYYY HH:mm")) || "None"}
                 </Text>
                 <Icon name="ios-arrow-forward" style={{fontSize:18,paddingStart:10,color:theme.inputColorPlaceholder}}/>
             </TouchableOpacity>
@@ -183,7 +183,7 @@ export default class DateField extends Component {
                     flexDirection:'row'
                 }}>
                 <Text onPress={this.showTimePicker}>
-                    {(value && moment(value, 'hh:mm a').format("hh:mm a")) || "None"}
+                    {(value && moment(value, 'HH:mm').format("HH:mm")) || "None"}
                 </Text>
                 <Icon name="ios-arrow-forward" style={{fontSize:18,paddingStart:10,color:theme.inputColorPlaceholder}}/>
             </TouchableOpacity>
@@ -205,7 +205,7 @@ export default class DateField extends Component {
                     flexDirection:'row',
                 }}>
                 <Text onPress={this.showDateTimePicker}>
-                    {(value && moment(value, "Do MMM YYYY HH:MM").format("Do MMM YYYY HH:MM")) || "None"}
+                    {(value && moment(value, "Do MMM YYYY HH:mm").format("Do MMM YYYY HH:mm")) || "None"}
                 </Text>
                 <Icon name="ios-arrow-forward" style={{fontSize:18,paddingStart:10,color:theme.inputColorPlaceholder}}/>
             </TouchableOpacity>

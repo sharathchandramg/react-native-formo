@@ -18,7 +18,7 @@ export function getKeyboardType(textType) {
     }
 }
 
-export function getDefaultValue(field) {
+export function getDefaultValue(field) {    
     switch (field.type) {
         case "text":
         case "number":
@@ -69,7 +69,6 @@ export function getDefaultValue(field) {
 
         case "date":
             {
-                const dateDefaultValue = field.defaultValue && new Date(field.defaultValue);
                 switch (field.mode) {
                     case 'date':
                         if (field.defaultValue === "today")
@@ -79,6 +78,7 @@ export function getDefaultValue(field) {
                         else
                             return null;
                     case 'time':
+                        const dateDefaultValue = field.defaultValue && new Date(field.defaultValue);
                         if (dateDefaultValue && !_.isNaN(dateDefaultValue.getTime()))
                             return dateDefaultValue;
                         else
@@ -88,15 +88,18 @@ export function getDefaultValue(field) {
                             return moment().format("YYYY-MM-DD HH:MM");
                         else if (field.defaultValue === "tomorrow")
                             return moment().add(1, "day").format("YYYY-MM-DD HH:MM");
-                        else if (typeof field.defaultValue !== "undefined" && Number.parseInt(field.defaultValue) >= 0) {
-                            return moment().add(Number.parseInt(field.defaultValue), "minutes").format("YYYY-MM-DD HH:mm");
+                        else if (!_.isNaN(field.defaultValue)) {
+                            console.log("The datetime has default value of " + parseInt(field.defaultValue));
+                            console.log("The current datetime is " + moment().format("YYYY-MM-DD HH:mm"));
+                            console.log("The updated datetime is " + moment().add(parseInt(field.defaultValue), "minutes").format("YYYY-MM-DD HH:mm"));
+                            return moment().add(parseInt(field.defaultValue), "minutes").format("YYYY-MM-DD HH:mm");
                         }
                         else if (field.defaultValue === "") {
+                            console.log("Enter for " + field.defaultValue)
                             return "Select";
                         }
-                        else {
+                        else
                             return null;
-                        }
                 }
             }
         case "group":
