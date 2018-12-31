@@ -26,5 +26,16 @@
         "required": true,
         "editable": true,
         "hidden": false
+    },
+    {
+        "type": "date",
+        "name": "orientation_date_time",
+        "label": "Orientation Date and Time",
+        "required": false,
+        "editable": true,
+        "hidden": false,
+        "mode": "datetime",
+        "minDate": "today",
+        "defaultValue" : 120 
     }
 ]

@@ -94,7 +94,7 @@ export function getDefaultValue(field) {
                             return moment().format("YYYY-MM-DD HH:MM");
                         else if (field.defaultValue === "tomorrow")
                             return moment().add(1, "day").format("YYYY-MM-DD HH:MM");
-                        else if (!_.isNaN(field.defaultValue)) {
+                        else if (typeof field.defaultValue !=='undefined' && !_.isNaN(field.defaultValue)) {
                             console.log("The datetime has default value of " + parseInt(field.defaultValue));
                             console.log("The current datetime is " + moment().format("YYYY-MM-DD HH:mm"));
                             console.log("The updated datetime is " + moment().add(parseInt(field.defaultValue), "minutes").format("YYYY-MM-DD HH:mm"));

@@ -51,7 +51,7 @@ export default class App extends Component {
 					<Button
 						full
 						info
-						onPress={() => alert(JSON.stringify(this.formGenerator.getValues()))}
+						onPress={() => console.log(this.formGenerator.getValues())}
 					>
 						<Text>Submit</Text>
 					</Button>
