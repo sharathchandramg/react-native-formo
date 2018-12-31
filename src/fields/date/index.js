@@ -3,10 +3,7 @@ import React, { Component } from "react";
 import { Platform, DatePickerIOS, DatePickerAndroid, TouchableOpacity, TimePickerAndroid, Modal, TouchableHighlight } from "react-native";
 
 import { View, Text, Item,Icon, } from "native-base";
-
 const moment = require("moment");
-
-import { getKeyboardType } from "./../../utils/helper";
 import Panel from "../../components/panel";
 
 export default class DateField extends Component {
@@ -128,8 +125,7 @@ export default class DateField extends Component {
 
     showAndroidDateTimePicker = ()=>{
         const { theme, attributes } = this.props;
-        const value = (attributes.value && new Date(attributes.value)) || null;
-
+        const value = (attributes.value && moment(attributes.value)) || null;
         return (
             <TouchableOpacity
                 hitSlop={{ top: 10, bottom: 10, right: 50, left: 50 }}
@@ -140,7 +136,7 @@ export default class DateField extends Component {
                     flexDirection:'row',
                 }}>
                 <Text onPress={this.showDateTimePicker}>
-                    {(value && moment(value, "Do MMM YYYY HH:mm").format("Do MMM YYYY HH:mm")) || "None"}
+                    {(value && moment(value).format("Do MMM YYYY HH:mm")) || "Select"}
                 </Text>
                 <Icon name="ios-arrow-forward" style={{fontSize:18,paddingStart:10,color:theme.inputColorPlaceholder}}/>
             </TouchableOpacity>
@@ -150,7 +146,7 @@ export default class DateField extends Component {
     showAndroidDateOnlyPicker = () => {
 
         const { theme, attributes } = this.props;
-        const value = (attributes.value && new Date(attributes.value)) || null;
+        const value = (attributes.value && moment(attributes.value)) || null;
 
         return (
             <TouchableOpacity
@@ -162,7 +158,7 @@ export default class DateField extends Component {
                     flexDirection:'row'
                 }}>
                 <Text onPress={this.showDatePicker}>
-                    {(value && moment(value, "Do MMM YYYY").format("Do MMM YYYY")) || "None"}
+                    {(value && moment(value).format("Do MMM YYYY")) || "Select"}
                 </Text>
                 <Icon name="ios-arrow-forward" style={{fontSize:18,paddingStart:10,color:theme.inputColorPlaceholder}}/>
             </TouchableOpacity>
@@ -172,7 +168,7 @@ export default class DateField extends Component {
     showAndroidTimeOnlyPicker = () => {
 
         const { attributes,theme } = this.props;
-        const value = (attributes.value && new Date(attributes.value)) || null;
+        const value = (attributes.value && moment(attributes.value)) || null;
 
         return (
             <TouchableOpacity
@@ -183,7 +179,7 @@ export default class DateField extends Component {
                     flexDirection:'row'
                 }}>
                 <Text onPress={this.showTimePicker}>
-                    {(value && moment(value, 'HH:mm').format("HH:mm")) || "None"}
+                    {(value && moment(value).format("hh:mm a")) || "Select"}
                 </Text>
                 <Icon name="ios-arrow-forward" style={{fontSize:18,paddingStart:10,color:theme.inputColorPlaceholder}}/>
             </TouchableOpacity>
@@ -193,7 +189,7 @@ export default class DateField extends Component {
 
     showIOSDateTimePicker = ()=>{
         const { theme, attributes } = this.props;
-        const value = (attributes.value && new Date(attributes.value)) || null;
+        const value = (attributes.value && moment(attributes.value)) || null;
 
         return (
             <TouchableOpacity
@@ -205,7 +201,7 @@ export default class DateField extends Component {
                     flexDirection:'row',
                 }}>
                 <Text onPress={this.showDateTimePicker}>
-                    {(value && moment(value, "Do MMM YYYY HH:mm").format("Do MMM YYYY HH:mm")) || "None"}
+                    {(value && moment(value).format("Do MMM YYYY HH:mm")) || "Select"}
                 </Text>
                 <Icon name="ios-arrow-forward" style={{fontSize:18,paddingStart:10,color:theme.inputColorPlaceholder}}/>
             </TouchableOpacity>
@@ -215,7 +211,7 @@ export default class DateField extends Component {
     showIOSDateOnlyPicker = () => {
 
         const { attributes ,theme} = this.props;
-        const value = (attributes.value && new Date(attributes.value)) || null;
+        const value = (attributes.value && moment(attributes.value)) || null;
 
         return (
             <View
@@ -226,7 +222,7 @@ export default class DateField extends Component {
                     flexDirection:'row'
                 }}>
                 <Text>
-                    {(value && moment(value, "Do MMM YYYY").format("Do MMM YYYY")) || "None"}
+                    {(value && moment(value).format("Do MMM YYYY")) || "Select"}
                     <Icon name="ios-arrow-forward" style={{fontSize:18,paddingStart:10,color:theme.inputColorPlaceholder}}/>
                 </Text>
             </View>
@@ -236,7 +232,7 @@ export default class DateField extends Component {
     showIOSTimeOnlyPicker = () => {
 
         const { attributes, theme } = this.props;
-        const value = (attributes.value && new Date(attributes.value)) || null;
+        const value = (attributes.value && moment(attributes.value)) || null;
 
         return (
             <View
@@ -247,7 +243,7 @@ export default class DateField extends Component {
                     flexDirection:'row'
                 }}>
                 <Text>
-                    {(value && moment(value, 'hh:mm a').format("hh:mm a")) || "None"}
+                    {(value && moment(value).format("hh:mm a")) || "Select"}
                     <Icon name="ios-arrow-forward" style={{fontSize:18,paddingStart:10,color:theme.inputColorPlaceholder}}/>
                 </Text>
             </View>
