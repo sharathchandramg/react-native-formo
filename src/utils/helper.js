@@ -77,12 +77,18 @@ export function getDefaultValue(field) {
                             return moment().add(1, "day").format("YYYY-MM-DD");
                         else
                             return null;
+
                     case 'time':
                         const dateDefaultValue = field.defaultValue && new Date(field.defaultValue);
                         if (dateDefaultValue && !_.isNaN(dateDefaultValue.getTime()))
                             return dateDefaultValue;
+                        else if (field.defaultValue === "today")
+                            return moment().format("HH:MM");
+                        else if (field.defaultValue === "tomorrow")
+                            return moment().add(1, "day").format("HH:MM");
                         else
                             return null;
+                            
                     case 'datetime':
                         if (field.defaultValue === "today")
                             return moment().format("YYYY-MM-DD HH:MM");
@@ -146,7 +152,7 @@ export function getInitialState(fields) {
         const fieldObj = field;
         fieldObj.error = false;
         fieldObj.errorMsg = '';
-        if (!field.hidden && field.type) {
+        if (field && field.type) {
             fieldObj.value = getDefaultValue(field);
             state[field.name] = fieldObj;
         }
