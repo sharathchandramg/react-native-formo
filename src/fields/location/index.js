@@ -95,12 +95,23 @@ export default class LocationField extends Component {
             this.setState({
                 url : url,
                 isPickingLocation: false,
-            },()=> this.props.updateValue(this.props.attributes.name,url))
+            },()=> this.props.updateValue(this.props.attributes.name,{lat:position.latitude,long:position.longitude}))
         }
     }
 
     renderPostionUrl =(attributes)=>{
-        let url = attributes.value? attributes.value: this.state.url;
+        let url = null;
+        if(typeof attributes.value !=='undefined' && attributes.value !== null ){
+            let lat = attributes.value.lat;
+            let long =  attributes.value.long;
+            url = Platform.select({
+                ios: `http://maps.apple.com/?ll=${lat},${long}`,
+                android: `http://maps.google.com/?q=${lat},${long}`
+            });
+        }else{
+            url = this.state.url;
+        }
+        
         if(url){
             return (
                 <TouchableOpacity style={styles.valueContainer}
