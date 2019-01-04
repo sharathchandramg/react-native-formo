@@ -6,7 +6,7 @@ import { Button } from "native-base";
 
 export default class App extends Component {
 	render() {
-		const fields = require("./schema/08-location.json");
+		const fields = require("./schema/14-currency-field.json");
 		// const formData = {
 		// 	prospect_name: "MTV",
 		// 	work_address: [

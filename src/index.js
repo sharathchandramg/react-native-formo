@@ -16,7 +16,8 @@ import ImageField from "./fields/image";
 import LocationField from "./fields/location";
 import FormField from "./fields/form";
 import SubForm from "./fields/subForm";
-import Lookupfield from "./fields/lookup"
+import Lookupfield from "./fields/lookup";
+import CurrencyField from "./fields/currency"
 
 
 import { autoValidate, getInitialState, getDefaultValue, getResetValue } from "./utils/helper";
@@ -291,13 +292,18 @@ export default class Form0 extends Component {
                     case "url":
                     case "password":
                     case "phone":
-                    case "currency":
                     case "calculated":
                         return <TextInputField
                             ref={(c) => { this[field.name] = c; }}
                             {...commonProps}
                             onSummitTextInput={this.onSummitTextInput}
                         />
+
+                    case "currency":
+                        return <CurrencyField
+                                ref={(c) => { this[field.name] = c; }}
+                                {...commonProps}
+                            />   
 
                     case "switch":
                         return <SwitchField

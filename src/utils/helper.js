@@ -26,7 +26,13 @@ export function getDefaultValue(field) {
         case "password":
         case "url":
         case "phone":
+        return field.defaultValue || '';
+
         case "currency":
+            let curr_type = field.defaultCurrency? field.defaultCurrency : field.currencyOptions?field.currencyOptions[0]:'';
+            let curr_value = field.defaultValue?field.defaultValue: '';
+            return {curr_value: curr_value, curr_type:curr_type}
+
         case "calculated":
             return field.defaultValue || '';
 
@@ -83,22 +89,24 @@ export function getDefaultValue(field) {
                         if (dateDefaultValue && !_.isNaN(dateDefaultValue.getTime()))
                             return dateDefaultValue;
                         else if (field.defaultValue === "today")
-                            return moment().format("HH:MM");
+                            return moment().format("HH:mm");
                         else if (field.defaultValue === "tomorrow")
-                            return moment().add(1, "day").format("HH:MM");
+                            return moment().add(1, "day").format("HH:mm");
                         else
                             return null;
-                            
+
                     case 'datetime':
                         if (field.defaultValue === "today")
-                            return moment().format("YYYY-MM-DD HH:MM");
+                            return moment().format("YYYY-MM-DD HH:mm");
                         else if (field.defaultValue === "tomorrow")
-                            return moment().add(1, "day").format("YYYY-MM-DD HH:MM");
-                        else if (typeof field.defaultValue !=='undefined' && !_.isNaN(field.defaultValue)) {
+                            return moment().add(1, "day").format("YYYY-MM-DD HH:mm");
+                        else if (typeof field.defaultValue !=='undefined' &&  !_.isNaN(field.defaultValue)) {
+
                             console.log("The datetime has default value of " + parseInt(field.defaultValue));
                             console.log("The current datetime is " + moment().format("YYYY-MM-DD HH:mm"));
                             console.log("The updated datetime is " + moment().add(parseInt(field.defaultValue), "minutes").format("YYYY-MM-DD HH:mm"));
-                            return moment().add(parseInt(field.defaultValue), "minutes").format("YYYY-MM-DD HH:mm");
+                            
+                            return moment().add(parseInt(field.defaultValue), "minutes");
                         }
                         else if (field.defaultValue === "") {
                             console.log("Enter for " + field.defaultValue)
@@ -127,7 +135,7 @@ export function getResetValue(field) {
         case "url":
         case "phone":
         case "currency":
-            return '';
+            return null
 
         case "picker":
             return field.options[0];
@@ -181,6 +189,13 @@ export function autoValidate(field) {
             case "image":
             case "password":
                 if (isEmpty(field.value)) {
+                    error = true;
+                    errorMsg = `${field.label} is required`;
+                }
+                break;
+
+            case "currency":
+                if (isEmpty(field.value.curr_value)) {
                     error = true;
                     errorMsg = `${field.label} is required`;
                 }
