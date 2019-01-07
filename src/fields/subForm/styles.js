@@ -45,6 +45,17 @@ const styles = StyleSheet.create({
         paddingBottom:2,
     },
 
+    subformText:{
+        fontSize: 16,
+        lineHeight:20,
+        height:20,
+        width:'100%',
+        color: '#575757',
+        fontFamily:'roboto',
+        alignSelf: 'stretch',
+        fontWeight:'300',
+        marginHorizontal:5,
+    },
 
     labelText:{
         fontSize: 16,

@@ -89,7 +89,6 @@ export default class SubForm extends Component {
                     arr.push(item)
                 }
             });
-                    
         if(arr.length >0)  
             return arr.toString()
         else 
@@ -105,7 +104,7 @@ export default class SubForm extends Component {
                     key={index}
                     style={styles.inputValue}
                     onPress={() => this.setState({subFormData:item,mode:'update'},()=>this.toggleModalVisible())}>
-                        <Text style={styles.labelText} numberOfLines={1}>{label}</Text>
+                        <Text style={styles.subformText} numberOfLines={2}>{label}</Text>
                 </TouchableOpacity>
             );
         })
