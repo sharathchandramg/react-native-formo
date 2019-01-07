@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
         minHeight:40,
         alignItems:'flex-start',
         justifyContent:'center',
-        marginBottom:10,
+        marginTop:15,
         marginHorizontal:5,
     },
     
@@ -34,9 +34,9 @@ const styles = StyleSheet.create({
         height:30,
         width:'100%',
         flexDirection:'row',
-        paddingBottom:5,
         alignItems:'center',
         justifyContent:'flex-start',
+        paddingTop:10,
         marginHorizontal:15,
     },
     inputValue:{

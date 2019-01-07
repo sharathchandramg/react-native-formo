@@ -18,8 +18,7 @@ import {
     Button,
 } from "native-base";
 
-const deviceWidth = Dimensions.get('window').width;
-import styles from "./styles";
+import styles from "./styles"
 
 export default class LookupField extends Component {
 
@@ -81,7 +80,7 @@ export default class LookupField extends Component {
                     <Text style={[styles.labelText]}>{attributes.label}</Text>
                     {this.renderlookupIcon()}
                 </View>
-                <View style={{flex:1,width:'100%',marginStart:0}}>
+                <View style={{flex:1,width:'100%',marginHorizontal:-5}}>
                     <Form0 
                         ref={(c) => {this.lookup = c; }} 
                         fields={fields} 
