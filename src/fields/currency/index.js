@@ -58,7 +58,7 @@ export default class CurrencyField extends Component {
                 editable={attributes.editable}
                 onChangeText={text => this.onAmountChange(text)}
                 // value={attributes.value}
-                value={attributes.value.curr_value && attributes.value.curr_value.toString()}
+                value={attributes.value && attributes.value.curr_value && attributes.value.curr_value.toString()}
             />
         )
 
