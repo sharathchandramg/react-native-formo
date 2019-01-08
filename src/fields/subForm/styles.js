@@ -39,12 +39,23 @@ const styles = StyleSheet.create({
         justifyContent:'flex-start',
     },
     inputValue:{
-        minHeight:40,
+        minHeight:30,
         width:'100%',
         flexDirection:'row',
         paddingBottom:2,
     },
 
+    subformText:{
+        fontSize: 16,
+        lineHeight:20,
+        minHeight:20,
+        width:'95%',
+        color: '#575757',
+        fontFamily:'roboto',
+        alignSelf: 'stretch',
+        fontWeight:'300',
+        marginHorizontal:5,
+    },
 
     labelText:{
         fontSize: 16,
