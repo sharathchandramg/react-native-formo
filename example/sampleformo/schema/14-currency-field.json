@@ -24,5 +24,13 @@
         "currencyOptions": ["INR", "USD","EUR","CNY","GBP"],
         "defaultValue":0,
         "defaultCurrency" : "INR"
+    },
+    {
+        "type": "location",
+        "name": "office_location",
+        "label": "Office Location",
+        "required": true,
+        "editable": true,
+        "hidden": false
     }
 ]
