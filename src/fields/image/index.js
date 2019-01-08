@@ -31,7 +31,6 @@ export default class ImageField extends Component {
 		this.state = {
 			path: undefined,
 			height: new Animated.Value(0),
-			overflow: "visible"
 		};
 	}
 
@@ -58,7 +57,6 @@ export default class ImageField extends Component {
 	_getImageFromStorage = (value) => {
         this.setState({
                 path: value, 
-                overflow: "hidden" 
             }, () =>{
                 if(Platform.OS !== "ios") this.bottomSheet.close();
                 this._startAnimation()
@@ -129,27 +127,22 @@ export default class ImageField extends Component {
 
 
     renderPreview =(attributes) => {
-        if(attributes &&  typeof attributes.value !== null && typeof attributes.value !== 'undefined' ){
-            this._startAnimation()
-        }
-		return (
-			<TouchableOpacity style={[styles.topContainer,{ borderColor:"#a94442" }]}
-				onPress={
-					Platform.OS === "ios"
-						? this._onPressImage
-						: () => this.bottomSheet.open()
-				}>
-				<Animated.Image
-					resizeMode="cover"
-					source={{ uri:attributes? attributes.value: this.state.path}}
-					style={[styles.image,{height: this.state.height}]}
-				/>
-				<View style={[styles.container,{overflow: this.state.overflow}]}>
-                    <Icon name="image" size={24} type={'regular'} color ={'#828282'}/>
-				</View>
-			</TouchableOpacity>
-		);
+        return (
+            <TouchableOpacity style={[styles.topContainer,{ borderColor:"#a94442" }]}
+                onPress={
+                    Platform.OS === "ios"
+                        ? this._onPressImage
+                        : () => this.bottomSheet.open()
+                }>
+                <Animated.Image
+                    resizeMode="cover"
+                    source={{ uri:attributes? attributes.value: this.state.path}}
+                    style={{flex:1, height: undefined, width: undefined}}
+                />
+            </TouchableOpacity>
+        );
     };
+
 
     renderAddImageIcon = ()=>{
         return (
