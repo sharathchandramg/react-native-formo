@@ -104,7 +104,12 @@ export default class SubForm extends Component {
                     key={index}
                     style={styles.inputValue}
                     onPress={() => this.setState({subFormData:item,mode:'update'},()=>this.toggleModalVisible())}>
-                        <Text style={styles.subformText} numberOfLines={2}>{label}</Text>
+                        <Text 
+                            style={styles.subformText}
+                            ellipsizeMode={'middle'} 
+                            numberOfLines={4}>
+                            {label}
+                        </Text>
                 </TouchableOpacity>
             );
         })
