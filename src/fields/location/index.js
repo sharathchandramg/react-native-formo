@@ -88,10 +88,13 @@ export default class LocationField extends Component {
 
     locationPickupSuccess = (position) => {
         if (typeof position !== 'undefined' && position !== null) {
+            let scheme = Platform.select({ ios: 'maps:http://maps.apple.com/?q=', android: 'geo:http://maps.google.com/?q=' });
+            let latLng = `${position.latitude},${position.longitude}`;
+            let label = 'You here';
             let url = Platform.select({
-                ios: `http://maps.apple.com/?ll=${position.latitude},${position.longitude}`,
-                android: `http://maps.google.com/?q=${position.latitude},${position.longitude}`
-            });
+                ios: `${scheme}${label}@${latLng}`,
+                android: `${scheme}${latLng}(${label})`
+            })
             this.setState({
                 url : url,
                 isPickingLocation: false,
@@ -102,12 +105,13 @@ export default class LocationField extends Component {
     renderPostionUrl =(attributes)=>{
         let url = null;
         if(typeof attributes.value !=='undefined' && attributes.value !== null ){
-            let lat = attributes.value.lat;
-            let long =  attributes.value.long;
+            let scheme = Platform.select({ ios: 'maps:http://maps.apple.com/?q=', android: 'geo:http://maps.google.com/?q=' });
+            let latLng = `${attributes.value.lat},${attributes.value.long}`;
+            let label = 'You here';
             url = Platform.select({
-                ios: `http://maps.apple.com/?ll=${lat},${long}`,
-                android: `http://maps.google.com/?q=${lat},${long}`
-            });
+                ios: `${scheme}${label}@${latLng}`,
+                android: `${scheme}${latLng}(${label})`
+            })
         }else{
             url = this.state.url;
         }
