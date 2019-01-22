@@ -46,9 +46,9 @@ const styles = StyleSheet.create({
     },
 
     subformText:{
-        fontSize: 16,
-        lineHeight:20,
-        minHeight:20,
+        fontSize: 14,
+        lineHeight:16,
+        height:16,
         width:'95%',
         color: '#575757',
         fontFamily:'roboto',
@@ -121,6 +121,10 @@ const styles = StyleSheet.create({
         borderWidth:1,
         borderColor: 'grey',
     },
+    leftLabel:{flexDirection:'column',width:'100%',minHeight:50,alignItems:'center',justifyContent:'center'},
+    leftLabelWrapper:{flex:3,flexDirection:'column',alignItems:'center',justifyContent:'center'},
+    rightLabel:{flexDirection:'column',width:'100%',minHeight:50,alignItems:'center',justifyContent:'center'},
+    subForm:{flexDirection:'column',width:'75%',alignItems:'center',justifyContent:'center'}
 })
 
 export default styles;

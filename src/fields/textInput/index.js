@@ -27,7 +27,7 @@ export default class TextInputField extends Component {
 
     getCalculatedValue = (attributes)=>{
         let value = '' ;
-        if(typeof attributes.value !=='undefined' && attributes.value !== null){
+        if(typeof attributes.value !=='undefined' && attributes.value !== null && attributes.value){
             return attributes.value.toString();
         }else{
             let calculateOnFields = attributes.fields;

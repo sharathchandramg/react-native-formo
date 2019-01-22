@@ -81,28 +81,29 @@
                         "required": true,
                         "editable": false,
                         "hidden": false
+                    },
+                    {
+                        "type": "number",
+                        "name": "quantity",
+                        "label": "Quantity",
+                        "required": true,
+                        "editable": true,
+                        "hidden": false
+                    },
+                    {
+                        "type": "calculated",
+                        "name": "price",
+                        "label": "Total Price",
+                        "required": true,
+                        "editable": true,
+                        "hidden": false,
+                        "fields" : ["mrp", "quantity"],
+                        "expression" : "quantity * mrp"
                     }
                 ]
                 
-            },
-            {
-                "type": "number",
-                "name": "quantity",
-                "label": "Quantity",
-                "required": true,
-                "editable": true,
-                "hidden": false
-            },
-            {
-                "type": "calculated",
-                "name": "price",
-                "label": "Total Price",
-                "required": true,
-                "editable": true,
-                "hidden": false,
-                "fields" : ["mrp", "quantity"],
-                "expression" : "quantity * mrp"
             }
+            
         ]
     }
 ]
