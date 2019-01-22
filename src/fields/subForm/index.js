@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+import PropTypes, { element } from "prop-types";
 import React, { Component } from "react";
 import { Platform, Modal, Dimensions,TouchableOpacity } from "react-native";
 import {
@@ -40,7 +40,6 @@ export default class SubForm extends Component {
             mode: 'create',
             subFormData:{},
         };
-
         this.onAddNewFields ;
         
     }
@@ -49,7 +48,7 @@ export default class SubForm extends Component {
     handleChange =(name,value)=>{
         if(value && typeof value._id !=='undefined' && value._id !== null){
             this.props.onAddNewFields(name,value)
-        }else{
+        }else if(value && value !== null){
             value["_id"] = shortid.generate();
             this.props.onAddNewFields(name,value)
         }
@@ -95,28 +94,95 @@ export default class SubForm extends Component {
             return         
     }
 
-    renderAddedSubForm =(data,name)=>{
-        let subForms = <View></View>;
-        subForms = data.map((item, index) => {
-            let label = this.constructDisplayField(item);
-            return (
-                <TouchableOpacity
-                    key={index}
-                    style={styles.inputValue}
-                    onPress={() => this.setState({subFormData:item,mode:'update'},()=>this.toggleModalVisible())}>
-                        <Text 
-                            style={styles.subformText}
-                            ellipsizeMode={'middle'} 
-                            numberOfLines={4}>
-                            {label}
-                        </Text>
-                </TouchableOpacity>
-            );
+    renderAddedSubForm =(attributes)=>{
+        let data = attributes.value;
+        let leftViewData = [];
+        let rightViewData = [];
+        let fields = attributes.fields;
+        let lookupField = []
+        fields.map(field =>{
+            switch(field.type){
+                case'lookup':
+                    leftViewData = data.map(item =>item[field.name]);
+                    lookupField = field.fields;
+                    break;
+                default:
+                    rightViewData = data.map(item =>item[field.name]);
+                break;    
+            }
         })
 
-        return subForms;
+        return <View style={{flexDirection:'column', width:'100%'}}>
+                {this.renderSubformData(leftViewData,rightViewData,lookupField,data)}
+        </View>
     }
+
+    renderSubformData =(leftViewData,rightViewData,lookupField,data)=>{
+        let subForms = <View  style={styles.subForm}> </View>;
+        let leftLabel = <View style={styles.leftLabel}> </View>
+        
+        if(leftViewData.length > 0 && rightViewData.length > 0){
+            subForms = leftViewData.map((item,index )=>{
+                let values = [];
+                values = lookupField.map(e => item[e.name]);
+                leftLabel = values.map(val =><Text style={styles.subformText}>{val}</Text>);
+                let val = rightViewData[index];
+                rightLabel = <View style={styles.rightLabel}>
+                            <Text style={styles.subformText}>{val}</Text>
+                        </View>
+                
+                return (
+                    <TouchableOpacity 
+                        style={{marginBottom:10,flex:4,flexDirection:'row'}}
+                        onPress={() => this.setState({subFormData:data[index],mode:'update'},()=>this.toggleModalVisible())}>
+                        <View style={styles.leftLabelWrapper}>
+                            {leftLabel}
+                        </View>
+                        <View style={{flex:1,flexDirection:'column'}}>
+                            {rightLabel}
+                        </View>
     
+                    </TouchableOpacity>
+                )
+            })
+
+        }else if(leftViewData.length >0){
+            subForms = leftViewData.map((item,index )=>{
+                let values = [];
+                values = lookupField.map(e => item[e.name]);
+                leftLabel = values.map(val =><Text style={styles.subformText}>{val}</Text>);
+                return (
+                    <TouchableOpacity 
+                        style={{marginBottom:10,flex:4,flexDirection:'row'}}
+                        onPress={() => this.setState({subFormData:data[index],mode:'update'},()=>this.toggleModalVisible())}>
+                        <View style={styles.leftLabelWrapper}>
+                            {leftLabel}
+                        </View>
+                    </TouchableOpacity>
+                )
+            })
+
+        }else if(rightViewData.length > 0){
+            subForms = rightViewData.map((item,index )=>{
+                if(typeof item ==='string'){
+                    leftLabel = <Text style={styles.subformText}>{item}</Text>;
+                }else if(typeof item ==='object'){
+                    let val = Object.values(item).toString()
+                    leftLabel = <Text style={styles.subformText}>{val}</Text>;
+                }
+                return (
+                    <TouchableOpacity 
+                        style={{marginBottom:10,flex:4,flexDirection:'row'}}
+                        onPress={() => this.setState({subFormData:data[index],mode:'update'},()=>this.toggleModalVisible())}>
+                        <View style={styles.leftLabelWrapper}>
+                            {leftLabel}
+                        </View>
+                    </TouchableOpacity>
+                )
+            })
+        }
+        return subForms
+    }
 
     render() {
 
@@ -130,7 +196,7 @@ export default class SubForm extends Component {
                         {this.renderlookupIcon()}
                     </View>
                     {typeof attributes.value !== "undefined" && attributes.value !== null && attributes.value.length> 0?
-                        this.renderAddedSubForm(attributes.value,attributes.name)
+                        this.renderAddedSubForm(attributes)
                         :null
                     }
                 </View>
