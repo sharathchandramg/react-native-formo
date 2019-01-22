@@ -1,0 +1,36 @@
+[
+    {
+        "type": "text",
+        "name": "isbn",
+        "label": "ISBN",
+        "required": true,
+        "editable": true,
+        "hidden": false
+    },
+    {
+        "type": "number",
+        "name": "retail_price",
+        "label": "Maximum Retail Price",
+        "required": true,
+        "editable": true,
+        "hidden": false
+    },
+    {
+        "type": "number",
+        "name": "quantity",
+        "label": "Number of Items",
+        "required": true,
+        "editable": true,
+        "hidden": false
+    },
+    {
+        "type": "calculated",
+        "name": "total_amount",
+        "label": "Total Amount",
+        "required": false,
+        "editable": true,
+        "hidden": false,
+        "fields" : ["quantity", "retail_price"],
+        "expression" : "quantity * retail_price"
+    }
+]
