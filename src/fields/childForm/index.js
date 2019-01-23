@@ -39,10 +39,11 @@ export default class ChildForm extends Component {
 
     addNewFields(){
         let  fValue = this.formGenerator.getValues();
-        let uValue = this.props.mode ==='update'? {...fValue,"_id":this.props.formData._id}:fValue;
-        this.props.handleChange(this.props.attributes.name,uValue)
-        this.props.toggleModalVisible();
-    
+        if(typeof fValue !=='undefined' && fValue !== null){
+            let uValue = this.props.mode ==='update'? {...fValue,"_id":this.props.formData._id}:fValue;
+            this.props.handleChange(this.props.attributes.name,uValue)
+            this.props.toggleModalVisible();
+        }    
     }
 
     render() {
@@ -56,7 +57,7 @@ export default class ChildForm extends Component {
         
         return (
             <View style={styles.mainContainer}>
-                <ScrollView style={[styles.mainContainer, { paddingEnd:5, paddingStart:5 }]}>
+                <ScrollView style={[{ paddingEnd:5, paddingStart:5, flex:1}]}>
                     <Form0
                         ref={(c) => {this.formGenerator = c;}}
                         onValueChange={this.onValueChange}

@@ -26,24 +26,22 @@ export default class TextInputField extends Component {
     }
 
     getCalculatedValue = (attributes)=>{
-        let value = '' ;
-        if(typeof attributes.value !=='undefined' && attributes.value !== null && attributes.value){
-            return attributes.value.toString();
-        }else{
-            let calculateOnFields = attributes.fields;
-            let expression = attributes.expression;
-            if(typeof calculateOnFields ==='object'){
-                let scope = {};
-                for(let i = 0;i < calculateOnFields.length ; i++){
-                    scope[calculateOnFields[i]] = parseFloat(this.props.getValue(calculateOnFields[i]));
-                }
-                if(Object.values(scope).length === calculateOnFields.length){
-                    value = math.eval(expression , scope)
+        let calculateOnFields = attributes.fields;
+        let expression = attributes.expression;
+        let value = '';
+        if(typeof calculateOnFields ==='object'){
+            let scope = {};
+            for(let i = 0;i < calculateOnFields.length ; i++){
+                scope[calculateOnFields[i]] = parseFloat(this.props.getValue(calculateOnFields[i]));
+            }
+            if(Object.values(scope).length === calculateOnFields.length){
+                value = math.eval(expression , scope)
+                if(!isNaN(value) && value.toString() !== attributes.value.toString()){
+                    this.props.updateValue(attributes.name, value.toString()); 
                 }
             }
-            return isNaN(value)?'':value.toString();
         }
-
+        return isNaN(value)?'':value.toString();
     }
 
     renderCalculatedField =(attributes,theme)=>{
@@ -55,15 +53,13 @@ export default class TextInputField extends Component {
                     height: inputProps && inputProps.multiline && (Platform.OS === 'ios' ? undefined : null),
                     paddingStart:5,
                 }}
-                ref={(c) => { this.textInput = c; }}
+                ref={(c) => { this.textInputCalculated = c; }}
                 keyboardType={keyboardType}
                 underlineColorAndroid="transparent"
                 numberOfLines={2}
                 placeholder={attributes.label}
                 placeholderTextColor={theme.inputColorPlaceholder}
                 editable={attributes.editable}
-                onChangeText={text => this.handleChange(text)}
-                // value={attributes.value}
                 value={this.getCalculatedValue(attributes)}
                 {...inputProps}
             />
