@@ -108,7 +108,7 @@ export default class SelectField extends Component {
                     onRequestClose={() => this.toggleModalVisible()}>
                     <Container style={{ flex: 1 }}>
 
-                        <Header style={theme.header}>
+                        <Header style={[theme.header]} androidStatusBarColor='#c8c8c8'>
                             <Left>
                                 <Button transparent onPress={() => this.toggleModalVisible()}>
                                     <Icon name="arrow-back" style={{color :'#48BBEC'}} />
