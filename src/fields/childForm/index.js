@@ -18,9 +18,7 @@ export default class ChildForm extends Component {
     }
     constructor(props) {
         super(props);
-
-        this.onValueChange = this.onValueChange.bind(this);
-        this.addNewFields = this.addNewFields.bind(this)
+        this.onValueChange = this.onValueChange.bind(this);        
     }
 
     componentDidMount() {
@@ -31,18 +29,8 @@ export default class ChildForm extends Component {
         this.props.updateValue(this.props.attributes.name, this.formGenerator.getValues());
     }
 
-    handleChange(text) {
-        this.setState({
-            value: text,
-        }, () => this.props.updateValue(this.props.attributes.name, text));
-    }
-
-    addNewFields(){
-        let  fValue = this.formGenerator.getValues();
-        let uValue = this.props.mode ==='update'? {...fValue,"_id":this.props.formData._id}:fValue;
-        this.props.handleChange(this.props.attributes.name,uValue)
-        this.props.toggleModalVisible();
-    
+    getChildFields(){
+        return this.formGenerator.getValues();
     }
 
     render() {
@@ -56,7 +44,7 @@ export default class ChildForm extends Component {
         
         return (
             <View style={styles.mainContainer}>
-                <ScrollView style={[styles.mainContainer, { paddingEnd:5, paddingStart:5 }]}>
+                <ScrollView style={[{ paddingEnd:5, paddingStart:5,flex:1}]}>
                     <Form0
                         ref={(c) => {this.formGenerator = c;}}
                         onValueChange={this.onValueChange}
@@ -69,9 +57,6 @@ export default class ChildForm extends Component {
                         formData={this.props.formData}
                     />
                 </ScrollView>
-                <TouchableOpacity style={styles.button} onPress={() => this.addNewFields()}>
-                    <Text style={styles.buttonText}>{this.props.mode ==='create'? 'Add':'Update'} </Text>
-                </TouchableOpacity>
             </View>
             
         );

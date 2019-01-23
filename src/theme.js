@@ -15,5 +15,17 @@ export default {
     errorMsgColor: '#ed2f2f',
     changeTextInputColorOnError: true,
     textInputErrorIcon: 'close-circle',
-    textlinkColor:'#0097EB'
+    textlinkColor:'#0097EB',
+    header:{
+        backgroundColor:'white',
+        height:60,
+        elevation:5,
+        borderBottomColor:'#48BBEC',
+        borderBottomWidth:0.5
+    },
+    headerText:{
+        fontSize: 18,
+        color: '#48BBEC',
+        alignSelf: 'flex-start'
+    }
 };

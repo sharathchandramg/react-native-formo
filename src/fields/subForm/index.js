@@ -14,10 +14,11 @@ import {
     Body,
     Title,
     Button,
+    Footer,
+    Icon
 
 } from "native-base";
 
-import Icon from 'react-native-vector-icons/FontAwesome';
 import shortid from 'shortid';
 import styles from "./styles";
 import ChildField from "../childForm";
@@ -35,6 +36,7 @@ export default class SubForm extends Component {
 
     constructor(props) {
         super(props);
+        
         this.state = {
             modalVisible: false,
             mode: 'create',
@@ -66,7 +68,7 @@ export default class SubForm extends Component {
         return (
             <TouchableOpacity style={styles.valueContainer}
                 onPress={()=>this.setState({subFormData:{},mode:'create'},()=>this.toggleModalVisible())}>
-                <Icon name="plus-circle" size={18} type={'regular'} color ={'#828282'} style={styles.iconStyle}/>
+                <Icon name="add" color ={'#828282'} style={styles.iconStyle}/>
             </TouchableOpacity>
         );
     }
@@ -192,6 +194,15 @@ export default class SubForm extends Component {
         return subForms
     }
 
+    addNewFields =()=>{
+        let  fValue = this.child.getChildFields()
+        if(typeof fValue !=='undefined' && fValue !== null){
+            let uValue = this.props.mode ==='update'? {...fValue,"_id":this.props.subFormData._id}:fValue;
+            this.handleChange(this.props.attributes.name,uValue)
+            this.toggleModalVisible();
+        }    
+    }
+
     render() {
 
         const { theme, attributes, ErrorComponent } = this.props;
@@ -213,20 +224,20 @@ export default class SubForm extends Component {
                     animationType="none"
                     onRequestClose={() => this.toggleModalVisible()}>
                     <Container style={{ flex: 1 }}>
-                        <Header>
+                        <Header style={[theme.header]} androidStatusBarColor='#c8c8c8'>
                             <Left>
                                 <Button transparent onPress={() => this.toggleModalVisible()}>
-                                    <Icon name="arrow-left" color ={'white'} />
+                                    <Icon name="arrow-back"   style={{color:'#48BBEC'}} />
                                 </Button>
                             </Left>
                             <Body>
-                                <Title>{attributes.label || "Select"}</Title>
+                                <Title style={theme.headerText}>{attributes.label || "Select"}</Title>
                             </Body>
                             <Right />
                         </Header>
                         <Content>
                             <ChildField
-                                ref={(c) => { this.group = c; }}
+                                ref={(c) => { this.child = c; }}
                                 {...this.props}
                                 formData={this.state.subFormData}
                                 toggleModalVisible={this.toggleModalVisible}
@@ -234,6 +245,11 @@ export default class SubForm extends Component {
                                 mode ={this.state.mode}
                             />
                         </Content>
+                        <Footer style={styles.button}>
+                            <TouchableOpacity style={styles.button} onPress={() => this.addNewFields()}>
+                                <Text style={styles.buttonText}>{this.state.mode ==='create'? 'Add':'Update'} </Text>
+                            </TouchableOpacity>
+                        </Footer>
                     </Container>
                 </Modal>
                 
