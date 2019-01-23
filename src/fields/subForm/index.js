@@ -197,7 +197,7 @@ export default class SubForm extends Component {
     addNewFields =()=>{
         let  fValue = this.child.getChildFields()
         if(typeof fValue !=='undefined' && fValue !== null){
-            let uValue = this.state.mode ==='update'? {...fValue,"_id":this.state.subFormData._id}:fValue;
+            let uValue = this.props.mode ==='update'? {...fValue,"_id":this.props.subFormData._id}:fValue;
             this.handleChange(this.props.attributes.name,uValue)
             this.toggleModalVisible();
         }    
