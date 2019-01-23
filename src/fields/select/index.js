@@ -59,7 +59,6 @@ export default class SelectField extends Component {
     }
 
     render() {
-
         const { theme, attributes, ErrorComponent } = this.props;
 
         //If multiple selections are allowed allow assignment via Id, Value or just a string value        
@@ -109,14 +108,14 @@ export default class SelectField extends Component {
                     onRequestClose={() => this.toggleModalVisible()}>
                     <Container style={{ flex: 1 }}>
 
-                        <Header>
+                        <Header style={theme.header}>
                             <Left>
                                 <Button transparent onPress={() => this.toggleModalVisible()}>
-                                    <Icon name="arrow-back" />
+                                    <Icon name="arrow-back" style={{color :'#48BBEC'}} />
                                 </Button>
                             </Left>
                             <Body>
-                                <Title>{attributes.label || "Select"}</Title>
+                                <Title style={theme.headerText}>{attributes.label || "Select"}</Title>
                             </Body>
                             <Right />
                         </Header>
@@ -150,10 +149,8 @@ export default class SelectField extends Component {
                                 })
                             }
                         </Content>
-
+                        
                     </Container>
-
-
                 </Modal>
             </View>
         );
