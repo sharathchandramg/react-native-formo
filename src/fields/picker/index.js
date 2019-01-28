@@ -19,14 +19,15 @@ export default class PickerField extends Component {
     constructor(props){
         super(props)
         this.state ={
-            modalVisible: false
+            modalVisible: false,
+            value: null
         }
     }
 
 
     handleChange(value) {
-        const attributes = this.props.attributes;
-        this.props.updateValue(attributes.name, attributes.options[value]);
+        this.setState({value:value})
+        this.props.updateValue(this.props.attributes.name,value );
     }
 
     setModalVisible = (visible) => {
@@ -34,8 +35,8 @@ export default class PickerField extends Component {
     }
     renderModal = () => {
         const { theme, attributes, ErrorComponent } = this.props;
-        const isValueValid = attributes.options.indexOf(attributes.value) > -1;
-        const pickerValue = attributes.options.indexOf(attributes.value).toString();
+        const pickerValue =  this.state.value !== null ? this.state.value : typeof attributes.value !=='undefined' && attributes.value !== null? attributes.value:'';
+        
         return (
             <Modal
                 animationType="slide"
@@ -82,7 +83,7 @@ export default class PickerField extends Component {
                                 onValueChange={value => this.handleChange(value)}>
                                 {
                                     attributes.options.map((item, index) => (
-                                        <Item key={index} label={item} value={`${index}`} />
+                                        <Item key={index} label={item} value={item} />
                                     ))
                                 }
                             </Picker>
@@ -97,8 +98,8 @@ export default class PickerField extends Component {
 
         const { theme, attributes, ErrorComponent } = this.props;
         const isValueValid = attributes.options.indexOf(attributes.value) > -1;
-        const pickerValue = attributes.options.indexOf(attributes.value).toString();
-
+        const pickerValue =  this.state.value !== null ? this.state.value : typeof attributes.value !=='undefined' && attributes.value !== null? attributes.value:'';
+        
         if (Platform.OS !== "ios") {
             return (
                 <View style={{...styles.pickerMainAndroid,...{
@@ -119,7 +120,7 @@ export default class PickerField extends Component {
                             onValueChange={value => this.handleChange(value)}>
                             {
                                 attributes.options.map((item, index) => (
-                                    <Item key={index} label={item} value={`${index}`} />
+                                    <Item key={index} label={item} value={item} />
                                 ))
                             }
                         </Picker>
