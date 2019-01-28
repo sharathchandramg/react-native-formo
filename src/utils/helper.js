@@ -39,8 +39,9 @@ export function getDefaultValue(field) {
         case "picker": {
             if ((field.options).indexOf(field.defaultValue) !== -1) {
                 return field.defaultValue;
-            }
-            return null;
+            }else if(typeof field.defaultValue ==='undefined'){
+                return field.options[0]
+            }else return null;
         }
         case "select": {
             if (Array.isArray(field.defaultValue)) {
@@ -138,7 +139,13 @@ export function getResetValue(field) {
             return null
 
         case "picker":
-            return  field.defaultValue ? field.defaultValue: null;
+            if(typeof field.defaultValue ==='undefined'){
+                return field.options[0]
+            }
+            else if(field.defaultValue){
+                return field.defaultValue
+            }
+            else return null ;
 
         case "select":
             return field.multiple ? [] : null;

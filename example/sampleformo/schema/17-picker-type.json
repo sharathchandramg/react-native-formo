@@ -26,6 +26,21 @@
             "Shortlisted",
             "Rejected"
         ],
-        "defaultValue": "Pending"
+        "defaultValue": "Shortlisted"
+    },
+    {
+        "type": "picker",
+        "name": "response",
+        "label": "Response",
+        "required": false,
+        "editable": true,
+        "hidden": false,
+        "options": [
+            "Contacted",
+            "Un Reachable",
+            "WhatsApp",
+            "Rejected"
+        ]
+        
     }
 ]
