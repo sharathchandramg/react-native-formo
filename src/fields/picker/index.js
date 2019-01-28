@@ -118,6 +118,7 @@ export default class PickerField extends Component {
                             mode={attributes.mode}
                             selectedValue={pickerValue}
                             onValueChange={value => this.handleChange(value)}>
+                            <Picker.Item key={'unselectable'} label={'None'} value={'null'}/>
                             {
                                 attributes.options.map((item, index) => (
                                     <Item key={index} label={item} value={item} />
