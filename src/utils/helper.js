@@ -139,10 +139,11 @@ export function getResetValue(field) {
             return null
 
         case "picker":
+        
             if(typeof field.defaultValue ==='undefined'){
                 return field.options[0]
             }
-            else if(field.defaultValue){
+            else if((field.options).indexOf(field.defaultValue) !== -1){
                 return field.defaultValue
             }
             else return null ;
