@@ -24,7 +24,7 @@ export default class PickerField extends Component {
     }
 
 
-    handleChange(value,key) {
+    handleChange(value) {
         this.props.updateValue(this.props.attributes.name,value );
     }
 
@@ -118,7 +118,7 @@ export default class PickerField extends Component {
                             iosHeader="Select one"
                             mode={attributes.mode}
                             selectedValue={pickerValue}
-                            onValueChange={(value,key) => this.handleChange(value,key)}>
+                            onValueChange={value => this.handleChange(value)}>
                             {
                                 attributes.options.map((item, index) => (
                                     <Item key={index} label={item} value={item} />
