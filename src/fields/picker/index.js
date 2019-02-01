@@ -20,22 +20,22 @@ export default class PickerField extends Component {
         super(props)
         this.state ={
             modalVisible: false,
-            value: null
         }
     }
 
 
-    handleChange(value) {
-        this.setState({value:value})
+    handleChange(value,key) {
         this.props.updateValue(this.props.attributes.name,value );
     }
 
     setModalVisible = (visible) => {
         this.setState({modalVisible:visible})
     }
+
     renderModal = () => {
         const { theme, attributes, ErrorComponent } = this.props;
-        const pickerValue =  this.state.value !== null ? this.state.value : typeof attributes.value !=='undefined' && attributes.value !== null? attributes.value:'';
+
+        const pickerValue = typeof attributes.value !=='undefined' && attributes.value !== null? attributes.value:'';
         
         return (
             <Modal
@@ -98,8 +98,9 @@ export default class PickerField extends Component {
 
         const { theme, attributes, ErrorComponent } = this.props;
         const isValueValid = attributes.options.indexOf(attributes.value) > -1;
-        const pickerValue =  this.state.value !== null ? this.state.value : typeof attributes.value !=='undefined' && attributes.value !== null? attributes.value:'';
         
+        const pickerValue = typeof attributes.value !=='undefined' && attributes.value !== null? attributes.value:'';
+
         if (Platform.OS !== "ios") {
             return (
                 <View style={{...styles.pickerMainAndroid,...{
@@ -117,7 +118,7 @@ export default class PickerField extends Component {
                             iosHeader="Select one"
                             mode={attributes.mode}
                             selectedValue={pickerValue}
-                            onValueChange={value => this.handleChange(value)}>
+                            onValueChange={(value,key) => this.handleChange(value,key)}>
                             {
                                 attributes.options.map((item, index) => (
                                     <Item key={index} label={item} value={item} />

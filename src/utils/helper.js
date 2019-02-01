@@ -37,10 +37,20 @@ export function getDefaultValue(field) {
             return field.defaultValue || '';
 
         case "picker": {
-            if ((field.options).indexOf(field.defaultValue) !== -1) {
-                return field.defaultValue;
+            if(typeof field.value !=='undefined' && field.value !== null && field.value ){
+                let options = field.options;
+                let index = options.findIndex(option => option === field.value)
+                if(index === -1) options.push(field.value);
+                field.options = options;
+                return field.value
+
+            }else{
+                if ((field.options).indexOf(field.defaultValue) !== -1) {
+                    return field.defaultValue;
+                }else{
+                    return field.options[0];
+                }
             }
-            return field.options[0];
         }
         case "select": {
             if (Array.isArray(field.defaultValue)) {
