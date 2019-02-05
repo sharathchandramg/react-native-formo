@@ -42,6 +42,14 @@ export function getDefaultValue(field) {
             }
             return field.options[0];
         }
+
+        case "status_picker": {
+            if ((field.options).indexOf(field.defaultValue) !== -1) {
+                return field.defaultValue;
+            }
+            return field.options[0];
+        }
+
         case "select": {
             if (Array.isArray(field.defaultValue)) {
                 const selected = [];
@@ -137,8 +145,19 @@ export function getResetValue(field) {
         case "currency":
             return null
 
-        case "picker":
+        case "picker":{
+            if ((field.options).indexOf(field.defaultValue) !== -1) {
+                return field.defaultValue;
+            }
             return field.options[0];
+        }
+
+        case "status_picker": {
+            if ((field.options).indexOf(field.defaultValue) !== -1) {
+                return field.defaultValue;
+            }
+            return field.options[0];
+        }
 
         case "select":
             return field.multiple ? [] : null;
@@ -236,6 +255,14 @@ export function autoValidate(field) {
                 }
                 break;
 
+            case "status_picker": 
+                if (isEmpty(field.value)) {
+                    error = true;
+                    errorMsg = `${field.label} is required`;
+                }
+                break;
+        
+        
             default:
         }
     }

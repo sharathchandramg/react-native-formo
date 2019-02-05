@@ -1,0 +1,30 @@
+[
+    {
+        "type": "picker",
+        "name": "status",
+        "label": "Status",
+        "required": false,
+        "editable": true,
+        "hidden": false,
+        "options": [
+            "Pending",
+            "On Hold",
+            "Shortlisted",
+            "Rejected"
+        ],
+        "defaultValue":"Pending"
+    },
+    {
+        "type": "picker",
+        "name": "stage",
+        "label": "Stage",
+        "required": false,
+        "editable": true,
+        "hidden": false,
+        "options": [
+            "Stage 1",
+            "Stage 2"
+        ],
+        "defaultValue":"None"
+    }
+]

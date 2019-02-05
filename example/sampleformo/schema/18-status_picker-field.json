@@ -1,0 +1,17 @@
+[
+    {
+        "type": "status_picker",
+        "name": "status",
+        "label": "Status",
+        "required": false,
+        "editable": true,
+        "hidden": false,
+        "options": [
+            "Pending",
+            "On Hold",
+            "Shortlisted",
+            "Rejected"
+        ],
+        "defaultValue":"Pending"
+    }
+]

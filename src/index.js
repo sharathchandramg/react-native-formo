@@ -17,7 +17,8 @@ import LocationField from "./fields/location";
 import FormField from "./fields/form";
 import SubForm from "./fields/subForm";
 import Lookupfield from "./fields/lookup";
-import CurrencyField from "./fields/currency"
+import CurrencyField from "./fields/currency";
+import StatusPicker from "./fields/statusPicker";
 
 
 import { autoValidate, getInitialState, getDefaultValue, getResetValue } from "./utils/helper";
@@ -91,17 +92,12 @@ export default class Form0 extends Component {
     }
 
     getValue(fieldName){
-        for(let i = 0; i< Object.values(this.state).length ; i++){
-            let fieldObj = Object.values(this.state)[i];
-            let fieldVal = fieldObj['value'];
-            if(typeof fieldVal !=='undefined' && fieldVal !== null){
-                if(fieldObj['name'] === fieldName && typeof fieldVal ==='string' ){
-                    return fieldVal;
-                }else if(typeof fieldVal ==='object' && fieldObj['name'] !== fieldName){
-                    let index = _.indexOf(Object.keys(fieldVal),fieldName);
-                    if(index !== -1) return Object.values(fieldVal)[index];
-                }
-            }
+        let index = _.indexOf(Object.keys(this.state),fieldName);
+        if(index !== -1){
+            let value = Object.values(this.state)[index].value;
+            return value;
+        }else{
+            return null;
         }
     }
 
@@ -327,6 +323,14 @@ export default class Form0 extends Component {
                     case "picker":
                         return (
                             <PickerField
+                                ref={(c) => { this[field.name] = c; }}
+                                {...commonProps}
+                            />
+                        );
+
+                    case "status_picker":
+                        return (
+                            <StatusPicker
                                 ref={(c) => { this[field.name] = c; }}
                                 {...commonProps}
                             />
