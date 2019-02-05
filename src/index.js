@@ -92,12 +92,17 @@ export default class Form0 extends Component {
     }
 
     getValue(fieldName){
-        let index = _.indexOf(Object.keys(this.state),fieldName);
-        if(index !== -1){
-            let value = Object.values(this.state)[index].value;
-            return value;
-        }else{
-            return null;
+        for(let i = 0; i< Object.values(this.state).length ; i++){
+            let fieldObj = Object.values(this.state)[i];
+            let fieldVal = fieldObj['value'];
+            if(typeof fieldVal !=='undefined' && fieldVal !== null){
+                if(fieldObj['name'] === fieldName && typeof fieldVal ==='string' ){
+                    return fieldVal;
+                }else if(typeof fieldVal ==='object' && fieldObj['name'] !== fieldName){
+                    let index = _.indexOf(Object.keys(fieldVal),fieldName);
+                    if(index !== -1) return Object.values(fieldVal)[index];
+                }
+            }
         }
     }
 
