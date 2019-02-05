@@ -17,7 +17,8 @@ import LocationField from "./fields/location";
 import FormField from "./fields/form";
 import SubForm from "./fields/subForm";
 import Lookupfield from "./fields/lookup";
-import CurrencyField from "./fields/currency"
+import CurrencyField from "./fields/currency";
+import StatusPicker from "./fields/statusPicker";
 
 
 import { autoValidate, getInitialState, getDefaultValue, getResetValue } from "./utils/helper";
@@ -327,6 +328,14 @@ export default class Form0 extends Component {
                     case "picker":
                         return (
                             <PickerField
+                                ref={(c) => { this[field.name] = c; }}
+                                {...commonProps}
+                            />
+                        );
+
+                    case "status_picker":
+                        return (
+                            <StatusPicker
                                 ref={(c) => { this[field.name] = c; }}
                                 {...commonProps}
                             />
