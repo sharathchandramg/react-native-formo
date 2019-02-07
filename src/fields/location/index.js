@@ -146,6 +146,7 @@ export default class LocationField extends Component {
                         {this.renderPostionUrl(attributes)}
                     </View>
                 </View>
+                <ErrorComponent {...{ attributes, theme }} />
             </ListItem>
         );
 

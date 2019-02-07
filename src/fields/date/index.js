@@ -391,10 +391,16 @@ export default class DateField extends Component {
     }
 
     render() {
+
+        const { theme, attributes, ErrorComponent } = this.props;
+
         return (
             <View>
                 {(Platform.OS === 'ios') ? this.renderIOSDatePicker() : this.renderAndroidDatePicker(this.props)}
                 {this.renderModal()}
+                <View style={{ paddingHorizontal:20 }}>
+                    <ErrorComponent {...{ attributes, theme }} />
+                </View>
             </View>
         );
     }

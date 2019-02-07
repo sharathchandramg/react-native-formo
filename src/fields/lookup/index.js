@@ -80,6 +80,9 @@ export default class LookupField extends Component {
                     <Text style={[styles.labelText]}>{attributes.label}</Text>
                     {this.renderlookupIcon()}
                 </View>
+                <View style={{ paddingHorizontal:20 }}>
+                    <ErrorComponent {...{ attributes, theme }} />
+                </View>
                 <View style={{flex:1,width:'100%',marginHorizontal:-5}}>
                     <Form0 
                         ref={(c) => {this.lookup = c; }} 
@@ -135,9 +138,6 @@ export default class LookupField extends Component {
                         </Content>
                     </Container>
                 </Modal>
-                <View style={{ paddingHorizontal:5 }}>
-                    <ErrorComponent {...{ attributes, theme }} />
-                </View>
             </View>
         );
     }
