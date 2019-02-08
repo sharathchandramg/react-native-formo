@@ -33,6 +33,9 @@
         "type": "sub-form",
         "name": "sku",
         "label": "SKU",
+        "required": true,
+        "editable": true,
+        "hidden": false,
         "fields": [
             {
                 "type": "lookup",

@@ -42,39 +42,34 @@ export function getDefaultValue(field) {
             }
             return field.options[0];
         }
-
-        case "status_picker": {
-            if ((field.options).indexOf(field.defaultValue) !== -1) {
-                return field.defaultValue;
-            }
-            return field.options[0];
-        }
-
         case "select": {
-            if (Array.isArray(field.defaultValue)) {
+            if (field.defaultValue && Array.isArray(field.defaultValue)) {
                 const selected = [];
-                if (!field.objectType) {
-                    field.defaultValue.forEach((item) => {
-                        if ((field.options).indexOf(item) !== -1) {
-                            selected.push(item);
-                        }
-                    });
-                } else {
-                    field.defaultValue.forEach((item) => {
-                        if ((field.options).findIndex(option =>
-                            option[field.primaryKey] === item[field.primaryKey]
-                        ) !== -1) {
-                            selected.push(item);
-                        }
-                    });
+                if(field.multiple){
+                    if (!field.objectType) {
+                        field.defaultValue.forEach((item) => {
+                            if ((field.options).indexOf(item) !== -1) {
+                                selected.push(item);
+                            }
+                        });
+                    } else {
+                        field.defaultValue.forEach((item) => {
+                            if ((field.options).findIndex(option =>
+                                option[field.primaryKey] === item[field.primaryKey]
+                            ) !== -1) {
+                                selected.push(item);
+                            }
+                        });
+                    }
+                    return selected;
                 }
-                return selected;
+                if (!field.multiple ) {
+                    return field.defaultValue[0] || null;
+                }
             }
-            if (!field.multiple) {
-                return field.defaultValue || null;
-            }
-            return [];
+            return null;
         }
+
         case "switch":
             if (typeof field.defaultValue === 'boolean') {
                 return field.defaultValue;
@@ -145,19 +140,8 @@ export function getResetValue(field) {
         case "currency":
             return null
 
-        case "picker":{
-            if ((field.options).indexOf(field.defaultValue) !== -1) {
-                return field.defaultValue;
-            }
+        case "picker":
             return field.options[0];
-        }
-
-        case "status_picker": {
-            if ((field.options).indexOf(field.defaultValue) !== -1) {
-                return field.defaultValue;
-            }
-            return field.options[0];
-        }
 
         case "select":
             return field.multiple ? [] : null;
@@ -248,21 +232,26 @@ export function autoValidate(field) {
                 }
                 break;
             case "sub-form":
-                let value = field.value ? field.value[0] : '';
-                if (typeof value === "undefined" || !value || value === '') {
+                if (typeof field.value=== "undefined" || !field.value || field.value[0] === '') {
                     error = true;
                     errorMsg = `${field.label} is required`;
                 }
                 break;
 
-            case "status_picker": 
-                if (isEmpty(field.value)) {
+            case "select":
+                if (typeof field.value=== "undefined" || !field.value || field.value[0] === '{}' ) {
                     error = true;
                     errorMsg = `${field.label} is required`;
                 }
-                break;
-        
-        
+                break;    
+
+            case "lookup":
+                if (typeof field.value === "undefined" || !field.value || field.value === '') {
+                    error = true;
+                    errorMsg = `${field.label} is required`;
+                }
+                break;    
+
             default:
         }
     }
