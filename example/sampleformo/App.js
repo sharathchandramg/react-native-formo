@@ -6,7 +6,7 @@ import { Button } from "native-base";
 
 export default class App extends Component {
 	render() {
-		const fields = require("./schema/16-sub-form-with-lookup_and_calculated_field.json");
+		const fields = require("./schema/07-select.json");
 		// const formData = {
 		// 	prospect_name: "MTV",
 		// 	work_address: [

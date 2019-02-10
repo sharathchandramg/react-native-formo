@@ -31,8 +31,8 @@
     },
     {
         "type": "select",
-        "name": "assiggee",
-        "label": "Assignee",
+        "name": "assiggee_0",
+        "label": "Assignee 0",
         "multiple": false,
         "labelKey": "user_name",
         "primaryKey": "user_id",
@@ -85,6 +85,22 @@
                 "user_id": 3,
                 "user_name": "Nitheesh"
             }
+        ]
+    },
+
+    {
+        "type": "select",
+        "name": "intrest",
+        "label": "Intrest",
+        "multiple": true,
+        "objectType": false,
+        "options": [
+            "Cricket",
+            "Football",
+            "Hockey"
+        ],
+        "defaultValue": [
+            "Cricket"
         ]
     }
 ]

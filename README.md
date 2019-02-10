@@ -265,7 +265,7 @@ Boolean
 
 | Prop | Type | Default | Description |
 |------|------|---------|-------------|
-|mode              |string (date, time)                |date         | Mode for the date picker             |
+|mode              |string (date, time, datetime)                |date         | Mode for the date picker             |
 |minDate      |string (date in format "YYYY-MM-DD", "today", "tomorrow") or JS Date     |N/A               |Minimum date in datepicker           |
 |maxDate            |string (date in format "YYYY-MM-DD", "today", "tomorrow") or JS Date              |N/A              |Miximum date in datepicker            |
 
