@@ -60,10 +60,10 @@ export default class SelectField extends Component {
 
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
-
+        
         //If multiple selections are allowed allow assignment via Id, Value or just a string value        
         const selectedText = attributes.multiple ?
-            attributes.value.length || "None" :
+            attributes.value && attributes.value.length || "None" :
             attributes.objectType ?
                 (attributes.value && attributes.value[attributes.labelKey]) || "None"
                 : attributes.value || "None";
@@ -126,9 +126,9 @@ export default class SelectField extends Component {
                                     let isSelected = false;
                                     if (attributes.multiple) {
                                         isSelected = attributes.objectType ?
-                                            attributes.value.findIndex(option =>
+                                            attributes.value && attributes.value.findIndex(option =>
                                                 option[attributes.primaryKey] === item[attributes.primaryKey]
-                                            ) !== -1 : (attributes.value.indexOf(item) !== -1);
+                                            ) !== -1 : (attributes.value && attributes.value.indexOf(item) !== -1);
                                     }
                                     return (
                                         <ListItem
