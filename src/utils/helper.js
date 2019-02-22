@@ -36,38 +36,38 @@ export function getDefaultValue(field) {
         case "calculated":
             return field.defaultValue || '';
 
+        case "status_picker":
         case "picker": {
             if ((field.options).indexOf(field.defaultValue) !== -1) {
                 return field.defaultValue;
             }
             return field.options[0];
         }
+        
         case "select": {
-            if (field.defaultValue && Array.isArray(field.defaultValue)) {
+            if (Array.isArray(field.defaultValue)) {
                 const selected = [];
-                if(field.multiple){
-                    if (!field.objectType) {
-                        field.defaultValue.forEach((item) => {
-                            if ((field.options).indexOf(item) !== -1) {
-                                selected.push(item);
-                            }
-                        });
-                    } else {
-                        field.defaultValue.forEach((item) => {
-                            if ((field.options).findIndex(option =>
-                                option[field.primaryKey] === item[field.primaryKey]
-                            ) !== -1) {
-                                selected.push(item);
-                            }
-                        });
-                    }
-                    return selected;
+                if (!field.objectType) {
+                    field.defaultValue.forEach((item) => {
+                        if ((field.options).indexOf(item) !== -1) {
+                            selected.push(item);
+                        }
+                    });
+                } else {
+                    field.defaultValue.forEach((item) => {
+                        if ((field.options).findIndex(option =>
+                            option[field.primaryKey] === item[field.primaryKey]
+                        ) !== -1) {
+                            selected.push(item);
+                        }
+                    });
                 }
-                if (!field.multiple ) {
-                    return field.defaultValue[0] || null;
-                }
+                return selected;
             }
-            return null;
+            if (!field.multiple) {
+                return field.defaultValue || null;
+            }
+            return [];
         }
 
         case "switch":
@@ -141,7 +141,12 @@ export function getResetValue(field) {
             return null
 
         case "picker":
+        case "status_picker": {
+            if ((field.options).indexOf(field.defaultValue) !== -1) {
+                return field.defaultValue;
+            }
             return field.options[0];
+        }
 
         case "select":
             return field.multiple ? [] : null;
@@ -231,6 +236,15 @@ export function autoValidate(field) {
                     errorMsg = `${field.label} is required`;
                 }
                 break;
+
+            case "picker":    
+            case "status_picker": 
+                if (isEmpty(field.value)) {
+                    error = true;
+                    errorMsg = `${field.label} is required`;
+                }
+                break;
+            
             case "sub-form":
                 if (typeof field.value=== "undefined" || !field.value || field.value[0] === '') {
                     error = true;
@@ -251,7 +265,6 @@ export function autoValidate(field) {
                     errorMsg = `${field.label} is required`;
                 }
                 break;    
-
             default:
         }
     }
