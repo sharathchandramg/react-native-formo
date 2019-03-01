@@ -42,8 +42,9 @@ export default class SelectField extends Component {
 
     toggleSelect(value) {
         const attributes = this.props.attributes;
-        const newSelected = attributes.multiple ? attributes.value : value;
+        let newSelected = attributes.multiple ? attributes.value : value;
         if (attributes.multiple) {
+            newSelected =  Array.isArray(newSelected)? newSelected: [];
             const index = attributes.objectType ? newSelected.findIndex(option =>
                 option[attributes.primaryKey] === value[attributes.primaryKey]
             ) : newSelected.indexOf(value);
