@@ -1,0 +1,18 @@
+[
+    {
+        "type": "externalcomponent",
+        "name": "catalog",
+        "label": "Catalog Select",
+        "required": true,
+        "editable": true,
+        "hidden": false,
+        "options": [{
+            "type":"catalog",
+            "data":[{}]
+        }],
+        "defaultValue": {
+            "label": "None",
+            "value": [{}]
+        }
+    }
+]
