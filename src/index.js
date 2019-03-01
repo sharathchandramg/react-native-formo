@@ -19,7 +19,7 @@ import SubForm from "./fields/subForm";
 import Lookupfield from "./fields/lookup";
 import CurrencyField from "./fields/currency";
 import StatusPicker from "./fields/statusPicker";
-import CatalogForm from "./fields/catalog";
+import CatalogField from "./fields/catalog";
 
 
 import { autoValidate, getInitialState, getDefaultValue, getResetValue } from "./utils/helper";
@@ -392,7 +392,7 @@ export default class Form0 extends Component {
 
                     case "catalog":
                         return(
-                            <CatalogForm
+                            <CatalogField
                                 ref={(c) => { this[field.name] = c; }}
                                 {...commonProps}
                                 {...this.props}
