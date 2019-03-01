@@ -9,7 +9,7 @@ import {
 } from "native-base";
 
 
-export default class CatalogField extends Component {
+export default class ExternalComponent extends Component {
 
     static propTypes = {
         attributes: PropTypes.object,
@@ -21,26 +21,24 @@ export default class CatalogField extends Component {
 
     constructor(props) {
         super(props);
-        
     }
 
     handleOnclick =()=> {
         this.props.onExternalComponent(this.props)
     }
 
+    getLabel =(value)=>{
+        let label = "None"
+        if(typeof value ==!'undefined' && value && Object.keys(value).length){
+            return value.label?value.label:'None';
+        }
+        return label;
+    }
     
     render() {
+
         const { theme, attributes, ErrorComponent } = this.props;
-        
-        //If multiple selections are allowed allow assignment via Id, Value or just a string value
-        const label = "None";
-
-        if(typeof attributes.value !=='undefined' && attributes.value && Object.keys(attributes.value).length){
-            let quantity = attributes.value.total_quantity;
-            let cost = attributes.value.total_cost;
-            label =`Total ${quantity} items  Cost INR ${cost}`
-        }        
-
+    
         return (
             <View>
                 <TouchableOpacity style={{
@@ -66,7 +64,7 @@ export default class CatalogField extends Component {
                             hitSlop={{ top: 10, bottom: 10, right: 50, left: 50 }}
                             style={{marginHorizontal: 5,justifyContent:'flex-end',alignItems:'flex-end',flexDirection:'row'}} 
                             onPress={() => this.handleOnclick()}>
-                            <Text>{label}</Text>
+                            <Text>{this.getLabel(attributes.value)}</Text>
                             <Icon name="ios-arrow-forward" style={{fontSize:18,paddingStart:10,color:theme.inputColorPlaceholder}}/>
                         </TouchableOpacity>
                     </View>
