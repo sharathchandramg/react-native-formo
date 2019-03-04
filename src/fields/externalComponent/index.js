@@ -24,12 +24,15 @@ export default class ExternalComponent extends Component {
     }
 
     handleOnclick =()=> {
-        this.props.onExternalComponent(this.props)
+        if(typeof this.props.onExternalComponent === 'function'){
+            this.props.onExternalComponent(this.props)
+        }
+        return
     }
 
     getLabel =(value)=>{
         let label = "None"
-        if(typeof value ==!'undefined' && value && Object.keys(value).length){
+        if(typeof value !=='undefined' && value && Object.keys(value).length){
             return value.label?value.label:'None';
         }
         return label;
@@ -64,7 +67,7 @@ export default class ExternalComponent extends Component {
                             hitSlop={{ top: 10, bottom: 10, right: 50, left: 50 }}
                             style={{marginHorizontal: 5,justifyContent:'flex-end',alignItems:'flex-end',flexDirection:'row'}} 
                             onPress={() => this.handleOnclick()}>
-                            <Text>{this.getLabel(attributes.value)}</Text>
+                            <Text style={{fontSize:12}}>{this.getLabel(attributes.value)}</Text>
                             <Icon name="ios-arrow-forward" style={{fontSize:18,paddingStart:10,color:theme.inputColorPlaceholder}}/>
                         </TouchableOpacity>
                     </View>
