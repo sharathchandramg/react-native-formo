@@ -124,6 +124,14 @@ export function getDefaultValue(field) {
                 return field.defaultValue;
             }
             return null;
+
+        case "externalcomponent":{
+            if(typeof field.defaultValue ==='object' && field.defaultValue){
+                return field.defaultValue;
+            }
+            return {}
+        }
+    
         default:
             return null;
     }
@@ -156,7 +164,12 @@ export function getResetValue(field) {
 
         case "date":
             return null;
-
+        case "externalcomponent":{
+                if(typeof field.defaultValue ==='object' && field.defaultValue){
+                    return field.defaultValue;
+                }
+                return {}
+            }    
         default:
             return null;
     }
@@ -264,7 +277,13 @@ export function autoValidate(field) {
                     error = true;
                     errorMsg = `${field.label} is required`;
                 }
-                break;    
+                break;
+            case "externalcomponent":
+                    if(typeof field.value !=='object' || !field.value || field.value ==='{}' ){
+                        error = true;
+                        errorMsg = `${field.label} is required`;
+                    }
+                break
             default:
         }
     }
