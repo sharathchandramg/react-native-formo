@@ -136,7 +136,7 @@ export default class ImageField extends Component {
                 }>
                 <Animated.Image
                     resizeMode="cover"
-                    source={{ uri:attributes? attributes.value: this.state.path}}
+                    source={{ uri:attributes.value? attributes.value: this.state.path}}
                     style={{flex:1, height: undefined, width: undefined}}
                 />
             </TouchableOpacity>
