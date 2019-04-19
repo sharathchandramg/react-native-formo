@@ -15,7 +15,7 @@
             "key" : ""  
         },    
         "defaultValue": {
-            "label": "",
+            "label":"",
             "value":[{}]
         }
     }

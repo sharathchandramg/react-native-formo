@@ -279,7 +279,7 @@ export function autoValidate(field) {
                 }
                 break;
             case "customDataView":
-                    if(typeof field.value !=='object' || !field.value || field.value ==='{}' ){
+                    if(typeof field.value !=='object' || !field.value || isEmpty(field.value)){
                         error = true;
                         errorMsg = `${field.label} is required`;
                     }
