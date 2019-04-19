@@ -38,6 +38,7 @@
         "editable": true,
         "labelKey": "user_name",
         "primaryKey": "user_id",
+        "objectType": true,
         "options": [
             {
                 "user_id": 1,
