@@ -9,14 +9,14 @@ import {
 } from "native-base";
 
 
-export default class ExternalComponent extends Component {
+export default class CustomDataComponent extends Component {
 
     static propTypes = {
         attributes: PropTypes.object,
         updateValue: PropTypes.func,
         theme: PropTypes.object,
         ErrorComponent: PropTypes.func,
-        onExternalComponent:PropTypes.func
+        onCustomDataView:PropTypes.func
     }
 
     constructor(props) {
@@ -24,8 +24,8 @@ export default class ExternalComponent extends Component {
     }
 
     handleOnclick =()=> {
-        if(typeof this.props.onExternalComponent === 'function'){
-            this.props.onExternalComponent(this.props)
+        if(typeof this.props.onCustomDataView === 'function'){
+            this.props.onCustomDataView(this.props)
         }
         return
     }

@@ -1,14 +1,29 @@
 
 export function isEmpty(value) {
-    if(typeof value ==='string'){
-        if (!value || value === null || typeof value === "undefined")
+    switch(typeof value){
+        case 'string':
+            if((value.trim() === "") || !value){
+                return true;
+            }
+            return false; 
+        case 'number':
+            if (value.toString().trim() === "" || !value){
+                return true;
+            }
+            return false
+        case 'undefined':
             return true;
-        else if (value.trim() === "")
-            return true;
-        else
-            return false;
-    }else{
-        return false;
+        case 'object':
+            if(Array.isArray(value)){
+                return value.length > 0? false:true;
+            }else{
+                if(value === null || Object.keys(value).length === 0){
+                    return true;
+                }
+                return false;
+            }
+        default:
+            return false 
     }
 }
 

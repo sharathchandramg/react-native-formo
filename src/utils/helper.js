@@ -125,7 +125,7 @@ export function getDefaultValue(field) {
             }
             return null;
 
-        case "externalcomponent":{
+        case "customDataView":{
             if(typeof field.defaultValue ==='object' && field.defaultValue){
                 return field.defaultValue;
             }
@@ -164,7 +164,7 @@ export function getResetValue(field) {
 
         case "date":
             return null;
-        case "externalcomponent":{
+        case "customDataView":{
                 if(typeof field.defaultValue ==='object' && field.defaultValue){
                     return field.defaultValue;
                 }
@@ -278,8 +278,8 @@ export function autoValidate(field) {
                     errorMsg = `${field.label} is required`;
                 }
                 break;
-            case "externalcomponent":
-                    if(typeof field.value !=='object' || !field.value || field.value ==='{}' ){
+            case "customDataView":
+                    if(typeof field.value !=='object' || !field.value || isEmpty(field.value)){
                         error = true;
                         errorMsg = `${field.label} is required`;
                     }
