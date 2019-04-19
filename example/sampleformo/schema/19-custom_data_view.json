@@ -14,9 +14,6 @@
             "type" : "asynstorage/filestorage/api",
             "key" : ""  
         },    
-        "defaultValue": {
-            "label":"",
-            "value":[{}]
-        }
+        "defaultValue": {}
     }
 ]
