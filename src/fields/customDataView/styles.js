@@ -25,12 +25,31 @@ const styles = StyleSheet.create({
         color:'#41E1FD',
         marginEnd:15,
     },
+    iconStyle:{
+        fontFamily:'roboto',
+        alignSelf:'flex-end',
+        fontSize: 16,
+        lineHeight:20,
+        color:'#41E1FD',
+    },
     button: {
         height: 50,
         backgroundColor: '#48BBEC',
         margin: 0,
         alignSelf: 'stretch',
         justifyContent: 'center'
+    },
+
+    valueText:{
+        fontSize:15,
+        lineHeight:20,
+        minHeight:40,
+        width:'100%',
+        color: '#575757',
+        fontFamily:'roboto',
+        alignSelf: 'flex-start',
+        fontWeight:'100',
+        marginHorizontal:5,
     },
 
     buttonText:{

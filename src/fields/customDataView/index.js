@@ -5,9 +5,8 @@ import {
     View,
     Text,
     Icon,
-    
 } from "native-base";
-
+import styles from "./styles"
 
 export default class CustomDataComponent extends Component {
 
@@ -67,8 +66,8 @@ export default class CustomDataComponent extends Component {
                             hitSlop={{ top: 10, bottom: 10, right: 50, left: 50 }}
                             style={{marginHorizontal: 5,justifyContent:'flex-end',alignItems:'flex-end',flexDirection:'row'}} 
                             onPress={() => this.handleOnclick()}>
-                            <Text style={{fontSize:12}}>{this.getLabel(attributes.value)}</Text>
-                            <Icon name="ios-arrow-forward" style={{fontSize:18,paddingStart:10,color:theme.inputColorPlaceholder}}/>
+                            <Text style={{fontSize:15,paddingEnd:5}}>{this.getLabel(attributes.value)}</Text>
+                            <Icon name="ios-arrow-forward" size={15} type={'regular'} color ={'#828282'} style={styles.iconStyle}/>
                         </TouchableOpacity>
                     </View>
 
