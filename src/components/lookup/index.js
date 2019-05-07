@@ -28,7 +28,9 @@ const LookupComponent =(props)=>{
         toggleSelect,
         toggleModalVisible,
         toggleSearchModalVisible,
-        toggleFilterModalVisible
+        toggleFilterModalVisible,
+        searchEnable,
+        filterEnable 
     } = props;
     return(
         <Modal
@@ -46,12 +48,20 @@ const LookupComponent =(props)=>{
                         <Title style={theme.headerText}>{attributes.label || "Select"}</Title>
                     </Body>
                     <Right>
-                        <Button transparent onPress={() =>toggleSearchModalVisible()}>
-                            <Icon name="search"   style={{color :'#48BBEC',fontSize:18}} type="FontAwesome"/>
-                        </Button>
-                        <Button transparent onPress={() =>toggleFilterModalVisible()}>
-                            <Icon name="filter"   style={{color :'#48BBEC',fontSize:18}} type="FontAwesome"/>
-                        </Button>
+                        {searchEnable?
+                            <Button transparent onPress={() =>toggleSearchModalVisible()}>
+                                <Icon name="search"   style={{color :'#48BBEC',fontSize:18}} type="FontAwesome"/>
+                            </Button>
+                            : 
+                            null
+                        }
+                        {filterEnable?
+                            <Button transparent onPress={() =>toggleFilterModalVisible()}>
+                                <Icon name="filter"   style={{color :'#48BBEC',fontSize:18}} type="FontAwesome"/>
+                            </Button>
+                            : 
+                            null
+                        }
                     </Right>
                 </Header>
 

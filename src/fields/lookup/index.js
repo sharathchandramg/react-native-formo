@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { TouchableOpacity } from "react-native";
 import Form0 from "./../../index";
 const _ = require("lodash");
+import {isEmpty} from "../../utils/validators";
 
 import {
     View,
@@ -22,6 +23,8 @@ export default class LookupField extends Component {
         updateValue: PropTypes.func,
         theme: PropTypes.object,
         ErrorComponent: PropTypes.func,
+        onGetQuery: PropTypes.func,
+        onSearchQuery: PropTypes.func,
     }
 
     constructor(props) {
@@ -38,28 +41,27 @@ export default class LookupField extends Component {
     }
 
     componentDidMount(){
-        const { attributes,} = this.props;
-        this.setState({attributes:attributes})
+        const { attributes } = this.props;
+        if(!isEmpty(attributes) && !isEmpty(attributes['data_source'])){
+            const {type,key,url} = attributes['data_source'];
+            if(!isEmpty(type) && type ==='remote'){
+                this.handleOnGetQuery()
+            }
+        }
     }
 
-    
-
-    toggleSearchModalVisible =()=>{
-        this.setState({
-            searchModalVisible: !this.state.searchModalVisible,
-        });
+    handleOnGetQuery =()=>{
+        const {onGetQuery,attributes} = this.props;
+        if(typeof onGetQuery ==='function'){
+            onGetQuery(attributes);
+        }
     }
 
-    toggleFilterModalVisible =()=>{
-        this.setState({
-            filterModalVisible: !this.state.filterModalVisible,
-        });
-    }
-
-    toggleModalVisible =()=> {
-        this.setState({
-            modalVisible: !this.state.modalVisible,
-        });
+    handleOnSearchQuery =(searchText)=>{
+        const {onSearchQuery,attributes} = this.props;
+        if(typeof onSearchQuery ==='function'){
+            onSearchQuery(attributes,searchText)
+        }
     }
 
     setFilterCategory =(item)=>{
@@ -98,10 +100,6 @@ export default class LookupField extends Component {
         }     
     }
 
-    handleOnSearchQuery =(searchText)=>{
-        
-    }
-
     handleTextChange =(searchText)=>{
         const {labelKey,options} = this.state.attributes;
         let updatedOption = [];
@@ -118,6 +116,24 @@ export default class LookupField extends Component {
         }else{
             this.setState({searchText: searchText,attributes: {...this.props.attributes}})
         }
+    }
+
+    toggleSearchModalVisible =()=>{
+        this.setState({
+            searchModalVisible: !this.state.searchModalVisible,
+        });
+    }
+
+    toggleFilterModalVisible =()=>{
+        this.setState({
+            filterModalVisible: !this.state.filterModalVisible,
+        });
+    }
+
+    toggleModalVisible =()=> {
+        this.setState({
+            modalVisible: !this.state.modalVisible,
+        });
     }
 
     toggleSelect=(value)=> {
@@ -155,6 +171,29 @@ export default class LookupField extends Component {
         }
     }
 
+    isFilterEnable =(attributes)=>{
+        if(!isEmpty(attributes) && !isEmpty(attributes['additional'])){
+            const{filterEnable} = attributes['additional'];
+            if(typeof filterEnable !=='undefined' && filterEnable){
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    isSearchEnable =(attributes)=>{
+        if(!isEmpty(attributes) && !isEmpty(attributes['additional'])){
+            const{searchEnable} = attributes['additional'];
+            if(typeof searchEnable !=='undefined' && searchEnable){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
         let value = typeof attributes.value !== 'undefined' && attributes.value !== null?attributes.value:null
@@ -185,6 +224,8 @@ export default class LookupField extends Component {
                         toggleModalVisible ={this.toggleModalVisible}
                         toggleSearchModalVisible ={this.toggleSearchModalVisible}
                         toggleFilterModalVisible ={this.toggleFilterModalVisible}
+                        searchEnable ={this.isSearchEnable(attributes)}
+                        filterEnable ={this.isFilterEnable(attributes)}
                     />: null
                 }
                 {this.state.searchModalVisible?

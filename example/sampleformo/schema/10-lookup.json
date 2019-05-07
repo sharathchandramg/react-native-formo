@@ -54,6 +54,17 @@
                 "editable": true,
                 "hidden": false
             }
-        ]
+        ],
+
+        "additional":{
+            "searchEnable":false,
+            "filterEnable":false
+        },
+
+        "data_source" : {
+            "type" : "local", 
+            "key" : "" ,
+            "url": ""
+        }    
     }
 ]
