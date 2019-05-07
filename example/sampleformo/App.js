@@ -6,7 +6,7 @@ import { Button } from "native-base";
 
 export default class App extends Component {
 	render() {
-		const fields = require("./schema/19-custom_data_view.json");
+		const fields = require("./schema/10-lookup.json");
 		// const formData = {
 		// 	prospect_name: "MTV",
 		// 	work_address: [
