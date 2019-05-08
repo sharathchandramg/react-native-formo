@@ -136,18 +136,30 @@ export default class LookupField extends Component {
         });
     }
 
-    toggleSelect=(value)=> {
+
+    toggleSelect =(value)=>{
+        const { attributes } = this.props;
+        let newSelected = attributes.multiple ? attributes.value : value;
+        if (attributes.multiple) {
+            const index = attributes.objectType ? newSelected.findIndex(option =>
+                option[attributes.primaryKey] === value[attributes.primaryKey]
+            ) : newSelected.indexOf(value);
+            if (index === -1) {
+                newSelected.push(value);
+            } else {
+                newSelected.splice(index, 1);
+            }
+        }
+
         if(this.state.searchModalVisible){
-            const attributes = this.props.attributes;
             this.setState({
-                searchModalVisible: attributes.multiple ? this.state.modalVisible : false,
+                searchModalVisible: attributes.multiple ? this.state.searchModalVisible : false,
                 modalVisible: attributes.multiple ? this.state.modalVisible : false,
-            },() => this.props.updateValue(this.props.attributes.name,value));
+            },() => this.props.updateValue(attributes.name,value));
         }else{
-            const attributes = this.props.attributes;
             this.setState({
                 modalVisible: attributes.multiple ? this.state.modalVisible : false,
-            },() => this.props.updateValue(this.props.attributes.name,value));
+            },() => this.props.updateValue(attributes.name,newSelected));
         }
     }
 

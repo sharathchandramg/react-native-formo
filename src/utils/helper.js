@@ -43,7 +43,7 @@ export function getDefaultValue(field) {
             }
             return field.options[0];
         }
-        
+        case "lookup":
         case "select": {
             if (Array.isArray(field.defaultValue)) {
                 const selected = [];
@@ -157,6 +157,7 @@ export function getResetValue(field) {
         }
 
         case "select":
+        case "lookup":
             return field.multiple ? [] : null;
 
         case "switch":
@@ -265,19 +266,13 @@ export function autoValidate(field) {
                 }
                 break;
 
+            case "lookup":    
             case "select":
                 if (typeof field.value=== "undefined" || !field.value || field.value[0] === '{}' ) {
                     error = true;
                     errorMsg = `${field.label} is required`;
                 }
                 break;    
-
-            case "lookup":
-                if (typeof field.value === "undefined" || !field.value || field.value === '') {
-                    error = true;
-                    errorMsg = `${field.label} is required`;
-                }
-                break;
             case "customDataView":
                     if(typeof field.value !=='object' || !field.value || isEmpty(field.value)){
                         error = true;

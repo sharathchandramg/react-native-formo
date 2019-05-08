@@ -28,7 +28,7 @@ export default class App extends Component {
                 "city": "Bengaluru",
                 "city_state": "Karnataka"
 			}]
-			fields[index] = [...attribute];
+			fields[index] = {...attribute};
 		}
 		this.setState({fields:fields})
 	}
