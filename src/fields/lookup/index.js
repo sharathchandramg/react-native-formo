@@ -101,21 +101,9 @@ export default class LookupField extends Component {
     }
 
     handleTextChange =(searchText)=>{
-        const {labelKey,options} = this.state.attributes;
-        let updatedOption = [];
-        updatedOption = _.filter(options,(item)=>{
-            let sItem = (item[labelKey]).toString().toLowerCase().search(searchText.trim().toLowerCase()) > -1;
-            if(sItem) {
-                return item;
-            }
-        })
-
-        if(searchText && updatedOption.length){
-            this.state.attributes['options'] = [...updatedOption]
-            this.setState({searchText: searchText, attributes: {...this.state.attributes}})
-        }else{
-            this.setState({searchText: searchText,attributes: {...this.props.attributes}})
-        }
+        this.setState({searchText: searchText},()=>{
+            this.handleOnSearchQuery(searchText)
+        });
     }
 
     toggleSearchModalVisible =()=>{

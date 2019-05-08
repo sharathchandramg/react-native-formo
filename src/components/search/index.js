@@ -15,7 +15,8 @@ import {
     Icon,
     Body,
     Button,
-    Input
+    Input,
+    Item
 } from "native-base";
 
 import styles from "./styles"
@@ -43,11 +44,8 @@ const SearchComponent =(props)=>{
                     </Button>
                 </Left>
                 <Body>
+                <Item style={{height:30,width:'100%'}}>
                     <Input
-                        style={{
-                            height:18,
-                            paddingStart:5,
-                        }}
                         keyboardType={'default'}
                         underlineColorAndroid="transparent"
                         numberOfLines={2}
@@ -56,10 +54,11 @@ const SearchComponent =(props)=>{
                         value={searchText}
                         onChangeText={text => handleTextChange(text)}
                     />
+                </Item>
                 </Body>
                 <Right>
-                    <Button transparent onPress={() => handleOnSearchQuery()}>
-                        <Icon name="search"   style={{color :'#48BBEC',fontSize:14}} type="FontAwesome"/>
+                    <Button transparent onPress={() => handleOnSearchQuery(searchText)}>
+                        <Icon name="search"   style={{color :'#48BBEC',fontSize:18}} type="FontAwesome"/>
                     </Button>
                 </Right>
             </Header>

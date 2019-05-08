@@ -57,7 +57,7 @@
         ],
 
         "additional":{
-            "searchEnable":false,
+            "searchEnable":true,
             "filterEnable":false
         },
 

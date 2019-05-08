@@ -33,8 +33,23 @@ export default class App extends Component {
 		this.setState({fields:fields})
 	}
 
-	handleOnSearchQuery =(attribute)=>{
+	handleOnSearchQuery =(attributes,searchText)=>{
 		// update the field options/data;
+		const {labelKey,options} = attributes;
+		let updatedOption = [];
+		let fields = this.state.fields;
+		let index = _.findIndex(fields,{"name": attributes["name"]})
+		if(index !== -1){
+			updatedOption = _.filter(options,(item)=>{
+				let sItem = (item[labelKey]).toString().toLowerCase().search(searchText.trim().toLowerCase()) > -1;
+				if(sItem) {
+					return item;
+				}
+			})
+			attributes['options'] = [...updatedOption];
+			fields[index] = {...attributes};
+		}
+		this.setState({fields:fields})
 	}
 
 
