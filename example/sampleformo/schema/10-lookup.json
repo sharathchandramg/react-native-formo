@@ -58,13 +58,16 @@
 
         "additional":{
             "searchEnable":true,
-            "filterEnable":false
+            "filterEnable":true
         },
 
         "data_source" : {
             "type" : "local", 
             "key" : "" ,
             "url": ""
-        }    
+        },
+        "filterCategory":[ "user_name","city","city_state"]    
     }
 ]
+
+

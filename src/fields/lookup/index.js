@@ -35,6 +35,7 @@ export default class LookupField extends Component {
             searchText: '',
 
             activeCategoryData: [],
+            filterData: [],
             activeCategory: null,
             filterModalVisible:false,
         };
@@ -46,6 +47,12 @@ export default class LookupField extends Component {
             const {type,key,url} = attributes['data_source'];
             if(!isEmpty(type) && type ==='remote'){
                 this.handleOnGetQuery()
+            }
+        }
+        if(this.isFilterEnable(attributes) && !isEmpty(attributes['filterCategory']) && !isEmpty(attributes['fields'])){
+            let activeCategory = _.find(attributes['fields'],{name: attributes['filterCategory'][0]});
+            if(typeof activeCategory !=='undefined'){
+                this.setFilterCategory(activeCategory);
             }
         }
     }
@@ -64,14 +71,30 @@ export default class LookupField extends Component {
         }
     }
 
+    
+
     setFilterCategory =(item)=>{
         const {attributes} = this.props;
-        this.setState({
-            activeCategoryData:attributes['options'],
-            activeCategory:item
-
-        })
+        let categoryData = [];
+        if(!isEmpty(attributes['options'])){
+                categoryData = _.filter(attributes['options'],(optionObj)=>{
+                if(attributes['objectType']){
+                    if(optionObj.hasOwnProperty(item['name'])){
+                        return optionObj;
+                    }else{
+                        return optionObj;
+                    }
+                }
+            });
+            let uniqData = _.uniqBy(categoryData,`${item.name}`);
+            this.setState({
+                activeCategoryData:[...uniqData],
+                activeCategory:item,
+                filterData: [...uniqData],
+            })
+        }
     }
+
 
     filterFunction =(item,index,data)=>{
         let activeCategory = this.state.activeCategory;
@@ -100,10 +123,48 @@ export default class LookupField extends Component {
         }     
     }
 
-    handleTextChange =(searchText)=>{
-        this.setState({searchText: searchText},()=>{
-            this.handleOnSearchQuery(searchText)
+    resetFilter = ()=>{
+        let filterData = this.state.filterData;
+        filterData = _.map(filterData, (option)=> {
+            option['selected'] = false;
+            return option;
         });
+        this.setState({filterData:filterData});
+
+    }
+
+    toggleFilterSelect =(item)=>{
+        let filterData = this.state.filterData;
+        item['selected'] = typeof item['selected'] !=='undefined'? !item['selected']: true;
+        let present = _.findIndex(filterData, `${item.name}`);
+        if(present !== -1){
+            filterData[present] = item;
+        }
+        this.setState({filterData:filterData});
+    }
+
+    handleTextChange =(searchText)=>{
+        if(this.state.filterModalVisible){
+            let activeCategoryData = this.state.activeCategoryData;
+            let activeCategory = this.state.activeCategory;
+            let filterData = [];
+            filterData = _.filter(activeCategoryData,(item)=>{
+				let sItem = (item[activeCategory['name']]).toString().toLowerCase().search(searchText.trim().toLowerCase()) > -1;
+				if(sItem) {
+					return item;
+				}
+            })
+            if(searchText && filterData.length){
+                this.setState({filterData:filterData,searchText: searchText})
+            }else{
+                this.setState({filterData:activeCategoryData,searchText: searchText})
+            }
+
+        }else{
+            this.setState({searchText: searchText},()=>{
+                this.handleOnSearchQuery(searchText)
+            });
+        }
     }
 
     toggleSearchModalVisible =()=>{
@@ -123,7 +184,6 @@ export default class LookupField extends Component {
             modalVisible: !this.state.modalVisible,
         });
     }
-
 
     toggleSelect =(value)=>{
         const { attributes } = this.props;
@@ -195,6 +255,7 @@ export default class LookupField extends Component {
 
 
     render() {
+        
         const { theme, attributes, ErrorComponent } = this.props;
         let value = typeof attributes.value !== 'undefined' && attributes.value !== null?attributes.value:null
         let fields = typeof attributes.fields !== 'undefined' && attributes.fields !== null?attributes.fields:[]
@@ -231,7 +292,7 @@ export default class LookupField extends Component {
                 {this.state.searchModalVisible?
                     <SearchComponent
                         searchModalVisible={this.state.searchModalVisible}
-                        attributes ={this.state.attributes}
+                        attributes ={attributes}
                         theme ={theme}
                         toggleSearchModalVisible={this.toggleSearchModalVisible}
                         handleOnSearchQuery={this.handleOnSearchQuery}
@@ -251,7 +312,10 @@ export default class LookupField extends Component {
                         applyFilterFunction ={this.applyFilterFunction}
                         setFilterCategory ={this.setFilterCategory}
                         filterFunction ={this.filterFunction}
-                        activeCategoryData ={this.state.activeCategoryData}
+                        activeCategory = {this.state.activeCategory}
+                        filterData = {this.state.filterData}
+                        toggleSelect = {this.toggleFilterSelect}
+                        resetFilter ={this.resetFilter}
                     />: null
 
                 }

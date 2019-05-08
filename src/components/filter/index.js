@@ -2,6 +2,8 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Modal, FlatList} from "react-native";
+import {isEmpty} from "../../utils/validators";
+const _ = require("lodash");
 
 import {
     Container,
@@ -32,26 +34,33 @@ const FilterComponent =(props)=>{
         resetFilter,
         setFilterCategory,
         toggleFilterModalVisible,
-        activeCategoryData
+        activeCategory,
+        filterData
     } = props;
 
-
-
+    let category = [];
+    if(!isEmpty(attributes['filterCategory']) && !isEmpty(attributes['fields'])){
+        category = _.filter(attributes['fields'],(field)=>{
+            let index = attributes['filterCategory'].indexOf(field['name']);
+            if(index !== -1){
+                return field;
+            }
+        })
+    }
+    
     renderCategoryDataItem =({item,index})=>{
         return (
             <ListItem 
                 style={{height:50,width:'100%',justifyContent:'center',alignItem:'flex-start'}} 
                 key={index} 
                 onPress={() => toggleSelect(item)}>
-                {attributes.multiple &&
-                    <CheckBox
-                        onPress={() => toggleSelect(item)}
-                        checked={isSelected}
-                    />
-                }
+                <CheckBox
+                    onPress={() => toggleSelect(item)}
+                    checked={item.selected}
+                />
                 <View style={{height:50,width:'100%',justifyContent:'center',alignItem:'flex-start'}}>
                     <Text style={[styles.filterText,{fontSize:12,paddingEnd:5,alignSelf:'stretch'}]}>
-                        {attributes.objectType ? item[attributes.labelKey] : item}
+                        {attributes.objectType ? item[activeCategory['name']] : item}
                     </Text>
                 </View>
             </ListItem>
@@ -61,7 +70,7 @@ const FilterComponent =(props)=>{
     renderCategoryData =()=>{
         return(
             <FlatList
-                data={activeCategoryData}
+                data={filterData}
                 extraData={props}
                 keyExtractor={(item, index) => index.toString()}
                 listKey={(item, index) => 'D' + index.toString()}
@@ -69,7 +78,6 @@ const FilterComponent =(props)=>{
             />
         )
     }
-
 
     renderCategoryItem =({item,index})=>{
         return (
@@ -87,7 +95,7 @@ const FilterComponent =(props)=>{
     renderCategory =()=>{
         return(
             <FlatList
-                data={[{type:'user',name:'user_name',label:'User'}]}
+                data={category}
                 extraData={props}
                 keyExtractor={(item, index) => index.toString()}
                 listKey={(item, index) => 'D' + index.toString()}
@@ -96,8 +104,6 @@ const FilterComponent =(props)=>{
             />
         )
     }
-
-
 
     renderfilterBottom =()=>{
         return(
@@ -131,7 +137,7 @@ const FilterComponent =(props)=>{
                                     />
                                 </View>
                             </View>
-                            {activeCategoryData && activeCategoryData.length >1?
+                            {filterData && filterData.length > 0?
                                 renderCategoryData():null
                             }
 
@@ -141,7 +147,6 @@ const FilterComponent =(props)=>{
         )
 
     }
-
 
     return(
         <Modal
