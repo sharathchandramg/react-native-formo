@@ -415,7 +415,31 @@ defaultValue : [
     }
 ]
 ```
+##### Extended Features
+- Populate the options list from remote API/Storage.
+We have exposed 'onGetQuery' function, so you can bind your function and update the options list. To achive it you have to configure the 'data_source'.You will able to access the data_source's params and call remote API/Storage. 
+If your data_source type is remote, you have to bind the 'onGetQuery'.function else it is not required. The default type is local,which means options list is pre populated.
 
+```
+"data_source" : {
+    "type" : "local/remote",
+    "key" : "" ,
+    "url": "",
+}  
+```
+- Search and Filter 
+We have exposed 'onSearchQuery` function, so if your options list is large and you need to search,bind your function and update the options list.
+To enable it confure 'additional'. Similary for filter, but for filter you have to configure the 'filterCategory' also. The filterCategory is the list of key from options's object on which filter will be applied. 
+
+```
+"additional":{
+    "searchEnable":true,
+    "filterEnable":true
+},
+
+"filterCategory":["user_name","phone"] 
+
+```
 
 #### Sub Form 
 Allows to have multiple nested complex objects. This is useful if we need to record multiple instances of data
