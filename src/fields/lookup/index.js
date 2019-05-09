@@ -120,11 +120,12 @@ export default class LookupField extends Component {
     applyFilterFunction =()=>{
         let filterArr = this.state.filterArr;
         const {attributes} = this.props;
-        if(!isEmpty(attributes['options']) && filterArr.length){
-            let options = _.filter(filterArr,{'selected': true})
-            attributes['options'] = [...options];
+        let options = _.filter(filterArr,{'selected': true})
+        if(!isEmpty(attributes['options']) && options.length){
+            let uniqData = _.uniqBy(options,`${attributes.labelKey}`);
+            attributes['options'] = [...uniqData];
+            this.setState({filterData:this.state.options,filterModalVisible:false});
         }
-        this.setState({filterData:this.state.options,filterModalVisible:false});
     }
 
     resetFilter = ()=>{
