@@ -109,10 +109,13 @@ export default class LookupField extends Component {
 
     updateFilter = (item)=>{
         let filterArr = this.state.filterArr;
+        const {attributes} = this.props;
         if(item['selected'] && typeof filterArr !=='undefined'){
             filterArr.push(item); 
         }else{
-            filterArr = _.filter(filterArr,(row)=> row[attributes.labelKey] !== item[attributes.labelKey])
+            if(filterArr.length){
+                filterArr = _.filter(filterArr,(row)=> row[attributes.labelKey] !== item[attributes.labelKey])
+            }
         }
         return filterArr;
     }
@@ -128,7 +131,21 @@ export default class LookupField extends Component {
         const {attributes} = this.props;
         let options = _.filter(filterArr,{'selected': true})
         if(!isEmpty(attributes['options']) && options.length){
-            let uniqData = _.uniqBy(options,`${attributes.labelKey}`);
+            let updatedOptions = [];
+            let activeFilterName = this.state.activeCategory['name'];
+            options.map((selectedItem)=>{
+                let allMatchingOptions = [];
+                allMatchingOptions = _.filter(this.state.options,(item)=>{
+                    if(selectedItem[activeFilterName] === item[activeFilterName]){
+                        return item;
+                    }
+                })
+                if(allMatchingOptions.length){
+                    updatedOptions = [...updatedOptions,...allMatchingOptions] 
+                }
+            })
+
+            let uniqData = _.uniqBy(updatedOptions,`${attributes.labelKey}`);
             attributes['options'] = [...uniqData];
             this.setState({filterData:this.state.options,filterModalVisible:false});
         }
@@ -327,6 +344,7 @@ export default class LookupField extends Component {
                         filterEnable ={this.isFilterEnable(attributes)}
                         filter ={this.state.filterArr}
                         handleReset={this.handleReset}
+                        activeCategory ={this.state.activeCategory}
                     />: null
                 }
                 {this.state.searchModalVisible?

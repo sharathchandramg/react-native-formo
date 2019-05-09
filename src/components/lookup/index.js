@@ -2,6 +2,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import {Modal,TouchableOpacity,View,FlatList} from "react-native";
+import {isEmpty} from "../../utils/validators";
 
 import {
     Text,
@@ -32,11 +33,18 @@ const LookupComponent =(props)=>{
         searchEnable,
         filterEnable,
         handleReset,
-        filter 
+        filter,
+        activeCategory 
     } = props;
 
     renderFilterItem =({item,index})=>{
-        let label = attributes.objectType ? item[attributes.labelKey] : item
+        let label = '';
+        if(!isEmpty(activeCategory) && !isEmpty(activeCategory['name'])){
+            label = attributes.objectType ? item[activeCategory['name']] : item
+        }else{
+            label = attributes.objectType ? item[attributes.labelKey] : item
+        }
+
         return (
             <View style={styles.selectedContainer} key={index.toString()}>
                 <TouchableOpacity style={styles.selectedStatusOuter} onPress={() => handleReset(item)}>
@@ -64,6 +72,7 @@ const LookupComponent =(props)=>{
             />  
         )
     } 
+
 
 
     return(
@@ -98,7 +107,6 @@ const LookupComponent =(props)=>{
                         }
                     </Right>
                 </Header>
-
                 <Content>
                     {filter && filter.length > 0? 
                         <View style={styles.filterContainer}>
