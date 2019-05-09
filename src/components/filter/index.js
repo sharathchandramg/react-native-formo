@@ -27,7 +27,7 @@ const FilterComponent =(props)=>{
     const {
         attributes,
         theme,
-        toggleSelect,
+        filterFunction,
         handleTextChange,
         searchText,
         applyFilterFunction,
@@ -53,9 +53,9 @@ const FilterComponent =(props)=>{
             <ListItem 
                 style={{height:50,width:'100%',justifyContent:'center',alignItem:'flex-start'}} 
                 key={index} 
-                onPress={() => toggleSelect(item)}>
+                onPress={() => filterFunction(item)}>
                 <CheckBox
-                    onPress={() => toggleSelect(item)}
+                    onPress={() => filterFunction(item)}
                     checked={item.selected}
                 />
                 <View style={{height:50,width:'100%',justifyContent:'center',alignItem:'flex-start'}}>
