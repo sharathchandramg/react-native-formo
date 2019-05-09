@@ -71,11 +71,18 @@ export default class LookupField extends Component {
     handleOnSearchQuery =(searchText)=>{
         const {onSearchQuery,attributes} = this.props;
         if(typeof onSearchQuery ==='function'){
-            onSearchQuery(attributes,searchText)
+            onSearchQuery(attributes,searchText);
+            if(searchText){
+                options = _.filter(attributes['options'],(item)=>{
+                    let sItem = (item[attributes.labelKey]).toString().toLowerCase().search(searchText.trim().toLowerCase()) > -1;
+                    if(sItem) {
+                        return item;
+                    }
+                })
+                this.setState({searchModalVisible:false,filterArr:options})
+            }
         }
     }
-
-    
 
     setFilterCategory =(item)=>{
         const {attributes} = this.props;
@@ -102,18 +109,17 @@ export default class LookupField extends Component {
 
     updateFilter = (item)=>{
         let filterArr = this.state.filterArr;
-        let index = _.findIndex(filterArr,`${item.name}`)
-        if(index !== -1){
-            filterArr.pop(item) 
+        if(item['selected'] && typeof filterArr !=='undefined'){
+            filterArr.push(item); 
         }else{
-            filterArr.push(item) 
+            filterArr = _.filter(filterArr,(row)=> row[attributes.labelKey] !== item[attributes.labelKey])
         }
         return filterArr;
     }
 
     filterFunction =(item)=>{
-        let filterArr = this.updateFilter(item);
         let filterData = this.toggleFilterSelect(item)
+        let filterArr = this.updateFilter(item);
         this.setState({filterArr:filterArr,filterData:filterData}) 
     }
 
@@ -139,7 +145,33 @@ export default class LookupField extends Component {
             attributes['options'] = [...this.state.options];
         }
         this.setState({filterData:filterData,});
+    }
 
+    handleReset = (item)=>{
+        let filterArr = this.state.filterArr;
+        let filterData = this.state.filterData;
+        const {attributes} = this.props;
+        filterArr = _.filter(filterArr,(row)=>{
+            if(row['selected'] && row[attributes.labelKey] !== item[attributes.labelKey]){
+                return row;
+            }
+        });
+        filterData = _.map(filterData, (option)=> {
+            if(option[attributes.labelKey] === item[attributes.labelKey]){
+                option['selected'] = false;
+            }
+            return option;
+        });
+        this.setState({filterArr:filterArr,filterData:filterData},()=>{
+            if(this.state.filterArr.length){
+                this.applyFilterFunction()
+            }else{
+                if(!isEmpty(attributes['options'])){
+                    attributes['options'] = [...this.state.options];
+                    this.setState({})
+                }
+            }
+        });
     }
 
     toggleFilterSelect =(item)=>{
@@ -170,9 +202,7 @@ export default class LookupField extends Component {
             }
 
         }else{
-            this.setState({searchText: searchText},()=>{
-                this.handleOnSearchQuery(searchText)
-            });
+            this.setState({searchText: searchText});
         }
     }
 
@@ -262,7 +292,6 @@ export default class LookupField extends Component {
     }
 
 
-
     render() {
         
         const { theme, attributes, ErrorComponent } = this.props;
@@ -296,6 +325,8 @@ export default class LookupField extends Component {
                         toggleFilterModalVisible ={this.toggleFilterModalVisible}
                         searchEnable ={this.isSearchEnable(attributes)}
                         filterEnable ={this.isFilterEnable(attributes)}
+                        filter ={this.state.filterArr}
+                        handleReset={this.handleReset}
                     />: null
                 }
                 {this.state.searchModalVisible?

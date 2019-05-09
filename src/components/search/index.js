@@ -23,9 +23,7 @@ import styles from "./styles"
 
 const SearchComponent =(props)=>{
     const {
-        attributes,
         theme,
-        toggleSelect,
         toggleSearchModalVisible,
         handleTextChange,
         handleOnSearchQuery,
@@ -53,6 +51,8 @@ const SearchComponent =(props)=>{
                         autoFocus={true}
                         value={searchText}
                         onChangeText={text => handleTextChange(text)}
+                        returnKeyType={'search'}
+                        onSubmitEditing ={()=> handleOnSearchQuery(searchText)}
                     />
                 </Item>
                 </Body>
@@ -62,36 +62,7 @@ const SearchComponent =(props)=>{
                     </Button>
                 </Right>
             </Header>
-        
             <Content>
-                {
-                    attributes.options.map((item, index) => {
-                        let isSelected = false;
-                        if (attributes.multiple) {
-                            isSelected = attributes.objectType ?
-                                attributes.value.findIndex(option =>
-                                    option[attributes.primaryKey] === item[attributes.primaryKey]
-                                ) !== -1 : (attributes.value.indexOf(item) !== -1);
-                        }
-                        return (
-                            <ListItem
-                                key={index}
-                                onPress={() => toggleSelect(item)}>
-                                {attributes.multiple &&
-                                    <CheckBox
-                                        onPress={() => toggleSelect(item)}
-                                        checked={isSelected}
-                                    />
-                                }
-                                <Body>
-                                    <Text style={{ paddingHorizontal: 5 }}>
-                                        {attributes.objectType ? item[attributes.labelKey] : item}
-                                    </Text>
-                                </Body>
-                            </ListItem>
-                        );
-                    })
-                }
             </Content>
         </Container>
         </Modal>

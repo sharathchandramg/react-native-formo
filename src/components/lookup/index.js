@@ -1,7 +1,7 @@
 
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import {Modal} from "react-native";
+import {Modal,TouchableOpacity,View,FlatList} from "react-native";
 
 import {
     Text,
@@ -30,8 +30,42 @@ const LookupComponent =(props)=>{
         toggleSearchModalVisible,
         toggleFilterModalVisible,
         searchEnable,
-        filterEnable 
+        filterEnable,
+        handleReset,
+        filter 
     } = props;
+
+    renderFilterItem =({item,index})=>{
+        let label = attributes.objectType ? item[attributes.labelKey] : item
+        return (
+            <View style={styles.selectedContainer} key={index.toString()}>
+                <TouchableOpacity style={styles.selectedStatusOuter} onPress={() => handleReset(item)}>
+                    <Text adjustsFontSizeToFit numberOfLines={1} style={styles.selectedText}>
+                        {label}
+                    </Text>
+                    <TouchableOpacity 
+                        style={styles.removeFilterIcon}
+                        onPress={() => handleReset(item)}>
+                        <Icon name ={'times-circle'}  style={{ fontSize:14,color:'white'}} type="FontAwesome"/>
+                    </TouchableOpacity>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
+    renderFilterSelected = (filterArr) => {
+        return(
+            <FlatList
+                horizontal={true}
+                data={filterArr}
+                extraData={props}
+                keyExtractor={(item, index) => `feed_${index}`}
+                renderItem={renderFilterItem}
+            />  
+        )
+    } 
+
+
     return(
         <Modal
             visible={modalVisible}
@@ -66,34 +100,44 @@ const LookupComponent =(props)=>{
                 </Header>
 
                 <Content>
-                    {
-                        attributes.options.map((item, index) => {
-                            let isSelected = false;
-                            if (attributes.multiple) {
-                                isSelected = attributes.objectType ?
-                                    attributes.value.findIndex(option =>
-                                        option[attributes.primaryKey] === item[attributes.primaryKey]
-                                    ) !== -1 : (attributes.value.indexOf(item) !== -1);
-                            }
-                            return (
-                                <ListItem
-                                    key={index}
-                                    onPress={() =>toggleSelect(item)}>
-                                    {attributes.multiple &&
-                                        <CheckBox
-                                            onPress={() =>toggleSelect(item)}
-                                            checked={isSelected}
-                                        />
-                                    }
-                                    <Body>
-                                        <Text style={{ paddingHorizontal: 5 }}>
-                                            {attributes.objectType ? item[attributes.labelKey] : item}
-                                        </Text>
-                                    </Body>
-                                </ListItem>
-                            );
-                        })
+                    {filter && filter.length > 0? 
+                        <View style={styles.filterContainer}>
+                            {renderFilterSelected(filter)}
+                        </View>
+                        : 
+                        null
                     }
+                    
+                    <View>
+                        {
+                            attributes.options.map((item, index) => {
+                                let isSelected = false;
+                                if (attributes.multiple) {
+                                    isSelected = attributes.objectType ?
+                                        attributes.value.findIndex(option =>
+                                            option[attributes.primaryKey] === item[attributes.primaryKey]
+                                        ) !== -1 : (attributes.value.indexOf(item) !== -1);
+                                }
+                                return (
+                                    <ListItem
+                                        key={index}
+                                        onPress={() => toggleSelect(item)}>
+                                        {attributes.multiple &&
+                                            <CheckBox
+                                                onPress={() => toggleSelect(item)}
+                                                checked={isSelected}
+                                            />
+                                        }
+                                        <Body>
+                                            <Text style={{ paddingHorizontal: 5 }}>
+                                                {attributes.objectType ? item[attributes.labelKey] : item}
+                                            </Text>
+                                        </Body>
+                                    </ListItem>
+                                );
+                            })
+                        }
+                    </View>
                 </Content>
             </Container>
         </Modal>
