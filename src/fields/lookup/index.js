@@ -40,6 +40,7 @@ export default class LookupField extends Component {
             filterArr: [],
             activeCategory: null,
             filterModalVisible:false,
+            categoryToValue: [],
         };
     }
 
@@ -79,7 +80,11 @@ export default class LookupField extends Component {
                         return item;
                     }
                 })
-                this.setState({searchModalVisible:false,filterArr:options})
+
+                let obj = {category: attributes['labelKey'], categoryLabel:"Search" ,value:options};
+                let categoryToValue  = [];
+                categoryToValue.push(obj)
+                this.setState({searchModalVisible:false,categoryToValue:categoryToValue})
             }
         }
     }
@@ -120,35 +125,85 @@ export default class LookupField extends Component {
         return filterArr;
     }
 
+    mapCatagoryToValue =(category,item)=>{
+        let categoryToValue = this.state.categoryToValue;
+        if(typeof item['selected'] !=='undefined' && item['selected']){
+            let activeCategoryObj = {
+                category : category['name'],
+                value : [item],
+                categoryLabel:category['label']
+            };
+            let index = _.findIndex(categoryToValue,{category: category['name']}) ;
+            if(index !== -1){
+                let foundObj = categoryToValue[index];
+                let options = foundObj['value'];
+                let updatedOptions = [...options];
+                if(options.length){
+                    options.map((option)=>{
+                        if( !_.isEqual(option,item)){
+                            updatedOptions.push(item)
+                        } 
+                    })
+                }else{
+                    updatedOptions.push(item)
+                }
+                foundObj['value'] = [...updatedOptions];
+                categoryToValue[index]= foundObj;
+            }else{
+                categoryToValue.push(activeCategoryObj); 
+            }
+            return categoryToValue;
+        }else{
+            if(categoryToValue.length){
+                categoryToValue = _.filter(categoryToValue,(row)=> {
+                    let options = row['value'];
+                    options = _.filter(options,(option)=> option[category['name']] !== item[category['name']]);
+                    row['value'] = options;
+                    return row;
+                }) 
+            }
+        }
+        return categoryToValue;
+    }
+
+    
+
     filterFunction =(item)=>{
         let filterData = this.toggleFilterSelect(item)
         let filterArr = this.updateFilter(item);
-        this.setState({filterArr:filterArr,filterData:filterData}) 
+        let categoryToValue = this.mapCatagoryToValue(this.state.activeCategory,item)
+        this.setState({filterArr:filterArr,filterData:filterData,categoryToValue:categoryToValue}) 
     }
 
-    applyFilterFunction =()=>{
-        let filterArr = this.state.filterArr;
+    applyFilterFunction =()=>{        
+        let categoryToValue = this.state.categoryToValue;
         const {attributes} = this.props;
-        let options = _.filter(filterArr,{'selected': true})
-        if(!isEmpty(attributes['options']) && options.length){
-            let updatedOptions = [];
-            let activeFilterName = this.state.activeCategory['name'];
-            options.map((selectedItem)=>{
+        updatedOptions = [];
+        
+        _.map(categoryToValue,(item)=>{
+            let options = item['value'];
+            let category  = item['category'];
+            options.map((option)=>{
+                let categoryVal = option[category];
                 let allMatchingOptions = [];
                 allMatchingOptions = _.filter(this.state.options,(item)=>{
-                    if(selectedItem[activeFilterName] === item[activeFilterName]){
+                    if(categoryVal === item[category]){
                         return item;
                     }
                 })
                 if(allMatchingOptions.length){
-                    updatedOptions = [...updatedOptions,...allMatchingOptions] 
+                    updatedOptions = [...updatedOptions,...allMatchingOptions]  
                 }
             })
+        })
 
-            let uniqData = _.uniqBy(updatedOptions,`${attributes.labelKey}`);
-            attributes['options'] = [...uniqData];
-            this.setState({filterData:this.state.options,filterModalVisible:false});
-        }
+        let uniqData = _.uniqBy(updatedOptions,`${attributes.labelKey}`);
+        attributes['options'] = [...uniqData];
+        this.setState({
+            filterData:this.state.options,
+            filterModalVisible:false,
+            categoryToValue: categoryToValue,
+        });
     }
 
     resetFilter = ()=>{
@@ -165,22 +220,55 @@ export default class LookupField extends Component {
     }
 
     handleReset = (item)=>{
-        let filterArr = this.state.filterArr;
-        let filterData = this.state.filterData;
         const {attributes} = this.props;
-        filterArr = _.filter(filterArr,(row)=>{
-            if(row['selected'] && row[attributes.labelKey] !== item[attributes.labelKey]){
+        let categoryToValue = this.state.categoryToValue;
+        let category = item['category'];
+        let filterData = this.state.filterData;
+        let filterArr = this.state.filterArr;
+
+        categoryToValue = _.filter(categoryToValue,(row)=>{
+            let rowCategory = row['category'];
+            if( rowCategory !== category){
                 return row;
             }
         });
-        filterData = _.map(filterData, (option)=> {
-            if(option[attributes.labelKey] === item[attributes.labelKey]){
-                option['selected'] = false;
-            }
-            return option;
-        });
-        this.setState({filterArr:filterArr,filterData:filterData},()=>{
-            if(this.state.filterArr.length){
+
+        if(categoryToValue.length){
+            filterArr = _.filter(filterArr,(row)=>{
+                if(row['selected']){
+                    let index = _.findIndex(item['value'],(option)=>{
+                        return  row[category] == option[option];
+                    })
+                    if(index === -1){
+                        return row;
+                    }
+                }
+            });
+    
+            filterData = _.map(filterData, (row)=> {
+                let index = _.findIndex(item['value'],(option)=>{
+                    return  row[category] == option[option];
+                })
+                if(row['selected'] &&  index !== -1){
+                    row['selected'] = false;
+                    return row;
+                }
+                return row;
+            });
+
+
+        }else{
+            filterArr = _.map(filterArr,(row) => row['selected'] = false)
+            filterData = _.map(filterData, (row)=> row['selected'] = false)
+        }
+
+
+        this.setState({
+            categoryToValue: categoryToValue,
+            filterArr:filterArr,
+            filterData:filterData
+        },()=>{
+            if(this.state.categoryToValue.length){
                 this.applyFilterFunction()
             }else{
                 if(!isEmpty(attributes['options'])){
@@ -229,10 +317,18 @@ export default class LookupField extends Component {
         });
     }
 
-    toggleFilterModalVisible =()=>{
+    closeFilterModal =()=>{
         this.setState({
-            filterModalVisible: !this.state.filterModalVisible,
-        });
+            filterModalVisible: false,
+        })
+    }
+
+    openFilterModal =()=>{
+        const {attributes} = this.props;
+        let activeCategory = _.find(attributes['fields'],{name: attributes['filterCategory'][0]});
+        this.setState({
+            filterModalVisible: true,
+        },()=>this.setFilterCategory(activeCategory))
     }
 
     toggleModalVisible =()=> {
@@ -339,10 +435,10 @@ export default class LookupField extends Component {
                         toggleSelect = {this.toggleSelect}
                         toggleModalVisible ={this.toggleModalVisible}
                         toggleSearchModalVisible ={this.toggleSearchModalVisible}
-                        toggleFilterModalVisible ={this.toggleFilterModalVisible}
+                        toggleFilterModalVisible ={this.openFilterModal}
                         searchEnable ={this.isSearchEnable(attributes)}
                         filterEnable ={this.isFilterEnable(attributes)}
-                        filter ={this.state.filterArr}
+                        filter ={this.state.categoryToValue}
                         handleReset={this.handleReset}
                         activeCategory ={this.state.activeCategory}
                     />: null
@@ -367,7 +463,7 @@ export default class LookupField extends Component {
                         attributes ={attributes}
                         filterData = {this.state.filterData}
                         activeCategory = {this.state.activeCategory}
-                        toggleFilterModalVisible ={this.toggleFilterModalVisible}
+                        toggleFilterModalVisible ={this.closeFilterModal}
                         handleTextChange ={this.handleTextChange}
                         applyFilterFunction ={this.applyFilterFunction}
                         setFilterCategory ={this.setFilterCategory}

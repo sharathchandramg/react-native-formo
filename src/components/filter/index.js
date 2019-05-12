@@ -82,10 +82,10 @@ const FilterComponent =(props)=>{
     renderCategoryItem =({item,index})=>{
         return (
             <ListItem  
-                style={{height:50,width:'100%',justifyContent:'center',alignItem:'flex-start'}} 
+                style={[styles.filterCategoryItem,{backgroundColor: item['name'] == activeCategory['name']?'white':"#F2F2F2"}]}
                 key={index} 
                 onPress={() => setFilterCategory(item)}>
-                <View style={{height:50,width:'100%',justifyContent:'center',alignItem:'flex-start'}} >
+                <View style={{width:'100%',justifyContent:'center',alignItem:'center'}} >
                     <Text style={[styles.filterText,{fontSize:14,paddingEnd:5,alignSelf:'stretch'}]}>{item['label']}</Text>
                 </View>
             </ListItem>

@@ -2,7 +2,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import {Modal,TouchableOpacity,View,FlatList} from "react-native";
-import {isEmpty} from "../../utils/validators";
+
 
 import {
     Text,
@@ -20,6 +20,7 @@ import {
 } from "native-base";
 
 import styles from "./styles"
+const _ = require("lodash");
 
 const LookupComponent =(props)=>{
     let {
@@ -34,17 +35,27 @@ const LookupComponent =(props)=>{
         filterEnable,
         handleReset,
         filter,
-        activeCategory 
     } = props;
 
-    renderFilterItem =({item,index})=>{
-        let label = '';
-        if(!isEmpty(activeCategory) && !isEmpty(activeCategory['name'])){
-            label = attributes.objectType ? item[activeCategory['name']] : item
-        }else{
-            label = attributes.objectType ? item[attributes.labelKey] : item
-        }
 
+    getLabel = (item)=>{
+        let label = '';
+        let value = [];
+        _.map(item['value'],(option)=>{
+            if(typeof option ==='object'){
+                let categoryValue  = option[item['category']];
+                if(value.indexOf(categoryValue) === -1){
+                    value.push(categoryValue)
+                }
+            }else if(typeof option ==='string'){
+                value.push(option)
+            }
+        })
+        label = `${item['categoryLabel']}:${value.toString()}`;
+        return label;
+    }
+    renderFilterItem =({item,index})=>{
+        let label = getLabel(item)
         return (
             <View style={styles.selectedContainer} key={index.toString()}>
                 <TouchableOpacity style={styles.selectedStatusOuter} onPress={() => handleReset(item)}>
@@ -62,6 +73,7 @@ const LookupComponent =(props)=>{
     }
 
     renderFilterSelected = (filterArr) => {
+
         return(
             <FlatList
                 horizontal={true}

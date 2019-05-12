@@ -46,6 +46,13 @@ const styles = StyleSheet.create({
         width: '100%',
         backgroundColor: 'white'
     },
+    filterCategoryItem:{
+        height:45,
+        width:'100%',
+        justifyContent:'center',
+        alignItems:'flex-start',
+        backgroundColor: "#F2F2F2",
+    },
 
 
     // filter footer
