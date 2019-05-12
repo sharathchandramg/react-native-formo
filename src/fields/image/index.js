@@ -162,32 +162,37 @@ export default class ImageField extends Component {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
             <View>
-                <ListItem style={{ borderBottomWidth: 0, paddingVertical: 5,marginLeft:20 }}>
-                    <View style={{flexDirection:'row',flex:2}}>
-                        <Text style={{flex:1,color: theme.inputColorPlaceholder,paddingStart:5 }}>{attributes.label}</Text>
-                        <View style={{flexDirection:'row',flex:1}}>
-                            {this.renderAddImageIcon()}
+                <View>
+                    <ListItem style={{ borderBottomWidth: 0, paddingVertical: 5,marginLeft:20 }}>
+                        <View style={{flexDirection:'row',flex:2}}>
+                            <Text style={{flex:1,color: theme.inputColorPlaceholder,paddingStart:5 }}>{attributes.label}</Text>
+                            <View style={{flexDirection:'row',flex:1}}>
+                                {this.renderAddImageIcon()}
+                            </View>
                         </View>
-                        <ErrorComponent {...{ attributes, theme }} />
+                    </ListItem>
+                    <View style={{flexDirection:'row',flex:1}}>
+                        {typeof this.state.path !=='undefined' || attributes.value !== null? this.renderPreview(attributes):null}
                     </View>
-                </ListItem>
-                <View style={{flexDirection:'row',flex:1}}>
-                    {typeof this.state.path !=='undefined' || attributes.value !== null? this.renderPreview(attributes):null}
+                    {Platform.OS === "android" ? (
+                        <BottomSheet
+                            ref={ref => {
+                                this.bottomSheet = ref;
+                            }}
+                            title={'Choose image from'}
+                            options={this._renderOptions()}
+                            coverScreen={true}
+                            titleFontFamily={styles.titleFontFamily}
+                            styleContainer={styles.styleContainer}
+                            fontFamily={styles.fontFamily}
+                        />
+                    ) : null}
                 </View>
-                {Platform.OS === "android" ? (
-                    <BottomSheet
-                        ref={ref => {
-                            this.bottomSheet = ref;
-                        }}
-                        title={'Choose image from'}
-                        options={this._renderOptions()}
-                        coverScreen={true}
-                        titleFontFamily={styles.titleFontFamily}
-                        styleContainer={styles.styleContainer}
-                        fontFamily={styles.fontFamily}
-                    />
-                ) : null}
+                <View style={{ paddingHorizontal: 15 }}>
+                    <ErrorComponent {...{ attributes, theme }} />
+                </View>
             </View>
+            
         );
     }
 }
