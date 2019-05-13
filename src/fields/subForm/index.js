@@ -128,7 +128,9 @@ export default class SubForm extends Component {
         if(leftViewData.length > 0 && rightViewData.length > 0){
             subForms = leftViewData.map((item,index )=>{
                 let values = [];
-                values = lookupField.map(e => item[e.name]);
+                if(typeof lookupField !=='undefined' && lookupField.length){
+                    values = lookupField.map(e => item[e.name]);
+                }
                 leftLabel = values.map(val =><Text style={styles.subformText}>{val}</Text>);
                 let fdata = data[index];
                 let rVal = []
@@ -159,7 +161,9 @@ export default class SubForm extends Component {
         }else if(leftViewData.length >0){
             subForms = leftViewData.map((item,index )=>{
                 let values = [];
-                values = lookupField.map(e => item[e.name]);
+                if(typeof lookupField !=='undefined' && lookupField.length){
+                    values = lookupField.map(e => item[e.name]);
+                }
                 leftLabel = values.map(val =><Text style={styles.subformText}>{val}</Text>);
                 return (
                     <TouchableOpacity 
