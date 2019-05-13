@@ -26,6 +26,7 @@ export function getDefaultValue(field) {
         case "password":
         case "url":
         case "phone":
+        case "location":
         return field.defaultValue || '';
 
         case "currency":
@@ -146,6 +147,7 @@ export function getResetValue(field) {
         case "url":
         case "phone":
         case "currency":
+        case "location":
             return null
 
         case "picker":

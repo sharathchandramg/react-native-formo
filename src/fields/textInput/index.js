@@ -95,28 +95,28 @@ export default class TextInputField extends Component {
 
 
     render() {
-
         const { theme, attributes, ErrorComponent } = this.props;
-    
         return (
-
-            <ListItem style={{ borderBottomWidth: 0, paddingVertical: 5 }}>
-                <View style={{ flex: 1}}>
-                    <View>
-                        <Item error={theme.changeTextInputColorOnError ? attributes.error : null}>
-                            {attributes.icon && <Icon color={theme.textInputIconColor} name={attributes.icon} />}
-                            {typeof attributes.type  !=='undefined' && attributes.type ==="calculated"?
-                                this.renderCalculatedField(attributes,theme) 
-                                :
-                                this.renderInputField(attributes,theme)
-                            }
-                            {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null}
-                        </Item>
+            <View>
+                <ListItem style={{ borderBottomWidth: 0, paddingVertical: 5 }}>
+                    <View style={{ flex: 1}}>
+                        <View>
+                            <Item error={theme.changeTextInputColorOnError ? attributes.error : null}>
+                                {attributes.icon && <Icon color={theme.textInputIconColor} name={attributes.icon} />}
+                                {typeof attributes.type  !=='undefined' && attributes.type ==="calculated"?
+                                    this.renderCalculatedField(attributes,theme) 
+                                    :
+                                    this.renderInputField(attributes,theme)
+                                }
+                                {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null}
+                            </Item>
+                        </View>
                     </View>
+                </ListItem>
+                <View style={{ paddingHorizontal: 15 }}>
                     <ErrorComponent {...{ attributes, theme }} />
                 </View>
-            </ListItem>
+            </View>
         );
-
     }
 }
