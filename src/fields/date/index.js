@@ -128,7 +128,6 @@ export default class DateField extends Component {
 
     showDatePicker = async stateKey => {
         const { attributes } = this.props;
-        alert(JSON.stringify(attributes));
         const currentDate = attributes.value
             ? new Date(attributes.value)
             : new Date();
