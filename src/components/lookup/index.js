@@ -8,8 +8,6 @@ import {
     Container,
     Header,
     Content,
-    ListItem,
-    CheckBox,
     Left,
     Right,
     Icon,
@@ -20,6 +18,7 @@ import {
 
 import styles from './styles';
 const _ = require('lodash');
+import { isNull } from '../../utils/validators';
 
 const LookupComponent = props => {
     let {
@@ -155,7 +154,7 @@ const LookupComponent = props => {
                     ) : null}
 
                     <View style={{ flex: 1 }}>
-                        {attributes['options'].length && (
+                        {!isNull(attributes['options']) && attributes['options'].length && (
                             <RecyclerList
                                 dataProvider={attributes['options']}
                                 onEndReached={onEndReached}
