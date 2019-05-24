@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
         fontFamily:'roboto',
         alignSelf:'flex-end',
         width:'30%',
-        fontSize: 16,
+        fontSize: 18,
         lineHeight:20,
         height:20,
         color:'#41E1FD',

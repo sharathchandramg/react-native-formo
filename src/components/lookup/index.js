@@ -147,22 +147,22 @@ const LookupComponent = props => {
                     </Right>
                 </Header>
                 <Content>
-                    {filter && filter.length > 0 ? (
-                        <View style={styles.filterContainer}>
-                            {renderFilterSelected(filter)}
-                        </View>
-                    ) : null}
-
-                    <View style={{ flex: 1 }}>
-                        {!isNull(attributes['options']) && attributes['options'].length && (
+                    <View style={{height:'100%',width:'100%'}}>
+                        {filter && filter.length > 0 ? (
+                            <View style={styles.filterContainer}>
+                                {renderFilterSelected(filter)}
+                            </View>
+                        ) : null}
+                        {!isNull(attributes['options']) && attributes['options'].length ? (
                             <RecyclerList
                                 dataProvider={attributes['options']}
                                 onEndReached={onEndReached}
                                 attributes={attributes}
                                 toggleSelect={toggleSelect}
                             />
-                        )}
-                    </View>
+                        ) : <ScrollView></ScrollView>}
+                    
+                    </View>  
                 </Content>
             </Container>
         </Modal>
