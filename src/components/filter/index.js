@@ -49,22 +49,24 @@ const FilterComponent =(props)=>{
     }
     
     renderCategoryDataItem =({item,index})=>{
-        return (
-            <ListItem 
-                style={{height:50,width:'100%',justifyContent:'center',alignItem:'flex-start'}} 
-                key={index} 
-                onPress={() => filterFunction(item)}>
-                <CheckBox
-                    onPress={() => filterFunction(item)}
-                    checked={item.selected}
-                />
-                <View style={{height:50,width:'100%',justifyContent:'center',alignItem:'flex-start'}}>
-                    <Text style={[styles.filterText,{fontSize:12,paddingEnd:5,alignSelf:'stretch'}]}>
-                        {attributes.objectType ? item[activeCategory['name']] : item}
-                    </Text>
-                </View>
-            </ListItem>
-        );
+        if(!isEmpty(item) && !isEmpty(activeCategory)){
+            return (
+                <ListItem 
+                    style={{height:50,width:'100%',justifyContent:'center',alignItem:'flex-start'}} 
+                    key={index} 
+                    onPress={() => filterFunction(item)}>
+                    <CheckBox
+                        onPress={() => filterFunction(item)}
+                        checked={item.selected}
+                    />
+                    <View style={{height:50,width:'100%',justifyContent:'center',alignItem:'flex-start'}}>
+                        <Text style={[styles.filterText,{fontSize:12,paddingEnd:5,alignSelf:'stretch'}]}>
+                            {attributes.objectType ? item[activeCategory['name']] : item}
+                        </Text>
+                    </View>
+                </ListItem>
+            );
+        }
     }
 
     renderCategoryData =()=>{
@@ -80,16 +82,18 @@ const FilterComponent =(props)=>{
     }
 
     renderCategoryItem =({item,index})=>{
-        return (
-            <ListItem  
-                style={[styles.filterCategoryItem,{backgroundColor: item['name'] == activeCategory['name']?'white':"#F2F2F2"}]}
-                key={index} 
-                onPress={() => setFilterCategory(item)}>
-                <View style={{width:'100%',justifyContent:'center',alignItem:'center'}} >
-                    <Text style={[styles.filterText,{fontSize:14,paddingEnd:5,alignSelf:'stretch'}]}>{item['label']}</Text>
-                </View>
-            </ListItem>
-        );
+        if(!isEmpty(item) && !isEmpty(activeCategory)){
+            return (
+                <ListItem  
+                    style={[styles.filterCategoryItem,{backgroundColor: item['name'] == activeCategory['name']?'white':"#F2F2F2"}]}
+                    key={index} 
+                    onPress={() => setFilterCategory(item)}>
+                    <View style={{width:'100%',justifyContent:'center',alignItem:'center'}} >
+                        <Text style={[styles.filterText,{fontSize:14,paddingEnd:5,alignSelf:'stretch'}]}>{item['label']}</Text>
+                    </View>
+                </ListItem>
+            );
+        }
     }
 
     renderCategory =()=>{

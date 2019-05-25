@@ -35,10 +35,10 @@ export default class RecyclerList extends Component {
             if (this.props.attributes.multiple) {
                 isSelected = this.props.attributes.objectType
                     ? this.props.attributes.value.findIndex(
-                          option =>
-                              option[this.props.attributes.primaryKey] ===
-                              item[this.props.attributes.primaryKey]
-                      ) !== -1
+                        option =>
+                            option[this.props.attributes.primaryKey] ===
+                            item[this.props.attributes.primaryKey]
+                    ) !== -1
                     : this.props.attributes.value.indexOf(item) !== -1;
             }
             return (
@@ -70,9 +70,8 @@ export default class RecyclerList extends Component {
     }
 
     render() {
-        let { width, height } = Dimensions.get('window');
         return (
-            <View style={{ height: height, width: width, marginVertical: 10 }}>
+            <View style={{ minHeight:30, width: '100%', marginVertical: 10 }}>
                 <RecyclerListView
                     layoutProvider={this._layoutProvider}
                     dataProvider={this.dataProvider.cloneWithRows(
@@ -80,6 +79,7 @@ export default class RecyclerList extends Component {
                     )}
                     rowRenderer={this._rowRenderer}
                     onEndReached={this.props.onEndReached}
+                    canChangeSize={true}
                 />
             </View>
         );

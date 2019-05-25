@@ -49,7 +49,11 @@ export default class LookupField extends Component {
                     : 0;
                 let offset = len;
                 this.handleOnGetQuery(offset);
+            }else{
+                this.setLocalOptions(attributes['options'])
             }
+        }else{
+            this.setLocalOptions(attributes['options'])
         }
         if (
             this.isFilterEnable(attributes) &&
@@ -70,49 +74,73 @@ export default class LookupField extends Component {
         }
     }
 
+    setLocalOptions = (options)=>{
+        if(!isEmpty(options)){
+            this.setState({options:options})
+        }
+    }
+
     handleOnGetQuery = offset => {
-        const { onGetQuery, attributes } = this.props;
-        if (typeof onGetQuery === 'function') {
-            onGetQuery(attributes, offset);
+        const { onGetQuery, attributes, } = this.props;
+        if (!isEmpty(attributes) && !isEmpty(attributes['data_source'])) {
+            const { type, key, url } = attributes['data_source'];
+            if (!isEmpty(type) && type === 'remote') {
+                if (typeof onGetQuery === 'function') {
+                    onGetQuery(attributes, offset);
+                }
+            }else{
+                attributes['options'] = this.state.options;
+            }
+        }else{
+            attributes['options'] = this.state.options;
         }
     };
 
     handleOnSearchQuery = searchText => {
         const { onSearchQuery, attributes } = this.props;
-        if (typeof onSearchQuery === 'function') {
-            onSearchQuery(attributes, searchText);
-            if (searchText) {
-                options = _.filter(attributes['options'], item => {
-                    let sItem =
-                        item[attributes.labelKey]
-                            .toString()
-                            .toLowerCase()
-                            .search(searchText.trim().toLowerCase()) > -1;
-                    if (sItem) {
-                        return item;
-                    }
-                });
-
-                let obj = {
-                    category: attributes['labelKey'],
-                    categoryLabel: 'Search',
-                    value: options,
-                };
-                let categoryToValue = [];
-                categoryToValue.push(obj);
-                this.setState({
-                    searchModalVisible: false,
-                    categoryToValue: categoryToValue,
-                });
+        if (!isEmpty(attributes) && !isEmpty(attributes['data_source'])) {
+            const { type, key, url } = attributes['data_source'];
+            if (!isEmpty(type) && type === 'remote') {
+                if (typeof onSearchQuery === 'function') {
+                    onSearchQuery(attributes, searchText);
+                }
+            }else{
+                attributes['options'] = this.state.options;
             }
+        }else{
+            attributes['options'] = this.state.options;
+        }
+        if (searchText) {
+            options = _.filter(attributes['options'], item => {
+                let sItem =
+                    item[attributes.labelKey]
+                        .toString()
+                        .toLowerCase()
+                        .search(searchText.trim().toLowerCase()) > -1;
+                if (sItem) {
+                    return item;
+                }
+            });
+
+            let obj = {
+                category: attributes['labelKey'],
+                categoryLabel: 'Search',
+                value: options,
+            };
+            let categoryToValue = [];
+            categoryToValue.push(obj);
+            this.setState({
+                searchModalVisible: false,
+                categoryToValue: categoryToValue,
+            });
         }
     };
 
     setFilterCategory = item => {
         const { attributes } = this.props;
         let categoryData = [];
-        let options = this.state.options;
-        if (!isEmpty(options)) {
+        let options =  attributes['options'];
+        if (!isEmpty(options) && !isEmpty(item)) {
             categoryData = _.filter(options, optionObj => {
                 if (attributes['objectType']) {
                     if (optionObj.hasOwnProperty(item['name'])) {
@@ -212,7 +240,8 @@ export default class LookupField extends Component {
     applyFilterFunction = () => {
         let categoryToValue = this.state.categoryToValue;
         const { attributes } = this.props;
-        updatedOptions = [];
+        let updatedOptions = [];
+        let preOptions = attributes['options'];
 
         _.map(categoryToValue, item => {
             let options = item['value'];
@@ -220,7 +249,7 @@ export default class LookupField extends Component {
             options.map(option => {
                 let categoryVal = option[category];
                 let allMatchingOptions = [];
-                allMatchingOptions = _.filter(this.state.options, item => {
+                allMatchingOptions = _.filter(preOptions, item => {
                     if (categoryVal === item[category]) {
                         return item;
                     }
@@ -234,7 +263,7 @@ export default class LookupField extends Component {
         let uniqData = _.uniqBy(updatedOptions, `${attributes.labelKey}`);
         attributes['options'] = [...uniqData];
         this.setState({
-            filterData: this.state.options,
+            filterData: preOptions,
             filterModalVisible: false,
             categoryToValue: categoryToValue,
         });
@@ -247,9 +276,8 @@ export default class LookupField extends Component {
             option['selected'] = false;
             return option;
         });
-        if (!isEmpty(attributes['options'])) {
-            attributes['options'] = [...this.state.options];
-        }
+        const offset = !isEmpty(attributes['options'])?attributes['options'].length:0;
+        this.handleOnGetQuery(offset)
         this.setState({ filterData: filterData });
     };
 
@@ -304,10 +332,9 @@ export default class LookupField extends Component {
                 if (this.state.categoryToValue.length) {
                     this.applyFilterFunction();
                 } else {
-                    if (!isEmpty(attributes['options'])) {
-                        attributes['options'] = [...this.state.options];
-                        this.setState({});
-                    }
+                    const options = attributes['options'];
+                    const offset = typeof options !=='undefined' && Array.isArray(options)?options.length:0;
+                    this.handleOnGetQuery(offset)
                 }
             }
         );
@@ -381,9 +408,18 @@ export default class LookupField extends Component {
     };
 
     toggleModalVisible = () => {
-        this.setState({
-            modalVisible: !this.state.modalVisible,
-        });
+        if(this.state.modalVisible){
+            this.setState({
+                modalVisible:false,
+                categoryToValue:[],
+                activeCategory: null,
+            });
+        }else{
+            this.setState({
+                modalVisible: true,
+            });
+        }
+        
     };
 
     onEndReached = () => {
@@ -450,9 +486,6 @@ export default class LookupField extends Component {
             >
                 <Icon
                     name="ios-arrow-forward"
-                    size={14}
-                    type={'regular'}
-                    color={'#828282'}
                     style={styles.iconStyle}
                 />
             </TouchableOpacity>
