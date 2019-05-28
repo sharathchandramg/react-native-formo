@@ -481,7 +481,7 @@ export default class LookupField extends Component {
     renderlookupIcon = () => {
         return (
             <TouchableOpacity
-                style={styles.labelText}
+                style={styles.iconWrapper}
                 onPress={() => this.toggleModalVisible()}
             >
                 <Icon
@@ -542,17 +542,24 @@ export default class LookupField extends Component {
         let data = value !== null ? this.getLookupData(value) : {};
         return (
             <View style={styles.container}>
-                <View
-                    style={[styles.inputLabel]}
-                    error={
-                        theme.changeTextInputColorOnError
-                            ? attributes.error
-                            : null
-                    }
-                >
-                    <Text style={[styles.labelText]}>{attributes.label}</Text>
-                    {this.renderlookupIcon()}
+                <View style = {styles.inputLabelWrapper}>
+                    <TouchableOpacity
+                        style={[styles.inputLabel]}
+                        error={
+                            theme.changeTextInputColorOnError
+                                ? attributes.error
+                                : null
+                        }
+                        onPress={() => this.toggleModalVisible()}
+                    >
+                        <View style = {styles.labelTextWrapper}>
+                            <Text style={[styles.labelText]}>{attributes.label}</Text>
+                        </View>
+                        {this.renderlookupIcon()}
+                    </TouchableOpacity>
+
                 </View>
+                
                 <View style={{ paddingHorizontal: 20 }}>
                     <ErrorComponent {...{ attributes, theme }} />
                 </View>
