@@ -78,8 +78,9 @@ export default class RecyclerList extends Component {
                         this.props.dataProvider
                     )}
                     rowRenderer={this._rowRenderer}
-                    onEndReached={this.props.onEndReached}
                     canChangeSize={true}
+                    onEndReached={this.props.onEndReached}
+                    onEndReachedThreshold={0.1}
                 />
             </View>
         );
