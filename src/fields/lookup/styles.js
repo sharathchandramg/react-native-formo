@@ -30,35 +30,75 @@ const styles = StyleSheet.create({
         
     },
 
+    inputLabelWrapper:{
+        height:56,
+        width:'92%',
+        alignItems:'center',
+        justifyContent:'center',
+        backgroundColor:'#41E1FD',
+        marginHorizontal:10,
+        borderColor: '#D9D5DC',
+        borderWidth:1,
+        borderRadius:4,
+    },
+
     inputLabel:{
-        height:30,
-        width:'100%',
+        height:50,
+        width:'99%',
         flexDirection:'row',
         alignItems:'center',
-        justifyContent:'flex-start',
-        paddingTop:10,
-        marginHorizontal:15,
+        justifyContent:'center',
+        elevation:4,
+        borderRadius:4,
+        shadowColor: "#000",
+        shadowOpacity:0.2,
+        shadowRadius:4,
+        backgroundColor:'white',
+        shadowOffset: {width:0, height:0},
     },
+
+    labelTextWrapper:{
+        height:50,
+        flexDirection:'row',
+        width:'70%',
+        alignItems:'center',
+        justifyContent:'flex-start',
+    },
+    iconWrapper: {
+        height:50,
+        flexDirection:'row',
+        width:'30%',
+        alignItems:'center',
+        justifyContent:'flex-end',
+
+    },
+    labelText:{
+        fontSize: 18,
+        lineHeight:20,
+        height:20,
+        width:'100%',
+        color: '#ADADAD',
+        fontFamily:'roboto',
+        alignSelf: 'center',
+        fontWeight:'300',
+        marginHorizontal:5,
+    },
+    iconStyle:{
+        fontFamily:'roboto',
+        alignSelf:'center',
+        width:'25%',
+        fontSize: 18,
+        lineHeight:20,
+        height:20,
+        color:'#41E1FD',
+    },
+
     inputValue:{
         minHeight:40,
         width:'100%',
         flexDirection:'row',
         paddingBottom:2,
     },
-
-
-    labelText:{
-        fontSize: 16,
-        lineHeight:20,
-        height:20,
-        width:'50%',
-        color: '#ADADAD',
-        fontFamily:'roboto',
-        alignSelf: 'flex-start',
-        fontWeight:'300',
-        marginHorizontal:5,
-    },
-
     inputText:{
         fontSize:15,
         lineHeight:20,
@@ -82,16 +122,6 @@ const styles = StyleSheet.create({
         width:'50%',
         marginEnd:15,
         backgroundColor:'green'
-    },
-
-    iconStyle:{
-        fontFamily:'roboto',
-        alignSelf:'flex-end',
-        width:'30%',
-        fontSize: 18,
-        lineHeight:20,
-        height:20,
-        color:'#41E1FD',
     },
 
     button: {

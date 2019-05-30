@@ -36,42 +36,44 @@ export default class CustomDataComponent extends Component {
         }
         return label;
     }
+
+    renderlookupIcon = () => {
+        return (
+            <TouchableOpacity
+                style={styles.iconWrapper}
+                onPress={() => this.handleOnclick()}
+            >
+                <Icon
+                    name="ios-arrow-forward"
+                    style={styles.iconStyle}
+                />
+            </TouchableOpacity>
+        );
+    };
     
     render() {
-
         const { theme, attributes, ErrorComponent } = this.props;
-    
         return (
-            <View>
-                <TouchableOpacity style={{
-                    backgroundColor: theme.pickerBgColor,
-                    borderBottomColor: theme.inputBorderColor,
-                    borderBottomWidth: theme.borderWidth,
-                    marginHorizontal: 15,
-                    marginVertical: 0,
-                    paddingVertical: 15,
-                    marginLeft: 20,                    
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                }}>
-                    <Text style={{ color: theme.inputColorPlaceholder,paddingStart:5}}>{attributes.label}</Text>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            marginEnd:10,
-                            justifyContent:'flex-end',alignItems:'flex-end',
-                        }}>
-                        <TouchableOpacity  
-                            hitSlop={{ top: 10, bottom: 10, right: 50, left: 50 }}
-                            style={{marginHorizontal: 5,justifyContent:'flex-end',alignItems:'flex-end',flexDirection:'row'}} 
-                            onPress={() => this.handleOnclick()}>
-                            <Text style={{fontSize:15,paddingEnd:5}}>{this.getLabel(attributes.value)}</Text>
-                            <Icon name="ios-arrow-forward" size={15} type={'regular'} color ={'#828282'} style={styles.iconStyle}/>
-                        </TouchableOpacity>
-                    </View>
-
-                </TouchableOpacity>
+            <View  style = {styles.container}>
+                <View style = {styles.inputLabelWrapper}>
+                    <TouchableOpacity
+                        style={[styles.inputLabel]}
+                        error={
+                            theme.changeTextInputColorOnError
+                                ? attributes.error
+                                : null
+                        }
+                        onPress={() => this.handleOnclick()}
+                    >
+                        <View style = {styles.labelTextWrapper}>
+                            <Text style={[styles.labelText]} numberOfLines={2}>{attributes.label}</Text>
+                        </View>
+                        <View style={styles.valueWrapper}>
+                            <Text style={styles.inputText} numberOfLines={2}>{this.getLabel(attributes.value)} </Text>
+                        </View>
+                        {this.renderlookupIcon()}
+                    </TouchableOpacity>
+                </View>
                 <View style={{ paddingHorizontal: 15 }}>
                     <ErrorComponent {...{ attributes, theme }} />
                 </View>
