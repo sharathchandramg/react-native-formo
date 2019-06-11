@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Modal, TouchableOpacity, View, FlatList } from 'react-native';
 import RecyclerList from '../recyclerList';
-
 import {
     Text,
     Container,
@@ -39,17 +38,25 @@ const LookupComponent = props => {
     getLabel = item => {
         let label = '';
         let value = [];
-        _.map(item['value'], option => {
-            if (typeof option === 'object') {
-                let categoryValue = option[item['category']];
-                if (value.indexOf(categoryValue) === -1) {
-                    value.push(categoryValue);
-                }
-            } else if (typeof option === 'string') {
-                value.push(option);
+        if(typeof item['value'] ==='string'){
+            let searchText = item['value'];
+            label = `${item['categoryLabel']}:${searchText}`;
+        }else{
+            if(typeof item['value'] ==='object' && Array.isArray(item['value'])){
+                _.map(item['value'], option => {
+                    if (typeof option === 'object') {
+                        let categoryValue = option[item['category']];
+                        if (value.indexOf(categoryValue) === -1) {
+                            value.push(categoryValue);
+                        }
+                    } else if (typeof option === 'string') {
+                        value.push(option);
+                    }
+                });
+
             }
-        });
-        label = `${item['categoryLabel']}:${value.toString()}`;
+            label = `${item['categoryLabel']}:${value.toString()}`;
+        }
         return label;
     };
 
@@ -120,18 +127,6 @@ const LookupComponent = props => {
                         </Title>
                     </Body>
                     <Right>
-                        {searchEnable ? (
-                            <Button
-                                transparent
-                                onPress={() => toggleSearchModalVisible()}
-                            >
-                                <Icon
-                                    name="search"
-                                    style={{ color: '#48BBEC', fontSize: 18 }}
-                                    type="FontAwesome"
-                                />
-                            </Button>
-                        ) : null}
                         {filterEnable ? (
                             <Button
                                 transparent
@@ -139,6 +134,18 @@ const LookupComponent = props => {
                             >
                                 <Icon
                                     name="filter"
+                                    style={{ color: '#48BBEC', fontSize: 18 }}
+                                    type="FontAwesome"
+                                />
+                            </Button>
+                        ) : null}
+                        {searchEnable ? (
+                            <Button
+                                transparent
+                                onPress={() => toggleSearchModalVisible()}
+                            >
+                                <Icon
+                                    name="search"
                                     style={{ color: '#48BBEC', fontSize: 18 }}
                                     type="FontAwesome"
                                 />

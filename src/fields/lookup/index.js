@@ -90,9 +90,11 @@ export default class LookupField extends Component {
                 }
             }else{
                 attributes['options'] = this.state.options;
+                this.setState({})
             }
         }else{
             attributes['options'] = this.state.options;
+            this.setState({})
         }
     };
 
@@ -104,28 +106,49 @@ export default class LookupField extends Component {
                 if (typeof onSearchQuery === 'function') {
                     onSearchQuery(attributes, searchText);
                 }
-            }else{
-                attributes['options'] = this.state.options;
+            }
+            else{
+                let options = [];
+                if(searchText){
+                    options = _.filter(attributes['options'], item => {
+                        let sItem =
+                            item[attributes.labelKey]
+                                .toString()
+                                .toLowerCase()
+                                .search(searchText.trim().toLowerCase()) > -1;
+                        if (sItem) {
+                            return item;
+                        }
+                    });
+                }else{
+                    options = this.state.options; 
+                }
+                attributes['options'] = options;
             }
         }else{
-            attributes['options'] = this.state.options;
+            let options = [];
+            if(searchText){
+                options = _.filter(attributes['options'], item => {
+                    let sItem =
+                        item[attributes.labelKey]
+                            .toString()
+                            .toLowerCase()
+                            .search(searchText.trim().toLowerCase()) > -1;
+                    if (sItem) {
+                        return item;
+                    }
+                });
+            }else{
+                options = this.state.options; 
+            }
+            attributes['options'] = options;
         }
-        if (searchText) {
-            options = _.filter(attributes['options'], item => {
-                let sItem =
-                    item[attributes.labelKey]
-                        .toString()
-                        .toLowerCase()
-                        .search(searchText.trim().toLowerCase()) > -1;
-                if (sItem) {
-                    return item;
-                }
-            });
 
+        if (searchText) {
             let obj = {
                 category: attributes['labelKey'],
                 categoryLabel: 'Search',
-                value: options,
+                value: searchText,
             };
             let categoryToValue = [];
             categoryToValue.push(obj);
@@ -135,6 +158,7 @@ export default class LookupField extends Component {
             });
         }
     };
+
 
     setFilterCategory = item => {
         const { attributes } = this.props;
@@ -396,15 +420,17 @@ export default class LookupField extends Component {
 
     openFilterModal = () => {
         const { attributes } = this.props;
-        let activeCategory = _.find(attributes['fields'], {
-            name: attributes['filterCategory'][0],
-        });
-        this.setState(
-            {
-                filterModalVisible: true,
-            },
-            () => this.setFilterCategory(activeCategory)
-        );
+        if(typeof attributes['filterCategory'] !=='undefined' &&  Array.isArray(attributes['filterCategory'])){
+            let activeCategory = _.find(attributes['fields'], {
+                name: attributes['filterCategory'][0],
+            });
+            this.setState(
+                {
+                    filterModalVisible: true,
+                },
+                () => this.setFilterCategory(activeCategory)
+            );
+        }
     };
 
     toggleModalVisible = () => {
@@ -510,8 +536,11 @@ export default class LookupField extends Component {
 
     isFilterEnable = attributes => {
         if (!isEmpty(attributes) && !isEmpty(attributes['additional'])) {
-            const { filterEnable } = attributes['additional'];
-            if (typeof filterEnable !== 'undefined' && filterEnable) {
+            const { filterEnable} = attributes['additional'];
+            const filterCategory = attributes['filterCategory']
+
+            if ((typeof filterCategory !== 'undefined' && Array.isArray(filterCategory)) &&  
+            (typeof filterEnable !== 'undefined' && filterEnable)) {
                 return true;
             }
         }
