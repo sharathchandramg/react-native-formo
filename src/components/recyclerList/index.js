@@ -4,11 +4,9 @@ import {
     LayoutProvider,
     DataProvider,
 } from 'recyclerlistview';
-import { Text, ListItem, CheckBox, Body, View, Left, Right } from 'native-base';
-import { Dimensions } from 'react-native';
-import { isNull } from '../../utils/validators';
-import styles from './styles';
 
+import { Dimensions, View } from 'react-native';
+import { isNull } from '../../utils/validators';
 import Item from '../lookupItem';
 
 export default class RecyclerList extends Component {
