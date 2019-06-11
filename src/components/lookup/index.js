@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Modal, TouchableOpacity, View, FlatList } from 'react-native';
+import { Modal, TouchableOpacity, View, FlatList ,ScrollView} from 'react-native';
 import RecyclerList from '../recyclerList';
 import {
     Text,

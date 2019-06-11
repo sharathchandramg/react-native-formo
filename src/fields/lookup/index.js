@@ -49,20 +49,17 @@ export default class LookupField extends Component {
                     : 0;
                 let offset = len;
                 this.handleOnGetQuery(offset);
-            }else{
-                this.setLocalOptions(attributes['options'])
+            } else {
+                this.setLocalOptions(attributes['options']);
             }
-        }else{
-            this.setLocalOptions(attributes['options'])
+        } else {
+            this.setLocalOptions(attributes['options']);
         }
         if (
             this.isFilterEnable(attributes) &&
-            !isEmpty(attributes['filterCategory']) &&
-            !isEmpty(attributes['fields'])
+            !isEmpty(attributes['filterCategory'])
         ) {
-            let activeCategory = _.find(attributes['fields'], {
-                name: attributes['filterCategory'][0],
-            });
+            let activeCategory = attributes['filterCategory'][0];
             if (
                 typeof activeCategory !== 'undefined' &&
                 !isEmpty(attributes['options'])
@@ -74,27 +71,27 @@ export default class LookupField extends Component {
         }
     }
 
-    setLocalOptions = (options)=>{
-        if(!isEmpty(options)){
-            this.setState({options:options})
+    setLocalOptions = options => {
+        if (!isEmpty(options)) {
+            this.setState({ options: options });
         }
-    }
+    };
 
     handleOnGetQuery = offset => {
-        const { onGetQuery, attributes, } = this.props;
+        const { onGetQuery, attributes } = this.props;
         if (!isEmpty(attributes) && !isEmpty(attributes['data_source'])) {
             const { type, key, url } = attributes['data_source'];
             if (!isEmpty(type) && type === 'remote') {
                 if (typeof onGetQuery === 'function') {
                     onGetQuery(attributes, offset);
                 }
-            }else{
+            } else {
                 attributes['options'] = this.state.options;
-                this.setState({})
+                this.setState({});
             }
-        }else{
+        } else {
             attributes['options'] = this.state.options;
-            this.setState({})
+            this.setState({});
         }
     };
 
@@ -106,10 +103,9 @@ export default class LookupField extends Component {
                 if (typeof onSearchQuery === 'function') {
                     onSearchQuery(attributes, searchText);
                 }
-            }
-            else{
+            } else {
                 let options = [];
-                if(searchText){
+                if (searchText) {
                     options = _.filter(attributes['options'], item => {
                         let sItem =
                             item[attributes.labelKey]
@@ -120,14 +116,14 @@ export default class LookupField extends Component {
                             return item;
                         }
                     });
-                }else{
-                    options = this.state.options; 
+                } else {
+                    options = this.state.options;
                 }
                 attributes['options'] = options;
             }
-        }else{
+        } else {
             let options = [];
-            if(searchText){
+            if (searchText) {
                 options = _.filter(attributes['options'], item => {
                     let sItem =
                         item[attributes.labelKey]
@@ -138,8 +134,8 @@ export default class LookupField extends Component {
                         return item;
                     }
                 });
-            }else{
-                options = this.state.options; 
+            } else {
+                options = this.state.options;
             }
             attributes['options'] = options;
         }
@@ -159,28 +155,33 @@ export default class LookupField extends Component {
         }
     };
 
+    statusOptionsFormatter = (options, type) => {
+        let data = [];
+        if (!isEmpty(options)) {
+            for (let i = 0; i < options.length; i++) {
+                let obj = { label: '', value: '', type: '' };
+                if (typeof options[i] === 'string') {
+                    obj['label'] = options[i];
+                    obj['value'] = options[i];
+                    obj['type'] = type;
+                    data.push(obj);
+                }
+            }
+        }
+
+        return data;
+    };
 
     setFilterCategory = item => {
-        const { attributes } = this.props;
-        let categoryData = [];
-        let options =  attributes['options'];
-        if (!isEmpty(options) && !isEmpty(item)) {
-            categoryData = _.filter(options, optionObj => {
-                if (attributes['objectType']) {
-                    if (optionObj.hasOwnProperty(item['name'])) {
-                        return optionObj;
-                    } else {
-                        return optionObj;
-                    }
-                }
-            });
-            let uniqData = _.uniqBy(categoryData, `${item.name}`);
-            this.setState({
-                activeCategoryData: [...uniqData],
-                activeCategory: item,
-                filterData: [...uniqData],
-            });
-        }
+        const categoryData = this.statusOptionsFormatter(
+            item['options'],
+            item['type']
+        );
+        this.setState({
+            activeCategoryData: categoryData,
+            activeCategory: item,
+            filterData: categoryData,
+        });
     };
 
     updateFilter = item => {
@@ -205,7 +206,7 @@ export default class LookupField extends Component {
         if (typeof item['selected'] !== 'undefined' && item['selected']) {
             let activeCategoryObj = {
                 category: category['name'],
-                value: [item],
+                value: [item['value']],
                 categoryLabel: category['label'],
             };
             let index = _.findIndex(categoryToValue, {
@@ -217,12 +218,12 @@ export default class LookupField extends Component {
                 let updatedOptions = [...options];
                 if (options.length) {
                     options.map(option => {
-                        if (!_.isEqual(option, item)) {
-                            updatedOptions.push(item);
+                        if (!_.isEqual(option, item['value'])) {
+                            updatedOptions.push(item['value']);
                         }
                     });
                 } else {
-                    updatedOptions.push(item);
+                    updatedOptions.push(item['value']);
                 }
                 foundObj['value'] = [...updatedOptions];
                 categoryToValue[index] = foundObj;
@@ -236,8 +237,7 @@ export default class LookupField extends Component {
                     let options = row['value'];
                     options = _.filter(
                         options,
-                        option =>
-                            option[category['name']] !== item[category['name']]
+                        option => option !== item['value']
                     );
                     row['value'] = options;
                     return row;
@@ -262,34 +262,42 @@ export default class LookupField extends Component {
     };
 
     applyFilterFunction = () => {
-        let categoryToValue = this.state.categoryToValue;
-        const { attributes } = this.props;
-        let updatedOptions = [];
-        let preOptions = attributes['options'];
+        const categoryToValue = this.state.categoryToValue;
+        const { onSearchQuery, attributes } = this.props;
+        const data_source  = attributes['data_source'];
 
-        _.map(categoryToValue, item => {
-            let options = item['value'];
-            let category = item['category'];
-            options.map(option => {
-                let categoryVal = option[category];
-                let allMatchingOptions = [];
-                allMatchingOptions = _.filter(preOptions, item => {
-                    if (categoryVal === item[category]) {
-                        return item;
+        if (!isEmpty(data_source) && data_source['type'] === 'remote') {
+            if (typeof onSearchQuery === 'function') {
+                onSearchQuery(attributes, categoryToValue);
+            }
+        } else {
+            let updatedOptions = [];
+            let preOptions = attributes['options'];
+            _.map(categoryToValue, item => {
+                let options = item['value'];
+                let category = item['category'];
+
+                options.map(option => {
+                    let allMatchingOptions = [];
+                    allMatchingOptions = _.filter(preOptions, item2 => {
+                        if (option === item2[category]) {
+                            return item2;
+                        }
+                    });
+
+                    if (allMatchingOptions.length) {
+                        updatedOptions = [
+                            ...updatedOptions,
+                            ...allMatchingOptions,
+                        ];
                     }
                 });
-                if (allMatchingOptions.length) {
-                    updatedOptions = [...updatedOptions, ...allMatchingOptions];
-                }
             });
-        });
-
-        let uniqData = _.uniqBy(updatedOptions, `${attributes.labelKey}`);
-        attributes['options'] = [...uniqData];
+            attributes['options'] = updatedOptions;
+        }
+        
         this.setState({
-            filterData: preOptions,
             filterModalVisible: false,
-            categoryToValue: categoryToValue,
         });
     };
 
@@ -300,8 +308,10 @@ export default class LookupField extends Component {
             option['selected'] = false;
             return option;
         });
-        const offset = !isEmpty(attributes['options'])?attributes['options'].length:0;
-        this.handleOnGetQuery(offset)
+        const offset = !isEmpty(attributes['options'])
+            ? attributes['options'].length
+            : 0;
+        this.handleOnGetQuery(offset);
         this.setState({ filterData: filterData });
     };
 
@@ -357,8 +367,11 @@ export default class LookupField extends Component {
                     this.applyFilterFunction();
                 } else {
                     const options = attributes['options'];
-                    const offset = typeof options !=='undefined' && Array.isArray(options)?options.length:0;
-                    this.handleOnGetQuery(offset)
+                    const offset =
+                        typeof options !== 'undefined' && Array.isArray(options)
+                            ? options.length
+                            : 0;
+                    this.handleOnGetQuery(offset);
                 }
             }
         );
@@ -420,10 +433,8 @@ export default class LookupField extends Component {
 
     openFilterModal = () => {
         const { attributes } = this.props;
-        if(typeof attributes['filterCategory'] !=='undefined' &&  Array.isArray(attributes['filterCategory'])){
-            let activeCategory = _.find(attributes['fields'], {
-                name: attributes['filterCategory'][0],
-            });
+        if (!isEmpty(attributes['filterCategory'])) {
+            let activeCategory = attributes['filterCategory'][0];
             this.setState(
                 {
                     filterModalVisible: true,
@@ -434,18 +445,17 @@ export default class LookupField extends Component {
     };
 
     toggleModalVisible = () => {
-        if(this.state.modalVisible){
+        if (this.state.modalVisible) {
             this.setState({
-                modalVisible:false,
-                categoryToValue:[],
+                modalVisible: false,
+                categoryToValue: [],
                 activeCategory: null,
             });
-        }else{
+        } else {
             this.setState({
                 modalVisible: true,
             });
         }
-        
     };
 
     onEndReached = () => {
@@ -510,10 +520,7 @@ export default class LookupField extends Component {
                 style={styles.iconWrapper}
                 onPress={() => this.toggleModalVisible()}
             >
-                <Icon
-                    name="ios-arrow-forward"
-                    style={styles.iconStyle}
-                />
+                <Icon name="ios-arrow-forward" style={styles.iconStyle} />
             </TouchableOpacity>
         );
     };
@@ -536,11 +543,13 @@ export default class LookupField extends Component {
 
     isFilterEnable = attributes => {
         if (!isEmpty(attributes) && !isEmpty(attributes['additional'])) {
-            const { filterEnable} = attributes['additional'];
-            const filterCategory = attributes['filterCategory']
+            const { filterEnable } = attributes['additional'];
+            const filterCategory = attributes['filterCategory'];
 
-            if ((typeof filterCategory !== 'undefined' && Array.isArray(filterCategory)) &&  
-            (typeof filterEnable !== 'undefined' && filterEnable)) {
+            if (
+                !isEmpty(filterCategory) &&
+                (typeof filterEnable !== 'undefined' && filterEnable)
+            ) {
                 return true;
             }
         }
@@ -571,7 +580,7 @@ export default class LookupField extends Component {
         let data = value !== null ? this.getLookupData(value) : {};
         return (
             <View style={styles.container}>
-                <View style = {styles.inputLabelWrapper}>
+                <View style={styles.inputLabelWrapper}>
                     <TouchableOpacity
                         style={[styles.inputLabel]}
                         error={
@@ -581,14 +590,15 @@ export default class LookupField extends Component {
                         }
                         onPress={() => this.toggleModalVisible()}
                     >
-                        <View style = {styles.labelTextWrapper}>
-                            <Text style={[styles.labelText]}>{attributes.label}</Text>
+                        <View style={styles.labelTextWrapper}>
+                            <Text style={[styles.labelText]}>
+                                {attributes.label}
+                            </Text>
                         </View>
                         {this.renderlookupIcon()}
                     </TouchableOpacity>
-
                 </View>
-                
+
                 <View style={{ paddingHorizontal: 20 }}>
                     <ErrorComponent {...{ attributes, theme }} />
                 </View>
