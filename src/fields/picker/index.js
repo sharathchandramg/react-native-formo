@@ -7,6 +7,7 @@ import styles from "./../../styles";
 import { View, Text, Switch } from "native-base";
 
 const Item = Picker.Item;
+import StarIcon from "../../components/starIcon";
 
 export default class PickerField extends Component {
     static propTypes = {
@@ -108,6 +109,7 @@ export default class PickerField extends Component {
                         paddingVertical: 10,
                     }}>
                     <Text style={{ color: theme.inputColorPlaceholder,paddingStart:5 }}>
+                        {attributes['required'] && <StarIcon required={attributes['required']} />}
                         {attributes.label}
                     </Text>
                     <Text style={{ color: theme.inputColorPlaceholder }}>
@@ -129,7 +131,10 @@ export default class PickerField extends Component {
                     borderBottomWidth: theme.borderWidth,
             }}}>
                 <View style={{ flex: 5 }}>
-                    <Text style={{ color: theme.inputColorPlaceholder,paddingStart:5}}>{attributes.label}</Text>
+                    <Text style={{ color: theme.inputColorPlaceholder,paddingStart:5}}>
+                        {attributes['required'] && <StarIcon required={attributes['required']} />}
+                        {attributes.label}
+                    </Text>
                 </View>
                 <View style={{ flex: 5 }}>
                     <Picker

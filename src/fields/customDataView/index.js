@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import {TouchableOpacity } from "react-native";
+import StarIcon from "../../components/starIcon"
 import {
     View,
     Text,
@@ -66,7 +67,10 @@ export default class CustomDataComponent extends Component {
                         onPress={() => this.handleOnclick()}
                     >
                         <View style = {styles.labelTextWrapper}>
-                            <Text style={[styles.labelText]} numberOfLines={2}>{attributes.label}</Text>
+                            <Text style={[styles.labelText]} numberOfLines={2}>
+                                {attributes['required'] && <StarIcon required={attributes['required']} />}
+                                {attributes.label}
+                            </Text>
                         </View>
                         <View style={styles.valueWrapper}>
                             <Text style={styles.inputText} numberOfLines={2}>{this.getLabel(attributes.value)} </Text>

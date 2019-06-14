@@ -16,8 +16,9 @@ import {
     Title,
     Button,
 } from "native-base";
+import StarIcon from "../../components/starIcon";
 
-const deviceWidth = Dimensions.get('window').width;
+
 export default class SelectField extends Component {
 
     static propTypes = {
@@ -83,7 +84,10 @@ export default class SelectField extends Component {
                     alignItems: 'center',
                     justifyContent: 'space-between',
                 }}>
-                    <Text style={{ color: theme.inputColorPlaceholder,paddingStart:5}}>{attributes.label}</Text>
+                    <Text style={{ color: theme.inputColorPlaceholder,paddingStart:5}}>
+                        {attributes['required'] && <StarIcon required={attributes['required']} />}
+                        {attributes.label}
+                    </Text>
                     <View
                         style={{
                             flexDirection: 'row',

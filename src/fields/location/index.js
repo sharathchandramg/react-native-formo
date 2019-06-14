@@ -9,6 +9,7 @@ import styles from "./styles";
 
 const GPS_ALERT_MESSAGE = "Poor GPS accuracy. Wait until accuracy improves";
 const GPS_ALERT = "GPS Accuracy Alert";
+import StarIcon from "../../components/starIcon";
 
 export default class LocationField extends Component {
     static propTypes = {
@@ -142,7 +143,10 @@ export default class LocationField extends Component {
             <View>
                 <ListItem style={{ borderBottomWidth: 0, paddingVertical:5,marginLeft:20 }}>
                     <View style={{flexDirection:'row',flex:2}}>
-                        <Text style={{flex:1,color: theme.inputColorPlaceholder,paddingStart:5 }}>{attributes.label}</Text>
+                        <Text style={{flex:1,color: theme.inputColorPlaceholder,paddingStart:5 }}>
+                            {attributes['required'] && <StarIcon required={attributes['required']} />}
+                            {attributes.label}
+                        </Text>
                         <View style={{flexDirection:'row',flex:1}}>
                             {this.renderPostionUrl(attributes)}
                         </View>

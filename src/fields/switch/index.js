@@ -35,7 +35,10 @@ export default class SwitchField extends Component {
                         alignItems: "center",
                         justifyContent: "space-between",
                     }}>
-                    <Text style={{ color:theme.inputColorPlaceholder,padding:5 }}>{attributes.label}</Text>
+                    <Text style={{ color:theme.inputColorPlaceholder,padding:5 }}>
+                        {attributes['required'] && <StarIcon required={attributes['required']} />}
+                        {attributes.label}
+                    </Text>
                     <Switch
                         onTrackColor={"blue"}
                         onValueChange={value => this.handleChange(value)}

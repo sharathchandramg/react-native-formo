@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { Platform,Modal,Picker,TouchableOpacity,TouchableHighlight } from "react-native";
 import { View, Item, Input, ListItem, Text } from "native-base";
 import { getKeyboardType } from "./../../utils/helper";
+import StarIcon from "../../components/starIcon"
 
 export default class CurrencyField extends Component {
 
@@ -176,7 +177,9 @@ export default class CurrencyField extends Component {
         return (
             <View>
                 <ListItem style={{ borderBottomWidth: 0, paddingVertical: 5 }}>
+
                     <View style={{ flex: 4,flexDirection:'row'}}>
+                        {attributes['required'] && <StarIcon required={attributes['required']} />}
                         {attributes.showCurrencyOptions && 
                             <View style={{ flex:2,flexDirection:'row'}}>
                                 {this.renderCurrencyTypePicker()}

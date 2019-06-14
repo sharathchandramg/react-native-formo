@@ -11,6 +11,7 @@ import styles from './styles';
 import SearchComponent from '../../components/search';
 import LookupComponent from '../../components/lookup';
 import FilterComponent from '../../components/filter';
+import StarIcon from "../../components/starIcon";
 
 export default class LookupField extends Component {
     static propTypes = {
@@ -592,6 +593,7 @@ export default class LookupField extends Component {
                     >
                         <View style={styles.labelTextWrapper}>
                             <Text style={[styles.labelText]}>
+                                {attributes['required'] && <StarIcon required={attributes['required']} />}
                                 {attributes.label}
                             </Text>
                         </View>

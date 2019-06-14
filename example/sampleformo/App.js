@@ -3,7 +3,7 @@ import { Platform, StyleSheet, Text, View, ScrollView } from "react-native";
 
 import Form0 from "react-native-form0";
 import { Button } from "native-base";
-const fields = require("./schema/10-lookup.json");
+const fields = require("./schema/20-all-simple-fields.json");
 const _ = require("lodash");
 
 export default class App extends Component {

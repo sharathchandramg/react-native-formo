@@ -12,6 +12,7 @@ import styles from './../../styles';
 import { View, Text } from 'native-base';
 
 const Item = Picker.Item;
+import StarIcon from "../../components/starIcon";
 
 export default class StatusPickerField extends Component {
     static propTypes = {
@@ -138,6 +139,7 @@ export default class StatusPickerField extends Component {
                             paddingStart: 5,
                         }}
                     >
+                        {attributes['required'] && <StarIcon required={attributes['required']} />}
                         {attributes.label}
                     </Text>
                     <Text style={{ color: theme.inputColorPlaceholder }}>
@@ -169,6 +171,7 @@ export default class StatusPickerField extends Component {
                             paddingStart: 5,
                         }}
                     >
+                        {attributes['required'] && <StarIcon required={attributes['required']} />}
                         {attributes.label}
                     </Text>
                 </View>

@@ -22,6 +22,7 @@ import {
 import shortid from 'shortid';
 import styles from "./styles";
 import ChildField from "../childForm";
+import StarIcon from "../../components/starIcon";
 
 
 export default class SubForm extends Component {
@@ -215,7 +216,10 @@ export default class SubForm extends Component {
             <View style ={styles.container}>
                 <View style={[styles.inputField]}  error={theme.changeTextInputColorOnError ? attributes.error : null}>
                     <View style={[styles.inputLabel]}>
-                        <Text style={[styles.labelText]}>{attributes.label}</Text>
+                        <Text style={[styles.labelText]}>
+                            {attributes['required'] && <StarIcon required={attributes['required']} />}
+                            {attributes.label}
+                        </Text>
                         {this.renderlookupIcon()}
                     </View>
                     {typeof attributes.value !== "undefined" && attributes.value !== null && attributes.value.length> 0?

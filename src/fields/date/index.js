@@ -10,7 +10,7 @@ import {
     TouchableHighlight,
 } from 'react-native';
 import { View, Text, Item, Icon } from 'native-base';
-
+import StarIcon from "../../components/starIcon";
 const moment = require('moment');
 
 export default class DateField extends Component {
@@ -198,6 +198,7 @@ export default class DateField extends Component {
                     }}
                 >
                     <Text style={{ color: theme.labelActiveColor }}>
+                        {attributes['required'] && <StarIcon required={attributes['required']} />}
                         {attributes.label}
                     </Text>
                     <View style={{ flexDirection: 'row' }} />
@@ -272,6 +273,7 @@ export default class DateField extends Component {
                         paddingStart: 5,
                     }}
                 >
+                    {attributes['required'] && <StarIcon required={attributes['required']} />}
                     {attributes.label}
                 </Text>
                 <View style={{ flexDirection: 'row', marginEnd: 10 }}>

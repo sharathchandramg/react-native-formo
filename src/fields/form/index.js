@@ -3,7 +3,7 @@ import React, { Component } from "react";
 
 import Form0 from "./../../index";
 import { View, Text, Item } from "native-base";
-
+import StarIcon from "../../components/starIcon";
 export default class FormField extends Component {
 
     static propTypes = {
@@ -44,7 +44,10 @@ export default class FormField extends Component {
         return (
             <View>
                 <View style={{ paddingHorizontal: 15, paddingVertical: 5 }}>
-                    <Text style={{ fontWeight: '500', fontSize: 17 }}>{attributes.label}</Text>
+                    <Text style={{ fontWeight: '500', fontSize: 17 }}>
+                        {attributes['required'] && <StarIcon required={attributes['required']} />}
+                        {attributes.label}
+                    </Text>
                 </View>
                 <View style={{ paddingHorizontal: 10 }}>
                     <Form0
