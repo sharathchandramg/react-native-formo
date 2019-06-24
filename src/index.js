@@ -87,23 +87,23 @@ export default class Form0 extends Component {
         this.setValues(formData);
     }
 
-    componentDidUpdate(prevProps){
+    componentDidUpdate(prevProps) {
         const { formData } = this.props;
-        if(prevProps !== this.props){
+        if (prevProps !== this.props) {
             this.setValues(formData);
         }
     }
 
-    getValue(fieldName){
-        for(let i = 0; i< Object.values(this.state).length ; i++){
+    getValue(fieldName) {
+        for (let i = 0; i < Object.values(this.state).length; i++) {
             let fieldObj = Object.values(this.state)[i];
             let fieldVal = fieldObj['value'];
-            if(typeof fieldVal !=='undefined' && fieldVal !== null){
-                if(fieldObj['name'] === fieldName && typeof fieldVal ==='string' ){
+            if (typeof fieldVal !== 'undefined' && fieldVal !== null) {
+                if (fieldObj['name'] === fieldName && typeof fieldVal === 'string') {
                     return fieldVal;
-                }else if(typeof fieldVal ==='object' && fieldObj['name'] !== fieldName){
-                    let index = _.indexOf(Object.keys(fieldVal),fieldName);
-                    if(index !== -1) return Object.values(fieldVal)[index];
+                } else if (typeof fieldVal === 'object' && fieldObj['name'] !== fieldName) {
+                    let index = _.indexOf(Object.keys(fieldVal), fieldName);
+                    if (index !== -1) return Object.values(fieldVal)[index];
                 }
             }
         }
@@ -126,32 +126,32 @@ export default class Form0 extends Component {
     }
 
 
-    onAddNewFields(name,newObj){
+    onAddNewFields(name, newObj) {
         let fieldObj = this.state[name];
-        if(fieldObj){
-            if (fieldObj.type ==='sub-form') {
-                if(typeof fieldObj.value ==='undefined' || fieldObj.value === null || fieldObj.value.length ===0 ){
+        if (fieldObj) {
+            if (fieldObj.type === 'sub-form') {
+                if (typeof fieldObj.value === 'undefined' || fieldObj.value === null || fieldObj.value.length === 0) {
                     fieldObj.value = [newObj];
-                }else{
-                    let gIndex = _.indexOf(Object.keys(this.state),fieldObj.name);
-                    let newValue ;
-                    if(gIndex !== -1){
+                } else {
+                    let gIndex = _.indexOf(Object.keys(this.state), fieldObj.name);
+                    let newValue;
+                    if (gIndex !== -1) {
                         let preValue = Object.values(this.state)[gIndex].value;
-                        let oIndex = _.findIndex(preValue,item => item._id === newObj._id);
-                        if(oIndex !== -1){
+                        let oIndex = _.findIndex(preValue, item => item._id === newObj._id);
+                        if (oIndex !== -1) {
                             preValue[oIndex] = newObj;
                             newValue = preValue;
-                        }else{
-                            newValue = _.concat(newObj,preValue);
+                        } else {
+                            newValue =  _.concat(newObj, preValue);
                         }
-                    }else{
+                    } else {
                         newValue = [newObj];
                     }
                     fieldObj.value = newValue;
                 }
                 const newField = {};
                 newField[fieldObj.name] = fieldObj;
-                this.setState({ ...newField });   
+                this.setState({ ...newField });
             }
         }
     }
@@ -159,7 +159,7 @@ export default class Form0 extends Component {
     onValueChange(name, value) {
         const valueObj = this.state[name];
         if (valueObj) {
-            if(valueObj.type !=='sub-form'){
+            if (valueObj.type !== 'sub-form') {
                 valueObj.value = value;
                 //autovalidate the fields
                 if (this.props.autoValidation === undefined || this.props.autoValidation) {
@@ -179,7 +179,7 @@ export default class Form0 extends Component {
                     this.setState({ ...newField });
                 }
             }
-        }  
+        }
     }
 
     onSummitTextInput(name) {
@@ -202,7 +202,7 @@ export default class Form0 extends Component {
                 if (field.error !== undefined && field.error) {
                     isValidFields = false;
                 }
-                values[field.name] = field.value;
+                values[field.name] = field.type && field.type.match(/number/i) ? parseFloat(field.value) : field.value;
             }
         });
         if (isValidFields) {
@@ -211,7 +211,6 @@ export default class Form0 extends Component {
         } else {
             return null;
         }
-        console.log(values);
         return values;
     }
 
@@ -310,9 +309,9 @@ export default class Form0 extends Component {
 
                     case "currency":
                         return <CurrencyField
-                                ref={(c) => { this[field.name] = c; }}
-                                {...commonProps}
-                            />   
+                            ref={(c) => { this[field.name] = c; }}
+                            {...commonProps}
+                        />
 
                     case "switch":
                         return <SwitchField
@@ -353,10 +352,10 @@ export default class Form0 extends Component {
 
                     case "image":
                         return (
-                                <ImageField
-                                    ref={(c) => { this[field.name] = c; }}
-                                    {...commonProps} />
-                            );
+                            <ImageField
+                                ref={(c) => { this[field.name] = c; }}
+                                {...commonProps} />
+                        );
 
                     case "location":
                         return (
@@ -376,7 +375,7 @@ export default class Form0 extends Component {
 
                     case "sub-form":
                         return (
-                            <SubForm 
+                            <SubForm
                                 ref={(c) => { this[field.name] = c; }}
                                 {...commonProps}
                                 {...this.props}
@@ -393,14 +392,14 @@ export default class Form0 extends Component {
                         );
 
                     case "customDataView":
-                        return(
+                        return (
                             <CustomDataComponent
                                 ref={(c) => { this[field.name] = c; }}
                                 {...commonProps}
                                 {...this.props}
                             />
                         )
-                }                
+                }
             }
         });
 
