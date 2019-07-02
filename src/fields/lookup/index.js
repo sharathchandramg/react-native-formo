@@ -391,11 +391,11 @@ export default class LookupField extends Component {
     handleTextChange = searchText => {
         if (this.state.filterModalVisible) {
             let activeCategoryData = this.state.activeCategoryData;
-            let activeCategory = this.state.activeCategory;
             let filterData = [];
             filterData = _.filter(activeCategoryData, item => {
-                let sItem =
-                    item[activeCategory['name']]
+                let sItem = '';
+                sItem =
+                    item['label']
                         .toString()
                         .toLowerCase()
                         .search(searchText.trim().toLowerCase()) > -1;
@@ -418,6 +418,8 @@ export default class LookupField extends Component {
             this.setState({ searchText: searchText });
         }
     };
+
+
 
     toggleSearchModalVisible = () => {
         this.setState({
