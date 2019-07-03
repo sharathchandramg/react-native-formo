@@ -27,6 +27,7 @@ export default class LookupField extends Component {
         this.state = {
             modalVisible: false,
             searchModalVisible: false,
+            filterModalVisible: false,
             searchText: '',
             options: [],
 
@@ -34,7 +35,6 @@ export default class LookupField extends Component {
             filterData: [],
             filterArr: [],
             activeCategory: null,
-            filterModalVisible: false,
             categoryToValue: [],
         };
     }
@@ -155,6 +155,48 @@ export default class LookupField extends Component {
         }
     };
 
+    handleOnFilterQuery = filter => {
+        const { onSearchQuery, attributes } = this.props;
+        const data_source = attributes['data_source'];
+
+        if (!isEmpty(data_source) && data_source['type'] === 'remote') {
+            if (typeof onSearchQuery === 'function') {
+                onSearchQuery(attributes, filter);
+            }
+        } else {
+            let updatedOptions = [];
+            let preOptions = attributes['options'];
+            _.map(filter, item => {
+                let options = item['value'];
+                let category = item['category'];
+
+                options.map(option => {
+                    let allMatchingOptions = [];
+                    allMatchingOptions = _.filter(preOptions, item2 => {
+                        if (option === item2[category]) {
+                            return item2;
+                        }
+                    });
+
+                    if (allMatchingOptions.length) {
+                        updatedOptions = [
+                            ...updatedOptions,
+                            ...allMatchingOptions,
+                        ];
+                    }
+                });
+            });
+            attributes['options'] = updatedOptions;
+        }
+        this.setState({
+            searchText: '',
+            categoryToValue: filter,
+            filterModalVisible: false,
+            searchModalVisible: false,
+            modalVisible: true,
+        });
+    };
+
     statusOptionsFormatter = (options, type) => {
         let data = [];
         if (!isEmpty(options)) {
@@ -262,43 +304,11 @@ export default class LookupField extends Component {
     };
 
     applyFilterFunction = () => {
-        const categoryToValue = this.state.categoryToValue;
-        const { onSearchQuery, attributes } = this.props;
-        const data_source  = attributes['data_source'];
-
-        if (!isEmpty(data_source) && data_source['type'] === 'remote') {
-            if (typeof onSearchQuery === 'function') {
-                onSearchQuery(attributes, categoryToValue);
-            }
-        } else {
-            let updatedOptions = [];
-            let preOptions = attributes['options'];
-            _.map(categoryToValue, item => {
-                let options = item['value'];
-                let category = item['category'];
-
-                options.map(option => {
-                    let allMatchingOptions = [];
-                    allMatchingOptions = _.filter(preOptions, item2 => {
-                        if (option === item2[category]) {
-                            return item2;
-                        }
-                    });
-
-                    if (allMatchingOptions.length) {
-                        updatedOptions = [
-                            ...updatedOptions,
-                            ...allMatchingOptions,
-                        ];
-                    }
-                });
-            });
-            attributes['options'] = updatedOptions;
-        }
-        
-        this.setState({
-            filterModalVisible: false,
-        });
+        const filter = _.filter(
+            this.state.categoryToValue,
+            sItem => sItem['categoryLabel'] !== 'Search'
+        );
+        this.handleOnFilterQuery(filter);
     };
 
     resetFilter = () => {
@@ -356,25 +366,33 @@ export default class LookupField extends Component {
             filterData = _.map(filterData, row => (row['selected'] = false));
         }
 
-        this.setState(
-            {
-                categoryToValue: categoryToValue,
-                filterArr: filterArr,
-                filterData: filterData,
-            },
-            () => {
-                if (this.state.categoryToValue.length) {
-                    this.applyFilterFunction();
-                } else {
-                    const options = attributes['options'];
+        if (categoryToValue.length) {
+            this.setState(
+                {
+                    filterArr: filterArr,
+                    filterData: filterData,
+                    categoryToValue: categoryToValue,
+                },
+                () => this.applyFilterFunction()
+            );
+        } else {
+            this.setState(
+                {
+                    filterArr: filterArr,
+                    filterData: filterData,
+                    categoryToValue: categoryToValue,
+                    searchText: '',
+                },
+                () => {
                     const offset =
-                        typeof options !== 'undefined' && Array.isArray(options)
-                            ? options.length
+                        typeof attributes['options'] !== 'undefined' &&
+                        Array.isArray(attributes['options'])
+                            ? attributes['options'].length
                             : 0;
                     this.handleOnGetQuery(offset);
                 }
-            }
-        );
+            );
+        }
     };
 
     toggleFilterSelect = item => {
@@ -419,30 +437,36 @@ export default class LookupField extends Component {
         }
     };
 
-
-
     toggleSearchModalVisible = () => {
         this.setState({
             searchModalVisible: !this.state.searchModalVisible,
-        });
-    };
-
-    closeFilterModal = () => {
-        this.setState({
             filterModalVisible: false,
+            modalVisible: true,
         });
     };
 
-    openFilterModal = () => {
-        const { attributes } = this.props;
-        if (!isEmpty(attributes['filterCategory'])) {
-            let activeCategory = attributes['filterCategory'][0];
-            this.setState(
-                {
+    toggleFilterModalVisible = () => {
+        if (this.state.filterModalVisible) {
+            this.setState({
+                filterModalVisible: false,
+                searchModalVisible: false,
+            });
+        } else {
+            const { attributes } = this.props;
+            if (!isEmpty(attributes['filterCategory'])) {
+                const activeCategory = attributes['filterCategory'][0];
+                const categoryData = this.statusOptionsFormatter(
+                    activeCategory['options'],
+                    activeCategory['type']
+                );
+                this.setState({
+                    activeCategoryData: categoryData,
+                    activeCategory: activeCategory,
+                    filterData: categoryData,
+                    searchModalVisible: false,
                     filterModalVisible: true,
-                },
-                () => this.setFilterCategory(activeCategory)
-            );
+                });
+            }
         }
     };
 
@@ -450,11 +474,16 @@ export default class LookupField extends Component {
         if (this.state.modalVisible) {
             this.setState({
                 modalVisible: false,
+                filterModalVisible: false,
+                searchModalVisible: false,
                 categoryToValue: [],
                 activeCategory: null,
+                searchText: '',
             });
         } else {
             this.setState({
+                filterModalVisible: false,
+                searchModalVisible: false,
                 modalVisible: true,
             });
         }
@@ -462,13 +491,18 @@ export default class LookupField extends Component {
 
     onEndReached = () => {
         const { attributes } = this.props;
+        const searchText = this.state.searchText;
+        const categoryToValue = this.state.categoryToValue;
+        // based on parameter call filter, search and get
         if (!isEmpty(attributes) && !isEmpty(attributes['data_source'])) {
-            const { type, key, url } = attributes['data_source'];
-            if (!isEmpty(type) && type === 'remote') {
-                let len = attributes['options']
+            if (searchText) {
+                this.handleOnSearchQuery(searchText);
+            } else if (!isEmpty(categoryToValue)) {
+                this.handleOnFilterQuery(categoryToValue);
+            } else {
+                const offset = attributes['options']
                     ? attributes['options'].length
                     : 0;
-                let offset = len;
                 this.handleOnGetQuery(offset);
             }
         }
@@ -568,6 +602,43 @@ export default class LookupField extends Component {
         return false;
     };
 
+    renderComponent = () => {
+        const { theme, attributes } = this.props;
+        const search = this.state.searchModalVisible;
+        const filter = this.state.filterModalVisible;
+        if (search) {
+            return (
+                <SearchComponent
+                    searchModalVisible={this.state.searchModalVisible}
+                    attributes={attributes}
+                    theme={theme}
+                    toggleSearchModalVisible={this.toggleSearchModalVisible}
+                    handleOnSearchQuery={this.handleOnSearchQuery}
+                    searchText={this.state.searchText}
+                    toggleSelect={this.toggleSelect}
+                    handleTextChange={this.handleTextChange}
+                />
+            );
+        }
+        if (filter) {
+            return (
+                <FilterComponent
+                    filterModalVisible={this.state.filterModalVisible}
+                    theme={theme}
+                    attributes={attributes}
+                    filterData={this.state.filterData}
+                    activeCategory={this.state.activeCategory}
+                    toggleFilterModalVisible={this.toggleFilterModalVisible}
+                    handleTextChange={this.handleTextChange}
+                    applyFilterFunction={this.applyFilterFunction}
+                    setFilterCategory={this.setFilterCategory}
+                    filterFunction={this.filterFunction}
+                    resetFilter={this.resetFilter}
+                />
+            );
+        }
+    };
+
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
         let value =
@@ -613,7 +684,10 @@ export default class LookupField extends Component {
                         formData={data}
                     />
                 </View>
-                {this.state.modalVisible ? (
+                {this.state.searchModalVisible ||
+                this.state.filterModalVisible ? (
+                    this.renderComponent()
+                ) : (
                     <LookupComponent
                         modalVisible={this.state.modalVisible}
                         theme={theme}
@@ -622,41 +696,14 @@ export default class LookupField extends Component {
                         onEndReached={this.onEndReached}
                         toggleModalVisible={this.toggleModalVisible}
                         toggleSearchModalVisible={this.toggleSearchModalVisible}
-                        toggleFilterModalVisible={this.openFilterModal}
+                        toggleFilterModalVisible={this.toggleFilterModalVisible}
                         searchEnable={this.isSearchEnable(attributes)}
                         filterEnable={this.isFilterEnable(attributes)}
                         filter={this.state.categoryToValue}
                         handleReset={this.handleReset}
                         activeCategory={this.state.activeCategory}
                     />
-                ) : null}
-                {this.state.searchModalVisible ? (
-                    <SearchComponent
-                        searchModalVisible={this.state.searchModalVisible}
-                        attributes={attributes}
-                        theme={theme}
-                        toggleSearchModalVisible={this.toggleSearchModalVisible}
-                        handleOnSearchQuery={this.handleOnSearchQuery}
-                        searchText={this.state.searchText}
-                        toggleSelect={this.toggleSelect}
-                        handleTextChange={this.handleTextChange}
-                    />
-                ) : null}
-                {this.state.filterModalVisible ? (
-                    <FilterComponent
-                        filterModalVisible={this.state.filterModalVisible}
-                        theme={theme}
-                        attributes={attributes}
-                        filterData={this.state.filterData}
-                        activeCategory={this.state.activeCategory}
-                        toggleFilterModalVisible={this.closeFilterModal}
-                        handleTextChange={this.handleTextChange}
-                        applyFilterFunction={this.applyFilterFunction}
-                        setFilterCategory={this.setFilterCategory}
-                        filterFunction={this.filterFunction}
-                        resetFilter={this.resetFilter}
-                    />
-                ) : null}
+                )}
             </View>
         );
     }
