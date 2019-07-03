@@ -18,6 +18,7 @@ import {
     Body,
     Button,
     Input,
+    Title
 } from 'native-base';
 
 import styles from './styles';
@@ -223,7 +224,7 @@ const FilterComponent = props => {
                         </Button>
                     </Left>
                     <Body>
-                        <Text>Filter</Text>
+                        <Title style={theme.headerText}>{'Filter'}</Title>
                     </Body>
                 </Header>
                 <Content>
