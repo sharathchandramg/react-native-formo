@@ -1,0 +1,34 @@
+[
+    {
+        "type": "checklist",
+        "label": "Audit List",
+        "name": "audit_list",
+        "rows": [
+            {
+                "label": "Fabric",
+                "name": "fabric"
+            },
+            {
+                "label": "Collar",
+                "name": "collar"
+            }
+        ],
+        "columns": [
+            {
+                "type": "number",
+                "name": "critical",
+                "label": "Critical"
+            },
+            {
+                "type": "number",
+                "name": "major",
+                "label": "Major"
+            },
+            {
+                "type": "number",
+                "name": "minor",
+                "label": "Minor"
+            }
+        ]
+    }
+]

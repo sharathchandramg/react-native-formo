@@ -20,6 +20,7 @@ import Lookupfield from "./fields/lookup";
 import CurrencyField from "./fields/currency";
 import StatusPicker from "./fields/statusPicker";
 import CustomDataComponent from "./fields/customDataView";
+import CheckList from "./fields/checkList";
 
 
 
@@ -399,6 +400,15 @@ export default class Form0 extends Component {
                                 {...this.props}
                             />
                         )
+
+                    case 'checklist':
+                        return(
+                            <CheckList
+                                ref={(c) => { this[field.name] = c; }}
+                                {...commonProps}
+                                {...this.props}
+                            />
+                        )    
                 }
             }
         });
