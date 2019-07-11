@@ -126,13 +126,15 @@ export function getDefaultValue(field) {
             }
             return null;
 
+
+        case "simple-grid":
         case "customDataView":{
             if(typeof field.defaultValue ==='object' && field.defaultValue){
                 return field.defaultValue;
             }
             return {}
         }
-    
+
         default:
             return null;
     }
@@ -167,6 +169,8 @@ export function getResetValue(field) {
 
         case "date":
             return null;
+        
+        case "simple-grid":    
         case "customDataView":{
                 if(typeof field.defaultValue ==='object' && field.defaultValue){
                     return field.defaultValue;
@@ -274,7 +278,9 @@ export function autoValidate(field) {
                     error = true;
                     errorMsg = `${field.label} is required`;
                 }
-                break;    
+                break;
+                
+            case "simple-grid":    
             case "customDataView":
                     if(typeof field.value !=='object' || !field.value || isEmpty(field.value)){
                         error = true;

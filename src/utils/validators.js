@@ -42,3 +42,5 @@ export function isNull(value) {
     else
         return false;
 };
+
+export const sum = arr => arr.reduce((acc, n) => acc + n, 0);
