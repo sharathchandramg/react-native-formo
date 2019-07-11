@@ -2,8 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 const _ = require("lodash");
 
-import { View, Keyboard, Text } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { View, Keyboard, Text, ScrollView } from "react-native";
 
 import baseTheme from "./theme";
 
@@ -419,16 +418,13 @@ export default class Form0 extends Component {
 
     render() {
         return (
-            <KeyboardAwareScrollView
-                keyboardShouldPersistTaps="always"
-                extraScrollHeight={20}
-                {...this.props.scrollViewProps}>
+            <ScrollView>
 
                 <View>
                     {this.generateFields() || <View />}
                 </View>
 
-            </KeyboardAwareScrollView>
+            </ScrollView>
         );
     }
 }
