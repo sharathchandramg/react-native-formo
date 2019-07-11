@@ -109,14 +109,14 @@ export default class SimpleGrideView extends Component {
             data: this.state.data,
         }
         this.props.updateValue(this.props.attributes.name, summary);
-        this.toggleModal()
+        this.setState({
+            modalVisible: false,
+        });
     }
 
     toggleModal = () => {
         if (this.state.modalVisible) {
-            this.setState({
-                modalVisible: false,
-            });
+            this.handleOnDoneClick()
         } else {
             this.setState({
                 modalVisible: true,

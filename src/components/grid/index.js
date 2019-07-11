@@ -4,7 +4,6 @@ import {
 	Modal,
 	TouchableOpacity,
 	View,
-	FlatList,
 	ScrollView
 } from "react-native";
 
@@ -26,6 +25,7 @@ import styles from "./styles";
 import { Row, Rows } from "./rows";
 import { Table, TableWrapper } from "./table";
 import { Col } from "./cols";
+import {isEmpty} from "../../utils/validators"
 
 
 const SimpleGrid = props => {
@@ -44,7 +44,7 @@ const SimpleGrid = props => {
 
 	getTableHeader =()=>{
 		let tableHeader = [];
-		if(data && Object.keys(data).length){
+		if(data && Object.keys(data).length && !isEmpty(data["header"])){
 			const header = data["header"];
 			Object.keys(header).map((hk)=>{
 				let headerCell = {
@@ -90,7 +90,7 @@ const SimpleGrid = props => {
 
 	getTableData =()=>{
 		let tableData = [];
-		if(data && Object.keys(data).length){
+		if(data && Object.keys(data).length && !isEmpty(data["header_type"])){
 			Object.keys(data).map((rk) => {
 				if(!rk.match(/header/) && !rk.match(/header_type/) && rk !== `${String.fromCharCode(931)}`){
 					let dataItem = {};
@@ -116,11 +116,18 @@ const SimpleGrid = props => {
 
 	getTableHeaderWidth = ()=>{
 		let widthArr = [];
-		if(data && Object.keys(data).length){
+		if(data && Object.keys(data).length && !isEmpty(data["header_width"])){
 			const header_width = data['header_width'];
 			widthArr = Object.keys(header_width).map((key)=>{
 				return parseInt(header_width[key])
 			})
+		}else{
+			if(!isEmpty(data["header"])){
+				const len = Object.keys(data['header']).length ;
+				for(let i = 0 ; i < len; i++){
+					widthArr.push(60)
+				}
+			}
 		}
 		return widthArr;
 	}
