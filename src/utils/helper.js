@@ -127,7 +127,7 @@ export function getDefaultValue(field) {
             return null;
 
 
-        case "checklist":
+        case "simple-grid":
         case "customDataView":{
             if(typeof field.defaultValue ==='object' && field.defaultValue){
                 return field.defaultValue;
@@ -170,7 +170,7 @@ export function getResetValue(field) {
         case "date":
             return null;
         
-        case "checklist":    
+        case "simple-grid":    
         case "customDataView":{
                 if(typeof field.defaultValue ==='object' && field.defaultValue){
                     return field.defaultValue;
@@ -280,7 +280,7 @@ export function autoValidate(field) {
                 }
                 break;
                 
-            case "checklist":    
+            case "simple-grid":    
             case "customDataView":
                     if(typeof field.value !=='object' || !field.value || isEmpty(field.value)){
                         error = true;

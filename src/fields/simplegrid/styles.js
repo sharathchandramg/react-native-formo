@@ -18,12 +18,12 @@ const styles = StyleSheet.create({
         width:'92%',
         alignItems:'center',
         justifyContent:'center',
-        backgroundColor:'#41E1FD',
+        backgroundColor:'#6574DB',
         marginHorizontal:10,
         borderColor: '#D9D5DC',
         borderWidth:1,
         borderRadius:4,
-        
+    
     },
 
     inputLabel:{
@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         fontWeight:'100',
     },
+    
 })
 
 export default styles;
