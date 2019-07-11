@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     textBox:{
       fontFamily: 'roboto',
       fontSize:14,
-      fontWeight: 'bold',
+      fontWeight: '400',
       color: '#989898',
       lineHeight: 24,
       textAlign:'center',
