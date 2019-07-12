@@ -3,9 +3,9 @@ import { View } from 'react-native';
 import { Cell } from './cell';
 
 export const Col = props => {
-	const { data, theme, wth } = props;
+	const { data, theme, wth,height } = props;
 	return data ? (
-		<View>
+		<View >
 		{data.map((item, i) => {
 			return (
 			<Cell
@@ -17,6 +17,7 @@ export const Col = props => {
 				editable={item['editable']}
 				theme={theme}
 				width={wth}
+				height={height}
 			/>
 			);
 		})}

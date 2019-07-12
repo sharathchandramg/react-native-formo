@@ -3,7 +3,7 @@ import { View, TextInput,Text} from "react-native";
 import styles from "./styles";
 
 export const Cell  = props =>{
-	const { rowKey, colKey, type, value, editable,onChangeText,width,maxLength } = props
+	const { rowKey, colKey, type, value, editable,onChangeText,width,maxLength,height } = props
 	let keyboardType = 'default';
 	let textAlin = 'left'
 	if(type.toLowerCase()==='number'){
@@ -13,7 +13,7 @@ export const Cell  = props =>{
 
 	if(editable){
 		return(
-			<View style={[styles.cell,{width:width}]}>
+			<View style={[styles.cell,{width:width,height:height}]}>
 				<View style={styles.inputBoxWrapper}>
 					<TextInput
 						style={[styles.inputBox,{textAlign: textAlin}]}
@@ -34,7 +34,7 @@ export const Cell  = props =>{
 		
 	}else{
 		return (
-			<View style={[styles.cell,{width:width}]}>
+			<View style={[styles.cell,{width:width,height:height}]}>
 				<Text style={styles.textBox}>
 					{value}
 				</Text>

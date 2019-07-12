@@ -20,11 +20,13 @@ const styles = StyleSheet.create({
     dataWrapper: {
       marginTop: -1,
     },
+
     row: {
       height:40,
       flexDirection: "row",
       overflow: "hidden",
     },
+
     col:{
       // borderRightWidth:0.5,
       // borderBottomWidth:0.5,
@@ -33,7 +35,7 @@ const styles = StyleSheet.create({
   
     },
     cell:{
-      height:40,
+      minHeight:40,
       minWidth:60,
       borderColor:'#BDCCDB',
       borderTopWidth:0.5,

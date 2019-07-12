@@ -7,22 +7,29 @@
         "editable": true,
         "hidden": false,
         "data":{
+
             "header": {
                 "Critical": "Critical",
                 "Major": "Major",
                 "Minor": "Minor"
             
             },
+
             "header_type": {
                 "Critical": "Number",
                 "Major": "string",
                 "Minor": "Number"
             },
-            "header_width":{
-                "Critical": 80,
-                "Major": 100,
-                "Minor": 120
+
+            "style":{
+                "column_width":{
+                    "Critical": 80,
+                    "Major": 100,
+                    "Minor": 120
+                },
+                "row_height": 100
             },
+
             "Fabric": {
                 "Critical": 1,
                 "Major": "ABC",
