@@ -73,7 +73,7 @@ const SimpleGrid = props => {
 		let tableTitle = [];
 		if(data && Object.keys(data).length){
 			Object.keys(data).map((rk) => {
-				if(!rk.match(/header/) && !rk.match(/style/) && !rk.match(/header_type/) && rk !== `${String.fromCharCode(931)}`){
+				if(!rk.match(/header/) && !rk.match(/style/) && !rk.match(/type/) && rk !== `${String.fromCharCode(931)}`){
 					let titleCell = {
 						rowKey: rk,
 						colKey: '',
@@ -90,9 +90,9 @@ const SimpleGrid = props => {
 
 	getTableData =()=>{
 		let tableData = [];
-		if(data && Object.keys(data).length && !isEmpty(data["header_type"])){
+		if(data && Object.keys(data).length && !isEmpty(data["type"])){
 			Object.keys(data).map((rk) => {
-				if(!rk.match(/header/) && !rk.match(/style/) && !rk.match(/header_type/) && rk !== `${String.fromCharCode(931)}`){
+				if(!rk.match(/header/) && !rk.match(/style/) && !rk.match(/type/) && rk !== `${String.fromCharCode(931)}`){
 					let dataItem = {};
 					dataItem['name']= rk;
 					let value = []
@@ -100,7 +100,7 @@ const SimpleGrid = props => {
 						let dataCell = { 
 							rowKey:rk,
 							colKey:ck,
-							type:data.header_type[ck],
+							type:data.type[ck],
 							value: data[rk][ck],
 							editable: rk == `${String.fromCharCode(931)}`? false: true
 						}

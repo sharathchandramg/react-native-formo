@@ -28,7 +28,7 @@ export const Cell  = props =>{
 						placeholderTextColor={'#FA9917'}
 						editable={editable}
 						onChangeText={text => onChangeText(rowKey,colKey,text)}
-						value={value.toString()}
+						value={ value!== null && value.toString()}
 					/>
 				</View>
 				
