@@ -290,6 +290,7 @@ export default class Form0 extends Component {
                     onAddNewFields: this.onAddNewFields,
                     getValue: this.getValue,
                     ErrorComponent: errorComponent || DefaultErrorComponent,
+                    navigation: this.props['navigation']|| null
                 };
 
                 switch (field.type) {

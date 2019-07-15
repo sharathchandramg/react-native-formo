@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Platform,Alert,TouchableOpacity,Linking } from "react-native";
-import { View, Item, Input, Icon, ListItem, Text } from "native-base";
+import { View,ListItem, Text } from "native-base";
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 
 import { getGeoLocation,requestLocationPermission } from "./../../utils/helper";
@@ -9,6 +9,7 @@ import styles from "./styles";
 
 const GPS_ALERT_MESSAGE = "Poor GPS accuracy. Wait until accuracy improves";
 const GPS_ALERT = "GPS Accuracy Alert";
+import {isEmpty} from "../../utils/validators";
 
 export default class LocationField extends Component {
     static propTypes = {
@@ -28,11 +29,15 @@ export default class LocationField extends Component {
     }
 
     componentDidMount() {
-        let {required} = this.props.attributes;
-        if(required){
-            this.promptForEnableLocationIfNeeded();
-        }else {
-            this.setState({ isPickingLocation: false })
+        const {required,value} = this.props.attributes;
+        if(isEmpty(value) && isEmpty(value['lat']) && isEmpty(value['long'])){
+            if(required){
+                this.promptForEnableLocationIfNeeded();
+            }else{
+                this.pickLocation();
+            }
+        }else{
+            this.setState({isPickingLocation: false})
         }
     }
     
@@ -42,7 +47,12 @@ export default class LocationField extends Component {
                 .then(data => {
                     this.pickLocation();
                 }).catch(err => {
-                    this.setState({ isPickingLocation: false })
+                    this.setState({ isPickingLocation: false },()=>{
+                        const {required,navigation} = this.props.attributes;
+                        if(required && navigation){
+                            navigation.goBack(null)
+                        }
+                    })  
                 });
         }else {
             this.pickLocation();
@@ -104,7 +114,7 @@ export default class LocationField extends Component {
 
     renderPostionUrl =(attributes)=>{
         let url = null;
-        if(typeof attributes.value !=='undefined' && attributes.value !== null ){
+        if( !isEmpty(attributes.value) && !isEmpty(attributes.value['lat']) && !isEmpty(attributes.value['long'])){
             let scheme = Platform.select({ ios: 'maps:http://maps.apple.com/?q=', android: 'geo:http://maps.google.com/?q=' });
             let latLng = `${attributes.value.lat},${attributes.value.long}`;
             let label = 'You here';
@@ -114,8 +124,7 @@ export default class LocationField extends Component {
             })
         }else{
             url = this.state.url;
-        }
-        
+        } 
         if(url){
             return (
                 <TouchableOpacity style={styles.valueContainer}
@@ -132,20 +141,23 @@ export default class LocationField extends Component {
                 </TouchableOpacity>
             );
         }else{
-            return <Text style={styles.textStyle} numberOfLines={1}>{this.state.isPickingLocation?'Picking...':''}</Text> 
+            return(
+                <View  style={styles.valueContainer}>
+                    <Text style={styles.textStyle} numberOfLines={1}>{this.state.isPickingLocation?'Picking...':''}</Text> 
+                </View>
+            )
         }
     }
 
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
-            <View>
-                <ListItem style={{ borderBottomWidth: 0, paddingVertical:5,marginLeft:20 }}>
-                    <View style={{flexDirection:'row',flex:2}}>
-                        <Text style={{flex:1,color: theme.inputColorPlaceholder,paddingStart:5 }}>{attributes.label}</Text>
-                        <View style={{flexDirection:'row',flex:1}}>
-                            {this.renderPostionUrl(attributes)}
-                        </View>
+            <View style={styles.container}>
+                <ListItem style={{ borderBottomWidth: 0, paddingVertical:5, }}>
+                    <View style={{flexDirection:'row',flex:1}}>
+                        <Text style={styles.placeHolder}>{attributes.label}</Text>
+                        {this.renderPostionUrl(attributes)}
+                        
                     </View>
                 </ListItem>
                 <View style={{ paddingHorizontal:15 }}>
