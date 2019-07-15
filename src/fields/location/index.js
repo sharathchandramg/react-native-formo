@@ -47,12 +47,11 @@ export default class LocationField extends Component {
                 .then(data => {
                     this.pickLocation();
                 }).catch(err => {
-                    this.setState({ isPickingLocation: false },()=>{
-                        const {required,navigation} = this.props.attributes;
-                        if(required && navigation){
-                            navigation.goBack(null)
-                        }
-                    })  
+                    const {attributes,navigation} = this.props;
+                    if(attributes['required'] && navigation){
+                        navigation.goBack(null)
+                    }
+                    this.setState({ isPickingLocation: false })  
                 });
         }else {
             this.pickLocation();
