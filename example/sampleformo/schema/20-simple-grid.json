@@ -15,7 +15,7 @@
             
             },
 
-            "header_type": {
+            "type": {
                 "Critical": "Number",
                 "Major": "string",
                 "Minor": "Number"
@@ -38,7 +38,7 @@
             },
             "Color": {
                 "Critical": 5,
-                "Major": "",
+                "Major": null,
                 "Minor": 3
             }
         }

@@ -61,7 +61,7 @@ export default class SimpleGrideView extends Component {
         let preColVal = data[rk][ck];
         let preColSum = data[`${String.fromCharCode(931)}`][ck];
         data[rk][ck] = text;
-        const header_type = data['header_type'];
+        const header_type = data['type'];
         const ck_type = header_type[ck];
         
         if(ck_type.toLowerCase() ==='number'){
@@ -82,12 +82,12 @@ export default class SimpleGrideView extends Component {
 
     setGridData =(data)=>{
         const header = data['header'];
-        const header_type =data['header_type'];
+        const header_type = data['type'];
         let summary = {}
         Object.keys(header).map((ck)=>{
             let ckTotal = 0;
             Object.keys(data).map((rk)=>{
-                if(!rk.match(/header/) && !rk.match(/style/) && !rk.match(/header_type/) && rk !== `${String.fromCharCode(931)}`){
+                if(!rk.match(/header/) && !rk.match(/style/) && !rk.match(/type/) && rk !== `${String.fromCharCode(931)}`){
                     if(header_type && header_type[ck].toLowerCase()==='number'){
                         const ckValue = data[rk][ck];
                         if(ckValue){
@@ -152,7 +152,7 @@ export default class SimpleGrideView extends Component {
         let rowLabel = '';
         if(data && Object.keys(data).length){
             const summaryRow = data[`${String.fromCharCode(931)}`];
-            const header_type = data['header_type']
+            const header_type = data['type']
             Object.keys(summaryRow).map((key)=>{
                 const type = header_type[key];
                 let colLabel = '';
@@ -200,10 +200,7 @@ export default class SimpleGrideView extends Component {
                             theme={theme}
                             attributes={attributes}
                             toggleModalVisible={this.toggleModal}
-                            tableHead={attributes.columns}
-                            tableTitle={attributes.rows}
                             data ={this.state.data}
-                            selectedItm={this.state.selectedItm}
                             onChangeText={this.onChangeText}
                             handleOnDoneClick={this.handleOnDoneClick}
                             summary = {this.getSummaryLabel()}
