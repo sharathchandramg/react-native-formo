@@ -3,7 +3,7 @@ import { View, TextInput,Text} from "react-native";
 import styles from "./styles";
 
 export const Cell  = props =>{
-	const { rowKey, colKey, type, value, editable,onChangeText,width,maxLength,height } = props
+	const { rowKey, colKey, type, value, editable,onChangeText,width,maxLength,height,color } = props
 	let keyboardType = 'default';
 	let textAlin = 'left'
 	if(type.toLowerCase()==='number'){
@@ -14,14 +14,17 @@ export const Cell  = props =>{
 	if(editable){
 		return(
 			<View style={[styles.cell,{width:width,height:height}]}>
-				<View style={styles.inputBoxWrapper}>
+				<View style={[styles.inputBoxWrapper,{width:width,height:height}]}>
 					<TextInput
 						style={[styles.inputBox,{textAlign: textAlin}]}
 						underlineColorAndroid="transparent"
-						numberOfLines={2}
+						numberOfLines={5}
 						maxLength={maxLength}
+						multiline={true}
+						autoGrow={true}
+						maxHeight={100}
 						keyboardType={keyboardType}
-						placeholder={'____'}
+						placeholder={'______'}
 						placeholderTextColor={'#FA9917'}
 						editable={editable}
 						onChangeText={text => onChangeText(rowKey,colKey,text)}
@@ -34,8 +37,8 @@ export const Cell  = props =>{
 		
 	}else{
 		return (
-			<View style={[styles.cell,{width:width,height:height}]}>
-				<Text style={styles.textBox}>
+			<View style={[styles.cellTextBox,{width:width,height:height}]}>
+				<Text style={[styles.textBox, color && {color}]}>
 					{value}
 				</Text>
 			</View>

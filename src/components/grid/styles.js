@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
       height:40,
       flexDirection: "row",
       overflow: "hidden",
+      // backgroundColor:'#E1FBFF',
     },
 
     col:{
@@ -35,8 +36,8 @@ const styles = StyleSheet.create({
   
     },
     cell:{
-      minHeight:40,
-      minWidth:60,
+      height:40,
+      width:100,
       borderColor:'#BDCCDB',
       borderTopWidth:0.5,
       borderRightWidth:0.5,
@@ -44,6 +45,17 @@ const styles = StyleSheet.create({
       justifyContent:'center',
       alignItems:'center',
       // backgroundColor: '#E7E6E1',
+    },
+    cellTextBox:{
+      height:40,
+      width:100,
+      borderColor:'#BDCCDB',
+      borderTopWidth:0.5,
+      borderRightWidth:0.5,
+      borderStyle:'solid',
+      justifyContent:'center',
+      alignItems:'center',
+  
     },
     wrapper: {
       flexDirection: 'row',
@@ -63,15 +75,15 @@ const styles = StyleSheet.create({
       fontFamily: 'roboto',
       fontSize:14,
       fontWeight: '400',
-      color: '#989898',
       lineHeight: 24,
       textAlign:'center',
       height:30,
-      width:'100%'
+      width:'100%',
+      color: 'black',
     },
     inputBoxWrapper:{
-      width:'80%',
-      height:40,
+      width:100,
+      // height:40,
       marginBottom:10,
       marginTop:5,
       alignItems:'center',
@@ -81,14 +93,10 @@ const styles = StyleSheet.create({
       fontFamily: 'roboto',
       fontSize:12,
       fontWeight: '300',
-      color: 'black',
       lineHeight:20,
       width:'100%',
       textAlign:'center',
-      borderBottomWidth:0.5,
-      borderStyle: 'solid',
-      borderColor:'#BDCCDB',
-      
+      color: '#989898', 
     },
 
     footer:{

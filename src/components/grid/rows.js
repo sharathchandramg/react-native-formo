@@ -6,10 +6,10 @@ import {sum} from "../../utils/validators"
 import styles from "./styles";
 
 export const Row = props =>{
-	const { data, theme,onChangeText,widthArr,height, } = props;
+	const { data, theme,onChangeText,widthArr,height,backgroundColor } = props;
 	let width = widthArr ? sum(widthArr) : 0;
 	return data.length ? (
-		<View style={[styles.row, height && { height }, width && { width }]}>
+		<View style={[styles.row, height && { height }, width && { width }, backgroundColor && {backgroundColor}]}>
 			{data.map((item, i) => {
 				const wth = widthArr && widthArr[i];
 			return (
@@ -35,7 +35,7 @@ export const Row = props =>{
 export const Rows = props =>{
 	const { data, theme,onChangeText, widthArr ,height} = props;
 	return data ? (
-		<View>
+		<View style={{paddingTop :1}}>
 			{data.map((item, i) => {
 				return (
 					<Row
@@ -45,6 +45,7 @@ export const Rows = props =>{
 						onChangeText= {onChangeText}
 						widthArr={widthArr}
 						height ={height}
+						backgroundColor={ i%2 == 0 ?'#E1FBFF':'white'} 
 					/>
 				);
 			})}

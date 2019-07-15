@@ -125,7 +125,7 @@ const SimpleGrid = props => {
 			if(!isEmpty(data["header"])){
 				const len = Object.keys(data['header']).length ;
 				for(let i = 0 ; i < len; i++){
-					widthArr.push(60)
+					widthArr.push(100)
 				}
 			}
 		}
@@ -143,7 +143,7 @@ const SimpleGrid = props => {
 	}
 
 	let widthArr = getTableHeaderWidth();
-	widthArr.unshift(60)
+	widthArr.unshift(100)
 
 
 	renderGridView =()=>{
@@ -155,6 +155,7 @@ const SimpleGrid = props => {
 							data ={getTableHeader()} 
 							widthArr={widthArr}
 							height={this.getTableRowHeight()}
+							backgroundColor={'#48BBEC'}
 						/>
 					</Table>
 					<ScrollView style={styles.dataWrapper}>

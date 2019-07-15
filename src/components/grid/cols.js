@@ -8,17 +8,21 @@ export const Col = props => {
 		<View >
 		{data.map((item, i) => {
 			return (
-			<Cell
-				rowKey={item['rowKey']}
-				colKey={item['colKey']}
-				type={item['type']}
-				value={item['value']}
-				key={i}
-				editable={item['editable']}
-				theme={theme}
-				width={wth}
-				height={height}
-			/>
+			<View style={{backgroundColor: i%2 === 0 ?'#E1FBFF':'white',color: '#989898'}}>
+				<Cell
+					rowKey={item['rowKey']}
+					colKey={item['colKey']}
+					type={item['type']}
+					value={item['value']}
+					key={i}
+					editable={item['editable']}
+					theme={theme}
+					width={wth}
+					height={height}
+					color= {'black'}
+				/>
+			</View>		
+			
 			);
 		})}
 		</View>
