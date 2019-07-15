@@ -73,7 +73,7 @@ const SimpleGrid = props => {
 		let tableTitle = [];
 		if(data && Object.keys(data).length){
 			Object.keys(data).map((rk) => {
-				if(!rk.match(/header/) && !rk.match(/header_type/) && rk !== `${String.fromCharCode(931)}`){
+				if(!rk.match(/header/) && !rk.match(/style/) && !rk.match(/header_type/) && rk !== `${String.fromCharCode(931)}`){
 					let titleCell = {
 						rowKey: rk,
 						colKey: '',
@@ -92,7 +92,7 @@ const SimpleGrid = props => {
 		let tableData = [];
 		if(data && Object.keys(data).length && !isEmpty(data["header_type"])){
 			Object.keys(data).map((rk) => {
-				if(!rk.match(/header/) && !rk.match(/header_type/) && rk !== `${String.fromCharCode(931)}`){
+				if(!rk.match(/header/) && !rk.match(/style/) && !rk.match(/header_type/) && rk !== `${String.fromCharCode(931)}`){
 					let dataItem = {};
 					dataItem['name']= rk;
 					let value = []
@@ -116,36 +116,57 @@ const SimpleGrid = props => {
 
 	getTableHeaderWidth = ()=>{
 		let widthArr = [];
-		if(data && Object.keys(data).length && !isEmpty(data["header_width"])){
-			const header_width = data['header_width'];
-			widthArr = Object.keys(header_width).map((key)=>{
-				return parseInt(header_width[key])
+		if(data && Object.keys(data).length && !isEmpty(data["style"])){
+			const column_width = data['style']['column_width'];
+			widthArr = Object.keys(column_width).map((key)=>{
+				return parseInt(column_width[key])
 			})
 		}else{
 			if(!isEmpty(data["header"])){
 				const len = Object.keys(data['header']).length ;
 				for(let i = 0 ; i < len; i++){
-					widthArr.push(60)
+					widthArr.push(100)
 				}
 			}
 		}
 		return widthArr;
 	}
 
+	getTableRowHeight =()=>{
+		let height = 40;
+		if(data && Object.keys(data).length && !isEmpty(data["style"])){
+			if(!isEmpty(data["style"]['row_height'])){
+				height = parseInt(data['style']['row_height']);
+			}
+		}
+		return height;
+	}
+
 	let widthArr = getTableHeaderWidth();
-	widthArr.unshift(60)
+	widthArr.unshift(100)
+
 
 	renderGridView =()=>{
 		return(
 			<ScrollView horizontal={true}>
 				<View>
 					<Table>
-						<Row data ={getTableHeader()} theme={attributes.theme} widthArr={widthArr}/>
+						<Row 
+							data ={getTableHeader()} 
+							widthArr={widthArr}
+							height={this.getTableRowHeight()}
+							backgroundColor={'#48BBEC'}
+						/>
 					</Table>
 					<ScrollView style={styles.dataWrapper}>
 						<TableWrapper style={styles.wrapper}>
 							<Table>
-								<Col data={getTableTitle()} theme={attributes.theme} wth={widthArr[0]} />
+								<Col 
+									data={getTableTitle()} 
+									theme={attributes.theme} 
+									wth={widthArr[0]}
+									height={this.getTableRowHeight()}
+								/>
 							</Table>
 							<ScrollView style={styles.dataWrapper}>
 								<Rows 
@@ -153,6 +174,7 @@ const SimpleGrid = props => {
 									theme={attributes.theme}
 									onChangeText= {onChangeText}
 									widthArr={getTableHeaderWidth()}
+									height={this.getTableRowHeight()}
 								/>
 							</ScrollView>
 						</TableWrapper>
@@ -193,7 +215,7 @@ const SimpleGrid = props => {
 						</View>
 					</View>
 					<TouchableOpacity style={styles.button} onPress={() => handleOnDoneClick()}>
-						<Text style={styles.buttonText}>{'Done'} </Text>
+						<Text style={styles.buttonText}>{'SAVE'} </Text>
 					</TouchableOpacity>
                 </Footer>
 			</Container>

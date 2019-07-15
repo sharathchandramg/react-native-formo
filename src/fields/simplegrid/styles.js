@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
         minHeight:40,
         alignItems:'flex-start',
         justifyContent:'center',
-        marginBottom:15,
+        margin:15,
         marginHorizontal:5,
     },
 
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         width:'92%',
         alignItems:'center',
         justifyContent:'center',
-        backgroundColor:'#6574DB',
+        backgroundColor:'#41E1FD',
         marginHorizontal:10,
         borderColor: '#D9D5DC',
         borderWidth:1,

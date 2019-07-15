@@ -87,7 +87,7 @@ export default class SimpleGrideView extends Component {
         Object.keys(header).map((ck)=>{
             let ckTotal = 0;
             Object.keys(data).map((rk)=>{
-                if(!rk.match(/header/) && !rk.match(/header_type/) && !rk.match(/931/)){
+                if(!rk.match(/header/) && !rk.match(/style/) && !rk.match(/header_type/) && rk !== `${String.fromCharCode(931)}`){
                     if(header_type && header_type[ck].toLowerCase()==='number'){
                         const ckValue = data[rk][ck];
                         if(ckValue){
@@ -109,14 +109,14 @@ export default class SimpleGrideView extends Component {
             data: this.state.data,
         }
         this.props.updateValue(this.props.attributes.name, summary);
-        this.setState({
-            modalVisible: false,
-        });
+        this.toggleModal()
     }
 
     toggleModal = () => {
         if (this.state.modalVisible) {
-            this.handleOnDoneClick()
+            this.setState({
+                modalVisible: false,
+            });
         } else {
             this.setState({
                 modalVisible: true,
