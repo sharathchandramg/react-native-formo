@@ -29,13 +29,9 @@ export default class LocationField extends Component {
     }
 
     componentDidMount() {
-        const {required,value} = this.props.attributes;
+        const {value} = this.props.attributes;
         if(isEmpty(value) && isEmpty(value['lat']) && isEmpty(value['long'])){
-            if(required){
-                this.promptForEnableLocationIfNeeded();
-            }else{
-                this.pickLocation();
-            }
+            this.promptForEnableLocationIfNeeded();
         }else{
             this.setState({isPickingLocation: false})
         }
@@ -50,8 +46,11 @@ export default class LocationField extends Component {
                     const {attributes,navigation} = this.props;
                     if(attributes['required'] && navigation){
                         navigation.goBack(null)
+                    }else if(!attributes['required']){
+                        this.pickLocation();
+                    }else{
+                        this.setState({ isPickingLocation: false })  
                     }
-                    this.setState({ isPickingLocation: false })  
                 });
         }else {
             this.pickLocation();
