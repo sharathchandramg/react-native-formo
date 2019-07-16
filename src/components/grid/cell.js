@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TextInput,Text} from "react-native";
+import { View, TextInput,Text,TouchableOpacity } from "react-native";
 import styles from "./styles";
 
 export const Cell  = props =>{
@@ -13,26 +13,31 @@ export const Cell  = props =>{
 
 	if(editable){
 		return(
-			<View style={[styles.cell,{width:width,height:height}]}>
-				<View style={[styles.inputBoxWrapper,{width:width,height:height}]}>
-					<TextInput
-						style={[styles.inputBox,{textAlign: textAlin}]}
-						underlineColorAndroid="transparent"
-						numberOfLines={5}
-						maxLength={maxLength}
-						multiline={true}
-						autoGrow={true}
-						maxHeight={100}
-						keyboardType={keyboardType}
-						placeholder={'______'}
-						placeholderTextColor={'#FA9917'}
-						editable={editable}
-						onChangeText={text => onChangeText(rowKey,colKey,text)}
-						value={ value!== null && value.toString()}
-					/>
+			<TouchableOpacity  
+				style={[styles.cell,{width:width,height:height}]}
+				onPress={()=>this.input.focus()}>
+				<View 
+					style={[styles.inputBoxWrapper,{width:width,height:height}]} 
+					pointerEvents="none">
+						<TextInput
+							style={[styles.inputBox,{textAlign: textAlin}]}
+							underlineColorAndroid="transparent"
+							numberOfLines={5}
+							maxLength={maxLength}
+							multiline={true}
+							autoGrow={true}
+							maxHeight={100}
+							keyboardType={keyboardType}
+							placeholder={'______'}
+							placeholderTextColor={'#FA9917'}
+							editable={editable}
+							onChangeText={text => onChangeText(rowKey,colKey,text)}
+							value={ value!== null && value.toString()}
+							ref = {(input) => this.input = input}
+						
+						/>
 				</View>
-				
-			</View>
+			</TouchableOpacity>
 		)
 		
 	}else{
