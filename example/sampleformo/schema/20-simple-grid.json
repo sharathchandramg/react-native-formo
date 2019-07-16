@@ -40,6 +40,28 @@
                 "Critical": 5,
                 "Major": null,
                 "Minor": 3
+            },
+            "Fabric1": {
+                "Critical": 1,
+                "Major": "ABC",
+                "Minor": ""
+                
+            },
+            "Color1": {
+                "Critical": 5,
+                "Major": null,
+                "Minor": 3
+            },
+            "Fabric2": {
+                "Critical": 1,
+                "Major": "ABC",
+                "Minor": ""
+                
+            },
+            "Color2": {
+                "Critical": 5,
+                "Major": null,
+                "Minor": 3
             }
         }
     }

@@ -15,7 +15,8 @@ export const Cell  = props =>{
 		return(
 			<TouchableOpacity  
 				style={[styles.cell,{width:width,height:height}]}
-				onPress={()=>this.input.focus()}>
+				activeOpacity={1}
+				onPress={()=> this[`textInput${rowKey}${colKey}`].focus()}>
 				<View 
 					style={[styles.inputBoxWrapper,{width:width,height:height}]} 
 					pointerEvents="none">
@@ -33,7 +34,7 @@ export const Cell  = props =>{
 							editable={editable}
 							onChangeText={text => onChangeText(rowKey,colKey,text)}
 							value={ value!== null && value.toString()}
-							ref = {(input) => this.input = input}
+							ref={input => this[`textInput${rowKey}${colKey}`] = input}
 						
 						/>
 				</View>
