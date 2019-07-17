@@ -85,8 +85,7 @@ export default class TextInputField extends Component {
                 placeholderTextColor={theme.inputColorPlaceholder}
                 editable={attributes.editable}
                 onChangeText={text => this.handleChange(text)}
-                // value={attributes.value}
-                value={attributes.value && attributes.value.toString()}
+                value={attributes['value'] !== null && attributes.value.toString()}
                 {...inputProps}
             />
         )

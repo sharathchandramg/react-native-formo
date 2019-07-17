@@ -1,19 +1,24 @@
 
 export function isEmpty(value) {
     switch(typeof value){
-        case 'string':
-            if((value.trim() === "") || !value){
+        case 'string':{
+            if( value &&  value.trim() !== ""){
+                return false; 
+            }else{
                 return true;
             }
-            return false; 
-        case 'number':
-            if (value.toString().trim() === "" || !value){
+        }
+        case 'number':{
+            let val = value.toString();
+            if(val && val.trim() !== ""){
+                return false
+            }else{
                 return true;
             }
-            return false
+        }
         case 'undefined':
             return true;
-        case 'object':
+        case 'object':{
             if(Array.isArray(value)){
                 return value.length > 0? false:true;
             }else{
@@ -22,6 +27,7 @@ export function isEmpty(value) {
                 }
                 return false;
             }
+        }
         default:
             return false 
     }
