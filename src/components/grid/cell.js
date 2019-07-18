@@ -21,7 +21,7 @@ export const Cell  = props =>{
 					style={[styles.inputBoxWrapper,{width:width,height:height}]} 
 					pointerEvents="none">
 						<TextInput
-							style={[styles.inputBox,{textAlign: textAlin}]}
+							style={[styles.inputBox,{textAlign: textAlin,height:height}]}
 							underlineColorAndroid="transparent"
 							numberOfLines={5}
 							maxLength={maxLength}
@@ -44,7 +44,7 @@ export const Cell  = props =>{
 	}else{
 		return (
 			<View style={[styles.cellTextBox,{width:width,height:height}]}>
-				<Text style={[styles.textBox, color && {color}]}>
+				<Text style={[styles.textBox, color && {color}, height && {height}]}>
 					{value}
 				</Text>
 			</View>
