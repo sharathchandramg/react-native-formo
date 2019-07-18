@@ -120,6 +120,14 @@ export default class SimpleGrideView extends Component {
         } else {
             this.setState({
                 modalVisible: true,
+            },()=>{
+                const { attributes } = this.props;
+                if(attributes){
+                    const data = this.getGridData();
+                    if(Object.keys(data).length){
+                        this.setGridData(data) 
+                    }
+                }
             });
         }
     };
