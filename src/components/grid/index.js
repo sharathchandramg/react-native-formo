@@ -148,7 +148,10 @@ const SimpleGrid = props => {
 
 	renderGridView =()=>{
 		return(
-			<ScrollView horizontal={true}>
+			<ScrollView 
+				directionalLockEnabled={false} 
+				horizontal={true}
+			>
 				<View>
 					<Table>
 						<Row 
