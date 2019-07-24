@@ -46,17 +46,7 @@ const styles = StyleSheet.create({
     alignItems:'center',
     // backgroundColor: '#E7E6E1',
   },
-  cellTextBox:{
-    height:40,
-    width:100,
-    borderColor:'#BDCCDB',
-    borderTopWidth:0.5,
-    borderRightWidth:0.5,
-    borderStyle:'solid',
-    justifyContent:'center',
-    alignItems:'center',
-
-  },
+  
   wrapper: {
     flexDirection: 'row',
     borderLeftWidth:0.5,
@@ -69,6 +59,29 @@ const styles = StyleSheet.create({
     borderBottomWidth:0.5,
     borderStyle: 'solid',
     borderColor:'#BDCCDB',
+  },
+
+  cellTextBox:{
+    height:40,
+    width:100,
+    borderColor:'#BDCCDB',
+    borderTopWidth:0.5,
+    borderRightWidth:0.5,
+    borderStyle:'solid',
+    justifyContent:'center',
+    alignItems:'center',
+
+  },
+
+  textBoxIos:{
+    fontFamily: 'roboto',
+    fontSize:14,
+    paddingHorizontal:5,
+    textAlign:'center',
+    fontWeight: '400',
+    lineHeight:16,
+    paddingVertical:0,
+    color:'black', 
   },
 
   textBox:{
@@ -85,30 +98,43 @@ const styles = StyleSheet.create({
     alignItems:'center',
     justifyContent:'center',
     alignSelf:'center',
+    paddingHorizontal:5,
   },
+
+  
   inputBoxWrapper:{
     width:100,
     alignItems:'center',
     justifyContent:'center',
     alignSelf:'center',
   },
+
+  inputBoxIos:{
+    fontFamily: 'roboto',
+    fontSize:12,
+    paddingHorizontal:5,
+    fontWeight: '300',
+    lineHeight:16,
+    paddingVertical:0,
+    color: '#989898', 
+  },
+
   inputBox:{
     fontFamily: 'roboto',
     fontSize:12,
     flexDirection:'row',
     textAlign:'center',
     alignSelf:'center',
-    width:100,
+    width:'100%',
     height:16,
     lineHeight:16,
     paddingVertical:0,
     textAlignVertical: 'center',
     alignItems:'center',
     justifyContent:'center',
-    lineHeight:14,
     fontWeight: '300',
-    width:'100%',
     color: '#989898', 
+    paddingHorizontal:5,
   },
 
   footer:{
