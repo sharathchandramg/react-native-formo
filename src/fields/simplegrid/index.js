@@ -118,17 +118,14 @@ export default class SimpleGrideView extends Component {
                 modalVisible: false,
             });
         } else {
-            this.setState({
-                modalVisible: true,
-            },()=>{
-                const { attributes } = this.props;
-                if(attributes){
-                    const data = this.getGridData();
-                    if(Object.keys(data).length){
-                        this.setGridData(data) 
-                    }
+            const { attributes } = this.props;
+            if(attributes){
+                const data = this.getGridData();
+                if(Object.keys(data).length){
+                    this.setGridData(data) 
                 }
-            });
+            }
+            this.setState({modalVisible:true});
         }
     };
 
@@ -177,6 +174,109 @@ export default class SimpleGrideView extends Component {
         return rowLabel;
     }
 
+    // added now
+
+    getTableHeader =(data)=>{
+		let tableHeader = [];
+		if(data && Object.keys(data).length && !isEmpty(data["header"])){
+			const header = data["header"];
+			Object.keys(header).map((hk)=>{
+				let headerCell = {
+						rowKey: '#',
+						colKey:hk,
+						type: 'string',
+						value: header[hk],
+						editable: false,
+				}
+				tableHeader.push(headerCell)
+			});
+		}
+		if(tableHeader.length){
+			tableHeader.unshift({
+				rowKey: '#',
+				colKey:'#',
+				type: 'string',
+				value: '#',
+				editable: false,
+			})
+		}
+		return tableHeader
+	}
+
+	getRowTitle = (data)=>{
+		let tableTitle = [];
+		if(data && Object.keys(data).length){
+			Object.keys(data).map((rk) => {
+				if(!rk.match(/header/) && !rk.match(/style/) && !rk.match(/type/) && rk !== `${String.fromCharCode(931)}`){
+					let titleCell = {
+						rowKey: rk,
+						colKey: '',
+						type: 'string',
+						value: rk,
+						editable: false,
+					}
+					tableTitle.push(titleCell);
+				}
+			});
+		}
+		return tableTitle;
+	}
+
+	getTableData =(data)=>{
+		let tableData = [];
+		if(data && Object.keys(data).length && !isEmpty(data["type"])){
+			Object.keys(data).map((rk) => {
+				if(!rk.match(/header/) && !rk.match(/style/) && !rk.match(/type/) && rk !== `${String.fromCharCode(931)}`){
+					let dataItem = {};
+					dataItem['name']= rk;
+					let value = []
+					Object.keys(data[rk]).map((ck) => {
+						let dataCell = { 
+							rowKey:rk,
+							colKey:ck,
+							type:data.type[ck],
+							value: data[rk][ck],
+							editable: rk == `${String.fromCharCode(931)}`? false: true
+						}
+						value.push(dataCell);
+					})
+					dataItem['data'] = value;
+					tableData.push(dataItem)
+				}
+			})
+		}
+		return tableData;
+	}
+
+	getHeaderWidth = (data)=>{
+		let widthArr = [];
+		if(data && Object.keys(data).length && !isEmpty(data["style"])){
+			const column_width = data['style']['column_width'];
+			widthArr = Object.keys(column_width).map((key)=>{
+				return parseInt(column_width[key])
+			})
+		}else{
+			if(!isEmpty(data["header"])){
+				const len = Object.keys(data['header']).length ;
+				for(let i = 0 ; i < len; i++){
+					widthArr.push(100)
+				}
+			}
+        }
+
+		return widthArr;
+	}
+
+	getRowHeight =(data)=>{
+		let height = 40;
+		if(data && Object.keys(data).length && !isEmpty(data["style"])){
+			if(!isEmpty(data["style"]['row_height'])){
+				height = parseInt(data['style']['row_height']);
+			}
+		}
+		return height;
+	}
+
     render() {
 
         const { theme, attributes, ErrorComponent } = this.props;
@@ -202,18 +302,21 @@ export default class SimpleGrideView extends Component {
                         {this.renderChecklistIcon()}
                     </TouchableOpacity>
                 </View>
-                    {this.state.modalVisible ? 
-                        <Grid 
-                            modalVisible={this.state.modalVisible}
-                            theme={theme}
-                            attributes={attributes}
-                            toggleModalVisible={this.toggleModal}
-                            data ={this.state.data}
-                            onChangeText={this.onChangeText}
-                            handleOnDoneClick={this.handleOnDoneClick}
-                            summary = {this.getSummaryLabel()}
-                        />: null}
-
+                {this.state.modalVisible && <Grid 
+                        modalVisible={this.state.modalVisible}
+                        theme={theme}
+                        attributes={attributes}
+                        toggleModalVisible={this.toggleModal}
+                        data ={this.state.data}
+                        onChangeText={this.onChangeText}
+                        handleOnDoneClick={this.handleOnDoneClick}
+                        summary = {this.getSummaryLabel()}
+                        rowHeight   = {this.getRowHeight(this.state.data)}
+                        widthArr    = {this.getHeaderWidth(this.state.data)}
+                        tableHeader = {this.getTableHeader(this.state.data)}
+                        rowTitle    = {this.getRowTitle(this.state.data)}
+                        tableData   = {this.getTableData(this.state.data)}
+                    /> }
                 <View style={{ paddingHorizontal: 15 }}>
                     <ErrorComponent {...{ attributes, theme }} />
                 </View>
