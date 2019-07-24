@@ -67,7 +67,7 @@ export default class SimpleGrideView extends Component {
         if(ck_type.toLowerCase() ==='number'){
             if(text){
                 if(preColVal){
-                    const diff = Math.abs(`${parseInt(preColVal) - parseInt(text)}`)
+                    const diff =  parseInt(text) - parseInt(preColVal);
                     data[`${String.fromCharCode(931)}`][ck] = parseInt(preColSum) + parseInt(diff);
                 }else{
                     data[`${String.fromCharCode(931)}`][ck] = parseInt(preColSum) + parseInt(text);
