@@ -179,7 +179,7 @@ export default class SubForm extends Component {
 
         }else if(rightViewData.length > 0){
             subForms = rightViewData.map((item,index )=>{
-                if(typeof item ==='string'){
+                if(typeof item ==='string' || typeof item ==='number'){
                     leftLabel = <Text style={styles.subformText}>{item}</Text>;
                 }else if(typeof item ==='object'){
                     let val = Object.values(item).toString()
