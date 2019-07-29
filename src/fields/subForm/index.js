@@ -109,8 +109,7 @@ export default class SubForm extends Component {
                 leftViewData = data.map(item =>item[field.name]);
                 lookupField = field.fields;
             }else{
-                ofd = data.map(item =>item[field.name]);
-                rightViewData.push(ofd)
+                rightViewData = data.map(item =>item[field.name]);
             }
         })
 
@@ -134,9 +133,11 @@ export default class SubForm extends Component {
                 leftLabel = values.map(val =><Text style={styles.subformText}>{val}</Text>);
                 let fdata = data[index];
                 let rVal = []
+
                 fields.map(f => f.type !=='lookup'?rVal.push(fdata[f.name]):'')
+
                 rightLabel = rVal.map((item,index )=>{
-                    if(typeof item ==='string'){
+                    if(typeof item ==='string' || typeof item ==='number'){
                         return <Text style={styles.subformText}>{item}</Text>;
                     }else if(typeof item ==='object'){
                         let val = Object.values(item).toString()
@@ -201,7 +202,7 @@ export default class SubForm extends Component {
     addNewFields =()=>{
         let  fValue = this.child.getChildFields()
         if(typeof fValue !=='undefined' && fValue !== null){
-            let uValue = this.props.mode ==='update'? {...fValue,"_id":this.props.subFormData._id}:fValue;
+            let uValue = this.state.mode ==='update'? {...fValue,"_id":this.state.subFormData._id}:fValue;
             this.handleChange(this.props.attributes.name,uValue)
             this.toggleModalVisible();
         }    

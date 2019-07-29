@@ -124,7 +124,12 @@ const styles = StyleSheet.create({
     leftLabel:{flexDirection:'column',width:'100%',minHeight:50,alignItems:'center',justifyContent:'center'},
     leftLabelWrapper:{flex:3,flexDirection:'column',alignItems:'center',justifyContent:'center'},
     rightLabel:{flexDirection:'column',width:'100%',minHeight:50,alignItems:'center',justifyContent:'center'},
-    subForm:{flexDirection:'column',width:'75%',alignItems:'center',justifyContent:'center'}
+    subForm:{flexDirection:'column',width:'75%',alignItems:'center',justifyContent:'center'},
+    buttonText: {
+        fontSize: 18,
+        color: 'white',
+        alignSelf: 'center'
+    },
 })
 
 export default styles;
