@@ -1,14 +1,12 @@
-import PropTypes, { element } from "prop-types";
+import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Platform, Modal, Dimensions,TouchableOpacity } from "react-native";
+import {Modal,TouchableOpacity } from "react-native";
 import {
     View,
     Text,
     Container,
     Header,
     Content,
-    ListItem,
-    CheckBox,
     Left,
     Right,
     Body,
@@ -41,10 +39,7 @@ export default class SubForm extends Component {
             modalVisible: false,
             mode: 'create',
             subFormData:{},
-        };
-
-        this.onAddNewFields ;
-        
+        };        
     }
 
 
@@ -137,13 +132,27 @@ export default class SubForm extends Component {
                 fields.map(f => f.type !=='lookup'?rVal.push(fdata[f.name]):'')
 
                 rightLabel = rVal.map((item,index )=>{
-                    if(typeof item ==='string' || typeof item ==='number'){
-                        return <Text style={styles.subformText}>{item}</Text>;
-                    }else if(typeof item ==='object'){
-                        let val = Object.values(item).toString()
-                        return <Text style={styles.subformText}>{val}</Text>;
+                    switch(typeof item){
+                        case "text":
+                        case "number":  
+                        case "email":
+                        case "password":
+                        case "url":
+                        case "phone":
+                            if(!isNaN(item)){
+                                return <Text style={styles.subformText}>{item.toString()}</Text>;
+                            }
+                        break;
+                        case 'object':
+                            if(!Array.isArray(item) && item === null){
+                                let val = Object.values(item).toString()
+                                return <Text style={styles.subformText}>{val}</Text>;
+                            }   
+                        break;
+                        default:     
                     }
                 })
+
                 return (
                     <TouchableOpacity 
                         style={{marginBottom:10,flex:4,flexDirection:'row'}}
@@ -179,12 +188,26 @@ export default class SubForm extends Component {
 
         }else if(rightViewData.length > 0){
             subForms = rightViewData.map((item,index )=>{
-                if(typeof item ==='string' || typeof item ==='number'){
-                    leftLabel = <Text style={styles.subformText}>{item}</Text>;
-                }else if(typeof item ==='object'){
-                    let val = Object.values(item).toString()
-                    leftLabel = <Text style={styles.subformText}>{val}</Text>;
+                switch(typeof item){
+                    case "text":
+                    case "number":  
+                    case "email":
+                    case "password":
+                    case "url":
+                    case "phone":
+                        if(!isNaN(item)){
+                            leftLabel = <Text style={styles.subformText}>{item.toString()}</Text>;
+                        }
+                    break;
+                    case 'object':
+                        if(!Array.isArray(item) && item === null){
+                            let val = Object.values(item).toString()
+                            leftLabel = <Text style={styles.subformText}>{val}</Text>;
+                        }   
+                    break;
+                    default:     
                 }
+
                 return (
                     <TouchableOpacity 
                         style={{marginBottom:10,flex:4,flexDirection:'row'}}
@@ -245,9 +268,6 @@ export default class SubForm extends Component {
                                 ref={(c) => { this.child = c; }}
                                 {...this.props}
                                 formData={this.state.subFormData}
-                                toggleModalVisible={this.toggleModalVisible}
-                                handleChange={this.handleChange}
-                                mode ={this.state.mode}
                             />
                         </Content>
                         <Footer style={styles.button}>

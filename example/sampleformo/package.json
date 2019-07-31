@@ -13,7 +13,7 @@
     "react": "16.6.0-alpha.8af6728",
     "react-native": "0.57.4",
     "react-native-android-location-enabler": "^1.0.8",
-    "react-native-form0": "0.0.73",
+    "react-native-form0": "0.0.74",
     "react-native-image-crop-picker": "^0.21.3",
     "react-native-js-bottom-sheet": "^1.0.0",
     "react-native-modalbox": "^1.6.0",
