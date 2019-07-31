@@ -2,10 +2,9 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Platform } from "react-native";
 import math from "mathjs"
-
-import { View, Item, Input, Icon, ListItem, Text } from "native-base";
-
+import { View, Item, Input, Icon, ListItem} from "native-base";
 import { getKeyboardType } from "./../../utils/helper";
+import {isEmpty} from "./../../utils/validators";
 
 export default class TextInputField extends Component {
 
@@ -69,6 +68,22 @@ export default class TextInputField extends Component {
     renderInputField = (attributes,theme) =>{
         const inputProps = attributes.props;
         const keyboardType = getKeyboardType(attributes.type);
+
+        let value = "";
+        if(attributes['type']==='number'){
+            if(!isNaN(attributes['value'])){
+                value = attributes['value'].toString();
+            }
+        }else{
+            if(!isEmpty(attributes['value'])){
+                value = attributes['value'].toString();
+            }
+        }
+        
+        
+        
+        
+        
         return(
             <Input
                 style={{
@@ -85,7 +100,7 @@ export default class TextInputField extends Component {
                 placeholderTextColor={theme.inputColorPlaceholder}
                 editable={attributes.editable}
                 onChangeText={text => this.handleChange(text)}
-                value={attributes['value'] !== null && attributes.value.toString()}
+                value={value}
                 {...inputProps}
             />
         )
