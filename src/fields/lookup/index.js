@@ -79,15 +79,9 @@ export default class LookupField extends Component {
 
     handleOnGetQuery = offset => {
         const { onGetQuery, attributes } = this.props;
-        if (!isEmpty(attributes) && !isEmpty(attributes['data_source'])) {
-            const { type, key, url } = attributes['data_source'];
-            if (!isEmpty(type) && type === 'remote') {
-                if (typeof onGetQuery === 'function') {
-                    onGetQuery(attributes, offset);
-                }
-            } else {
-                attributes['options'] = this.state.options;
-                this.setState({});
+        if (!isEmpty(attributes) && !isEmpty(attributes['data_source']) && attributes['data_source']['type']=== 'remote') {
+            if (typeof onGetQuery === 'function') {
+                onGetQuery(attributes, offset);
             }
         } else {
             attributes['options'] = this.state.options;
@@ -96,32 +90,14 @@ export default class LookupField extends Component {
     };
 
     handleOnSearchQuery = searchText => {
+        this.setLookupFilter(searchText);
         const { onSearchQuery, attributes } = this.props;
-        if (!isEmpty(attributes) && !isEmpty(attributes['data_source'])) {
-            const { type, key, url } = attributes['data_source'];
-            if (!isEmpty(type) && type === 'remote') {
-                if (typeof onSearchQuery === 'function') {
-                    onSearchQuery(attributes, searchText);
-                }
-            } else {
-                let options = [];
-                if (searchText) {
-                    options = _.filter(attributes['options'], item => {
-                        let sItem =
-                            item[attributes.labelKey]
-                                .toString()
-                                .toLowerCase()
-                                .search(searchText.trim().toLowerCase()) > -1;
-                        if (sItem) {
-                            return item;
-                        }
-                    });
-                } else {
-                    options = this.state.options;
-                }
-                attributes['options'] = options;
-            }
-        } else {
+        const data_source = attributes['data_source'];
+        if (!isEmpty(data_source) && data_source['type'] === 'remote') {
+            if (typeof onSearchQuery === 'function') {
+                onSearchQuery(attributes, searchText,0);
+            } 
+        }else {
             let options = [];
             if (searchText) {
                 options = _.filter(attributes['options'], item => {
@@ -156,12 +132,12 @@ export default class LookupField extends Component {
     };
 
     handleOnFilterQuery = filter => {
+        this.setLookupFilter(filter);
         const { onSearchQuery, attributes } = this.props;
         const data_source = attributes['data_source'];
-
         if (!isEmpty(data_source) && data_source['type'] === 'remote') {
             if (typeof onSearchQuery === 'function') {
-                onSearchQuery(attributes, filter);
+                onSearchQuery(attributes,filter,0);
             }
         } else {
             let updatedOptions = [];
@@ -384,11 +360,7 @@ export default class LookupField extends Component {
                     searchText: '',
                 },
                 () => {
-                    const offset =
-                        typeof attributes['options'] !== 'undefined' &&
-                        Array.isArray(attributes['options'])
-                            ? attributes['options'].length
-                            : 0;
+                    const offset = 0;
                     this.handleOnGetQuery(offset);
                 }
             );
@@ -436,6 +408,16 @@ export default class LookupField extends Component {
             this.setState({ searchText: searchText });
         }
     };
+
+    setLookupFilter =(filter)=>{
+        const { setLookupFilter, attributes } = this.props;
+        const data_source = attributes['data_source'];
+        if (!isEmpty(data_source) && data_source['type'] === 'remote') {
+            if (typeof setLookupFilter === 'function') {
+                setLookupFilter(filter);
+            }
+        }
+    }
 
     toggleSearchModalVisible = () => {
         this.setState({
@@ -490,19 +472,18 @@ export default class LookupField extends Component {
     };
 
     onEndReached = () => {
-        const { attributes } = this.props;
+        const { attributes,onSearchQuery } = this.props;
         const searchText = this.state.searchText;
         const categoryToValue = this.state.categoryToValue;
         // based on parameter call filter, search and get
-        if (!isEmpty(attributes) && !isEmpty(attributes['data_source'])) {
-            if (searchText) {
-                this.handleOnSearchQuery(searchText);
-            } else if (!isEmpty(categoryToValue)) {
-                this.handleOnFilterQuery(categoryToValue);
+        if (!isEmpty(attributes) && !isEmpty(attributes['data_source']) && attributes['data_source']['type'] ==='remote') {
+            const filter = searchText ? searchText
+                : categoryToValue.length > 0 ? categoryToValue
+                : null
+            const offset = Array.isArray(attributes['options'])?attributes['options'].length : 0;
+            if (filter !== null && typeof onSearchQuery === 'function') {
+                onSearchQuery(attributes,filter,offset);
             } else {
-                const offset = attributes['options']
-                    ? attributes['options'].length
-                    : 0;
                 this.handleOnGetQuery(offset);
             }
         }
@@ -514,10 +495,10 @@ export default class LookupField extends Component {
         if (attributes.multiple) {
             const index = attributes.objectType
                 ? newSelected.findIndex(
-                      option =>
-                          option[attributes.primaryKey] ===
-                          value[attributes.primaryKey]
-                  )
+                    option =>
+                        option[attributes.primaryKey] ===
+                        value[attributes.primaryKey]
+                )
                 : newSelected.indexOf(value);
             if (index === -1) {
                 newSelected.push(value);
@@ -651,6 +632,8 @@ export default class LookupField extends Component {
                 ? attributes.fields
                 : [];
         let data = value !== null ? this.getLookupData(value) : {};
+
+        
         return (
             <View style={styles.container}>
                 <View style={styles.inputLabelWrapper}>
