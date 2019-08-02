@@ -1,6 +1,8 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Platform, Modal, Dimensions, TouchableOpacity } from "react-native";
+import { Modal, Dimensions, TouchableOpacity } from "react-native";
+const _ = require('lodash');
+import { isEmpty } from '../../utils/validators';
 import {
     View,
     Text,
@@ -15,9 +17,12 @@ import {
     Body,
     Title,
     Button,
+    Footer
 } from "native-base";
 
 const deviceWidth = Dimensions.get('window').width;
+import styles from "./styles";
+
 export default class SelectField extends Component {
 
     static propTypes = {
@@ -31,10 +36,121 @@ export default class SelectField extends Component {
         super(props);
         this.state = {
             modalVisible: false,
+            activeCategoryData:[],
+            activeCategory: null,
+            filterData: [],
+            newSelected: null,
+            options: [],
         };
     }
 
+    componentDidMount() {
+        const { attributes } = this.props;
+        if (!isEmpty(attributes) && !isEmpty(attributes['data_source'])) {
+            const { type } = attributes['data_source'];
+            if (!isEmpty(type) && type === 'remote') {
+                let len = attributes['options']
+                    ? attributes['options'].length
+                    : 0;
+                let offset = len;
+                this.handleOnGetQuery(offset);
+            } else {
+                this.setLocalOptions(attributes['options']);
+            }
+        } else {
+            this.setLocalOptions(attributes['options']);
+        }
+
+        if (
+            this.isFilterEnable(attributes) &&
+            !isEmpty(attributes['filterCategory'])
+        ) {
+            let activeCategory = attributes['filterCategory'][0];
+            if (
+                typeof activeCategory !== 'undefined' &&
+                !isEmpty(attributes['options'])
+            ) {
+                this.setState({ options: attributes['options'] }, () => {
+                    this.setFilterCategory(activeCategory);
+                });
+            }
+        }
+        
+    }
+
+    handleOnGetQuery = offset => {
+        const { onGetQuery, attributes } = this.props;
+        if (!isEmpty(attributes) && !isEmpty(attributes['data_source']) && attributes['data_source']['type']=== 'remote') {
+            if (typeof onGetQuery === 'function') {
+                onGetQuery(attributes, offset);
+            }
+        } else {
+            attributes['options'] = this.state.options;
+            this.setState({});
+        }
+    };
+
+    setLocalOptions = options => {
+        if (!isEmpty(options)) {
+            this.setState({ options: options });
+        }
+    };
+
+    setFilterCategory = item => {
+        const categoryData = this.statusOptionsFormatter(
+            item['options'],
+            item['type']
+        );
+        this.setState({
+            activeCategoryData: categoryData,
+            activeCategory: item,
+            filterData: categoryData,
+        });
+    };
+
+    isFilterEnable = attributes => {
+        if (!isEmpty(attributes) && !isEmpty(attributes['additional'])) {
+            const { filterEnable } = attributes['additional'];
+            const filterCategory = attributes['filterCategory'];
+
+            if (
+                !isEmpty(filterCategory) &&
+                (typeof filterEnable !== 'undefined' && filterEnable)
+            ) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    isSearchEnable = attributes => {
+        if (!isEmpty(attributes) && !isEmpty(attributes['additional'])) {
+            const { searchEnable } = attributes['additional'];
+            if (typeof searchEnable !== 'undefined' && searchEnable) {
+                return true;
+            }
+        }
+        return false;
+    };
+
+    handleAddPressed = ()=>{
+        const {attributes,updateValue} = this.props;
+        const newSelected = this.state.newSelected;
+        if(!isEmpty(newSelected) && typeof updateValue === 'function'){
+            updateValue(attributes.name, newSelected)
+        }
+        this.setState({ modalVisible:false})
+    }
+
     toggleModalVisible() {
+        if(!this.state.modalVisible){
+            const attributes = this.props.attributes;
+            if(!isEmpty(attributes) && !isEmpty(attributes['value'])){
+                this.setState({
+                    newSelected: attributes['value']
+                })
+            }
+        }
         this.setState({
             modalVisible: !this.state.modalVisible,
         });
@@ -56,103 +172,132 @@ export default class SelectField extends Component {
         }
         this.setState({
             modalVisible: attributes.multiple ? this.state.modalVisible : false,
-        }, () => this.props.updateValue(this.props.attributes.name, newSelected));
+            newSelected: newSelected,
+        },() => this.props.updateValue(this.props.attributes.name, newSelected));
+
     }
 
+    getLabel =()=>{
+        const { attributes } = this.props;
+        let label = "None"
+        if(!isEmpty(attributes['value'])){
+            if(attributes.multiple){
+                const labelKeyArr = attributes['value'].map(obj=>{
+                    const labelKey = attributes.objectType ? obj[attributes.labelKey]
+                    : obj;
+                    return labelKey;
+                })
+                if(labelKeyArr.length){
+                    label = ` ${labelKeyArr.length} | ${labelKeyArr.toString()}` ;
+                }
+            }else{
+                label = attributes.objectType?attributes['value'][attributes.labelKey]
+                : attributes['value'];
+            }
+        }
+        return label;
+    }
+
+    renderIcon = () => {
+        return (
+            <TouchableOpacity
+                style={styles.iconWrapper}
+                onPress={() => this.toggleModalVisible()}
+            >
+                <Icon
+                    name="ios-arrow-forward"
+                    style={styles.iconStyle}
+                />
+            </TouchableOpacity>
+        );
+    };
+    
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
-        
-        //If multiple selections are allowed allow assignment via Id, Value or just a string value        
-        const selectedText = attributes.multiple ?
-            attributes.value && attributes.value.length || "None" :
-            attributes.objectType ?
-                (attributes.value && attributes.value[attributes.labelKey]) || "None"
-                : attributes.value || "None";
-
         return (
-            <View>
-                <TouchableOpacity style={{
-                    backgroundColor: theme.pickerBgColor,
-                    borderBottomColor: theme.inputBorderColor,
-                    borderBottomWidth: theme.borderWidth,
-                    marginHorizontal: 15,
-                    marginVertical: 0,
-                    paddingVertical: 15,
-                    marginLeft: 20,                    
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                }}>
-                    <Text style={{ color: theme.inputColorPlaceholder,paddingStart:5}}>{attributes.label}</Text>
-                    <View
-                        style={{
-                            flexDirection: 'row',
-                            marginEnd:10,
-                            justifyContent:'flex-end',alignItems:'flex-end',
-                        }}>
-                        <TouchableOpacity  
-                            hitSlop={{ top: 10, bottom: 10, right: 50, left: 50 }}
-                            style={{marginHorizontal: 5,justifyContent:'flex-end',alignItems:'flex-end',flexDirection:'row'}} 
-                            onPress={() => this.toggleModalVisible()}>
-                            <Text>{selectedText}</Text>
-                            <Icon name="ios-arrow-forward" style={{fontSize:18,paddingStart:10,color:theme.inputColorPlaceholder}}/>
-                        </TouchableOpacity>
-                    </View>
+            <View  style = {styles.container}>
+                <View style = {styles.inputLabelWrapper}>
+                    <TouchableOpacity
+                        style={[styles.inputLabel]}
+                        error={
+                            theme.changeTextInputColorOnError
+                                ? attributes.error
+                                : null
+                        }
+                        onPress={() => this.toggleModalVisible()}
+                    >
+                        <View style = {styles.labelTextWrapper}>
+                            <Text style={[styles.labelText]} numberOfLines={2}>{attributes.label}</Text>
+                        </View>
+                        <View style={styles.valueWrapper}>
+                            <Text style={styles.inputText} numberOfLines={2}>{this.getLabel()} </Text>
+                        </View>
+                        {this.renderIcon()}
+                    </TouchableOpacity>
+                </View>
 
-                </TouchableOpacity>
+                {
+                    <Modal
+                        visible={this.state.modalVisible}
+                        animationType="none"
+                        onRequestClose={() => this.toggleModalVisible()}>
+                        <Container style={{ flex: 1 }}>
+
+                            <Header style={[theme.header]} androidStatusBarColor='#c8c8c8'>
+                                <Left>
+                                    <Button transparent onPress={() => this.toggleModalVisible()}>
+                                        <Icon name="arrow-back" style={{color :'#48BBEC'}} />
+                                    </Button>
+                                </Left>
+                                <Body>
+                                    <Title style={theme.headerText}>{attributes.label || "Select"}</Title>
+                                </Body>
+                                <Right />
+                            </Header>
+
+                            <Content>
+                                {
+                                    !isEmpty(attributes['options']) && attributes.options.map((item, index) => {
+                                        let isSelected = false;
+                                        if (attributes.multiple) {
+                                            isSelected = attributes.objectType ?
+                                                attributes.value && attributes.value.findIndex(option =>
+                                                    option[attributes.primaryKey] === item[attributes.primaryKey]
+                                                ) !== -1 : (attributes.value && attributes.value.indexOf(item) !== -1);
+                                        }
+                                        return (
+                                            <ListItem
+                                                key={index}
+                                                onPress={() => this.toggleSelect(item)}>
+                                                {attributes.multiple &&
+                                                    <CheckBox
+                                                        onPress={() => this.toggleSelect(item)}
+                                                        checked={isSelected}
+                                                    />
+                                                }
+                                                <Body>
+                                                    <Text style={{ paddingHorizontal: 5 }}>
+                                                        {attributes.objectType ? item[attributes.labelKey] : item}
+                                                    </Text>
+                                                </Body>
+                                            </ListItem>);
+                                    })
+                                }
+                            </Content>
+                            { attributes && attributes['multiple']?
+                                <Footer style={styles.button}>
+                                    <TouchableOpacity style={styles.button} onPress={() => this.handleAddPressed()}>
+                                        <Text style={styles.buttonText}>{'Add'} </Text>
+                                    </TouchableOpacity>
+                                </Footer>
+                                : null
+                            }
+                        </Container>
+                    </Modal>
+                }
                 <View style={{ paddingHorizontal: 15 }}>
                     <ErrorComponent {...{ attributes, theme }} />
                 </View>
-                <Modal
-                    visible={this.state.modalVisible}
-                    animationType="none"
-                    onRequestClose={() => this.toggleModalVisible()}>
-                    <Container style={{ flex: 1 }}>
-
-                        <Header style={[theme.header]} androidStatusBarColor='#c8c8c8'>
-                            <Left>
-                                <Button transparent onPress={() => this.toggleModalVisible()}>
-                                    <Icon name="arrow-back" style={{color :'#48BBEC'}} />
-                                </Button>
-                            </Left>
-                            <Body>
-                                <Title style={theme.headerText}>{attributes.label || "Select"}</Title>
-                            </Body>
-                            <Right />
-                        </Header>
-
-                        <Content>
-                            {
-                                attributes.options.map((item, index) => {
-                                    let isSelected = false;
-                                    if (attributes.multiple) {
-                                        isSelected = attributes.objectType ?
-                                            attributes.value && attributes.value.findIndex(option =>
-                                                option[attributes.primaryKey] === item[attributes.primaryKey]
-                                            ) !== -1 : (attributes.value && attributes.value.indexOf(item) !== -1);
-                                    }
-                                    return (
-                                        <ListItem
-                                            key={index}
-                                            onPress={() => this.toggleSelect(item)}>
-                                            {attributes.multiple &&
-                                                <CheckBox
-                                                    onPress={() => this.toggleSelect(item)}
-                                                    checked={isSelected}
-                                                />
-                                            }
-                                            <Body>
-                                                <Text style={{ paddingHorizontal: 5 }}>
-                                                    {attributes.objectType ? item[attributes.labelKey] : item}
-                                                </Text>
-                                            </Body>
-                                        </ListItem>);
-                                })
-                            }
-                        </Content>
-                        
-                    </Container>
-                </Modal>
             </View>
         );
     }

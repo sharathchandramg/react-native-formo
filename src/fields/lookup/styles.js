@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
         minHeight:40,
         alignItems:'flex-start',
         justifyContent:'center',
-        marginTop:15,
+        margin:15,
         marginHorizontal:5,
     },
     
@@ -59,30 +59,37 @@ const styles = StyleSheet.create({
 
     labelTextWrapper:{
         height:50,
-        flexDirection:'row',
-        width:'70%',
+        flex:1,
         alignItems:'center',
-        justifyContent:'flex-start',
+        justifyContent:'center',
     },
+
+    valueWrapper:{
+        width:'60%',
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'flex-end',
+    },
+
     iconWrapper: {
         height:50,
         flexDirection:'row',
-        width:'30%',
+        width:'7%',
         alignItems:'center',
-        justifyContent:'flex-end',
-
+        justifyContent:'flex-start',
     },
+
     labelText:{
         fontSize: 18,
         lineHeight:20,
-        height:20,
-        width:'100%',
+        minHeight:20,
         color: '#ADADAD',
         fontFamily:'roboto',
-        alignSelf: 'center',
+        textAlign: 'left',
         fontWeight:'300',
-        marginHorizontal:5,
+        paddingStart:5
     },
+
     iconStyle:{
         fontFamily:'roboto',
         alignSelf:'center',
@@ -99,16 +106,15 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         paddingBottom:2,
     },
+
     inputText:{
         fontSize:15,
         lineHeight:20,
-        minHeight:40,
-        width:'100%',
+        minHeight:20,
         color: '#575757',
         fontFamily:'roboto',
-        alignSelf: 'flex-start',
+        alignSelf:'center',
         fontWeight:'100',
-        marginHorizontal:5,
     },
 
     image: {

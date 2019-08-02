@@ -302,29 +302,38 @@ export default class Form0 extends Component {
                     case "password":
                     case "phone":
                     case "calculated":
-                        return <TextInputField
-                            ref={(c) => { this[field.name] = c; }}
-                            {...commonProps}
-                            onSummitTextInput={this.onSummitTextInput}
-                        />
+                        return (
+                            <TextInputField
+                                ref={(c) => { this[field.name] = c; }}
+                                {...commonProps}
+                                onSummitTextInput={this.onSummitTextInput}
+                                {...this.props}
+                            />
+                        )
 
                     case "currency":
-                        return <CurrencyField
-                            ref={(c) => { this[field.name] = c; }}
-                            {...commonProps}
-                        />
-
+                        return(
+                            <CurrencyField
+                                ref={(c) => { this[field.name] = c; }}
+                                {...commonProps}
+                                {...this.props}
+                            />
+                        )
                     case "switch":
-                        return <SwitchField
-                            ref={(c) => { this[field.name] = c; }}
-                            {...commonProps}
-                        />
+                        return(
+                            <SwitchField
+                                ref={(c) => { this[field.name] = c; }}
+                                {...commonProps}
+                                {...this.props}
+                            />
+                        ) 
 
                     case "date":
                         return (
                             <DateField
                                 ref={(c) => { this[field.name] = c; }}
                                 {...commonProps}
+                                {...this.props}
                             />
                         );
 
@@ -333,6 +342,7 @@ export default class Form0 extends Component {
                             <PickerField
                                 ref={(c) => { this[field.name] = c; }}
                                 {...commonProps}
+                                {...this.props}
                             />
                         );
 
@@ -341,6 +351,7 @@ export default class Form0 extends Component {
                             <StatusPicker
                                 ref={(c) => { this[field.name] = c; }}
                                 {...commonProps}
+                                {...this.props}
                             />
                         );
 
@@ -348,21 +359,27 @@ export default class Form0 extends Component {
                         return (
                             <SelectField
                                 ref={(c) => { this[field.name] = c; }}
-                                {...commonProps} />
+                                {...commonProps}
+                                {...this.props} 
+                            />
                         );
 
                     case "image":
                         return (
                             <ImageField
                                 ref={(c) => { this[field.name] = c; }}
-                                {...commonProps} />
+                                {...commonProps} 
+                                {...this.props}
+                            />
                         );
 
                     case "location":
                         return (
                             <LocationField
                                 ref={(c) => { this[field.name] = c; }}
-                                {...commonProps} />
+                                {...commonProps} 
+                                {...this.props}
+                            />
                         );
 
                     case "group":
@@ -408,7 +425,9 @@ export default class Form0 extends Component {
                                 {...commonProps}
                                 {...this.props}
                             />
-                        )    
+                        )
+                    default:
+                        break        
                 }
             }
         });
