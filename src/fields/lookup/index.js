@@ -367,19 +367,13 @@ export default class LookupField extends Component {
 
     toggleFilterSelect = item => {
         let filterData = this.state.filterData;
-        let options = this.state.options;
         item['selected'] =
             typeof item['selected'] !== 'undefined' ? !item['selected'] : true;
         const present = _.findIndex(filterData, `${item.name}`);
         if (present !== -1) {
             filterData[present] = item;
         }
-        // hhh
-        const presentInOption = _.findIndex(options, `${item.name}`);
-        if(presentInOption !== -1){
-            options[presentInOption] = item;
-        }
-
+        
         const filterArr = this.updateFilter(item);
         const categoryToValue = this.mapCatagoryToValue(
             this.state.activeCategory,
@@ -389,7 +383,6 @@ export default class LookupField extends Component {
             filterArr: filterArr,
             filterData: filterData,
             categoryToValue: categoryToValue,
-            options:  options
         });
     };
 
