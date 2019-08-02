@@ -8,11 +8,11 @@ import {
 import { Dimensions, View } from 'react-native';
 import { isNull } from '../../utils/validators';
 import Item from '../lookupItem';
+const { width,height } = Dimensions.get('window');
 
 export default class RecyclerList extends Component {
     constructor(props) {
         super(props);
-        let { width } = Dimensions.get('window');
         this.dataProvider = new DataProvider((r1, r2) => {
             return r1 !== r2;
         });
@@ -35,10 +35,10 @@ export default class RecyclerList extends Component {
             if (this.props.attributes.multiple) {
                 isSelected = this.props.attributes.objectType
                     ? this.props.attributes.value.findIndex(
-                          option =>
-                              option[this.props.attributes.primaryKey] ===
-                              item[this.props.attributes.primaryKey]
-                      ) !== -1
+                        option =>
+                            option[this.props.attributes.primaryKey] ===
+                            item[this.props.attributes.primaryKey]
+                    ) !== -1
                     : this.props.attributes.value.indexOf(item) !== -1;
             }
             return (
@@ -53,9 +53,12 @@ export default class RecyclerList extends Component {
         return null;
     }
 
+    
+
     render() {
+
         return (
-            <View style={{ minHeight: 60 }}>
+            <View style={{ minHeight: 60}}>
                 <RecyclerListView
                     layoutProvider={this._layoutProvider}
                     dataProvider={this.dataProvider.cloneWithRows(
@@ -64,7 +67,7 @@ export default class RecyclerList extends Component {
                     rowRenderer={this._rowRenderer}
                     canChangeSize={true}
                     onEndReached={this.props.onEndReached}
-                    onEndReachedThreshold={0.1}
+                    onEndReachedThreshold={parseInt(height/4)}
                     style={{ margin: 10 }}
                 />
             </View>
