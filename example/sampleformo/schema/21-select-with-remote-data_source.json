@@ -1,0 +1,45 @@
+[
+    {
+        "type": "select",
+        "name": "single_assiggee",
+        "label": "Single Assignee",
+        "multiple": false,
+        "labelKey": "first_name",
+        "primaryKey": "_id",
+        "objectType": true,
+        "options":[],
+        "data_source" : {
+            "type" : "remote", 
+            "referenceId" : "" ,
+            "key": "user"
+        },
+        
+        "additional":{
+            "searchEnable":false, 
+            "filterEnable":false
+        },
+        "filterCategory":[] 
+    },
+    {
+        "type": "select",
+        "name": "assiggee",
+        "label": "Assignee",
+        "multiple": true,
+        "labelKey": "first_name",
+        "primaryKey": "_id",
+        "objectType": true,
+        "options": [],
+        
+        "data_source" : {
+            "type" : "remote", 
+            "referenceId" : "" ,
+            "key": "user"
+        },
+        
+        "additional":{
+            "searchEnable":false, 
+            "filterEnable":false
+        },
+        "filterCategory":[] 
+    }
+]

@@ -251,32 +251,30 @@ export default class LookupField extends Component {
             return categoryToValue;
         } else {
             if (categoryToValue.length) {
-                categoryToValue = _.filter(categoryToValue, row => {
-                    let options = row['value'];
-                    options = _.filter(
-                        options,
-                        option => option !== item['value']
-                    );
-                    row['value'] = options;
-                    return row;
+
+                const index = _.findIndex(categoryToValue, {
+                    category: category['name'],
                 });
+
+                if(index !== -1){
+                    const foundObj = categoryToValue[index];
+                    let options = foundObj['value'];
+                    if (options.length) {
+                        options = _.filter(
+                            options,
+                            option => option !== item['value']
+                        );
+                    }
+                    if(options.length){
+                        foundObj['value'] =  options;
+                    }else{
+                        categoryToValue[index]
+                    }
+                }
+                categoryToValue.splice(index, 1); 
             }
         }
         return categoryToValue;
-    };
-
-    filterFunction = item => {
-        let filterData = this.toggleFilterSelect(item);
-        let filterArr = this.updateFilter(item);
-        let categoryToValue = this.mapCatagoryToValue(
-            this.state.activeCategory,
-            item
-        );
-        this.setState({
-            filterArr: filterArr,
-            filterData: filterData,
-            categoryToValue: categoryToValue,
-        });
     };
 
     applyFilterFunction = () => {
@@ -371,11 +369,21 @@ export default class LookupField extends Component {
         let filterData = this.state.filterData;
         item['selected'] =
             typeof item['selected'] !== 'undefined' ? !item['selected'] : true;
-        let present = _.findIndex(filterData, `${item.name}`);
+        const present = _.findIndex(filterData, `${item.name}`);
         if (present !== -1) {
             filterData[present] = item;
         }
-        return filterData;
+        
+        const filterArr = this.updateFilter(item);
+        const categoryToValue = this.mapCatagoryToValue(
+            this.state.activeCategory,
+            item
+        );
+        this.setState({
+            filterArr: filterArr,
+            filterData: filterData,
+            categoryToValue: categoryToValue,
+        });
     };
 
     handleTextChange = searchText => {
@@ -583,6 +591,28 @@ export default class LookupField extends Component {
         return false;
     };
 
+    getLabel =()=>{
+        const { attributes } = this.props;
+        let label = "None"
+        if(!isEmpty(attributes['value'])){
+            if(attributes.multiple){
+                const labelKeyArr = attributes['value'].map(obj=>{
+                    const labelKey = attributes.objectType ? obj[attributes.labelKey]
+                    : obj;
+                    return labelKey;
+                })
+                if(labelKeyArr.length){
+                    label = ` ${labelKeyArr.length} | ${labelKeyArr.toString()}` ;
+                }
+            }else{
+                label = attributes.objectType?attributes['value'][attributes.labelKey]
+                : attributes['value'];
+            }
+
+        }
+        return label;
+    }
+
     renderComponent = () => {
         const { theme, attributes } = this.props;
         const search = this.state.searchModalVisible;
@@ -613,7 +643,7 @@ export default class LookupField extends Component {
                     handleTextChange={this.handleTextChange}
                     applyFilterFunction={this.applyFilterFunction}
                     setFilterCategory={this.setFilterCategory}
-                    filterFunction={this.filterFunction}
+                    filterFunction={this.toggleFilterSelect}
                     resetFilter={this.resetFilter}
                 />
             );
@@ -646,12 +676,13 @@ export default class LookupField extends Component {
                         }
                         onPress={() => this.toggleModalVisible()}
                     >
-                        <View style={styles.labelTextWrapper}>
-                            <Text style={[styles.labelText]}>
-                                {attributes.label}
-                            </Text>
-                        </View>
-                        {this.renderlookupIcon()}
+                    <View style = {styles.labelTextWrapper}>
+                        <Text style={[styles.labelText]} numberOfLines={2}>{attributes.label}</Text>
+                    </View>
+                    <View style={styles.valueWrapper}>
+                        <Text style={styles.inputText} numberOfLines={2}>{this.getLabel()} </Text>
+                    </View>
+                    {this.renderlookupIcon()}
                     </TouchableOpacity>
                 </View>
 
