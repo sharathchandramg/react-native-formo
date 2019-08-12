@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Modal, TouchableOpacity } from 'react-native';
+const _ = require('lodash');
 import { isEmpty } from '../../utils/validators';
-
 import {
     View,
     Text,
@@ -46,7 +46,7 @@ export default class CollaboratorField extends Component {
         const { attributes } = this.props;
         if (!isEmpty(attributes) && attributes['type'].match(/collaborator/)) {
             this.handleOnGetQuery();
-        } 
+        }
         if (
             this.isFilterEnable(attributes) &&
             !isEmpty(attributes['filterCategory'])
@@ -151,7 +151,13 @@ export default class CollaboratorField extends Component {
                   )
                 : newSelected.indexOf(value);
             if (index === -1) {
-                newSelected.push(value);
+                let valueObj = {};
+                valueObj[`${attributes['primaryKey']}`] =
+                    value[attributes.primaryKey];
+                valueObj[`${attributes['labelKey']}`] =
+                    value[attributes.labelKey];
+
+                newSelected.push(valueObj);
             } else {
                 newSelected.splice(index, 1);
             }
@@ -202,6 +208,68 @@ export default class CollaboratorField extends Component {
                 <Icon name="ios-arrow-forward" style={styles.iconStyle} />
             </TouchableOpacity>
         );
+    };
+
+    displayLabelKey = item => {
+        const { attributes } = this.props;
+        let label = '';
+        if (attributes['objectType'] && !isEmpty(item)) {
+            const labelKey = item[attributes.labelKey];
+            const userAlias =
+                typeof item['user_alias'] !== 'undefined'
+                    ? item['user_alias']
+                    : '';
+            label = userAlias ? `${labelKey}(${userAlias})` : `${labelKey}('NA')`;
+        } else {
+            label = item;
+        }
+        return label;
+    };
+
+    renderOptionList = () => {
+        const { attributes } = this.props;
+        let list = [];
+        if (!isEmpty(attributes['options']) && attributes['options'].length) {
+            list = attributes.options.map((item, index) => {
+                let isSelected = false;
+                if (!isEmpty(item)) {
+                    if (attributes.multiple) {
+                        isSelected = attributes.objectType
+                            ? attributes.value &&
+                              attributes.value.findIndex(
+                                  option =>
+                                      option[attributes.primaryKey] ===
+                                      item[attributes.primaryKey]
+                              ) !== -1
+                            : attributes.value &&
+                              attributes.value.indexOf(item) !== -1;
+                    }
+                    return (
+                        <ListItem
+                            key={index}
+                            onPress={() => this.toggleSelect(item)}
+                        >
+                            {attributes.multiple && (
+                                <CheckBox
+                                    onPress={() => this.toggleSelect(item)}
+                                    checked={isSelected}
+                                />
+                            )}
+                            <Body>
+                                <Text
+                                    style={{
+                                        paddingHorizontal: 5,
+                                    }}
+                                >
+                                    {this.displayLabelKey(item)}
+                                </Text>
+                            </Body>
+                        </ListItem>
+                    );
+                }
+            });
+        }
+        return list.length? list : null
     };
 
     render() {
@@ -264,64 +332,8 @@ export default class CollaboratorField extends Component {
                                 <Right />
                             </Header>
 
-                            <Content>
-                                {!isEmpty(attributes['options']) &&
-                                    attributes.options.map((item, index) => {
-                                        let isSelected = false;
-                                        if (attributes.multiple) {
-                                            isSelected = attributes.objectType
-                                                ? attributes.value &&
-                                                  attributes.value.findIndex(
-                                                      option =>
-                                                          option[
-                                                              attributes
-                                                                  .primaryKey
-                                                          ] ===
-                                                          item[
-                                                              attributes
-                                                                  .primaryKey
-                                                          ]
-                                                  ) !== -1
-                                                : attributes.value &&
-                                                  attributes.value.indexOf(
-                                                      item
-                                                  ) !== -1;
-                                        }
-                                        return (
-                                            <ListItem
-                                                key={index}
-                                                onPress={() =>
-                                                    this.toggleSelect(item)
-                                                }
-                                            >
-                                                {attributes.multiple && (
-                                                    <CheckBox
-                                                        onPress={() =>
-                                                            this.toggleSelect(
-                                                                item
-                                                            )
-                                                        }
-                                                        checked={isSelected}
-                                                    />
-                                                )}
-                                                <Body>
-                                                    <Text
-                                                        style={{
-                                                            paddingHorizontal: 5,
-                                                        }}
-                                                    >
-                                                        {attributes.objectType
-                                                            ? item[
-                                                                  attributes
-                                                                      .labelKey
-                                                              ]
-                                                            : item}
-                                                    </Text>
-                                                </Body>
-                                            </ListItem>
-                                        );
-                                    })}
-                            </Content>
+                            <Content>{this.renderOptionList()}</Content>
+
                             {attributes && attributes['multiple'] ? (
                                 <Footer style={styles.button}>
                                     <TouchableOpacity
