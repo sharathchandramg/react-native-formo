@@ -1,64 +1,74 @@
-import _ from "lodash";
+import _ from 'lodash';
 import { isEmail, isEmpty, validateMobileNumber, isNull } from './validators';
 import { PermissionsAndroid } from 'react-native';
-const moment = require("moment");
+const moment = require('moment');
 
 export function getKeyboardType(textType) {
     switch (textType) {
-        case "email":
-            return "email-address";
+        case 'email':
+            return 'email-address';
 
-        case "number":
-        case "phone":
-        case "currency":
+        case 'number':
+        case 'phone':
+        case 'currency':
             return 'numeric';
 
         default:
-            return "default";
+            return 'default';
     }
 }
 
-export function getDefaultValue(field) {    
+export function getDefaultValue(field) {
     switch (field.type) {
-        case "text":
-        case "number":
-        case "email":
-        case "password":
-        case "url":
-        case "phone":
-        case "location":
-        return field.defaultValue || '';
-
-        case "currency":
-            let curr_type = field.defaultCurrency? field.defaultCurrency : field.currencyOptions?field.currencyOptions[0]:'';
-            let curr_value = field.defaultValue?field.defaultValue: '';
-            return {curr_value: curr_value, curr_type:curr_type}
-
-        case "calculated":
+        case 'text':
+        case 'number':
+        case 'email':
+        case 'password':
+        case 'url':
+        case 'phone':
+        case 'location':
             return field.defaultValue || '';
 
-        case "status_picker":
-        case "picker": {
-            if ((field.options).indexOf(field.defaultValue) !== -1) {
+        case 'currency':
+            let curr_type = field.defaultCurrency
+                ? field.defaultCurrency
+                : field.currencyOptions
+                ? field.currencyOptions[0]
+                : '';
+            let curr_value = field.defaultValue ? field.defaultValue : '';
+            return { curr_value: curr_value, curr_type: curr_type };
+
+        case 'calculated':
+            return field.defaultValue || '';
+
+        case 'status_picker':
+        case 'picker': {
+            if (field.options.indexOf(field.defaultValue) !== -1) {
                 return field.defaultValue;
             }
             return field.options[0];
         }
-        case "lookup":
-        case "select": {
+
+        case 'collaborator':
+        case 'lookup':
+        case 'select': {
             if (Array.isArray(field.defaultValue)) {
                 const selected = [];
                 if (!field.objectType) {
-                    field.defaultValue.forEach((item) => {
-                        if ((field.options).indexOf(item) !== -1) {
+                    field.defaultValue.forEach(item => {
+                        if (field.options.indexOf(item) !== -1) {
                             selected.push(item);
                         }
                     });
                 } else {
-                    field.defaultValue.forEach((item) => {
-                        if ((field.options).findIndex(option =>
-                            option[field.primaryKey] === item[field.primaryKey]
-                        ) !== -1) {
+                    field.defaultValue.forEach(item => {
+                        if (
+                            field.options.findIndex(
+                                option =>
+                                    option[field.primaryKey] ===
+                                    item[field.primaryKey]
+                            ) !== -1
+                        ) {
                             selected.push(item);
                         }
                     });
@@ -71,68 +81,90 @@ export function getDefaultValue(field) {
             return [];
         }
 
-        case "switch":
+        case 'switch':
             if (typeof field.defaultValue === 'boolean') {
                 return field.defaultValue;
             }
             return false;
 
-        case "date":
-            {
-                switch (field.mode) {
-                    case 'date':
-                        if (field.defaultValue === "today")
-                            return moment().format("YYYY-MM-DD");
-                        else if (field.defaultValue === "tomorrow")
-                            return moment().add(1, "day").format("YYYY-MM-DD");
-                        else
-                            return null;
+        case 'date': {
+            switch (field.mode) {
+                case 'date':
+                    if (field.defaultValue === 'today')
+                        return moment().format('YYYY-MM-DD');
+                    else if (field.defaultValue === 'tomorrow')
+                        return moment()
+                            .add(1, 'day')
+                            .format('YYYY-MM-DD');
+                    else return null;
 
-                    case 'time':
-                        const dateDefaultValue = field.defaultValue && new Date(field.defaultValue);
-                        if (dateDefaultValue && !_.isNaN(dateDefaultValue.getTime()))
-                            return dateDefaultValue;
-                        else if (field.defaultValue === "today")
-                            return moment().format("HH:mm");
-                        else if (field.defaultValue === "tomorrow")
-                            return moment().add(1, "day").format("HH:mm");
-                        else
-                            return null;
+                case 'time':
+                    const dateDefaultValue =
+                        field.defaultValue && new Date(field.defaultValue);
+                    if (
+                        dateDefaultValue &&
+                        !_.isNaN(dateDefaultValue.getTime())
+                    )
+                        return dateDefaultValue;
+                    else if (field.defaultValue === 'today')
+                        return moment().format('HH:mm');
+                    else if (field.defaultValue === 'tomorrow')
+                        return moment()
+                            .add(1, 'day')
+                            .format('HH:mm');
+                    else return null;
 
-                    case 'datetime':
-                        if (field.defaultValue === "today")
-                            return moment().format("YYYY-MM-DD HH:mm");
-                        else if (field.defaultValue === "tomorrow")
-                            return moment().add(1, "day").format("YYYY-MM-DD HH:mm");
-                        else if (typeof field.defaultValue !=='undefined' &&  !_.isNaN(field.defaultValue)) {
+                case 'datetime':
+                    if (field.defaultValue === 'today')
+                        return moment().format('YYYY-MM-DD HH:mm');
+                    else if (field.defaultValue === 'tomorrow')
+                        return moment()
+                            .add(1, 'day')
+                            .format('YYYY-MM-DD HH:mm');
+                    else if (
+                        typeof field.defaultValue !== 'undefined' &&
+                        !_.isNaN(field.defaultValue)
+                    ) {
+                        console.log(
+                            'The datetime has default value of ' +
+                                parseInt(field.defaultValue)
+                        );
+                        console.log(
+                            'The current datetime is ' +
+                                moment().format('YYYY-MM-DD HH:mm')
+                        );
+                        console.log(
+                            'The updated datetime is ' +
+                                moment()
+                                    .add(
+                                        parseInt(field.defaultValue),
+                                        'minutes'
+                                    )
+                                    .format('YYYY-MM-DD HH:mm')
+                        );
 
-                            console.log("The datetime has default value of " + parseInt(field.defaultValue));
-                            console.log("The current datetime is " + moment().format("YYYY-MM-DD HH:mm"));
-                            console.log("The updated datetime is " + moment().add(parseInt(field.defaultValue), "minutes").format("YYYY-MM-DD HH:mm"));
-                            
-                            return moment().add(parseInt(field.defaultValue), "minutes");
-                        }
-                        else if (field.defaultValue === "") {
-                            console.log("Enter for " + field.defaultValue)
-                            return "Select";
-                        }
-                        else
-                            return null;
-                }
+                        return moment().add(
+                            parseInt(field.defaultValue),
+                            'minutes'
+                        );
+                    } else if (field.defaultValue === '') {
+                        console.log('Enter for ' + field.defaultValue);
+                        return 'Select';
+                    } else return null;
             }
-        case "group":
+        }
+        case 'group':
             if (field.fields) {
                 return field.defaultValue;
             }
             return null;
 
-
-        case "simple-grid":
-        case "customDataView":{
-            if(typeof field.defaultValue ==='object' && field.defaultValue){
+        case 'simple-grid':
+        case 'customDataView': {
+            if (typeof field.defaultValue === 'object' && field.defaultValue) {
                 return field.defaultValue;
             }
-            return {}
+            return {};
         }
 
         default:
@@ -142,41 +174,42 @@ export function getDefaultValue(field) {
 
 export function getResetValue(field) {
     switch (field.type) {
-        case "text":
-        case "number":
-        case "email":
-        case "password":
-        case "url":
-        case "phone":
-        case "currency":
-        case "location":
-            return null
+        case 'text':
+        case 'number':
+        case 'email':
+        case 'password':
+        case 'url':
+        case 'phone':
+        case 'currency':
+        case 'location':
+            return null;
 
-        case "picker":
-        case "status_picker": {
-            if ((field.options).indexOf(field.defaultValue) !== -1) {
+        case 'picker':
+        case 'status_picker': {
+            if (field.options.indexOf(field.defaultValue) !== -1) {
                 return field.defaultValue;
             }
             return field.options[0];
         }
 
-        case "select":
-        case "lookup":
+        case 'collaborator':
+        case 'select':
+        case 'lookup':
             return field.multiple ? [] : null;
 
-        case "switch":
+        case 'switch':
             return false;
 
-        case "date":
+        case 'date':
             return null;
-        
-        case "simple-grid":    
-        case "customDataView":{
-                if(typeof field.defaultValue ==='object' && field.defaultValue){
-                    return field.defaultValue;
-                }
-                return {}
-            }    
+
+        case 'simple-grid':
+        case 'customDataView': {
+            if (typeof field.defaultValue === 'object' && field.defaultValue) {
+                return field.defaultValue;
+            }
+            return {};
+        }
         default:
             return null;
     }
@@ -184,7 +217,7 @@ export function getResetValue(field) {
 
 export function getInitialState(fields) {
     const state = {};
-    _.forEach(fields, (field) => {
+    _.forEach(fields, field => {
         const fieldObj = field;
         fieldObj.error = false;
         fieldObj.errorMsg = '';
@@ -202,7 +235,7 @@ export function autoValidate(field) {
 
     if (field.required) {
         switch (field.type) {
-            case "email":
+            case 'email':
                 if (isEmpty(field.value)) {
                     error = true;
                     errorMsg = `${field.label} is required`;
@@ -211,25 +244,25 @@ export function autoValidate(field) {
                     errorMsg = 'Please enter a valid email';
                 }
                 break;
-            case "text":
-            case "url":
-            case "location":
-            case "image":
-            case "password":
+            case 'text':
+            case 'url':
+            case 'location':
+            case 'image':
+            case 'password':
                 if (isEmpty(field.value)) {
                     error = true;
                     errorMsg = `${field.label} is required`;
                 }
                 break;
 
-            case "currency":
+            case 'currency':
                 if (isEmpty(field.value.curr_value)) {
                     error = true;
                     errorMsg = `${field.label} is required`;
                 }
                 break;
 
-            case "number":
+            case 'number':
                 if (isEmpty(field.value)) {
                     error = true;
                     errorMsg = `${field.label} is required`;
@@ -240,7 +273,7 @@ export function autoValidate(field) {
 
                 break;
 
-            case "phone":
+            case 'phone':
                 if (isEmpty(field.value)) {
                     error = true;
                     errorMsg = `${field.label} is required`;
@@ -250,43 +283,56 @@ export function autoValidate(field) {
                 }
                 break;
 
-            case "date":
+            case 'date':
                 if (isNull(field.value)) {
                     error = true;
                     errorMsg = `${field.label} is required`;
                 }
                 break;
 
-            case "picker":    
-            case "status_picker": 
+            case 'picker':
+            case 'status_picker':
                 if (isEmpty(field.value)) {
                     error = true;
                     errorMsg = `${field.label} is required`;
                 }
                 break;
-            
-            case "sub-form":
-                if (typeof field.value=== "undefined" || !field.value || field.value[0] === '') {
+
+            case 'sub-form':
+                if (
+                    typeof field.value === 'undefined' ||
+                    !field.value ||
+                    field.value[0] === ''
+                ) {
                     error = true;
                     errorMsg = `${field.label} is required`;
                 }
                 break;
 
-            case "lookup":    
-            case "select":
-                if (typeof field.value=== "undefined" || !field.value || field.value[0] === '{}' ) {
+            case 'collaborator':
+            case 'lookup':
+            case 'select':
+                if (
+                    typeof field.value === 'undefined' ||
+                    !field.value ||
+                    field.value[0] === '{}'
+                ) {
                     error = true;
                     errorMsg = `${field.label} is required`;
                 }
                 break;
-                
-            case "simple-grid":    
-            case "customDataView":
-                    if(typeof field.value !=='object' || !field.value || isEmpty(field.value)){
-                        error = true;
-                        errorMsg = `${field.label} is required`;
-                    }
-                break
+
+            case 'simple-grid':
+            case 'customDataView':
+                if (
+                    typeof field.value !== 'object' ||
+                    !field.value ||
+                    isEmpty(field.value)
+                ) {
+                    error = true;
+                    errorMsg = `${field.label} is required`;
+                }
+                break;
             default:
         }
     }
@@ -294,73 +340,76 @@ export function autoValidate(field) {
 }
 
 export const getGeoLocation = (options, cb) => {
-
-    let highAccuracySuccess = false
-    let highAccuracyError = false
-    let highAccuracy = !options || options.highAccuracy === undefined ? true : options.highAccuracy
-    let timeout = !options || options.timeout === undefined ? 10000 : options.timeout
+    let highAccuracySuccess = false;
+    let highAccuracyError = false;
+    let highAccuracy =
+        !options || options.highAccuracy === undefined
+            ? true
+            : options.highAccuracy;
+    let timeout =
+        !options || options.timeout === undefined ? 10000 : options.timeout;
 
     let getLowAccuracyPosition = () => {
-        console.log('REQUESTING POSITION', 'HIGH ACCURACY FALSE')
+        console.log('REQUESTING POSITION', 'HIGH ACCURACY FALSE');
         navigator.geolocation.getCurrentPosition(
             position => {
-                console.log('POSITION NETWORK OK', position)
-                cb(position.coords)
+                console.log('POSITION NETWORK OK', position);
+                cb(position.coords);
             },
             error => {
-                console.log(error)
+                console.log(error);
                 cb(null, error);
             },
             {
                 enableHighAccuracy: false,
                 timeout: 10000,
-                maxAge: 0
+                maxAge: 0,
             }
-        )
-    }
+        );
+    };
 
     if (highAccuracy) {
-        console.log('REQUESTING POSITION', 'HIGH ACCURACY TRUE')
+        console.log('REQUESTING POSITION', 'HIGH ACCURACY TRUE');
         const watchId = navigator.geolocation.watchPosition(
             position => {
                 // location retrieved
-                highAccuracySuccess = true
-                console.log('POSITION GPS OK', position)
-                navigator.geolocation.clearWatch(watchId)
-                cb(position.coords)
+                highAccuracySuccess = true;
+                console.log('POSITION GPS OK', position);
+                navigator.geolocation.clearWatch(watchId);
+                cb(position.coords);
             },
             error => {
-                console.log(error)
-                highAccuracyError = true
-                navigator.geolocation.clearWatch(watchId)
-                getLowAccuracyPosition()
+                console.log(error);
+                highAccuracyError = true;
+                navigator.geolocation.clearWatch(watchId);
+                getLowAccuracyPosition();
             },
             {
                 enableHighAccuracy: true,
                 timeout: 20000,
                 maxAge: 0,
-                distanceFilter: 1
+                distanceFilter: 1,
             }
-        )
+        );
 
         setTimeout(() => {
             if (!highAccuracySuccess && !highAccuracyError) {
-                getLowAccuracyPosition()
+                getLowAccuracyPosition();
             }
-        }, timeout)
+        }, timeout);
     }
-}
+};
 
 export async function requestLocationPermission() {
-    let response = { permission: false, err: null }
+    let response = { permission: false, err: null };
     try {
         const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
             {
-                'title': 'Location Permission',
-                'message': 'This form required location'
+                title: 'Location Permission',
+                message: 'This form required location',
             }
-        )
+        );
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             response.permission = true;
             response.err = null;
