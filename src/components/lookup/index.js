@@ -1,35 +1,16 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { Modal, TouchableOpacity, View, FlatList ,ScrollView} from 'react-native';
+import React from 'react';
+import { TouchableOpacity, View, FlatList, ScrollView } from 'react-native';
 import RecyclerList from '../recyclerList';
-import {
-    Text,
-    Container,
-    Header,
-    Content,
-    Left,
-    Right,
-    Icon,
-    Body,
-    Button,
-    Title,
-} from 'native-base';
-
+import { Text, Container, Content, Icon } from 'native-base';
 import styles from './styles';
-const _ = require('lodash');
+import _ from 'lodash';
 import { isNull } from '../../utils/validators';
+import LookupHeader from '../headers/lookupHeader';
 
 const LookupComponent = props => {
-    let {
+    const {
         attributes,
-        theme,
-        modalVisible,
         toggleSelect,
-        toggleModalVisible,
-        toggleSearchModalVisible,
-        toggleFilterModalVisible,
-        searchEnable,
-        filterEnable,
         handleReset,
         filter,
         onEndReached,
@@ -38,11 +19,14 @@ const LookupComponent = props => {
     getLabel = item => {
         let label = '';
         let value = [];
-        if(typeof item['value'] ==='string'){
+        if (typeof item['value'] === 'string') {
             let searchText = item['value'];
             label = `${item['categoryLabel']}:${searchText}`;
-        }else{
-            if(typeof item['value'] ==='object' && Array.isArray(item['value'])){
+        } else {
+            if (
+                typeof item['value'] === 'object' &&
+                Array.isArray(item['value'])
+            ) {
                 _.map(item['value'], option => {
                     if (typeof option === 'object') {
                         let categoryValue = option[item['category']];
@@ -53,7 +37,6 @@ const LookupComponent = props => {
                         value.push(option);
                     }
                 });
-
             }
             label = `${item['categoryLabel']}:${value.toString()}`;
         }
@@ -103,76 +86,29 @@ const LookupComponent = props => {
     };
 
     return (
-        <Modal
-            visible={modalVisible}
-            animationType="none"
-            onRequestClose={() => toggleModalVisible()}
-        >
-            <Container style={{ flex: 1 }}>
-                <Header style={[theme.header]} androidStatusBarColor="#c8c8c8">
-                    <Left>
-                        <Button
-                            transparent
-                            onPress={() => toggleModalVisible()}
-                        >
-                            <Icon
-                                name="arrow-back"
-                                style={{ color: '#48BBEC' }}
-                            />
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Title style={theme.headerText}>
-                            {attributes.label || 'Select'}
-                        </Title>
-                    </Body>
-                    <Right>
-                        {filterEnable ? (
-                            <Button
-                                transparent
-                                onPress={() => toggleFilterModalVisible()}
-                            >
-                                <Icon
-                                    name="filter"
-                                    style={{ color: '#48BBEC', fontSize: 18 }}
-                                    type="FontAwesome"
-                                />
-                            </Button>
-                        ) : null}
-                        {searchEnable ? (
-                            <Button
-                                transparent
-                                onPress={() => toggleSearchModalVisible()}
-                            >
-                                <Icon
-                                    name="search"
-                                    style={{ color: '#48BBEC', fontSize: 18 }}
-                                    type="FontAwesome"
-                                />
-                            </Button>
-                        ) : null}
-                    </Right>
-                </Header>
-                <Content>
-                    <View style={{height:'100%',width:'100%'}}>
-                        {filter && filter.length > 0 ? (
-                            <View style={styles.filterContainer}>
-                                {renderFilterSelected(filter)}
-                            </View>
-                        ) : null}
-                        {!isNull(attributes['options']) && attributes['options'].length ? (
-                            <RecyclerList
-                                dataProvider={attributes['options']}
-                                onEndReached={onEndReached}
-                                attributes={attributes}
-                                toggleSelect={toggleSelect}
-                            />
-                        ) : <ScrollView></ScrollView>}
-                    
-                    </View>  
-                </Content>
-            </Container>
-        </Modal>
+        <Container style={{ flex: 1 }}>
+            <LookupHeader {...props} />
+            <Content>
+                <View style={{ height: '100%', width: '100%' }}>
+                    {filter && filter.length > 0 ? (
+                        <View style={styles.filterContainer}>
+                            {renderFilterSelected(filter)}
+                        </View>
+                    ) : null}
+                    {!isNull(attributes['options']) &&
+                    attributes['options'].length ? (
+                        <RecyclerList
+                            dataProvider={attributes['options']}
+                            onEndReached={onEndReached}
+                            attributes={attributes}
+                            toggleSelect={toggleSelect}
+                        />
+                    ) : (
+                        <ScrollView />
+                    )}
+                </View>
+            </Content>
+        </Container>
     );
 };
 

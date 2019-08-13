@@ -20,12 +20,18 @@ export default {
         backgroundColor:'white',
         height:60,
         elevation:5,
-        borderBottomColor:'#48BBEC',
+        color: 'rgb(0,151,235)',
         borderBottomWidth:0.5
     },
     headerText:{
         fontSize: 18,
-        color: '#48BBEC',
+        color: 'rgb(0,151,235)',
         alignSelf: 'flex-start'
-    }
+    },
+    headerLeftIcon: {
+        color: 'rgb(0,151,235)',
+        fontSize: 24,
+        fontWeight: 'bold',
+        fontFamily: 'roboto',
+    },
 };

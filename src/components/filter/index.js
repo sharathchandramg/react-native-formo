@@ -1,24 +1,20 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
-import { Modal, FlatList } from 'react-native';
+import React from 'react';
+import { FlatList } from 'react-native';
 import { isEmpty } from '../../utils/validators';
-const _ = require('lodash');
+import _ from 'lodash';
+import FilterHeader from '../headers/filterHeader';
 
 import {
     Container,
-    Header,
     Content,
     Footer,
     View,
     Text,
     ListItem,
     CheckBox,
-    Left,
     Icon,
-    Body,
     Button,
     Input,
-    Title
 } from 'native-base';
 
 import styles from './styles';
@@ -26,14 +22,12 @@ import styles from './styles';
 const FilterComponent = props => {
     const {
         attributes,
-        theme,
         filterFunction,
         handleTextChange,
         searchText,
         applyFilterFunction,
         resetFilter,
         setFilterCategory,
-        toggleFilterModalVisible,
         activeCategory,
         filterData,
     } = props;
@@ -205,36 +199,13 @@ const FilterComponent = props => {
     };
 
     return (
-        <Modal
-            visible={props.filterModalVisible}
-            animationType="none"
-            onRequestClose={() => toggleFilterModalVisible()}
-        >
-            <Container style={{ flex: 1 }}>
-                <Header style={[theme.header]} androidStatusBarColor="#c8c8c8">
-                    <Left>
-                        <Button
-                            transparent
-                            onPress={() => toggleFilterModalVisible()}
-                        >
-                            <Icon
-                                name="arrow-back"
-                                style={{ color: '#48BBEC' }}
-                            />
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Title style={theme.headerText}>{'Filter'}</Title>
-                    </Body>
-                </Header>
-                <Content>
-                    <View style={styles.filterContainer}>
-                        {renderFilterBody()}
-                    </View>
-                </Content>
-                <Footer style={styles.button}>{renderfilterBottom()}</Footer>
-            </Container>
-        </Modal>
+        <Container style={{ flex: 1 }}>
+            <FilterHeader {...props} />
+            <Content>
+                <View style={styles.filterContainer}>{renderFilterBody()}</View>
+            </Content>
+            <Footer style={styles.button}>{renderfilterBottom()}</Footer>
+        </Container>
     );
 };
 
