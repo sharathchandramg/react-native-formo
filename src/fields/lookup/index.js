@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, Modal } from 'react-native';
 import Form0 from './../../index';
-const _ = require('lodash');
+import _ from 'lodash';
 import { isEmpty } from '../../utils/validators';
 
 import { View, Text, Icon } from 'native-base';
@@ -79,7 +79,11 @@ export default class LookupField extends Component {
 
     handleOnGetQuery = offset => {
         const { onGetQuery, attributes } = this.props;
-        if (!isEmpty(attributes) && !isEmpty(attributes['data_source']) && attributes['data_source']['type']=== 'remote') {
+        if (
+            !isEmpty(attributes) &&
+            !isEmpty(attributes['data_source']) &&
+            attributes['data_source']['type'] === 'remote'
+        ) {
             if (typeof onGetQuery === 'function') {
                 onGetQuery(attributes, offset);
             }
@@ -95,9 +99,9 @@ export default class LookupField extends Component {
         const data_source = attributes['data_source'];
         if (!isEmpty(data_source) && data_source['type'] === 'remote') {
             if (typeof onSearchQuery === 'function') {
-                onSearchQuery(attributes, searchText,0);
-            } 
-        }else {
+                onSearchQuery(attributes, searchText, 0);
+            }
+        } else {
             let options = [];
             if (searchText) {
                 options = _.filter(attributes['options'], item => {
@@ -137,7 +141,7 @@ export default class LookupField extends Component {
         const data_source = attributes['data_source'];
         if (!isEmpty(data_source) && data_source['type'] === 'remote') {
             if (typeof onSearchQuery === 'function') {
-                onSearchQuery(attributes,filter,0);
+                onSearchQuery(attributes, filter, 0);
             }
         } else {
             let updatedOptions = [];
@@ -251,12 +255,11 @@ export default class LookupField extends Component {
             return categoryToValue;
         } else {
             if (categoryToValue.length) {
-
                 const index = _.findIndex(categoryToValue, {
                     category: category['name'],
                 });
 
-                if(index !== -1){
+                if (index !== -1) {
                     const foundObj = categoryToValue[index];
                     let options = foundObj['value'];
                     if (options.length) {
@@ -265,13 +268,13 @@ export default class LookupField extends Component {
                             option => option !== item['value']
                         );
                     }
-                    if(options.length){
-                        foundObj['value'] =  options;
-                    }else{
-                        categoryToValue[index]
+                    if (options.length) {
+                        foundObj['value'] = options;
+                    } else {
+                        categoryToValue[index];
                     }
                 }
-                categoryToValue.splice(index, 1); 
+                categoryToValue.splice(index, 1);
             }
         }
         return categoryToValue;
@@ -373,7 +376,7 @@ export default class LookupField extends Component {
         if (present !== -1) {
             filterData[present] = item;
         }
-        
+
         const filterArr = this.updateFilter(item);
         const categoryToValue = this.mapCatagoryToValue(
             this.state.activeCategory,
@@ -417,7 +420,7 @@ export default class LookupField extends Component {
         }
     };
 
-    setLookupFilter =(filter)=>{
+    setLookupFilter = filter => {
         const { setLookupFilter, attributes } = this.props;
         const data_source = attributes['data_source'];
         if (!isEmpty(data_source) && data_source['type'] === 'remote') {
@@ -425,7 +428,7 @@ export default class LookupField extends Component {
                 setLookupFilter(filter);
             }
         }
-    }
+    };
 
     toggleSearchModalVisible = () => {
         this.setState({
@@ -480,17 +483,25 @@ export default class LookupField extends Component {
     };
 
     onEndReached = () => {
-        const { attributes,onSearchQuery } = this.props;
+        const { attributes, onSearchQuery } = this.props;
         const searchText = this.state.searchText;
         const categoryToValue = this.state.categoryToValue;
         // based on parameter call filter, search and get
-        if (!isEmpty(attributes) && !isEmpty(attributes['data_source']) && attributes['data_source']['type'] ==='remote') {
-            const filter = searchText ? searchText
-                : categoryToValue.length > 0 ? categoryToValue
-                : null
-            const offset = Array.isArray(attributes['options'])?attributes['options'].length : 0;
+        if (
+            !isEmpty(attributes) &&
+            !isEmpty(attributes['data_source']) &&
+            attributes['data_source']['type'] === 'remote'
+        ) {
+            const filter = searchText
+                ? searchText
+                : categoryToValue.length > 0
+                ? categoryToValue
+                : null;
+            const offset = Array.isArray(attributes['options'])
+                ? attributes['options'].length
+                : 0;
             if (filter !== null && typeof onSearchQuery === 'function') {
-                onSearchQuery(attributes,filter,offset);
+                onSearchQuery(attributes, filter, offset);
             } else {
                 this.handleOnGetQuery(offset);
             }
@@ -503,10 +514,10 @@ export default class LookupField extends Component {
         if (attributes.multiple) {
             const index = attributes.objectType
                 ? newSelected.findIndex(
-                    option =>
-                        option[attributes.primaryKey] ===
-                        value[attributes.primaryKey]
-                )
+                      option =>
+                          option[attributes.primaryKey] ===
+                          value[attributes.primaryKey]
+                  )
                 : newSelected.indexOf(value);
             if (index === -1) {
                 newSelected.push(value);
@@ -591,27 +602,30 @@ export default class LookupField extends Component {
         return false;
     };
 
-    getLabel =()=>{
+    getLabel = () => {
         const { attributes } = this.props;
-        let label = "None"
-        if(!isEmpty(attributes['value'])){
-            if(attributes.multiple){
-                const labelKeyArr = attributes['value'].map(obj=>{
-                    const labelKey = attributes.objectType ? obj[attributes.labelKey]
-                    : obj;
+        let label = 'None';
+        if (!isEmpty(attributes['value'])) {
+            if (attributes.multiple) {
+                const labelKeyArr = attributes['value'].map(obj => {
+                    const labelKey = attributes.objectType
+                        ? obj[attributes.labelKey]
+                        : obj;
                     return labelKey;
-                })
-                if(labelKeyArr.length){
-                    label = ` ${labelKeyArr.length} | ${labelKeyArr.toString()}` ;
+                });
+                if (labelKeyArr.length) {
+                    label = ` ${
+                        labelKeyArr.length
+                    } | ${labelKeyArr.toString()}`;
                 }
-            }else{
-                label = attributes.objectType?attributes['value'][attributes.labelKey]
-                : attributes['value'];
+            } else {
+                label = attributes.objectType
+                    ? attributes['value'][attributes.labelKey]
+                    : attributes['value'];
             }
-
         }
         return label;
-    }
+    };
 
     renderComponent = () => {
         const { theme, attributes } = this.props;
@@ -663,7 +677,6 @@ export default class LookupField extends Component {
                 : [];
         let data = value !== null ? this.getLookupData(value) : {};
 
-        
         return (
             <View style={styles.container}>
                 <View style={styles.inputLabelWrapper}>
@@ -676,13 +689,17 @@ export default class LookupField extends Component {
                         }
                         onPress={() => this.toggleModalVisible()}
                     >
-                    <View style = {styles.labelTextWrapper}>
-                        <Text style={[styles.labelText]} numberOfLines={2}>{attributes.label}</Text>
-                    </View>
-                    <View style={styles.valueWrapper}>
-                        <Text style={styles.inputText} numberOfLines={2}>{this.getLabel()} </Text>
-                    </View>
-                    {this.renderlookupIcon()}
+                        <View style={styles.labelTextWrapper}>
+                            <Text style={[styles.labelText]} numberOfLines={2}>
+                                {attributes.label}
+                            </Text>
+                        </View>
+                        <View style={styles.valueWrapper}>
+                            <Text style={styles.inputText} numberOfLines={2}>
+                                {this.getLabel()}{' '}
+                            </Text>
+                        </View>
+                        {this.renderlookupIcon()}
                     </TouchableOpacity>
                 </View>
 
@@ -698,26 +715,39 @@ export default class LookupField extends Component {
                         formData={data}
                     />
                 </View>
-                {this.state.searchModalVisible ||
-                this.state.filterModalVisible ? (
-                    this.renderComponent()
-                ) : (
-                    <LookupComponent
-                        modalVisible={this.state.modalVisible}
-                        theme={theme}
-                        attributes={attributes}
-                        toggleSelect={this.toggleSelect}
-                        onEndReached={this.onEndReached}
-                        toggleModalVisible={this.toggleModalVisible}
-                        toggleSearchModalVisible={this.toggleSearchModalVisible}
-                        toggleFilterModalVisible={this.toggleFilterModalVisible}
-                        searchEnable={this.isSearchEnable(attributes)}
-                        filterEnable={this.isFilterEnable(attributes)}
-                        filter={this.state.categoryToValue}
-                        handleReset={this.handleReset}
-                        activeCategory={this.state.activeCategory}
-                    />
-                )}
+                {
+                    <Modal
+                        visible={this.state.modalVisible}
+                        animationType="none"
+                        transparent={true}
+                        onRequestClose={() => this.toggleModalVisible()}
+                    >
+                        {this.state.searchModalVisible ||
+                        this.state.filterModalVisible ? (
+                            this.renderComponent()
+                        ) : (
+                            <LookupComponent
+                                modalVisible={this.state.modalVisible}
+                                theme={theme}
+                                attributes={attributes}
+                                toggleSelect={this.toggleSelect}
+                                onEndReached={this.onEndReached}
+                                toggleModalVisible={this.toggleModalVisible}
+                                toggleSearchModalVisible={
+                                    this.toggleSearchModalVisible
+                                }
+                                toggleFilterModalVisible={
+                                    this.toggleFilterModalVisible
+                                }
+                                searchEnable={this.isSearchEnable(attributes)}
+                                filterEnable={this.isFilterEnable(attributes)}
+                                filter={this.state.categoryToValue}
+                                handleReset={this.handleReset}
+                                activeCategory={this.state.activeCategory}
+                            />
+                        )}
+                    </Modal>
+                }
             </View>
         );
     }
