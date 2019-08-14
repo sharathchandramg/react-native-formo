@@ -250,12 +250,13 @@ export default class SubForm extends Component {
                 <Modal
                     visible={this.state.modalVisible}
                     animationType="none"
-                    onRequestClose={() => this.toggleModalVisible()}>
+                    onRequestClose={() => this.toggleModalVisible()}
+                    transparent = {true}>
                     <Container style={{ flex: 1 }}>
                         <Header style={[theme.header]} androidStatusBarColor='#c8c8c8'>
                             <Left>
                                 <Button transparent onPress={() => this.toggleModalVisible()}>
-                                    <Icon name="arrow-back"   style={{color:'#48BBEC'}} />
+                                    <Icon name="arrow-back"   style={theme.headerLeftIcon} />
                                 </Button>
                             </Left>
                             <Body>
