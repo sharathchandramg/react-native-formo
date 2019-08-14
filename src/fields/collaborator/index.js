@@ -305,6 +305,7 @@ export default class CollaboratorField extends Component {
                         visible={this.state.modalVisible}
                         animationType="none"
                         onRequestClose={() => this.toggleModalVisible()}
+                        transparent ={true}
                     >
                         <Container style={{ flex: 1 }}>
                             <Header
@@ -320,7 +321,7 @@ export default class CollaboratorField extends Component {
                                     >
                                         <Icon
                                             name="arrow-back"
-                                            style={{ color: '#48BBEC' }}
+                                            style={theme.headerLeftIcon}
                                         />
                                     </Button>
                                 </Left>

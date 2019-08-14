@@ -104,7 +104,7 @@ export default class LookupField extends Component {
         } else {
             let options = [];
             if (searchText) {
-                options = _.filter(attributes['options'], item => {
+                options = _.filter(this.state.options, item => {
                     let sItem =
                         item[attributes.labelKey]
                             .toString()
@@ -435,6 +435,7 @@ export default class LookupField extends Component {
             searchModalVisible: !this.state.searchModalVisible,
             filterModalVisible: false,
             modalVisible: true,
+            searchText: '',
         });
     };
 
@@ -465,6 +466,11 @@ export default class LookupField extends Component {
 
     toggleModalVisible = () => {
         if (this.state.modalVisible) {
+            const {attributes } = this.props;
+            const data_source = attributes['data_source'];
+            if (!isEmpty(data_source) && data_source['type'] !== 'remote') {
+                attributes['options'] = this.state.options.length ? this.state.options : attributes['options'];
+            }
             this.setState({
                 modalVisible: false,
                 filterModalVisible: false,
