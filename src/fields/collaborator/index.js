@@ -182,7 +182,8 @@ export default class CollaboratorField extends Component {
             if (attributes.multiple) {
                 const labelKeyArr = attributes['value'].map(option => {
                     const labelKey = attributes.objectType
-                        ? option['designation'][attributes.labelKey]
+                        ? option['designation'] &&
+                          option['designation'][attributes.labelKey]
                         : option;
                     return labelKey;
                 });
@@ -193,7 +194,8 @@ export default class CollaboratorField extends Component {
                 }
             } else {
                 label = attributes.objectType
-                    ? attributes['value']['designation'][attributes.labelKey]
+                    ? attributes['value']['designation'] &&
+                      attributes['value']['designation'][attributes.labelKey]
                     : attributes['value'];
             }
         }
