@@ -146,8 +146,9 @@ export default class CollaboratorField extends Component {
             const index = attributes.objectType
                 ? newSelected.findIndex(
                       option =>
-                          option[attributes.primaryKey] ===
-                          value[attributes.primaryKey]
+                          option['designation'] &&
+                          option['designation'][attributes.primaryKey] ===
+                              value[attributes.primaryKey]
                   )
                 : newSelected.indexOf(value);
             if (index === -1) {
@@ -157,7 +158,7 @@ export default class CollaboratorField extends Component {
                 valueObj[`${attributes['labelKey']}`] =
                     value[attributes.labelKey];
 
-                newSelected.push(valueObj);
+                newSelected.push({ designation: valueObj });
             } else {
                 newSelected.splice(index, 1);
             }
@@ -179,10 +180,11 @@ export default class CollaboratorField extends Component {
         let label = 'None';
         if (!isEmpty(attributes['value'])) {
             if (attributes.multiple) {
-                const labelKeyArr = attributes['value'].map(obj => {
+                const labelKeyArr = attributes['value'].map(option => {
                     const labelKey = attributes.objectType
-                        ? obj[attributes.labelKey]
-                        : obj;
+                        ? option['designation'] &&
+                          option['designation'][attributes.labelKey]
+                        : option;
                     return labelKey;
                 });
                 if (labelKeyArr.length) {
@@ -192,7 +194,8 @@ export default class CollaboratorField extends Component {
                 }
             } else {
                 label = attributes.objectType
-                    ? attributes['value'][attributes.labelKey]
+                    ? attributes['value']['designation'] &&
+                      attributes['value']['designation'][attributes.labelKey]
                     : attributes['value'];
             }
         }
@@ -219,7 +222,9 @@ export default class CollaboratorField extends Component {
                 typeof item['user_alias'] !== 'undefined'
                     ? item['user_alias']
                     : '';
-            label = userAlias ? `${labelKey}(${userAlias})` : `${labelKey}('NA')`;
+            label = userAlias
+                ? `${labelKey}(${userAlias})`
+                : `${labelKey} (N/A)`;
         } else {
             label = item;
         }
@@ -229,6 +234,7 @@ export default class CollaboratorField extends Component {
     renderOptionList = () => {
         const { attributes } = this.props;
         let list = [];
+
         if (!isEmpty(attributes['options']) && attributes['options'].length) {
             list = attributes.options.map((item, index) => {
                 let isSelected = false;
@@ -238,8 +244,10 @@ export default class CollaboratorField extends Component {
                             ? attributes.value &&
                               attributes.value.findIndex(
                                   option =>
-                                      option[attributes.primaryKey] ===
-                                      item[attributes.primaryKey]
+                                      option['designation'] &&
+                                      option['designation'][
+                                          attributes.primaryKey
+                                      ] === item[attributes.primaryKey]
                               ) !== -1
                             : attributes.value &&
                               attributes.value.indexOf(item) !== -1;
@@ -269,7 +277,7 @@ export default class CollaboratorField extends Component {
                 }
             });
         }
-        return list.length? list : null
+        return list.length ? list : null;
     };
 
     render() {
@@ -293,7 +301,7 @@ export default class CollaboratorField extends Component {
                         </View>
                         <View style={styles.valueWrapper}>
                             <Text style={styles.inputText} numberOfLines={2}>
-                                {this.getLabel()}{' '}
+                                {this.getLabel()}
                             </Text>
                         </View>
                         {this.renderIcon()}
@@ -305,7 +313,7 @@ export default class CollaboratorField extends Component {
                         visible={this.state.modalVisible}
                         animationType="none"
                         onRequestClose={() => this.toggleModalVisible()}
-                        transparent ={true}
+                        transparent={true}
                     >
                         <Container style={{ flex: 1 }}>
                             <Header
