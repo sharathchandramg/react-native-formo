@@ -104,7 +104,16 @@ const LookupComponent = props => {
                             toggleSelect={toggleSelect}
                         />
                     ) : (
-                        <ScrollView />
+                        <ScrollView
+                            centerContent={true}
+                            contentContainerStyle={styles.contentContainer}
+                        >
+                            <View style={styles.noDataWrapper}>
+                                <Text style={styles.nodataText}>
+                                    {'No matching result found. Pl try again'}
+                                </Text>
+                            </View>
+                        </ScrollView>
                     )}
                 </View>
             </Content>

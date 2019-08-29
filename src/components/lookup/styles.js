@@ -1,58 +1,77 @@
-import {
-    StyleSheet,
-    Dimensions
-} from "react-native";
+import { StyleSheet, Dimensions } from 'react-native';
 
 const styles = StyleSheet.create({
-
-    filterContainer:{
-        flexDirection:'row', 
+    filterContainer: {
+        flexDirection: 'row',
         height: 50,
-        alignItems:'center',
-        justifyContent:'flex-start',
-        margin:10,
-        flex:1,
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        margin: 10,
+        flex: 1,
     },
 
-    selectedContainer:{
-        flexDirection:'row', 
+    selectedContainer: {
+        flexDirection: 'row',
         height: 40,
-        flex:1,
-        alignItems:'flex-start',
-        justifyContent:'center',
-        marginEnd:5
+        flex: 1,
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        marginEnd: 5,
     },
 
     selectedStatusOuter: {
-        height: 30,	
-        flexDirection:'row',
-        width:'100%',
+        height: 30,
+        flexDirection: 'row',
+        width: '100%',
         backgroundColor: '#6AD97B',
-        borderRadius:50,
+        borderRadius: 50,
         borderColor: 'white',
         borderWidth: 1,
-        justifyContent:'center',
-        alignItems:'center',
-        margin:5,
+        justifyContent: 'center',
+        alignItems: 'center',
+        margin: 5,
     },
 
-    selectedText:{
+    selectedText: {
         color: 'white',
         fontFamily: 'roboto',
-        paddingLeft:10,
-        paddingRight:10,
-        alignItems:'center',
-        fontSize:12,
+        paddingLeft: 10,
+        paddingRight: 10,
+        alignItems: 'center',
+        fontSize: 12,
     },
 
-    removeFilterIcon:{
-        alignItems:'center',
-        justifyContent:'center',
-        height:30,
-        width:30,
-        marginEnd:10
+    removeFilterIcon: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 30,
+        width: 30,
+        marginEnd: 10,
     },
-    
-})
+
+    noDataWrapper: {
+        height: 80,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    contentContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+    },
+
+    nodataText: {
+        height: 30,
+        lineHeight: 20,
+        color: '#989898',
+        fontFamily: 'roboto',
+        width: '100%',
+        fontSize: 14,
+        padding: 5,
+        fontWeight: '700',
+        alignSelf: 'center',
+        textAlign: 'center',
+    },
+});
 
 export default styles;
