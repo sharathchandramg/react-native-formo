@@ -40,6 +40,42 @@ export default class LookupField extends Component {
         };
     }
 
+    componentDidMount() {
+        this.setInitialData();
+    }
+
+    setInitialData = () => {
+        const { attributes } = this.props;
+        if (!isEmpty(attributes) && !isEmpty(attributes['data_source'])) {
+            const { type, key, url } = attributes['data_source'];
+            if (!isEmpty(type) && type === 'remote') {
+                let len = attributes['options']
+                    ? attributes['options'].length
+                    : 0;
+                let offset = len;
+                this.handleOnGetQuery(offset);
+            } else {
+                this.setLocalOptions(attributes['options']);
+            }
+        } else {
+            this.setLocalOptions(attributes['options']);
+        }
+        if (
+            this.isFilterEnable(attributes) &&
+            !isEmpty(attributes['filterCategory'])
+        ) {
+            let activeCategory = attributes['filterCategory'][0];
+            if (
+                typeof activeCategory !== 'undefined' &&
+                !isEmpty(attributes['options'])
+            ) {
+                this.setState({ options: attributes['options'] }, () => {
+                    this.setFilterCategory(activeCategory);
+                });
+            }
+        }
+    };
+
     setLocalOptions = options => {
         if (!isEmpty(options)) {
             this.setState({ options: options });
@@ -470,40 +506,7 @@ export default class LookupField extends Component {
                     searchText: '',
                     categoryToValue: [],
                 },
-                () => {
-                    const { attributes } = this.props;
-                    if (
-                        !isEmpty(attributes) &&
-                        !isEmpty(attributes['data_source'])
-                    ) {
-                        const { type, key, url } = attributes['data_source'];
-                        if (!isEmpty(type) && type === 'remote') {
-                            const offset = 0;
-                            this.handleOnGetQuery(offset);
-                        } else {
-                            this.setLocalOptions(attributes['options']);
-                        }
-                    } else {
-                        this.setLocalOptions(attributes['options']);
-                    }
-                    if (
-                        this.isFilterEnable(attributes) &&
-                        !isEmpty(attributes['filterCategory'])
-                    ) {
-                        let activeCategory = attributes['filterCategory'][0];
-                        if (
-                            typeof activeCategory !== 'undefined' &&
-                            !isEmpty(attributes['options'])
-                        ) {
-                            this.setState(
-                                { options: attributes['options'] },
-                                () => {
-                                    this.setFilterCategory(activeCategory);
-                                }
-                            );
-                        }
-                    }
-                }
+                () => this.setInitialData()
             );
         }
     };
@@ -596,6 +599,10 @@ export default class LookupField extends Component {
         let data = null;
         if (options !== null && value !== null) {
             let primaryKey = value[attributes.primaryKey];
+            console.log('===========key== value=======================');
+            console.log(value[attributes.primaryKey]);
+            console.log(value);
+            console.log('====================================');
             data = options.find(
                 item => item[attributes.primaryKey] === primaryKey
             );
