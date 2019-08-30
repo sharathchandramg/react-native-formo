@@ -24,6 +24,7 @@ export default class LookupField extends Component {
 
     constructor(props) {
         super(props);
+        this.timeout = 0;
         this.state = {
             modalVisible: false,
             searchModalVisible: false,
@@ -36,7 +37,6 @@ export default class LookupField extends Component {
             filterArr: [],
             activeCategory: null,
             categoryToValue: [],
-            timeout: 0,
         };
     }
 
@@ -414,6 +414,7 @@ export default class LookupField extends Component {
             filterModalVisible: false,
             modalVisible: true,
             searchText: '',
+            categoryToValue: [],
         });
     };
 
