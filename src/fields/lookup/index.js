@@ -24,6 +24,7 @@ export default class LookupField extends Component {
 
     constructor(props) {
         super(props);
+        this.timeout = 0;
         this.state = {
             modalVisible: false,
             searchModalVisible: false,
@@ -37,38 +38,6 @@ export default class LookupField extends Component {
             activeCategory: null,
             categoryToValue: [],
         };
-    }
-
-    componentDidMount() {
-        const { attributes } = this.props;
-        if (!isEmpty(attributes) && !isEmpty(attributes['data_source'])) {
-            const { type, key, url } = attributes['data_source'];
-            if (!isEmpty(type) && type === 'remote') {
-                let len = attributes['options']
-                    ? attributes['options'].length
-                    : 0;
-                let offset = len;
-                this.handleOnGetQuery(offset);
-            } else {
-                this.setLocalOptions(attributes['options']);
-            }
-        } else {
-            this.setLocalOptions(attributes['options']);
-        }
-        if (
-            this.isFilterEnable(attributes) &&
-            !isEmpty(attributes['filterCategory'])
-        ) {
-            let activeCategory = attributes['filterCategory'][0];
-            if (
-                typeof activeCategory !== 'undefined' &&
-                !isEmpty(attributes['options'])
-            ) {
-                this.setState({ options: attributes['options'] }, () => {
-                    this.setFilterCategory(activeCategory);
-                });
-            }
-        }
     }
 
     setLocalOptions = options => {
@@ -93,7 +62,7 @@ export default class LookupField extends Component {
         }
     };
 
-    handleOnSearchQuery = searchText => {
+    handleOnSearchQuery = (searchText, lookAhead) => {
         this.setLookupFilter(searchText);
         const { onSearchQuery, attributes } = this.props;
         const data_source = attributes['data_source'];
@@ -129,7 +98,10 @@ export default class LookupField extends Component {
             let categoryToValue = [];
             categoryToValue.push(obj);
             this.setState({
-                searchModalVisible: false,
+                searchModalVisible:
+                    typeof lookAhead !== 'undefined' && lookAhead
+                        ? true
+                        : false,
                 categoryToValue: categoryToValue,
             });
         }
@@ -415,8 +387,14 @@ export default class LookupField extends Component {
                     searchText: searchText,
                 });
             }
-        } else {
-            this.setState({ searchText: searchText });
+        } else if (this.state.searchModalVisible) {
+            this.setState({ searchText: searchText }, () => {
+                if (this.timeout) clearTimeout(this.timeout);
+                this.timeout = setTimeout(() => {
+                    const lookAhead = true;
+                    this.handleOnSearchQuery(searchText, lookAhead);
+                }, 1000);
+            });
         }
     };
 
@@ -436,6 +414,7 @@ export default class LookupField extends Component {
             filterModalVisible: false,
             modalVisible: true,
             searchText: '',
+            categoryToValue: [],
         });
     };
 
@@ -466,11 +445,14 @@ export default class LookupField extends Component {
 
     toggleModalVisible = () => {
         if (this.state.modalVisible) {
-            const {attributes } = this.props;
+            const { attributes } = this.props;
             const data_source = attributes['data_source'];
             if (!isEmpty(data_source) && data_source['type'] !== 'remote') {
-                attributes['options'] = this.state.options.length ? this.state.options : attributes['options'];
+                attributes['options'] = this.state.options.length
+                    ? this.state.options
+                    : attributes['options'];
             }
+            if (this.timeout) clearTimeout(this.timeout);
             this.setState({
                 modalVisible: false,
                 filterModalVisible: false,
@@ -480,11 +462,49 @@ export default class LookupField extends Component {
                 searchText: '',
             });
         } else {
-            this.setState({
-                filterModalVisible: false,
-                searchModalVisible: false,
-                modalVisible: true,
-            });
+            this.setState(
+                {
+                    filterModalVisible: false,
+                    searchModalVisible: false,
+                    modalVisible: true,
+                    searchText: '',
+                    categoryToValue: [],
+                },
+                () => {
+                    const { attributes } = this.props;
+                    if (
+                        !isEmpty(attributes) &&
+                        !isEmpty(attributes['data_source'])
+                    ) {
+                        const { type, key, url } = attributes['data_source'];
+                        if (!isEmpty(type) && type === 'remote') {
+                            const offset = 0;
+                            this.handleOnGetQuery(offset);
+                        } else {
+                            this.setLocalOptions(attributes['options']);
+                        }
+                    } else {
+                        this.setLocalOptions(attributes['options']);
+                    }
+                    if (
+                        this.isFilterEnable(attributes) &&
+                        !isEmpty(attributes['filterCategory'])
+                    ) {
+                        let activeCategory = attributes['filterCategory'][0];
+                        if (
+                            typeof activeCategory !== 'undefined' &&
+                            !isEmpty(attributes['options'])
+                        ) {
+                            this.setState(
+                                { options: attributes['options'] },
+                                () => {
+                                    this.setFilterCategory(activeCategory);
+                                }
+                            );
+                        }
+                    }
+                }
+            );
         }
     };
 
