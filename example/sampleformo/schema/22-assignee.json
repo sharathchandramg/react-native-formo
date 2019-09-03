@@ -1,0 +1,14 @@
+{
+    "type": "assignee",
+    "name": "_mo_assignee",
+    "label": "Assignee",
+    "primaryKey": "designation_id",
+    "labelKey": "designation_name",
+    "objectType": true,
+    "options": [],
+    "config":{
+        "type" :"team_groups",
+        "default" : "all",
+        "level": 1
+    }
+}
