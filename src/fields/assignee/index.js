@@ -89,6 +89,7 @@ export default class AssigneeField extends Component {
                     {
                         newSelected: attributes['value'],
                         modalVisible: !this.state.modalVisible,
+                        searchText: '',
                     },
                     () => this.setInitialData()
                 );
@@ -96,6 +97,7 @@ export default class AssigneeField extends Component {
             this.setState(
                 {
                     modalVisible: !this.state.modalVisible,
+                    searchText: '',
                 },
                 () => this.setInitialData()
             );
@@ -103,6 +105,7 @@ export default class AssigneeField extends Component {
             this.setState(
                 {
                     modalVisible: !this.state.modalVisible,
+                    searchText: '',
                 },
                 () => this.setInitialData()
             );

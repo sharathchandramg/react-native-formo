@@ -98,6 +98,7 @@ export default class CollaboratorField extends Component {
                     {
                         newSelected: attributes['value'],
                         modalVisible: !this.state.modalVisible,
+                        searchText: '',
                     },
                     () => this.setInitialData()
                 );
@@ -105,6 +106,7 @@ export default class CollaboratorField extends Component {
                 this.setState(
                     {
                         modalVisible: !this.state.modalVisible,
+                        searchText: '',
                     },
                     () => this.setInitialData()
                 );
@@ -113,6 +115,7 @@ export default class CollaboratorField extends Component {
             this.setState(
                 {
                     modalVisible: !this.state.modalVisible,
+                    searchText: '',
                 },
                 () => this.setInitialData()
             );
@@ -151,8 +154,6 @@ export default class CollaboratorField extends Component {
                             : false,
                         newSelected: newSelected,
                         searchModalVisible: false,
-                        options: attributes['options'],
-                        searchText: '',
                     },
                     () =>
                         this.props.updateValue(
