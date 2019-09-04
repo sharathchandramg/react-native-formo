@@ -93,6 +93,12 @@ export default class AssigneeField extends Component {
                     () => this.setInitialData()
                 );
             }
+            this.setState(
+                {
+                    modalVisible: !this.state.modalVisible,
+                },
+                () => this.setInitialData()
+            );
         } else {
             this.setState(
                 {
