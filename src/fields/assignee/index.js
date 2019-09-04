@@ -4,6 +4,7 @@ import { Modal, TouchableOpacity } from 'react-native';
 import _ from 'lodash';
 import { isEmpty } from '../../utils/validators';
 import SearchHeader from '../../components/headers/searchHeader';
+
 import {
     View,
     Text,
@@ -18,12 +19,11 @@ import {
     Body,
     Title,
     Button,
-    Footer,
 } from 'native-base';
 
 import styles from './styles';
 
-export default class CollaboratorField extends Component {
+export default class AssigneeField extends Component {
     static propTypes = {
         attributes: PropTypes.object,
         updateValue: PropTypes.func,
@@ -48,7 +48,7 @@ export default class CollaboratorField extends Component {
 
     setInitialData = () => {
         const { attributes } = this.props;
-        if (!isEmpty(attributes) && attributes['type'].match(/collaborator/)) {
+        if (!isEmpty(attributes) && attributes['type'].match(/assignee/)) {
             this.handleOnGetQuery();
             this.setLocalOptions(attributes['options']);
         } else {
@@ -58,7 +58,7 @@ export default class CollaboratorField extends Component {
 
     handleOnGetQuery = () => {
         const { onGetQuery, attributes } = this.props;
-        if (!isEmpty(attributes) && attributes['type'].match(/collaborator/)) {
+        if (!isEmpty(attributes) && attributes['type'].match(/assignee/)) {
             if (typeof onGetQuery === 'function') {
                 onGetQuery(attributes);
             }
@@ -69,15 +69,6 @@ export default class CollaboratorField extends Component {
         if (!isEmpty(options)) {
             this.setState({ options: options });
         }
-    };
-
-    handleAddPressed = () => {
-        const { attributes, updateValue } = this.props;
-        const newSelected = this.state.newSelected;
-        if (!isEmpty(newSelected) && typeof updateValue === 'function') {
-            updateValue(attributes.name, newSelected);
-        }
-        this.setState({ modalVisible: false, searchModalVisible: false });
     };
 
     toggleSearchModalVisible = () => {
@@ -101,14 +92,13 @@ export default class CollaboratorField extends Component {
                     },
                     () => this.setInitialData()
                 );
-            } else {
-                this.setState(
-                    {
-                        modalVisible: !this.state.modalVisible,
-                    },
-                    () => this.setInitialData()
-                );
             }
+            this.setState(
+                {
+                    modalVisible: !this.state.modalVisible,
+                },
+                () => this.setInitialData()
+            );
         } else {
             this.setState(
                 {
@@ -150,9 +140,6 @@ export default class CollaboratorField extends Component {
                             ? this.state.modalVisible
                             : false,
                         newSelected: newSelected,
-                        searchModalVisible: false,
-                        options: attributes['options'],
-                        searchText: '',
                     },
                     () =>
                         this.props.updateValue(
@@ -310,6 +297,7 @@ export default class CollaboratorField extends Component {
                             : attributes.value &&
                               attributes.value.indexOf(item) !== -1;
                     }
+
                     return (
                         <ListItem
                             key={index}
@@ -371,23 +359,6 @@ export default class CollaboratorField extends Component {
         );
     };
 
-    renderFotter = () => {
-        const { attributes } = this.props;
-        if (attributes && attributes['multiple']) {
-            return (
-                <Footer style={styles.button}>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => this.handleAddPressed()}
-                    >
-                        <Text style={styles.buttonText}>{'Add'} </Text>
-                    </TouchableOpacity>
-                </Footer>
-            );
-        }
-        return null;
-    };
-
     renderSearchText = () => {
         if (this.state.searchText) {
             return (
@@ -441,7 +412,6 @@ export default class CollaboratorField extends Component {
                     {this.renderHeader()}
                     {this.renderSearchText()}
                     <Content>{this.renderOptionList()}</Content>
-                    {this.renderFotter()}
                 </Container>
             );
         }
@@ -474,7 +444,6 @@ export default class CollaboratorField extends Component {
                         {this.renderIcon()}
                     </TouchableOpacity>
                 </View>
-
                 <Modal
                     visible={this.state.modalVisible}
                     animationType="none"

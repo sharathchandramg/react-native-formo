@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-const _ = require('lodash');
-
+import _ from 'lodash';
 import { View, Keyboard, Text, ScrollView } from 'react-native';
-
 import baseTheme from './theme';
 
 import TextInputField from './fields/textInput';
@@ -21,6 +19,7 @@ import StatusPicker from './fields/statusPicker';
 import CustomDataComponent from './fields/customDataView';
 import SimpleGridView from './fields/simplegrid';
 import CollaboratorField from './fields/collaborator';
+import AssigneeField from './fields/assignee';
 
 import {
     autoValidate,
@@ -505,6 +504,17 @@ export default class Form0 extends Component {
                                 {...this.props}
                             />
                         );
+                    case 'assignee':
+                        return (
+                            <AssigneeField
+                                ref={c => {
+                                    this[field.name] = c;
+                                }}
+                                {...commonProps}
+                                {...this.props}
+                            />
+                        );
+
                     default:
                         break;
                 }
@@ -522,3 +532,4 @@ export default class Form0 extends Component {
         );
     }
 }
+    

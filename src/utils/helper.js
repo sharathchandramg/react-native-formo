@@ -48,7 +48,7 @@ export function getDefaultValue(field) {
             }
             return field.options[0];
         }
-
+        case 'assignee':
         case 'collaborator':
         case 'lookup':
         case 'select': {
@@ -192,6 +192,7 @@ export function getResetValue(field) {
             return field.options[0];
         }
 
+        case 'assignee':
         case 'collaborator':
         case 'select':
         case 'lookup':
@@ -309,6 +310,7 @@ export function autoValidate(field) {
                 }
                 break;
 
+            case 'assignee':
             case 'collaborator':
             case 'lookup':
             case 'select':
