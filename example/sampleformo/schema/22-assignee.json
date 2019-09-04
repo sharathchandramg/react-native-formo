@@ -7,8 +7,7 @@
     "objectType": true,
     "options": [],
     "config":{
-        "type" :"team_groups",
-        "default" : "all",
+        "assignment_type" :"managers",
         "level": 1
     }
 }
