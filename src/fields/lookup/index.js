@@ -427,8 +427,14 @@ export default class LookupField extends Component {
             this.setState({ searchText: searchText }, () => {
                 if (this.timeout) clearTimeout(this.timeout);
                 this.timeout = setTimeout(() => {
-                    const lookAhead = true;
-                    this.handleOnSearchQuery(searchText, lookAhead);
+                    if(this.state.searchText){
+                        const lookAhead = true;
+                        this.handleOnSearchQuery(searchText, lookAhead);
+                    }else{
+                        const offset = 0;
+                        this.handleOnGetQuery(offset);
+                    }
+                    
                 }, 1000);
             });
         }
@@ -599,10 +605,6 @@ export default class LookupField extends Component {
         let data = null;
         if (options !== null && value !== null) {
             let primaryKey = value[attributes.primaryKey];
-            console.log('===========key== value=======================');
-            console.log(value[attributes.primaryKey]);
-            console.log(value);
-            console.log('====================================');
             data = options.find(
                 item => item[attributes.primaryKey] === primaryKey
             );
