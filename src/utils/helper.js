@@ -314,11 +314,7 @@ export function autoValidate(field) {
             case 'collaborator':
             case 'lookup':
             case 'select':
-                if (
-                    typeof field.value === 'undefined' ||
-                    !field.value ||
-                    field.value[0] === '{}'
-                ) {
+                if (!field.value || isEmpty(field.value)) {
                     error = true;
                     errorMsg = `${field.label} is required`;
                 }
