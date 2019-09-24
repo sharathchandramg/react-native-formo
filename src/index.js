@@ -173,7 +173,7 @@ export default class Form0 extends Component {
 
     getLookupSubsciberFields =(name)=>{
         const lookupSubscriberFields = _.filter(this.props.fields,(field)=>{
-            if(typeof field['subscriber'] !=='undefined' && field['subscriber'] === name){
+            if(typeof field['data-pub'] !=='undefined' && field['data-pub'] === name){
                 return field
             }
         })
