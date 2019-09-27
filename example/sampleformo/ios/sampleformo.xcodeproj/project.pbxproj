@@ -56,12 +56,10 @@
 		B2544066CED448F789105DDB /* react-native-formO-tvOS.app in Frameworks */ = {isa = PBXBuildFile; fileRef = 860E83ECCBB14288B0B308C9 /* react-native-formO-tvOS.app */; };
 		BB09505958904554903483B9 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 79ACDB3996B14E05BF076C6A /* MaterialCommunityIcons.ttf */; };
 		C0FA9F4B958240E09B4AD0F6 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 63C41A3F60DC4627B2716ADE /* Ionicons.ttf */; };
-		CF20DE5C22A846C6B2520CDD /* react-native-formO.app in Frameworks */ = {isa = PBXBuildFile; fileRef = 480B06B11E3D48FD9C5EEC88 /* react-native-formO.app */; };
 		D01020D341734794BA6BF9C0 /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D89F861ECB6D4F579693769A /* Entypo.ttf */; };
 		DBB7B70B63C243CDB525596A /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8B7AFD96732D4F52AE25BF43 /* Feather.ttf */; };
 		E25EF6FA09774832976ABEC9 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A544653A99314CC9BA2A6782 /* Foundation.ttf */; };
 		F3AF66936E67471DA99D6967 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 477D15B66E20488086A00652 /* FontAwesome.ttf */; };
-		F9901D69E5254922909CF7EF /* react-native-formOTests.xctest in Frameworks */ = {isa = PBXBuildFile; fileRef = 36921C00B750430BADDC004D /* react-native-formOTests.xctest */; };
 		FEBA53E2003E48479C33AF65 /* libFastImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 40C19611A2864E05B3CF6C61 /* libFastImage.a */; };
 /* End PBXBuildFile section */
 
@@ -495,8 +493,6 @@
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 				654EAB73233E8A670027170B /* RSKImageCropper.framework in Frameworks */,
 				FEBA53E2003E48479C33AF65 /* libFastImage.a in Frameworks */,
-				CF20DE5C22A846C6B2520CDD /* react-native-formO.app in Frameworks */,
-				F9901D69E5254922909CF7EF /* react-native-formOTests.xctest in Frameworks */,
 				1C3AE93D0F2CD729A51FA6A6 /* libPods-sampleformo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -927,6 +923,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -1377,7 +1374,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		215D3BE72FC568D5F9F6D643 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
