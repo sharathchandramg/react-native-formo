@@ -41,6 +41,10 @@
 		490B56971C884F239BCC9193 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CDC57840F9A94926A0B79DD1 /* MaterialIcons.ttf */; };
 		5E0740DF016549809D933354 /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C1C5402655114F49864A47BC /* rubicon-icon-font.ttf */; };
 		654EAB71233E81BC0027170B /* libRNImageCropPicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 654EAB70233E81BC0027170B /* libRNImageCropPicker.a */; };
+		654EAB73233E8A670027170B /* RSKImageCropper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 654EAB72233E8A670027170B /* RSKImageCropper.framework */; };
+		654EAB74233E8A670027170B /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 654EAB72233E8A670027170B /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		654EAB77233E8A800027170B /* QBImagePicker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 654EAB76233E8A800027170B /* QBImagePicker.framework */; };
+		654EAB78233E8A800027170B /* QBImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 654EAB76233E8A800027170B /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6F05E886B55F4F86B03DAA99 /* react-native-formO-tvOSTests.xctest in Frameworks */ = {isa = PBXBuildFile; fileRef = A2E387A79901449C9158BB48 /* react-native-formO-tvOSTests.xctest */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8B8D561AE8D8471F89D2E4B7 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84A634ED7E104B4886DE32DF /* Octicons.ttf */; };
@@ -386,6 +390,21 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		654EAB75233E8A670027170B /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				654EAB74233E8A670027170B /* RSKImageCropper.framework in Embed Frameworks */,
+				654EAB78233E8A800027170B /* QBImagePicker.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTActionSheet.xcodeproj; path = "../node_modules/react-native/Libraries/ActionSheetIOS/RCTActionSheet.xcodeproj"; sourceTree = "<group>"; };
@@ -424,6 +443,8 @@
 		63C41A3F60DC4627B2716ADE /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/native-base/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		654EAB68233E819C0027170B /* imageCropPicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = imageCropPicker.xcodeproj; path = "../node_modules/react-native-image-crop-picker/ios/imageCropPicker.xcodeproj"; sourceTree = "<group>"; };
 		654EAB70233E81BC0027170B /* libRNImageCropPicker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNImageCropPicker.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		654EAB72233E8A670027170B /* RSKImageCropper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		654EAB76233E8A800027170B /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		681B6D725273411BB9F7FC14 /* react-native-formO.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = "react-native-formO.xcodeproj"; path = "../node_modules/react-native-form0/ios/react-native-formO.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		79ACDB3996B14E05BF076C6A /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
@@ -468,9 +489,11 @@
 				133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */,
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
+				654EAB77233E8A800027170B /* QBImagePicker.framework in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
+				654EAB73233E8A670027170B /* RSKImageCropper.framework in Frameworks */,
 				FEBA53E2003E48479C33AF65 /* libFastImage.a in Frameworks */,
 				CF20DE5C22A846C6B2520CDD /* react-native-formO.app in Frameworks */,
 				F9901D69E5254922909CF7EF /* react-native-formOTests.xctest in Frameworks */,
@@ -749,6 +772,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				654EAB76233E8A800027170B /* QBImagePicker.framework */,
+				654EAB72233E8A670027170B /* RSKImageCropper.framework */,
 				13B07FAE1A68108700A75B9A /* sampleformo */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* sampleformoTests */,
@@ -823,6 +848,7 @@
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				416F731255DBEC62A5571FB1 /* [CP] Copy Pods Resources */,
+				654EAB75233E8A670027170B /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -881,6 +907,9 @@
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = GLV42G4WW5;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1547,6 +1576,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
+				DEVELOPMENT_TEAM = GLV42G4WW5;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
@@ -1554,6 +1584,7 @@
 					"$(SRCROOT)/../node_modules/react-native-form0/ios/react-native-formO",
 				);
 				INFOPLIST_FILE = sampleformo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1572,6 +1603,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GLV42G4WW5;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-image-crop-picker/ios/**",
@@ -1579,6 +1611,7 @@
 					"$(SRCROOT)/../node_modules/react-native-form0/ios/react-native-formO",
 				);
 				INFOPLIST_FILE = sampleformo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
