@@ -3,8 +3,9 @@ package com.sampleformo;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.heanoria.library.reactnative.locationenabler.RNAndroidLocationEnablerPackage;
 import com.reactnative.ivpusic.imagepicker.PickerPackage;
+import com.dylanvann.fastimage.FastImageViewPackage;
+import com.heanoria.library.reactnative.locationenabler.RNAndroidLocationEnablerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -25,8 +26,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNAndroidLocationEnablerPackage(),
-            new PickerPackage()
+            new PickerPackage(),
+            new FastImageViewPackage(),
+            new RNAndroidLocationEnablerPackage()
       );
     }
 

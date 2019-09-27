@@ -95,7 +95,13 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    buildToolsVersion '28.0.3'
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+        
+    } 
+
 
     defaultConfig {
         applicationId "com.react-native-formo"
@@ -104,30 +110,32 @@ android {
         versionCode 1
         versionName "1.0"
         vectorDrawables.useSupportLibrary = true
-        ndk {
-            abiFilters "armeabi-v7a", "x86"
-        }
+    
     }
+
     splits {
         abi {
             reset()
             enable enableSeparateBuildPerCPUArchitecture
             universalApk false  // If true, also generate a universal APK
-            include "armeabi-v7a", "x86"
+            include "armeabi-v7a", "x86", "arm64-v8a"
         }
     }
+
     buildTypes {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
-    // applicationVariants are e.g. debug, release
+     // applicationVariants are e.g. debug, release
     applicationVariants.all { variant ->
+        
         variant.outputs.each { output ->
+
             // For each separate APK per architecture, set a unique version code as described here:
             // http://tools.android.com/tech-docs/new-build-system/user-guide/apk-splits
-            def versionCodes = ["armeabi-v7a":1, "x86":2]
+            def versionCodes = ["armeabi-v7a":1, "x86":2, "arm64-v8a": 3]
             def abi = output.getFilter(OutputFile.ABI)
             if (abi != null) {  // null for the universal-debug, universal-release variants
                 output.versionCodeOverride =
@@ -137,7 +145,16 @@ android {
     }
 }
 
+configurations.all {
+    resolutionStrategy {
+        force 'com.android.support:design:28.0.0'
+        force 'com.android.support:support-v4:28.0.0'
+        force 'com.android.support:appcompat-v7:28.0.0'
+    }
+}
+
 dependencies {
+    compile project(':react-native-fast-image')
     compile project(':react-native-android-location-enabler')
     compile project(':react-native-image-crop-picker')
     implementation fileTree(dir: "libs", include: ["*.jar"])
