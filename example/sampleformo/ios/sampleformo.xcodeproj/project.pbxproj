@@ -41,8 +41,6 @@
 		32CFEC0B02784A2FBE8ABCFB /* Roboto.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0C64A81EA622433086280683 /* Roboto.ttf */; };
 		490B56971C884F239BCC9193 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CDC57840F9A94926A0B79DD1 /* MaterialIcons.ttf */; };
 		5E0740DF016549809D933354 /* rubicon-icon-font.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C1C5402655114F49864A47BC /* rubicon-icon-font.ttf */; };
-		654EAB74233E8A670027170B /* RSKImageCropper.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 654EAB72233E8A670027170B /* RSKImageCropper.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		654EAB78233E8A800027170B /* QBImagePicker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 654EAB76233E8A800027170B /* QBImagePicker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6F05E886B55F4F86B03DAA99 /* react-native-formO-tvOSTests.xctest in Frameworks */ = {isa = PBXBuildFile; fileRef = A2E387A79901449C9158BB48 /* react-native-formO-tvOSTests.xctest */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		8B8D561AE8D8471F89D2E4B7 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 84A634ED7E104B4886DE32DF /* Octicons.ttf */; };
@@ -385,8 +383,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				654EAB74233E8A670027170B /* RSKImageCropper.framework in Embed Frameworks */,
-				654EAB78233E8A800027170B /* QBImagePicker.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -427,8 +423,6 @@
 		5FD375F5DD1E4DB293140502 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/native-base/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		63C41A3F60DC4627B2716ADE /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/native-base/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		654EAB70233E81BC0027170B /* libRNImageCropPicker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libRNImageCropPicker.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		654EAB72233E8A670027170B /* RSKImageCropper.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RSKImageCropper.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		654EAB76233E8A800027170B /* QBImagePicker.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = QBImagePicker.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		681B6D725273411BB9F7FC14 /* react-native-formO.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = "react-native-formO.xcodeproj"; path = "../node_modules/react-native-form0/ios/react-native-formO.xcodeproj"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		79ACDB3996B14E05BF076C6A /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/native-base/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
@@ -737,8 +731,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				654EAB76233E8A800027170B /* QBImagePicker.framework */,
-				654EAB72233E8A670027170B /* RSKImageCropper.framework */,
 				13B07FAE1A68108700A75B9A /* sampleformo */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* sampleformoTests */,
