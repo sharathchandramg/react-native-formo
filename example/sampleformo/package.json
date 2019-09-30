@@ -11,7 +11,7 @@
     "moment": "^2.22.2",
     "native-base": "^2.13.8",
     "react": "16.8.3",
-    "react-native": "0.59.0",
+    "react-native": "0.59.10",
     "react-native-android-location-enabler": "1.0.6",
     "react-native-fast-image": "6.1.1",
     "react-native-form0": "0.0.84",

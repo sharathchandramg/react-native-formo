@@ -67,9 +67,16 @@ export default class ImageField extends Component {
 
     _getImageFromStorage = image => {
         const { attributes } = this.props;
+        let filePath = "";
+        if(Platform.OS.match(/ios/i)){
+            filePath = image['path'].replace("file://","",1);
+        }else{
+            filePath = image['path'];
+        }
+
         let imageObj = {
             contentType: image['mime'],
-            filePath: image['path'],
+            filePath: filePath,
             url: '',
             data: image['data'],
         };
