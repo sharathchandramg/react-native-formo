@@ -42,8 +42,9 @@ export default class ImageField extends Component {
                 value['filePath']
             ) {
                 handleGetSignedUrl(attributes, value);
+                this.isFirst = false;
             }
-            this.isFirst = false;
+    
         }
     }
 
