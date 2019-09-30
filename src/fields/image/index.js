@@ -41,12 +41,6 @@ export default class ImageField extends Component {
                 value !== null &&
                 value['filePath']
             ) {
-                console.log(
-                    '=============  come here 33 ======================='
-                );
-                console.log(attributes);
-                console.log('====================================');
-
                 handleGetSignedUrl(attributes, value);
             }
             this.isFirst = false;
@@ -192,7 +186,7 @@ export default class ImageField extends Component {
                 >
                     <FastImage
                         style={{ flex: 1, height: undefined, width: undefined }}
-                        resizeMode={FastImage.resizeMode.contain}
+                        resizeMode={FastImage.resizeMode.cover}
                         source={source}
                     />
                 </Animated.View>
