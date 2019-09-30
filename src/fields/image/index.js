@@ -25,7 +25,8 @@ export default class ImageField extends Component {
 
     constructor(props) {
         super(props);
-        this.isFirst = true;
+        this.isLocal = false;
+        this.isFirstTime = true;
         this.state = {
             image: undefined,
             height: new Animated.Value(0),
@@ -33,7 +34,7 @@ export default class ImageField extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props !== prevProps && this.isFirst) {
+        if (this.isFirstTime && !this.isLocal) {
             const { handleGetSignedUrl, attributes } = this.props;
             const { value } = attributes;
             if (
@@ -42,9 +43,8 @@ export default class ImageField extends Component {
                 value['filePath']
             ) {
                 handleGetSignedUrl(attributes, value);
-                this.isFirst = false;
+                this.isFirstTime = false;
             }
-    
         }
     }
 
@@ -68,19 +68,19 @@ export default class ImageField extends Component {
 
     _getImageFromStorage = image => {
         const { attributes } = this.props;
-        let filePath = "";
-        if(Platform.OS.match(/ios/i)){
-            filePath = image['path'].replace("file://","",1);
-        }else{
+        let filePath = '';
+        if (Platform.OS.match(/ios/i)) {
+            filePath = image['path'].replace('file://', '', 1);
+        } else {
             filePath = image['path'];
         }
 
         let imageObj = {
             contentType: image['mime'],
             filePath: filePath,
-            url: '',
             data: image['data'],
         };
+
         this.setState(
             {
                 image: imageObj,
@@ -88,6 +88,7 @@ export default class ImageField extends Component {
             () => {
                 if (Platform.OS !== 'ios') this.bottomSheet.close();
                 this._startAnimation();
+                this.isLocal = true;
             }
         );
         this.props.updateValue(attributes.name, imageObj);
