@@ -32,7 +32,7 @@ PODS:
     - QBImagePickerController
     - React/Core
     - RSKImageCropper
-  - RSKImageCropper (2.2.2)
+  - RSKImageCropper (2.2.3)
   - yoga (0.59.0.React)
 
 DEPENDENCIES:
@@ -67,9 +67,9 @@ SPEC CHECKSUMS:
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
   React: 0d6c719d9549bea0bd5676f8170b0e5c56e2c3c7
   RNImageCropPicker: 6134b66a3d5bc13e2895a97c630a4254006902b4
-  RSKImageCropper: 05e3b82a18da83ea3c2b7bffa7f2199a621d6802
+  RSKImageCropper: a446db0e8444a036b34f3c43db01b2373baa4b2a
   yoga: 26673abd38bbdf0c33e134ad9e690c5fbf16e8fc
 
-PODFILE CHECKSUM: 13451f8a02485c9ff5e1a6164c3a55d59f2bf9b6
+PODFILE CHECKSUM: 0bb84cb5c457cca632b494aaac0db87e992846d1
 
 COCOAPODS: 1.7.5
