@@ -56,4 +56,9 @@ buck-out/
 *.jsbundle
 
 # pod files
-Pods/
+Pods
+Podfile.lock
+
+# gradle build files
+.gradle/**/*.bin
+.gradle/**/*.lock
