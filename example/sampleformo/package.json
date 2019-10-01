@@ -9,22 +9,24 @@
   "dependencies": {
     "mathjs": "^5.3.1",
     "moment": "^2.22.2",
-    "native-base": "^2.8.1",
-    "react": "16.6.0-alpha.8af6728",
-    "react-native": "0.57.4",
-    "react-native-android-location-enabler": "^1.0.8",
-    "react-native-form0": "0.0.86",
-    "react-native-image-crop-picker": "^0.21.3",
-    "react-native-js-bottom-sheet": "^1.0.0",
-    "react-native-modalbox": "^1.6.0",
-    "shortid": "^2.2.14",
-    "recyclerlistview": "^1.2.6"
+    "native-base": "^2.13.8",
+    "react": "16.8.3",
+    "react-native": "0.59.10",
+    "react-native-android-location-enabler": "1.0.6",
+    "react-native-fast-image": "6.1.1",
+    "react-native-form0": "0.0.87",
+    "react-native-image-crop-picker": "^0.24.1",
+    "react-native-js-bottom-sheet": "1.0.0",
+    "react-native-modalbox": "1.7.0",
+    "react-timer-mixin": "^0.13.4",
+    "recyclerlistview": "^1.2.6",
+    "shortid": "^2.2.14"
   },
   "devDependencies": {
-    "babel-jest": "23.6.0",
-    "jest": "23.6.0",
-    "metro-react-native-babel-preset": "0.48.2",
-    "react-test-renderer": "16.6.0-alpha.8af6728"
+    "babel-jest": "24.8.0",
+    "jest": "24.8.0",
+    "metro-react-native-babel-preset": "0.54.1",
+    "react-test-renderer": "16.8.3"
   },
   "jest": {
     "preset": "react-native"

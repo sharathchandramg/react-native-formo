@@ -1,6 +1,6 @@
 {
   "name": "react-native-form0",
-  "version": "0.0.86",
+  "version": "0.0.88",
   "description": "Build model based simple forms for React Native",
   "main": "src/index.js",
   "scripts": {
@@ -17,28 +17,28 @@
   },
   "homepage": "https://github.com/sharathchandramg/react-native-formo#readme",
   "devDependencies": {
-    "native-base": "^2.8.1",
-    "react": "^16.6.0",
-    "react-native": "^0.57.0"
+    "native-base": "^2.13.8",
+    "react": "16.8.3",
+    "react-native": "0.59.10"
   },
   "dependencies": {
     "lodash": "^4.17.11",
     "mathjs": "^5.3.1",
     "moment": "^2.22.2",
     "prop-types": "^15.6.2",
+    "react-native-fast-image": "6.1.1",
+    "react-timer-mixin": "^0.13.4",
     "recyclerlistview": "^1.2.6",
-    "shortid": "^2.2.14"
+    "shortid": "^2.2.14",
+    "react-native-image-crop-picker": ">=0.24.1",
+    "react-native-android-location-enabler": ">=1.0.6",
+    "react-native-js-bottom-sheet": ">=1.0.0",
+    "react-native-modalbox": ">=1.7.0",
+    "react-native-vector-icons": ">=6.0.2"
   },
   "peerDependencies": {
-    "react-native": ">=0.55.0",
-    "react": ">=16.0.0",
-    "native-base": "^2.7.2",
-    "lodash": ">=4.0.0",
-    "react-native-android-location-enabler": ">=1.0.8",
-    "react-native-image-crop-picker": ">=0.21.3",
-    "react-native-js-bottom-sheet": ">=1.0.0",
-    "react-native-modalbox": ">=1.6.0",
-    "react-native-vector-icons": ">=6.0.2",
-    "recyclerlistview": ">=1.2.6"
+    "react-native": ">=0.59.10",
+    "react": ">=16.8.3",
+    "native-base": ">=2.13.8"
   }
 }
