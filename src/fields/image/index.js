@@ -252,7 +252,7 @@ export default class ImageField extends Component {
                         </View>
                     </ListItem>
                     <View style={{ flexDirection: 'row', flex: 1 }}>
-                        {typeof this.state.path !== 'undefined' ||
+                        {typeof this.state.image !== 'undefined' ||
                         attributes.value !== null
                             ? this.renderPreview(attributes)
                             : null}
