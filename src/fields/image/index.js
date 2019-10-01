@@ -103,7 +103,7 @@ export default class ImageField extends Component {
         
         const {mode} = this.props.attributes;
         let config = null;
-        if(mode.match(/high-resolution/i)){
+        if(!isEmpty(mode) && mode.match(/high-resolution/i)){
             config ={
                 compressImageMaxWidth:1080,
                 compressImageMaxHeight:1080,
@@ -127,7 +127,7 @@ export default class ImageField extends Component {
 
         const {mode} = this.props.attributes;
         let config = null;
-        if(mode.match(/high-resolution/i)){
+        if(!isEmpty(mode) && mode.match(/high-resolution/i)){
             config ={
                 compressImageMaxWidth:1080,
                 compressImageMaxHeight:1080,
