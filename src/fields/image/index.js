@@ -33,6 +33,11 @@ export default class ImageField extends Component {
         };
     }
 
+    componentDidMount(){
+        this.isLocal = false;
+        this.isFirstTime = true;
+    }
+
     componentDidUpdate(prevProps) {
         if (this.isFirstTime && !this.isLocal) {
             const { handleGetSignedUrl, attributes } = this.props;
@@ -95,12 +100,23 @@ export default class ImageField extends Component {
     };
 
     _openCamera = () => {
-        ImagePicker.openCamera({
-            compressImageMaxWidth: 360,
-            compressImageMaxHeight: 360,
-            compressImageQuality: 1.0,
-            includeBase64: true,
-        })
+        
+        const {mode} = this.props.attributes;
+        let config = null;
+        if(mode.match(/high-resolution/i)){
+            config ={
+                compressImageMaxWidth:1080,
+                compressImageMaxHeight:1080,
+                includeBase64: true,
+            }
+        }else{
+            config ={
+                compressImageMaxWidth:360,
+                compressImageMaxHeight:360,
+                includeBase64: true,
+            }
+        }
+        ImagePicker.openCamera(config)
             .then(image => this._getImageFromStorage(image))
             .catch(e => {
                 if (Platform.OS !== 'ios') this.bottomSheet.close();
@@ -108,13 +124,27 @@ export default class ImageField extends Component {
             });
     };
     _openPicker = () => {
-        ImagePicker.openPicker({
-            compressImageMaxWidth: 360,
-            compressImageMaxHeight: 360,
-            compressImageQuality: 1.0,
-            includeBase64: true,
-        })
-            .then(image => this._getImageFromStorage(image))
+
+        const {mode} = this.props.attributes;
+        let config = null;
+        if(mode.match(/high-resolution/i)){
+            config ={
+                compressImageMaxWidth:1080,
+                compressImageMaxHeight:1080,
+                includeBase64: true,
+            }
+        }else{
+            config ={
+                compressImageMaxWidth:360,
+                compressImageMaxHeight:360,
+                includeBase64: true,
+            }
+        }
+
+        ImagePicker.openPicker(config)
+            .then(image => {
+                this._getImageFromStorage(image)
+            })
             .catch(e => {
                 if (Platform.OS !== 'ios') this.bottomSheet.close();
                 console.log(e);

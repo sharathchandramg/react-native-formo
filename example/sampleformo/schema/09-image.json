@@ -35,7 +35,8 @@
         "label": "Bill",
         "required": true,
         "editable": true,
-        "hidden": false
+        "hidden": false,
+        "mode":"high-resolution"
 
     }
 ]

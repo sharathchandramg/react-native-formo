@@ -62,3 +62,7 @@ Podfile.lock
 # gradle build files
 .gradle/**/*.bin
 .gradle/**/*.lock
+
+
+# android .setting file 
+android/.settings
