@@ -111,7 +111,7 @@ export default class LocationField extends Component {
                             );
                             navigation.goBack(null);
                         } else {
-                            locationPickupFailure(err);
+                            this.locationPickupFailure(err);
                         }
                     } else {
                         this.locationPickupSuccess(position);
