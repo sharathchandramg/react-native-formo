@@ -596,21 +596,6 @@ export default class LookupField extends Component {
         );
     };
 
-    getLookupData = value => {
-        let attributes = this.props.attributes;
-        let options =
-            typeof attributes.options !== 'undefined'
-                ? attributes.options
-                : null;
-        let data = null;
-        if (options !== null && value !== null) {
-            let primaryKey = value[attributes.primaryKey];
-            data = options.find(
-                item => item[attributes.primaryKey] === primaryKey
-            );
-            return data;
-        }
-    };
 
     isFilterEnable = attributes => {
         if (!isEmpty(attributes) && !isEmpty(attributes['additional'])) {
@@ -701,17 +686,6 @@ export default class LookupField extends Component {
 
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
-        let value =
-            typeof attributes.value !== 'undefined' && attributes.value !== null
-                ? attributes.value
-                : null;
-        let fields =
-            typeof attributes.fields !== 'undefined' &&
-            attributes.fields !== null
-                ? attributes.fields
-                : [];
-        let data = value !== null ? this.getLookupData(value) : {};
-
         return (
             <View style={styles.container}>
                 <View style={styles.inputLabelWrapper}>
@@ -731,7 +705,7 @@ export default class LookupField extends Component {
                         </View>
                         <View style={styles.valueWrapper}>
                             <Text style={styles.inputText} numberOfLines={2}>
-                                {this.getLabel()}{' '}
+                                {this.getLabel()}
                             </Text>
                         </View>
                         {this.renderlookupIcon()}
@@ -740,15 +714,6 @@ export default class LookupField extends Component {
 
                 <View style={{ paddingHorizontal: 20 }}>
                     <ErrorComponent {...{ attributes, theme }} />
-                </View>
-                <View style={{ flex: 1, width: '100%', marginHorizontal: -5 }}>
-                    <Form0
-                        ref={c => {
-                            this.lookup = c;
-                        }}
-                        fields={fields}
-                        formData={data}
-                    />
                 </View>
                 {
                     <Modal

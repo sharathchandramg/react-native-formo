@@ -1,8 +1,8 @@
 [
     {
         "type": "lookup",
-        "name": "address",
-        "label": "Address",
+        "name": "assignee",
+        "label": "Select Assignee",
         "multiple": false,
         "required": true,
         "editable": true,
@@ -29,41 +29,6 @@
                 "city_state": "Karnataka"
             }
         ],
-        "fields": [
-            {
-                "type": "text",
-                "name": "user_id",
-                "label": "Id",
-                "required": true,
-                "editable": false,
-                "hidden": false
-            },
-            {
-                "type": "text",
-                "name": "user_name",
-                "label": "Name",
-                "required": true,
-                "editable": false,
-                "hidden": false
-            },
-            {
-                "type": "text",
-                "name": "city",
-                "label": "City",
-                "required": true,
-                "editable": true,
-                "hidden": false
-            },
-            {
-                "type": "text",
-                "name": "city_state",
-                "label": "State",
-                "required": true,
-                "editable": true,
-                "hidden": false
-            }
-        ],
-
         "additional":{
             "searchEnable":true,
             "filterEnable":true
@@ -77,21 +42,40 @@
         "filterCategory":[ "user_name","city","city_state"]    
     },
     {
-        "type": "customDataView",
-        "name": "product_catalog",
-        "label": "Select products",
+        "type": "text",
+        "name": "user_id",
+        "label": "Id",
+        "required": true,
+        "editable": false,
+        "hidden": false,
+        "data-pub": "assignee"
+    },
+    {
+        "type": "text",
+        "name": "user_name",
+        "label": "Name",
+        "required": true,
+        "editable": false,
+        "hidden": false,
+        "data-pub": "assignee"
+    },
+    {
+        "type": "text",
+        "name": "city",
+        "label": "City",
         "required": true,
         "editable": true,
         "hidden": false,
-        "multiple": false,
-        "objectType": true,
-        "view_name" : "mo_catalog_1", 
-        "data":[{}],
-        "data_source" : {
-            "type" : "asynstorage/filestorage/api",
-            "key" : ""  
-        },    
-        "defaultValue": {}
+        "data-pub": "assignee"
+    },
+    {
+        "type": "text",
+        "name": "city_state",
+        "label": "State",
+        "required": true,
+        "editable": true,
+        "hidden": false,
+        "data-pub": "assignee"
     }
 ]
 
