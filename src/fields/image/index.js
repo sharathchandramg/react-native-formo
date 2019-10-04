@@ -33,7 +33,7 @@ export default class ImageField extends Component {
         };
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.isLocal = false;
         this.isFirstTime = true;
     }
@@ -45,7 +45,7 @@ export default class ImageField extends Component {
             if (
                 typeof handleGetSignedUrl === 'function' &&
                 value !== null &&
-                value['filePath']
+                value['file_path']
             ) {
                 handleGetSignedUrl(attributes, value);
                 this.isFirstTime = false;
@@ -81,8 +81,8 @@ export default class ImageField extends Component {
         }
 
         let imageObj = {
-            contentType: image['mime'],
-            filePath: filePath,
+            mime_type: image['mime'],
+            file_path: filePath,
             data: image['data'],
         };
 
@@ -100,21 +100,20 @@ export default class ImageField extends Component {
     };
 
     _openCamera = () => {
-        
-        const {mode} = this.props.attributes;
+        const { mode } = this.props.attributes;
         let config = null;
-        if(!isEmpty(mode) && mode.match(/high-resolution/i)){
-            config ={
-                compressImageMaxWidth:1080,
-                compressImageMaxHeight:1080,
+        if (!isEmpty(mode) && mode.match(/high-resolution/i)) {
+            config = {
+                compressImageMaxWidth: 1080,
+                compressImageMaxHeight: 1080,
                 includeBase64: true,
-            }
-        }else{
-            config ={
-                compressImageMaxWidth:360,
-                compressImageMaxHeight:360,
+            };
+        } else {
+            config = {
+                compressImageMaxWidth: 360,
+                compressImageMaxHeight: 360,
                 includeBase64: true,
-            }
+            };
         }
         ImagePicker.openCamera(config)
             .then(image => this._getImageFromStorage(image))
@@ -124,26 +123,25 @@ export default class ImageField extends Component {
             });
     };
     _openPicker = () => {
-
-        const {mode} = this.props.attributes;
+        const { mode } = this.props.attributes;
         let config = null;
-        if(!isEmpty(mode) && mode.match(/high-resolution/i)){
-            config ={
-                compressImageMaxWidth:1080,
-                compressImageMaxHeight:1080,
+        if (!isEmpty(mode) && mode.match(/high-resolution/i)) {
+            config = {
+                compressImageMaxWidth: 1080,
+                compressImageMaxHeight: 1080,
                 includeBase64: true,
-            }
-        }else{
-            config ={
-                compressImageMaxWidth:360,
-                compressImageMaxHeight:360,
+            };
+        } else {
+            config = {
+                compressImageMaxWidth: 360,
+                compressImageMaxHeight: 360,
                 includeBase64: true,
-            }
+            };
         }
 
         ImagePicker.openPicker(config)
             .then(image => {
-                this._getImageFromStorage(image)
+                this._getImageFromStorage(image);
             })
             .catch(e => {
                 if (Platform.OS !== 'ios') this.bottomSheet.close();
@@ -208,8 +206,8 @@ export default class ImageField extends Component {
             source['headers'] = {
                 'content-type': value['contentType'],
             };
-        } else if (!isEmpty(image) && !isEmpty(image['filePath'])) {
-            source['uri'] = image['filePath'];
+        } else if (!isEmpty(image) && !isEmpty(image['file_path'])) {
+            source['uri'] = image['file_path'];
         }
         return (
             <TouchableOpacity
@@ -308,3 +306,4 @@ export default class ImageField extends Component {
         );
     }
 }
+
