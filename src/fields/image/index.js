@@ -204,7 +204,7 @@ export default class ImageField extends Component {
         if (!isEmpty(value) && !isEmpty(value['url'])) {
             source['uri'] = value['url'];
             source['headers'] = {
-                'content-type': value['contentType'],
+                'content-type': value['mime_type'],
             };
         } else if (!isEmpty(image) && !isEmpty(image['file_path'])) {
             source['uri'] = image['file_path'];

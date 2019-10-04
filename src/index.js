@@ -235,7 +235,7 @@ export default class Form0 extends Component {
                         })
                         
                     }
-                    const lookupValue = _.pick(value, [ pk, lk]);
+                    const lookupValue = _.pick(value, [pk, lk, 'instance_id']);
                     this.handleOnValueChange(valueObj,lookupValue);
                 break;
 
