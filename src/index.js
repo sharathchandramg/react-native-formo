@@ -230,7 +230,7 @@ export default class Form0 extends Component {
                     if(lookupSubscriberFields.length){
                         _.forEach(lookupSubscriberFields,(field)=>{
                             const key = field['name'];
-                            const val = value[key];
+                            const val = value[key] || '';
                             this.handleOnValueChange(field,val)
                         })
                         
