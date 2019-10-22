@@ -1,12 +1,9 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { TouchableOpacity, Modal } from 'react-native';
-import Form0 from './../../index';
 import _ from 'lodash';
 import { isEmpty } from '../../utils/validators';
-
 import { View, Text, Icon } from 'native-base';
-
 import styles from './styles';
 import SearchComponent from '../../components/search';
 import LookupComponent from '../../components/lookup';
@@ -37,6 +34,7 @@ export default class LookupField extends Component {
             filterArr: [],
             activeCategory: null,
             categoryToValue: [],
+            loading: false,
         };
     }
 
@@ -427,14 +425,13 @@ export default class LookupField extends Component {
             this.setState({ searchText: searchText }, () => {
                 if (this.timeout) clearTimeout(this.timeout);
                 this.timeout = setTimeout(() => {
-                    if(this.state.searchText){
+                    if (this.state.searchText) {
                         const lookAhead = true;
                         this.handleOnSearchQuery(searchText, lookAhead);
-                    }else{
+                    } else {
                         const offset = 0;
                         this.handleOnGetQuery(offset);
                     }
-                    
                 }, 1000);
             });
         }
@@ -517,6 +514,39 @@ export default class LookupField extends Component {
         }
     };
 
+    handlePullToRefresh = () => {
+        const { attributes, pullToRefresh } = this.props;
+        const searchText = this.state.searchText;
+        const categoryToValue = this.state.categoryToValue;
+        // based on parameter call filter, search and get
+        if (
+            !isEmpty(attributes) &&
+            !isEmpty(attributes['data_source']) &&
+            attributes['data_source']['type'] === 'remote'
+        ) {
+            const filter = searchText
+                ? searchText
+                : categoryToValue.length > 0
+                ? categoryToValue
+                : null;
+            const offset = Array.isArray(attributes['options'])
+                ? attributes['options'].length
+                : 0;
+            if (pullToRefresh && typeof pullToRefresh === 'function') {
+                if (filter && filter !== null) {
+                    pullToRefresh(
+                        attributes,
+                        filter,
+                        offset,
+                        (action = 'search/filter')
+                    );
+                } else {
+                    pullToRefresh(attributes, '', offset, (action = 'get'));
+                }
+            }
+        }
+    };
+
     onEndReached = () => {
         const { attributes, onSearchQuery } = this.props;
         const searchText = this.state.searchText;
@@ -595,7 +625,6 @@ export default class LookupField extends Component {
             </TouchableOpacity>
         );
     };
-
 
     isFilterEnable = attributes => {
         if (!isEmpty(attributes) && !isEmpty(attributes['additional'])) {
@@ -686,6 +715,7 @@ export default class LookupField extends Component {
 
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
+
         return (
             <View style={styles.container}>
                 <View style={styles.inputLabelWrapper}>
@@ -744,6 +774,8 @@ export default class LookupField extends Component {
                                 filter={this.state.categoryToValue}
                                 handleReset={this.handleReset}
                                 activeCategory={this.state.activeCategory}
+                                handlePullToRefresh={this.handlePullToRefresh}
+                                loading={this.state.loading}
                             />
                         )}
                     </Modal>

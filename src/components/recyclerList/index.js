@@ -5,10 +5,10 @@ import {
     DataProvider,
 } from 'recyclerlistview';
 
-import { Dimensions, View } from 'react-native';
+import { Dimensions, View, RefreshControl } from 'react-native';
 import { isNull } from '../../utils/validators';
 import Item from '../lookupItem';
-const { width,height } = Dimensions.get('window');
+const { width, height } = Dimensions.get('window');
 
 export default class RecyclerList extends Component {
     constructor(props) {
@@ -35,10 +35,10 @@ export default class RecyclerList extends Component {
             if (this.props.attributes.multiple) {
                 isSelected = this.props.attributes.objectType
                     ? this.props.attributes.value.findIndex(
-                        option =>
-                            option[this.props.attributes.primaryKey] ===
-                            item[this.props.attributes.primaryKey]
-                    ) !== -1
+                          option =>
+                              option[this.props.attributes.primaryKey] ===
+                              item[this.props.attributes.primaryKey]
+                      ) !== -1
                     : this.props.attributes.value.indexOf(item) !== -1;
             }
             return (
@@ -53,12 +53,9 @@ export default class RecyclerList extends Component {
         return null;
     }
 
-    
-
     render() {
-
         return (
-            <View style={{ minHeight: 60}}>
+            <View style={{ minHeight: parseInt(height / 2) }}>
                 <RecyclerListView
                     layoutProvider={this._layoutProvider}
                     dataProvider={this.dataProvider.cloneWithRows(
@@ -67,8 +64,16 @@ export default class RecyclerList extends Component {
                     rowRenderer={this._rowRenderer}
                     canChangeSize={true}
                     onEndReached={this.props.onEndReached}
-                    onEndReachedThreshold={parseInt(height/4)}
+                    onEndReachedThreshold={parseInt(height / 4)}
                     style={{ margin: 10 }}
+                    refreshControl={
+                        <RefreshControl
+                            colors={['#fad217', '#6AD97B']}
+                            tintColor={'#008080'}
+                            refreshing={this.props.loading}
+                            onRefresh={() => this.props.handlePullToRefresh()}
+                        />
+                    }
                 />
             </View>
         );

@@ -14,6 +14,8 @@ const LookupComponent = props => {
         handleReset,
         filter,
         onEndReached,
+        handlePullToRefresh,
+        loading,
     } = props;
 
     getLabel = item => {
@@ -102,6 +104,8 @@ const LookupComponent = props => {
                             onEndReached={onEndReached}
                             attributes={attributes}
                             toggleSelect={toggleSelect}
+                            handlePullToRefresh={handlePullToRefresh}
+                            loading={loading}
                         />
                     ) : (
                         <ScrollView
