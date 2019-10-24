@@ -197,17 +197,18 @@ export default class ImageField extends Component {
     renderPreview = attributes => {
         const value = attributes.value;
         const image = this.state.image;
+
         let source = {
             uri: '',
             priority: FastImage.priority.normal,
         };
-        if (!isEmpty(value) && !isEmpty(value['url'])) {
+        if (!isEmpty(image) && !isEmpty(image['file_path'])) {
+            source['uri'] = image['file_path'];
+        } else if (!isEmpty(value) && !isEmpty(value['url'])) {
             source['uri'] = value['url'];
             source['headers'] = {
                 'content-type': value['mime_type'],
             };
-        } else if (!isEmpty(image) && !isEmpty(image['file_path'])) {
-            source['uri'] = image['file_path'];
         }
         return (
             <TouchableOpacity
@@ -252,6 +253,18 @@ export default class ImageField extends Component {
         );
     };
 
+    checkImageData = () => {
+        const image = this.state.image;
+        const value = this.props.attributes['value'] || '';
+        if (
+            (!isEmpty(image) && typeof image !== 'undefined') ||
+            (!isEmpty(value) && typeof value !== 'undefined')
+        ) {
+            return true;
+        }
+        return false;
+    };
+
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
@@ -279,12 +292,12 @@ export default class ImageField extends Component {
                             </View>
                         </View>
                     </ListItem>
-                    <View style={{ flexDirection: 'row', flex: 1 }}>
-                        {typeof this.state.image !== 'undefined' ||
-                        attributes.value !== null
-                            ? this.renderPreview(attributes)
-                            : null}
-                    </View>
+                    {this.checkImageData() ? (
+                        <View style={{ flexDirection: 'row', flex: 1 }}>
+                            {this.renderPreview(attributes)}
+                        </View>
+                    ) : null}
+
                     {Platform.OS === 'android' ? (
                         <BottomSheet
                             ref={ref => {
@@ -306,4 +319,3 @@ export default class ImageField extends Component {
         );
     }
 }
-
