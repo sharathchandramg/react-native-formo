@@ -55,7 +55,13 @@ export default class RecyclerList extends Component {
 
     render() {
         return (
-            <View style={{ minHeight: parseInt(height / 2) }}>
+            <View
+                style={{
+                    minHeight: parseInt(height / 2),
+                    height: '100%',
+                    width: '100%',
+                }}
+            >
                 <RecyclerListView
                     layoutProvider={this._layoutProvider}
                     dataProvider={this.dataProvider.cloneWithRows(
@@ -65,7 +71,10 @@ export default class RecyclerList extends Component {
                     canChangeSize={true}
                     onEndReached={this.props.onEndReached}
                     onEndReachedThreshold={parseInt(height / 4)}
-                    style={{ margin: 10 }}
+                    style={{
+                        margin: 15,
+                        marginBottom: 0,
+                    }}
                     refreshControl={
                         <RefreshControl
                             colors={['#fad217', '#6AD97B']}

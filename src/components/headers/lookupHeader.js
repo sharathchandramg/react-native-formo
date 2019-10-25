@@ -10,7 +10,11 @@ const LookupHeader = props => {
         toggleSearchModalVisible,
         toggleModalVisible,
         theme,
+        handlePullToRefresh,
+        pullToRefreshEnable,
+        loading,
     } = props;
+
     return (
         <Header style={[theme.header]} androidStatusBarColor="#c8c8c8">
             <Left>
@@ -22,6 +26,27 @@ const LookupHeader = props => {
                 <Title style={theme.headerText}>{label || 'Select'}</Title>
             </Body>
             <Right>
+                {pullToRefreshEnable &&
+                typeof handlePullToRefresh === 'function' ? (
+                    <Button
+                        transparent
+                        onPress={() => !loading && handlePullToRefresh()}
+                    >
+                        <Icon
+                            name="refresh"
+                            style={[
+                                theme.headerLeftIcon,
+                                {
+                                    fontSize: 18,
+                                    color: loading
+                                        ? '#FA9917'
+                                        : 'rgb(0,151,235)',
+                                },
+                            ]}
+                            type="FontAwesome"
+                        />
+                    </Button>
+                ) : null}
                 {filterEnable ? (
                     <Button
                         transparent

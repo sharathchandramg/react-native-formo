@@ -36,14 +36,14 @@ const SearchHeader = props => {
                         value={searchText}
                         onChangeText={text => handleTextChange(text)}
                         returnKeyType={'search'}
-                        onSubmitEditing={() => handleOnSearchQuery(searchText)}
+                        onSubmitEditing={() => handleOnSearchQuery(searchText,false)}
                     />
                 </Item>
             </Body>
             <Right>
                 <Button
                     transparent
-                    onPress={() => handleOnSearchQuery(searchText)}
+                    onPress={() => handleOnSearchQuery(searchText,false)}
                 >
                     <Icon
                         name="search"
