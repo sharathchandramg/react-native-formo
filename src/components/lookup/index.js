@@ -1,5 +1,11 @@
 import React from 'react';
-import { TouchableOpacity, View, FlatList, ScrollView } from 'react-native';
+import {
+    TouchableOpacity,
+    View,
+    FlatList,
+    ScrollView,
+    RefreshControl,
+} from 'react-native';
 import RecyclerList from '../recyclerList';
 import { Text, Container, Content, Icon } from 'native-base';
 import styles from './styles';
@@ -91,7 +97,12 @@ const LookupComponent = props => {
         <Container style={{ flex: 1 }}>
             <LookupHeader {...props} />
             <Content>
-                <View style={{ height: '100%', width: '100%' }}>
+                <View
+                    style={{
+                        height: '100%',
+                        width: '100%',
+                    }}
+                >
                     {filter && filter.length > 0 ? (
                         <View style={styles.filterContainer}>
                             {renderFilterSelected(filter)}
@@ -109,8 +120,18 @@ const LookupComponent = props => {
                         />
                     ) : (
                         <ScrollView
-                            centerContent={true}
-                            contentContainerStyle={styles.contentContainer}
+                            contentContainerStyle={{
+                                height: '100%',
+                                width: '100%',
+                            }}
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={loading}
+                                    onRefresh={handlePullToRefresh}
+                                    colors={['#fad217', '#6AD97B']}
+                                    tintColor={'#008080'}
+                                />
+                            }
                         >
                             <View style={styles.noDataWrapper}>
                                 <Text style={styles.nodataText}>

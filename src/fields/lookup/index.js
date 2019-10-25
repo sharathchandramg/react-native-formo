@@ -42,6 +42,14 @@ export default class LookupField extends Component {
         this.setInitialData();
     }
 
+    componentWillUnmount() {
+        this.setState({
+            modalVisible: false,
+            searchModalVisible: false,
+            filterModalVisible: false,
+        });
+    }
+
     setInitialData = () => {
         const { attributes } = this.props;
         if (!isEmpty(attributes) && !isEmpty(attributes['data_source'])) {
@@ -131,6 +139,7 @@ export default class LookupField extends Component {
             };
             let categoryToValue = [];
             categoryToValue.push(obj);
+
             this.setState({
                 searchModalVisible:
                     typeof lookAhead !== 'undefined' && lookAhead
@@ -442,7 +451,7 @@ export default class LookupField extends Component {
         const data_source = attributes['data_source'];
         if (!isEmpty(data_source) && data_source['type'] === 'remote') {
             if (typeof setLookupFilter === 'function') {
-                setLookupFilter(filter);
+                setLookupFilter(filter, attributes);
             }
         }
     };
@@ -651,6 +660,20 @@ export default class LookupField extends Component {
         return false;
     };
 
+    isPullToRefreshEnable = attributes => {
+        if (
+            !isEmpty(attributes) &&
+            !isEmpty(attributes['data_source']) &&
+            attributes['data_source']['type'] === 'remote'
+        ) {
+            const { pullToRefresh } = this.props;
+            if (typeof pullToRefresh !== 'undefined' && pullToRefresh) {
+                return true;
+            }
+        }
+        return false;
+    };
+
     getLabel = () => {
         const { attributes } = this.props;
         let label = 'None';
@@ -680,6 +703,7 @@ export default class LookupField extends Component {
         const { theme, attributes } = this.props;
         const search = this.state.searchModalVisible;
         const filter = this.state.filterModalVisible;
+
         if (search) {
             return (
                 <SearchComponent
@@ -715,7 +739,6 @@ export default class LookupField extends Component {
 
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
-
         return (
             <View style={styles.container}>
                 <View style={styles.inputLabelWrapper}>
@@ -775,7 +798,14 @@ export default class LookupField extends Component {
                                 handleReset={this.handleReset}
                                 activeCategory={this.state.activeCategory}
                                 handlePullToRefresh={this.handlePullToRefresh}
-                                loading={this.state.loading}
+                                loading={
+                                    typeof this.props.loading !== 'undefined'
+                                        ? this.props.loading
+                                        : this.state.loading
+                                }
+                                pullToRefreshEnable={this.isPullToRefreshEnable(
+                                    attributes
+                                )}
                             />
                         )}
                     </Modal>
