@@ -463,7 +463,7 @@ Object ({
 
 #### Image
 
-##### Type and onfig  
+##### Type 
 { type: image }
 
 ##### Image with additional configuration
