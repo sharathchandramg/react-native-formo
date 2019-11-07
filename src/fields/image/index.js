@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-
 import {
     ActionSheetIOS,
     Animated,
     Platform,
     TouchableOpacity,
+    FlatList,
+    Dimensions,
+    TouchableHighlight,
 } from 'react-native';
 import { View, ListItem, Text } from 'native-base';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -14,6 +16,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './styles';
 import FastImage from 'react-native-fast-image';
 import { isEmpty } from '../../utils/validators';
+import _ from 'lodash';
+const DEVICE_WIDTH = Dimensions.get('window').width;
 
 export default class ImageField extends Component {
     static propTypes = {
@@ -28,8 +32,9 @@ export default class ImageField extends Component {
         this.isLocal = false;
         this.isFirstTime = true;
         this.state = {
-            image: undefined,
+            imageArray: undefined,
             height: new Animated.Value(0),
+            stepIndex: 0,
         };
     }
 
@@ -40,14 +45,17 @@ export default class ImageField extends Component {
 
     componentDidUpdate(prevProps) {
         if (this.isFirstTime && !this.isLocal) {
-            const { handleGetSignedUrl, attributes } = this.props;
+            const { handleDocumentUpdateAndDownload, attributes } = this.props;
             const { value } = attributes;
             if (
-                typeof handleGetSignedUrl === 'function' &&
-                value !== null &&
-                value['file_path']
+                typeof handleDocumentUpdateAndDownload === 'function' &&
+                !isEmpty(value)
             ) {
-                handleGetSignedUrl(attributes, value);
+                handleDocumentUpdateAndDownload(
+                    attributes,
+                    value,
+                    (actionType = 'read')
+                );
                 this.isFirstTime = false;
             }
         }
@@ -71,77 +79,134 @@ export default class ImageField extends Component {
         ]).start();
     };
 
-    _getImageFromStorage = image => {
-        const { attributes } = this.props;
+    _getImageFromStorage = images => {
+        const {
+            attributes,
+            updateValue,
+            handleDocumentUpdateAndDownload,
+        } = this.props;
+        let imageArray = [];
         let filePath = '';
-        if (Platform.OS.match(/ios/i)) {
-            filePath = image['path'].replace('file://', '', 1);
-        } else {
-            filePath = image['path'];
-        }
+        const { multiple, maxFiles } = this.getImageConfiguration();
 
-        let imageObj = {
-            mime_type: image['mime'],
-            file_path: filePath,
-            data: image['data'],
-        };
+        if (typeof multiple !== 'undefined' && multiple) {
+            _.forEach(images, (image, index) => {
+                if (index < maxFiles) {
+                    filePath = Platform.OS.match(/ios/i)
+                        ? image['path'].replace('file://', '', 1)
+                        : image['path'];
+                    imageArray.push({
+                        mime_type: image['mime'],
+                        file_path: filePath,
+                        data: image['data'],
+                    });
+                }
+            });
+        } else {
+            filePath = Platform.OS.match(/ios/i)
+                ? images['path'].replace('file://', '', 1)
+                : images['path'];
+            imageArray.push({
+                mime_type: images['mime'],
+                file_path: filePath,
+                data: images['data'],
+            });
+        }
 
         this.setState(
             {
-                image: imageObj,
+                imageArray: imageArray,
             },
             () => {
                 if (Platform.OS !== 'ios') this.bottomSheet.close();
                 this._startAnimation();
                 this.isLocal = true;
+                updateValue(attributes.name, imageArray);
             }
         );
-        this.props.updateValue(attributes.name, imageObj);
+
+        if (typeof handleDocumentUpdateAndDownload === 'function') {
+            handleDocumentUpdateAndDownload(
+                attributes,
+                imageArray,
+                (actionType = 'write')
+            );
+        }
     };
 
-    _openCamera = () => {
-        const { mode } = this.props.attributes;
+    _nextScrollIndex = () => {
+        const { stepIndex, imageArray } = this.state;
+        const { attributes } = this.props;
+        let currentFlatlistIndex = stepIndex;
+        const len =
+            !isEmpty(imageArray) && Array.isArray(imageArray)
+                ? imageArray.length
+                : !isEmpty(attributes['value']) &&
+                  Array.isArray(attributes['value'])
+                ? attributes['value'].length
+                : 0;
+        if (currentFlatlistIndex < len - 1) {
+            currentFlatlistIndex = currentFlatlistIndex + 1;
+            this.flatListRef.scrollToIndex({
+                index: currentFlatlistIndex,
+                animated: true,
+            });
+            this.setState({ stepIndex: currentFlatlistIndex });
+        } else {
+            currentFlatlistIndex = 0;
+            this.flatListRef.scrollToIndex({
+                index: currentFlatlistIndex,
+                animated: true,
+            });
+            this.setState({ stepIndex: currentFlatlistIndex });
+        }
+    };
+
+    getImageConfiguration = () => {
+        const { additional_config } = this.props.attributes;
+        let mode = 'low-resolution';
+        let multiple = false;
         let config = null;
+        let maxFiles = 1;
+
+        if (!isEmpty(additional_config)) {
+            mode = additional_config['mode'] || 'low-resolution';
+            multiple = additional_config['multiple'] || false;
+            maxFiles = multiple ? additional_config['max_files'] : 1;
+        }
         if (!isEmpty(mode) && mode.match(/high-resolution/i)) {
             config = {
                 compressImageMaxWidth: 1080,
                 compressImageMaxHeight: 1080,
                 includeBase64: true,
+                multiple: multiple,
+                maxFiles: maxFiles,
             };
         } else {
             config = {
                 compressImageMaxWidth: 360,
                 compressImageMaxHeight: 360,
                 includeBase64: true,
+                multiple: multiple,
+                maxFiles: maxFiles,
             };
         }
-        ImagePicker.openCamera(config)
-            .then(image => this._getImageFromStorage(image))
+        return config;
+    };
+
+    _openCamera = () => {
+        ImagePicker.openCamera(this.getImageConfiguration())
+            .then(images => this._getImageFromStorage(images))
             .catch(e => {
                 if (Platform.OS !== 'ios') this.bottomSheet.close();
                 console.log(e);
             });
     };
-    _openPicker = () => {
-        const { mode } = this.props.attributes;
-        let config = null;
-        if (!isEmpty(mode) && mode.match(/high-resolution/i)) {
-            config = {
-                compressImageMaxWidth: 1080,
-                compressImageMaxHeight: 1080,
-                includeBase64: true,
-            };
-        } else {
-            config = {
-                compressImageMaxWidth: 360,
-                compressImageMaxHeight: 360,
-                includeBase64: true,
-            };
-        }
 
-        ImagePicker.openPicker(config)
-            .then(image => {
-                this._getImageFromStorage(image);
+    _openPicker = () => {
+        ImagePicker.openPicker(this.getImageConfiguration())
+            .then(images => {
+                this._getImageFromStorage(images);
             })
             .catch(e => {
                 if (Platform.OS !== 'ios') this.bottomSheet.close();
@@ -194,41 +259,101 @@ export default class ImageField extends Component {
         );
     };
 
+    renderImageItem = ({ item }) => {
+        return (
+            <View
+                style={{
+                    height: 150,
+                    width: parseInt(DEVICE_WIDTH - 20),
+                    paddingEnd: 5,
+                }}
+                key={item['uri']}
+            >
+                <FastImage
+                    style={{ flex: 1 }}
+                    resizeMode={FastImage.resizeMode.cover}
+                    source={item}
+                />
+            </View>
+        );
+    };
+
+    renderImageList = images => {
+        if (!isEmpty(images)) {
+            return (
+                <View style={styles.hScrollView}>
+                    <FlatList
+                        horizontal={true}
+                        data={images}
+                        extraData={this.state}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={this.renderImageItem}
+                        nestedScrollEnabled={true}
+                        ref={ref => {
+                            this.flatListRef = ref;
+                        }}
+                    />
+                    {images.length > 1 && (
+                        <View style={styles.moreIconContainer}>
+                            <TouchableHighlight
+                                style={styles.moreIconOuter}
+                                onPress={() => this._nextScrollIndex()}
+                                activeOpacity={0.0}
+                                underlayColor={'white'}
+                            >
+                                <View style={styles.moreIconInner}>
+                                    <Icon
+                                        name={'arrow-right'}
+                                        type="regular"
+                                        size={18}
+                                        color={'#0097eb'}
+                                        style={{ alignSelf: 'center' }}
+                                    />
+                                </View>
+                            </TouchableHighlight>
+                        </View>
+                    )}
+                </View>
+            );
+        }
+        return null;
+    };
+
     renderPreview = attributes => {
         const value = attributes.value;
-        const image = this.state.image;
-
-        let source = {
-            uri: '',
-            priority: FastImage.priority.normal,
-        };
-        if (!isEmpty(image) && !isEmpty(image['file_path'])) {
-            source['uri'] = image['file_path'];
-        } else if (!isEmpty(value) && !isEmpty(value['url'])) {
-            source['uri'] = value['url'];
-            source['headers'] = {
-                'content-type': value['mime_type'],
-            };
+        const imageArray = this.state.imageArray;
+        let data = [];
+        if (!isEmpty(imageArray) || !isEmpty(value)) {
+            if (_.some(imageArray, 'file_path')) {
+                _.forEach(imageArray, image => {
+                    data.push({
+                        uri: image['file_path'],
+                        priority: FastImage.priority.normal,
+                    });
+                });
+            } else if (_.some(value, 'url')) {
+                _.forEach(value, image => {
+                    data.push({
+                        uri: image['url'],
+                        priority: FastImage.priority.normal,
+                        headers: {
+                            'content-type': image['mime_type'],
+                        },
+                    });
+                });
+            }
         }
+
         return (
-            <TouchableOpacity
-                style={[styles.topContainer, { borderColor: '#a94442' }]}
-                onPress={
-                    Platform.OS === 'ios'
-                        ? this._onPressImage
-                        : () => this.bottomSheet.open()
-                }
-            >
-                <Animated.View
-                    style={{ flex: 1, height: undefined, width: undefined }}
-                >
-                    <FastImage
-                        style={{ flex: 1, height: undefined, width: undefined }}
-                        resizeMode={FastImage.resizeMode.cover}
-                        source={source}
-                    />
+            <View style={[styles.topContainer, { borderColor: '#a94442' }]}>
+                <Animated.View style={{ flex: 1, flexDirection: 'row' }}>
+                    {data && data.length ? (
+                        this.renderImageList(data)
+                    ) : (
+                        <View />
+                    )}
                 </Animated.View>
-            </TouchableOpacity>
+            </View>
         );
     };
 
@@ -254,12 +379,9 @@ export default class ImageField extends Component {
     };
 
     checkImageData = () => {
-        const image = this.state.image;
+        const imageArray = this.state.imageArray;
         const value = this.props.attributes['value'] || '';
-        if (
-            (!isEmpty(image) && typeof image !== 'undefined') ||
-            (!isEmpty(value) && typeof value !== 'undefined')
-        ) {
+        if (!isEmpty(imageArray) || !isEmpty(value)) {
             return true;
         }
         return false;
@@ -287,13 +409,28 @@ export default class ImageField extends Component {
                             >
                                 {attributes.label}
                             </Text>
-                            <View style={{ flexDirection: 'row', flex: 1 }}>
+                            <TouchableOpacity
+                                style={{
+                                    flexDirection: 'row',
+                                    flex: 1,
+                                }}
+                                onPress={
+                                    Platform.OS === 'ios'
+                                        ? this._onPressImage
+                                        : () => this.bottomSheet.open()
+                                }
+                            >
                                 {this.renderAddImageIcon()}
-                            </View>
+                            </TouchableOpacity>
                         </View>
                     </ListItem>
                     {this.checkImageData() ? (
-                        <View style={{ flexDirection: 'row', flex: 1 }}>
+                        <View
+                            style={{
+                                flexDirection: 'row',
+                                flex: 1,
+                            }}
+                        >
                             {this.renderPreview(attributes)}
                         </View>
                     ) : null}

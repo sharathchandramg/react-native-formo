@@ -463,8 +463,20 @@ Object ({
 
 #### Image
 
-##### Type  
+##### Type and onfig  
 { type: image }
+
+##### Image with additional configuration
+
+Allows to configure additional properties like mode, multiple and number of files.The default value for mode, multiple and max_files are low-resolution,false and 1 respectively, 
+
+{     
+    "additional_config" : { 
+        "mode":"high-resolution",
+        "multiple":true,
+        "max_files": 5
+    }
+}
 
 #### Document
 

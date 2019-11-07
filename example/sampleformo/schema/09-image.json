@@ -1,34 +1,5 @@
 [
-    {
-        "type": "text",
-        "name": "data_source",
-        "label": "Data Source",
-        "required": true,
-        "editable": true,
-        "hidden": false
-    },
-    {
-        "type": "text",
-        "name": "prospect_name",
-        "label": "Prospect Name",
-        "required": true,
-        "editable": true,
-        "hidden": false
-    },
-    {
-        "type": "picker",
-        "name": "status",
-        "label": "Status",
-        "required": false,
-        "editable": true,
-        "hidden": false,
-        "options": [
-            "Pending",
-            "On Hold",
-            "Shortlisted",
-            "Rejected"
-        ]
-    },
+    
     {
         "type": "image",
         "name": "bill",
@@ -36,7 +7,23 @@
         "required": true,
         "editable": true,
         "hidden": false,
-        "mode":"high-resolution"
-
+        "additional_config" : { 
+            "mode":"low-resolution",
+            "multiple":false,
+            "max_files": 1
+        }
+    },
+    {
+        "type": "image",
+        "name": "house_photo",
+        "label": "House Photo",
+        "required": true,
+        "editable": true,
+        "hidden": false,
+        "additional_config" : { 
+            "mode":"high-resolution",
+            "multiple":true,
+            "max_files": 4
+        }
     }
 ]
