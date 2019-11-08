@@ -8,6 +8,7 @@ import {
     FlatList,
     Dimensions,
     TouchableHighlight,
+    Alert
 } from 'react-native';
 import { View, ListItem, Text } from 'native-base';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -172,7 +173,7 @@ export default class ImageField extends Component {
         if (!isEmpty(additional_config)) {
             mode = additional_config['mode'] || 'low-resolution';
             multiple = additional_config['multiple'] || false;
-            maxFiles = multiple ? additional_config['max_files'] : 1;
+            maxFiles = multiple ? additional_config['max_files'] || 5 : 1;
         }
         if (!isEmpty(mode) && mode.match(/high-resolution/i)) {
             config = {
@@ -180,7 +181,7 @@ export default class ImageField extends Component {
                 compressImageMaxHeight: 1080,
                 includeBase64: true,
                 multiple: multiple,
-                maxFiles: maxFiles,
+                maxFiles: multiple? maxFiles:1,
             };
         } else {
             config = {
@@ -188,15 +189,44 @@ export default class ImageField extends Component {
                 compressImageMaxHeight: 360,
                 includeBase64: true,
                 multiple: multiple,
-                maxFiles: maxFiles,
+                maxFiles: multiple? maxFiles:1,
             };
         }
         return config;
     };
 
+    renderAlert=(images,maxfiles)=>{
+        Alert.alert(
+            ``,
+            `Alert!! Only the first ${maxfiles} files will be uploaded.`,
+            [
+            {
+                text: 'Cancel',
+                onPress: () => {
+                    if (Platform.OS !== 'ios') this.bottomSheet.close();
+                },
+                style: 'cancel',
+            },
+            {},
+            {text: 'OK', onPress: () => {
+                this._getImageFromStorage(images)
+            }},
+            ],
+            {cancelable: false},
+        );
+    }
+    
+
     _openCamera = () => {
-        ImagePicker.openCamera(this.getImageConfiguration())
-            .then(images => this._getImageFromStorage(images))
+        const config = this.getImageConfiguration();
+        ImagePicker.openCamera(config)
+            .then(images => {
+                if(config['multiple'] && images.length > config['maxFiles']){
+                    this.renderAlert(images,config['maxFiles'])
+                }else{
+                    this._getImageFromStorage(images)
+                }
+            })
             .catch(e => {
                 if (Platform.OS !== 'ios') this.bottomSheet.close();
                 console.log(e);
@@ -204,9 +234,14 @@ export default class ImageField extends Component {
     };
 
     _openPicker = () => {
-        ImagePicker.openPicker(this.getImageConfiguration())
+        const config = this.getImageConfiguration();
+        ImagePicker.openPicker(config)
             .then(images => {
-                this._getImageFromStorage(images);
+                if(config['multiple'] && images.length > config['maxFiles']){
+                    this.renderAlert(images,config['maxFiles'])
+                }else{
+                    this._getImageFromStorage(images)
+                }
             })
             .catch(e => {
                 if (Platform.OS !== 'ios') this.bottomSheet.close();
