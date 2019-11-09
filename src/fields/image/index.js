@@ -8,7 +8,7 @@ import {
     FlatList,
     Dimensions,
     TouchableHighlight,
-    Alert
+    Alert,
 } from 'react-native';
 import { View, ListItem, Text } from 'native-base';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -179,7 +179,7 @@ export default class ImageField extends Component {
                 compressImageMaxHeight: 1080,
                 includeBase64: true,
                 multiple: multiple,
-                maxFiles: multiple? maxFiles:1,
+                maxFiles: multiple ? maxFiles : 1,
             };
         } else {
             config = {
@@ -187,42 +187,44 @@ export default class ImageField extends Component {
                 compressImageMaxHeight: 360,
                 includeBase64: true,
                 multiple: multiple,
-                maxFiles: multiple? maxFiles:1,
+                maxFiles: multiple ? maxFiles : 1,
             };
         }
         return config;
     };
 
-    renderAlert=(images,maxfiles)=>{
+    renderAlert = (images, maxfiles) => {
         Alert.alert(
             ``,
             `Alert!! Only the first ${maxfiles} files will be uploaded.`,
             [
-            {
-                text: 'Cancel',
-                onPress: () => {
-                    if (Platform.OS !== 'ios') this.bottomSheet.close();
+                {
+                    text: 'Cancel',
+                    onPress: () => {
+                        if (Platform.OS !== 'ios') this.bottomSheet.close();
+                    },
+                    style: 'cancel',
                 },
-                style: 'cancel',
-            },
-            {},
-            {text: 'OK', onPress: () => {
-                this._getImageFromStorage(images)
-            }},
+                {},
+                {
+                    text: 'OK',
+                    onPress: () => {
+                        this._getImageFromStorage(images);
+                    },
+                },
             ],
-            {cancelable: false},
+            { cancelable: false }
         );
-    }
-    
+    };
 
     _openCamera = () => {
         const config = this.getImageConfiguration();
         ImagePicker.openCamera(config)
             .then(images => {
-                if(config['multiple'] && images.length > config['maxFiles']){
-                    this.renderAlert(images,config['maxFiles'])
-                }else{
-                    this._getImageFromStorage(images)
+                if (config['multiple'] && images.length > config['maxFiles']) {
+                    this.renderAlert(images, config['maxFiles']);
+                } else {
+                    this._getImageFromStorage(images);
                 }
             })
             .catch(e => {
@@ -235,10 +237,10 @@ export default class ImageField extends Component {
         const config = this.getImageConfiguration();
         ImagePicker.openPicker(config)
             .then(images => {
-                if(config['multiple'] && images.length > config['maxFiles']){
-                    this.renderAlert(images,config['maxFiles'])
-                }else{
-                    this._getImageFromStorage(images)
+                if (config['multiple'] && images.length > config['maxFiles']) {
+                    this.renderAlert(images, config['maxFiles']);
+                } else {
+                    this._getImageFromStorage(images);
                 }
             })
             .catch(e => {
@@ -305,7 +307,11 @@ export default class ImageField extends Component {
                 <FastImage
                     style={{ flex: 1 }}
                     resizeMode={FastImage.resizeMode.cover}
-                    source={item}
+                    source={{
+                        uri: item['uri'],
+                        headers: item['headers'] || {},
+                        priority: item['priority'],
+                    }}
                 />
             </View>
         );
@@ -318,7 +324,7 @@ export default class ImageField extends Component {
                     <FlatList
                         horizontal={true}
                         data={images}
-                        extraData={this.state}
+                        extraData={this.props}
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={this.renderImageItem}
                         nestedScrollEnabled={true}
@@ -355,26 +361,26 @@ export default class ImageField extends Component {
     renderPreview = attributes => {
         const value = attributes.value;
         const imageArray = this.state.imageArray;
+
         let data = [];
-        if (!isEmpty(imageArray) || !isEmpty(value)) {
-            if (_.some(imageArray, 'file_path')) {
-                _.forEach(imageArray, image => {
-                    data.push({
-                        uri: image['file_path'],
-                        priority: FastImage.priority.normal,
-                    });
+        if (!isEmpty(imageArray) && _.some(imageArray, 'file_path')) {
+            _.forEach(imageArray, image => {
+                data.push({
+                    uri: image['file_path'],
+                    priority: FastImage.priority.normal,
                 });
-            } else if (_.some(value, 'url')) {
-                _.forEach(value, image => {
-                    data.push({
-                        uri: image['url'],
-                        priority: FastImage.priority.normal,
-                        headers: {
-                            'content-type': image['mime_type'],
-                        },
-                    });
+            });
+        } else if (!isEmpty(value) && _.some(value, 'url')) {
+            _.forEach(value, image => {
+                data.push({
+                    uri: image['url'],
+                    priority: FastImage.priority.normal,
+                    headers: {
+                        'content-type':
+                            image['contentType'] || image['mime_type'],
+                    },
                 });
-            }
+            });
         }
 
         return (
