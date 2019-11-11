@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { View, ViewPropTypes } from 'react-native';
+import React from 'react';
+import { View } from 'react-native';
 import styles from './styles';
 
 export const Table = props =>{

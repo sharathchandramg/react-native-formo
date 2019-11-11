@@ -189,6 +189,18 @@ summaryText:{
   lineHeight: 24,
   textAlign:'center',
 
+},
+topLabel:{
+  alignSelf:'center',
+  fontFamily: 'roboto',
+  fontSize:18,
+  fontWeight: '300',
+  color: '#989898',
+  borderBottomColor: '#d6d7da',
+  borderBottomWidth: 0.5,
+  minWidth:'18%',
+  paddingHorizontal:5,
+  textAlign:'center'
 }
 
 });
