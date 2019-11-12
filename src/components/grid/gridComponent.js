@@ -12,7 +12,7 @@ import {
 	Content,
 	Footer
 } from "native-base";
-import CustomHeader from '../headers/header'
+import CustomHeader from '../headers/hearder'
 import styles from "./styles";
 import { Row, Rows } from "./rows";
 import { Table, TableWrapper } from "./table";
@@ -92,7 +92,7 @@ const GridComponent= props => {
 						</View>
 					</View>
 					<TouchableOpacity style={styles.button} onPress={() => handleOnDoneClick()}>
-						<Text style={styles.buttonText}>{'SAVE'} </Text>
+						<Text style={styles.buttonText}>{'Done'} </Text>
 					</TouchableOpacity>
                 </Footer>
 			</Container>
