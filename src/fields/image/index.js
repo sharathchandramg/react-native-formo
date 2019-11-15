@@ -99,6 +99,7 @@ export default class ImageField extends Component {
                     imageArray.push({
                         mime_type: image['mime'],
                         file_path: filePath,
+                        base64_data: image['data'],
                     });
                 }
             });
@@ -109,6 +110,7 @@ export default class ImageField extends Component {
             imageArray.push({
                 mime_type: images['mime'],
                 file_path: filePath,
+                base64_data: images['data'],
             });
         }
 
