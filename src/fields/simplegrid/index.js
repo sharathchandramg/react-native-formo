@@ -1,16 +1,15 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import {TouchableOpacity } from "react-native";
+import {TouchableOpacity, Modal } from "react-native";
 import {
     View,
     Text,
     Icon,
 } from "native-base";
+import _ from 'lodash';
 import styles from "./styles"
-
-import Grid from "../../components/grid";
+import {EditComponent,GridComponent} from  "../../components/grid";
 import {isEmpty} from "../../utils/validators";
-
 
 export default class SimpleGrideView extends Component {
 
@@ -25,8 +24,11 @@ export default class SimpleGrideView extends Component {
         super(props);
         this.state={
             modalVisible:false,
+            editModal:false,
             selectedItm:{},
             data: {},
+            rowData: null,
+            rowIndex:0,
         }
     }
 
@@ -42,42 +44,24 @@ export default class SimpleGrideView extends Component {
 
     getGridData =()=>{
         const { attributes } = this.props;
-        let data = {};
+        let mData = null;
         if(attributes){
             if(!isEmpty(attributes['value']) && !isEmpty(attributes['value']['data'])){
-                data =  attributes['value']['data'];
-            }else{
-                if(!isEmpty(attributes['data'])){
-                    data =  attributes['data'];
-                }
-            }
-        }
-        return data;
-    }
-
-    onChangeText = (rk,ck,text)=>{
-        let data = this.state.data;
-        let selectedItm = this.state.selectedItm;
-        let preColVal = data[rk][ck];
-        let preColSum = data[`${String.fromCharCode(931)}`][ck];
-        data[rk][ck] = text;
-        const header_type = data['type'];
-        const ck_type = header_type[ck];
-        
-        if(ck_type.toLowerCase() ==='number'){
-            if(text){
-                if(preColVal){
-                    const diff =  parseInt(text) - parseInt(preColVal);
-                    data[`${String.fromCharCode(931)}`][ck] = parseInt(preColSum) + parseInt(diff);
-                }else{
-                    data[`${String.fromCharCode(931)}`][ck] = parseInt(preColSum) + parseInt(text);
+                const summary =  attributes['value'];
+                const selectedItm = summary['data']
+                mData =  attributes['data'];
+                if(!isEmpty(selectedItm)){
+                    _.forEach(Object.keys(selectedItm),(rowKey)=>{
+                        if(mData.hasOwnProperty(rowKey)){
+                            mData[rowKey] = selectedItm[rowKey];
+                        }
+                    }) 
                 }
             }else{
-                data[`${String.fromCharCode(931)}`][ck] = parseInt(preColSum) - parseInt(preColVal);
+                mData =  attributes['data'];
             }
         }
-        selectedItm[rk] = data[rk];
-        this.setState({data:data,selectedItm:selectedItm})
+        return mData;
     }
 
     setGridData =(data)=>{
@@ -103,13 +87,58 @@ export default class SimpleGrideView extends Component {
     
     }
 
+    handleOnSaveClick = ()=>{
+        let data = this.state.data;
+        let rowData = this.state.rowData;
+        let selectedItm = this.state.selectedItm;
+        if(!isEmpty(rowData) && Array.isArray(rowData)){
+            _.forEach(rowData,(item)=>{
+                const rk = item['rowKey'];
+                const ck = item['colKey'];
+                const value = item['value'];
+                const preColVal = data[rk][ck];
+                const preColSum = data[`${String.fromCharCode(931)}`][ck];
+                data[rk][ck] = value;
+                const header_type = data['type'];
+                const ck_type = header_type[ck];
+                if(ck_type.toLowerCase() ==='number'){
+                    if(value){
+                        if(preColVal){
+                            const diff =  parseInt(value) - parseInt(preColVal);
+                            data[`${String.fromCharCode(931)}`][ck] = parseInt(preColSum) + parseInt(diff);
+                        }else{
+                            data[`${String.fromCharCode(931)}`][ck] = parseInt(preColSum) + parseInt(value);
+                        }
+                    }else{
+                        data[`${String.fromCharCode(931)}`][ck] = parseInt(preColSum) - parseInt(preColVal);
+                    }
+                }
+                selectedItm[rk] = data[rk];
+            })
+            this.setState({data:data,selectedItm:selectedItm,editModal:false})
+        }else{
+            this.setState({editModal:false})
+        }    
+    }
+
     handleOnDoneClick=()=>{
         let summary = {
             label: this.getSummaryLabel(),
-            data: this.state.data,
+            data: this.state.selectedItm,
         }
         this.props.updateValue(this.props.attributes.name, summary);
-        this.toggleModal()
+        this.setState({modalVisible:false});
+    }
+
+    onChangeText = (rk,ck,text)=>{
+        let rowData = this.state.rowData;
+        rowData = _.map(rowData,(item)=>{
+            if(item['rowKey'] === rk &&  item['colKey']===ck ){
+                item['value']=  text;
+            }
+            return item
+        });
+        this.setState({rowData:rowData}) 
     }
 
     toggleModal = () => {
@@ -128,6 +157,15 @@ export default class SimpleGrideView extends Component {
             this.setState({modalVisible:true});
         }
     };
+
+    toggleEditModal =(rowData,rowIndex)=>{
+        const editModal = this.state.editModal;
+        if(editModal){
+            this.setState({editModal:false, rowData: null, rowIndex:0});
+        }else{
+            this.setState({editModal:true, rowData: rowData, rowIndex:rowIndex});
+        }
+    }
 
     getLabel =(value)=>{
         let label = "None"
@@ -155,7 +193,7 @@ export default class SimpleGrideView extends Component {
     getSummaryLabel =()=>{
         const data = this.state.data;
         let rowLabel = '';
-        if(data && Object.keys(data).length){
+        if(!isEmpty(data) && Object.keys(data).length){
             const summaryRow = data[`${String.fromCharCode(931)}`];
             const header_type = data['type']
             Object.keys(summaryRow).map((key)=>{
@@ -275,12 +313,29 @@ export default class SimpleGrideView extends Component {
 			}
 		}
 		return height;
-	}
+    }
 
+    renderComponent =()=>{
+        const { theme, attributes } = this.props;
+        const editModal  = this.state.editModal;
+        const rowData = this.state.rowData;
+        if(editModal){
+            return (
+                <EditComponent
+                    theme={theme}
+                    attributes={attributes}
+                    rowData = {rowData}
+                    onChangeText={this.onChangeText}
+                    handleOnSaveClick ={this.handleOnSaveClick}
+                    toggleModalVisible={this.toggleEditModal}
+                />
+            );
+        }
+
+    }
+    
     render() {
-
         const { theme, attributes, ErrorComponent } = this.props;
-
         return (
             <View  style = {styles.container}>
                 <View style = {styles.inputLabelWrapper}>
@@ -302,25 +357,40 @@ export default class SimpleGrideView extends Component {
                         {this.renderChecklistIcon()}
                     </TouchableOpacity>
                 </View>
-                {this.state.modalVisible && <Grid 
-                        modalVisible={this.state.modalVisible}
-                        theme={theme}
-                        attributes={attributes}
-                        toggleModalVisible={this.toggleModal}
-                        data ={this.state.data}
-                        onChangeText={this.onChangeText}
-                        handleOnDoneClick={this.handleOnDoneClick}
-                        summary = {this.getSummaryLabel()}
-                        rowHeight   = {this.getRowHeight(this.state.data)}
-                        widthArr    = {this.getHeaderWidth(this.state.data)}
-                        tableHeader = {this.getTableHeader(this.state.data)}
-                        rowTitle    = {this.getRowTitle(this.state.data)}
-                        tableData   = {this.getTableData(this.state.data)}
-                    /> }
-                <View style={{ paddingHorizontal: 15 }}>
+                <View style={{ paddingHorizontal: 20 }}>
                     <ErrorComponent {...{ attributes, theme }} />
                 </View>
+                {
+                    <Modal
+                        visible={this.state.modalVisible}
+                        animationType="none"
+                        transparent={true}
+                        onRequestClose={() => this.toggleModalVisible()}
+                    >
+                        {this.state.editModal ? (this.renderComponent()) 
+                            : (
+                                <GridComponent 
+                                    modalVisible={this.state.modalVisible}
+                                    theme={theme}
+                                    attributes={attributes}
+                                    toggleModalVisible={this.toggleModal}
+                                    toggleEditModal ={this.toggleEditModal}
+                                    data ={this.state.data}
+                                    handleOnDoneClick={this.handleOnDoneClick}
+                                    summary = {this.getSummaryLabel()}
+                                    rowHeight   = {this.getRowHeight(this.state.data)}
+                                    widthArr    = {this.getHeaderWidth(this.state.data)}
+                                    tableHeader = {this.getTableHeader(this.state.data)}
+                                    rowTitle    = {this.getRowTitle(this.state.data)}
+                                    tableData   = {this.getTableData(this.state.data)}
+                            />
+                            )
+                            
+                        }
+                    </Modal>
+                }
             </View>
         );
     }
 }
+

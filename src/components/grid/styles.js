@@ -189,8 +189,15 @@ summaryText:{
   lineHeight: 24,
   textAlign:'center',
 
+},
+topLabel:{
+  fontSize:18,
+  color: 'rgb(0,151,235)',
+  alignSelf:'flex-start',
+  minWidth:'18%',
+  paddingHorizontal:15,
+  textAlign:'center',
 }
-
 });
 
 export default styles;
