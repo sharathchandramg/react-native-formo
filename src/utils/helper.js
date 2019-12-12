@@ -91,69 +91,36 @@ export function getDefaultValue(field) {
         case 'date': {
             switch (field.mode) {
                 case 'date':
-                    if (field.defaultValue === 'today')
-                        return moment().format('YYYY-MM-DD');
-                    else if (field.defaultValue === 'tomorrow')
-                        return moment()
-                            .add(1, 'day')
-                            .format('YYYY-MM-DD');
-                    else return null;
-
                 case 'time':
-                    const dateDefaultValue =
-                        field.defaultValue && new Date(field.defaultValue);
-                    if (
-                        dateDefaultValue &&
-                        !_.isNaN(dateDefaultValue.getTime())
-                    )
-                        return dateDefaultValue;
-                    else if (field.defaultValue === 'today')
-                        return moment().format('HH:mm');
-                    else if (field.defaultValue === 'tomorrow')
-                        return moment()
-                            .add(1, 'day')
-                            .format('HH:mm');
-                    else return null;
-
                 case 'datetime':
-                    if (field.defaultValue === 'today')
-                        return moment().format('YYYY-MM-DD HH:mm');
-                    else if (field.defaultValue === 'tomorrow')
-                        return moment()
-                            .add(1, 'day')
-                            .format('YYYY-MM-DD HH:mm');
-                    else if (
-                        typeof field.defaultValue !== 'undefined' &&
-                        !_.isNaN(field.defaultValue)
-                    ) {
-                        console.log(
-                            'The datetime has default value of ' +
-                                parseInt(field.defaultValue)
-                        );
-                        console.log(
-                            'The current datetime is ' +
-                                moment().format('YYYY-MM-DD HH:mm')
-                        );
-                        console.log(
-                            'The updated datetime is ' +
-                                moment()
-                                    .add(
-                                        parseInt(field.defaultValue),
-                                        'minutes'
-                                    )
-                                    .format('YYYY-MM-DD HH:mm')
-                        );
-
-                        return moment().add(
-                            parseInt(field.defaultValue),
-                            'minutes'
-                        );
-                    } else if (field.defaultValue === '') {
-                        console.log('Enter for ' + field.defaultValue);
-                        return 'Select';
-                    } else return null;
+                if (field.defaultValue === 'today')
+                    return moment()
+                    .utc()
+                    .valueOf();
+                else if (field.defaultValue === 'tomorrow')
+                    return moment()
+                    .add(1, 'day')
+                    .utc()
+                    .valueOf();
+                else if (field.defaultValue === 'yesterday')
+                    return moment()
+                    .subtract(1, 'day')
+                    .utc()
+                    .valueOf();
+                else if (
+                    typeof field.defaultValue !== 'undefined' &&
+                    !_.isNaN(field.defaultValue)
+                ) {
+                    return moment()
+                    .add(parseInt(field.defaultValue), 'minutes')
+                    .utc()
+                    .valueOf();
+                } else if (field.defaultValue === '') {
+                    return 'Select';
+                } else return null;
             }
         }
+
         case 'group':
             if (field.fields) {
                 return field.defaultValue;
