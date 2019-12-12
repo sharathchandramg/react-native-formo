@@ -35,7 +35,8 @@ export default class DateField extends Component {
     }
 
     onDateChange(date) {
-        this.props.updateValue(this.props.attributes.name, date);
+        const epoch = moment(date).utc().valueOf();
+        this.props.updateValue(this.props.attributes.name,  epoch);
     }
 
     setModalVisible(visible) {
