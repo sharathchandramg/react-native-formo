@@ -71,7 +71,7 @@ export default class TextInputField extends Component {
 
         let value = "";
         if(attributes['type']==='number'){
-            if(!isNaN(attributes['value'])){
+            if(!isEmpty(attributes['value']) && !isNaN(attributes['value']) ){
                 value = attributes['value'].toString();
             }
         }else{
@@ -79,10 +79,6 @@ export default class TextInputField extends Component {
                 value = attributes['value'].toString();
             }
         }
-        
-        
-        
-        
         
         return(
             <Input
