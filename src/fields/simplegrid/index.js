@@ -70,12 +70,19 @@ export default class SimpleGrideView extends Component {
         let summary = {}
         Object.keys(header).map((ck)=>{
             let ckTotal = 0;
+            let count = 0;
             Object.keys(data).map((rk)=>{
                 if(!rk.match(/header/) && !rk.match(/style/) && !rk.match(/type/) && rk !== `${String.fromCharCode(931)}`){
                     if(header_type && header_type[ck].toLowerCase()==='number'){
                         const ckValue = data[rk][ck];
                         if(ckValue){
                             ckTotal =  parseInt(ckTotal) +  parseInt(ckValue);
+                        }
+                    }else if(header_type && (header_type[ck].toLowerCase()==='string' || header_type[ck].toLowerCase()==='text')){
+                        const ckValue = data[rk][ck];
+                        if(ckValue){
+                            count += 1;
+                            ckTotal =  count;
                         }
                     }
                 }
@@ -102,7 +109,7 @@ export default class SimpleGrideView extends Component {
                 const header_type = data['type'];
                 const ck_type = header_type[ck];
                 if(ck_type.toLowerCase() ==='number'){
-                    if(value){
+                    if(value && !isNaN(value)){
                         if(preColVal){
                             const diff =  parseInt(value) - parseInt(preColVal);
                             data[`${String.fromCharCode(931)}`][ck] = parseInt(preColSum) + parseInt(diff);
@@ -111,6 +118,16 @@ export default class SimpleGrideView extends Component {
                         }
                     }else{
                         data[`${String.fromCharCode(931)}`][ck] = parseInt(preColSum) - parseInt(preColVal);
+                    }
+                }else if(ck_type.toLowerCase()==='string' || ck_type.toLowerCase()==='text'){
+                    if(value){
+                        if(preColVal){
+                            data[`${String.fromCharCode(931)}`][ck] = parseInt(preColSum)
+                        }else{
+                            data[`${String.fromCharCode(931)}`][ck] = parseInt(preColSum) + 1;
+                        }
+                    }else{
+                        data[`${String.fromCharCode(931)}`][ck] = parseInt(preColSum) - 1;
                     }
                 }
                 selectedItm[rk] = data[rk];
@@ -201,6 +218,13 @@ export default class SimpleGrideView extends Component {
                 let colLabel = '';
                 if(type.toLowerCase()==='number'){
                     colLabel = `${key} : ${summaryRow[key]}`
+                    if(rowLabel && rowLabel.length){
+                        rowLabel =  `${rowLabel}, ${colLabel}`
+                    }else{
+                        rowLabel = `${colLabel}`
+                    }
+                }else if(type.toLowerCase()==='string' || type.toLowerCase()==='text'){
+                    colLabel = `${key} :${summaryRow[key]}`
                     if(rowLabel && rowLabel.length){
                         rowLabel =  `${rowLabel}, ${colLabel}`
                     }else{
@@ -365,7 +389,7 @@ export default class SimpleGrideView extends Component {
                         visible={this.state.modalVisible}
                         animationType="none"
                         transparent={true}
-                        onRequestClose={() => this.toggleModalVisible()}
+                        onRequestClose={() => this.toggleModal()}
                     >
                         {this.state.editModal ? (this.renderComponent()) 
                             : (
