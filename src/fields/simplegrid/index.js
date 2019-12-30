@@ -124,7 +124,7 @@ export default class SimpleGrideView extends Component {
     handleOnDoneClick=()=>{
         let summary = {
             label: this.getSummaryLabel(),
-            data: this.state.selectedItm,
+            data: this.state.data,
         }
         this.props.updateValue(this.props.attributes.name, summary);
         this.setState({modalVisible:false});
