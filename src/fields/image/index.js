@@ -182,6 +182,8 @@ export default class ImageField extends Component {
                 includeBase64: true,
                 multiple: multiple,
                 maxFiles: multiple ? maxFiles : 1,
+                mediaType:'photo',
+                showsSelectedCount: true,
             };
         } else {
             config = {
@@ -190,8 +192,11 @@ export default class ImageField extends Component {
                 includeBase64: true,
                 multiple: multiple,
                 maxFiles: multiple ? maxFiles : 1,
+                mediaType:'photo',
+                showsSelectedCount: true,
             };
         }
+
         return config;
     };
 
