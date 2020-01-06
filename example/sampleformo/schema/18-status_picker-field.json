@@ -1,9 +1,9 @@
 [
     {
-        "type": "status_picker",
+        "type": "picker",
         "name": "status",
         "label": "Status",
-        "required": false,
+        "required": true,
         "editable": true,
         "hidden": false,
         "options": [
@@ -11,6 +11,14 @@
             "On Hold",
             "Shortlisted",
             "Rejected"
+        ],
+        "filter_options":[
+            { 
+                "create": ["-Select-" ,"Pending","On Hold"]
+            },
+            {
+                "update":["-Select-" , "Pending","Shortlisted", "Rejected"]
+            }
         ],
         "defaultValue":"Pending"
     }
