@@ -1,10 +1,8 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Platform, Picker, TouchableOpacity, TouchableHighlight, Modal } from "react-native";
-import Panel from "../../components/panel";
 import styles from "./../../styles";
-
-import { View, Text, Switch } from "native-base";
+import { View, Text} from "native-base";
 
 const Item = Picker.Item;
 
@@ -33,8 +31,9 @@ export default class PickerField extends Component {
     setModalVisible = (visible) => {
         this.setState({modalVisible:visible})
     }
+
     renderModal = () => {
-        const { theme, attributes, ErrorComponent } = this.props;
+        const { theme, attributes} = this.props;
         const pickerValue =  this.state.value !== null ? this.state.value : typeof attributes.value !=='undefined' && attributes.value !== null? attributes.value:'';
         
         return (
@@ -94,7 +93,7 @@ export default class PickerField extends Component {
         )
     }
 
-    renderIOSPicker =(isValueValid)=>{
+    renderIOSPicker =(isValueValid,defaultValue)=>{
         const { theme, attributes} = this.props;
         return (
             <View style={Object.assign(styles.pickerMainIOS)}>
@@ -111,7 +110,7 @@ export default class PickerField extends Component {
                         {attributes.label}
                     </Text>
                     <Text style={{ color: theme.inputColorPlaceholder }}>
-                        {isValueValid ? attributes.value : "None"}
+                        {isValueValid ? attributes.value : defaultValue}
                     </Text>
                 </TouchableOpacity>
                 {this.renderModal()}
@@ -153,15 +152,19 @@ export default class PickerField extends Component {
     render() {
 
         const { theme, attributes, ErrorComponent } = this.props;
+        const value = attributes['value']|| '';
+        const defaultValue = attributes['defaultValue'] || "-Select-" ;
+
         const isValueValid = attributes.options.indexOf(attributes.value) > -1;
-        const pickerValue =  this.state.value !== null ? this.state.value : typeof attributes.value !=='undefined' && attributes.value !== null? attributes.value:'';
+        const pickerValue =  this.state.value !== null ? this.state.value : value || defaultValue;
+                
 
         return(
             <View>
                 {Platform.OS !== "ios"?     
                     this.renderAndroidPicker(pickerValue)
                     :
-                    this.renderIOSPicker(isValueValid)
+                    this.renderIOSPicker(isValueValid,defaultValue)
                 }
                 <View style={{ paddingHorizontal: 15 }}>
                     <ErrorComponent {...{ attributes, theme }} />
