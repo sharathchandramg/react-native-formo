@@ -262,7 +262,7 @@ export function autoValidate(field) {
 
             case 'picker':
             case 'status_picker':
-                if (isEmpty(field.value)) {
+                if ((field['value'] && field['value'] === "-Select-") || isEmpty(field['value'])) {
                     error = true;
                     errorMsg = `${field.label} is required`;
                 }
