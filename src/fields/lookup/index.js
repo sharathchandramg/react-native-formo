@@ -17,6 +17,7 @@ export default class LookupField extends Component {
         ErrorComponent: PropTypes.func,
         onGetQuery: PropTypes.func,
         onSearchQuery: PropTypes.func,
+        onLookupCreate: PropTypes.func
     };
 
     constructor(props) {
@@ -740,77 +741,85 @@ export default class LookupField extends Component {
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
-            <View style={styles.container}>
-                <View style={styles.inputLabelWrapper}>
-                    <TouchableOpacity
-                        style={[styles.inputLabel]}
-                        error={
-                            theme.changeTextInputColorOnError
-                                ? attributes.error
-                                : null
-                        }
-                        onPress={() => this.toggleModalVisible()}
-                    >
-                        <View style={styles.labelTextWrapper}>
-                            <Text style={[styles.labelText]} numberOfLines={2}>
-                                {attributes.label}
-                            </Text>
-                        </View>
-                        <View style={styles.valueWrapper}>
-                            <Text style={styles.inputText} numberOfLines={2}>
-                                {this.getLabel()}
-                            </Text>
-                        </View>
-                        {this.renderlookupIcon()}
-                    </TouchableOpacity>
-                </View>
-
-                <View style={{ paddingHorizontal: 20 }}>
-                    <ErrorComponent {...{ attributes, theme }} />
-                </View>
-                {
-                    <Modal
-                        visible={this.state.modalVisible}
-                        animationType="none"
-                        transparent={true}
-                        onRequestClose={() => this.toggleModalVisible()}
-                    >
-                        {this.state.searchModalVisible ||
-                        this.state.filterModalVisible ? (
-                            this.renderComponent()
-                        ) : (
-                            <LookupComponent
-                                modalVisible={this.state.modalVisible}
-                                theme={theme}
-                                attributes={attributes}
-                                toggleSelect={this.toggleSelect}
-                                onEndReached={this.onEndReached}
-                                toggleModalVisible={this.toggleModalVisible}
-                                toggleSearchModalVisible={
-                                    this.toggleSearchModalVisible
-                                }
-                                toggleFilterModalVisible={
-                                    this.toggleFilterModalVisible
-                                }
-                                searchEnable={this.isSearchEnable(attributes)}
-                                filterEnable={this.isFilterEnable(attributes)}
-                                filter={this.state.categoryToValue}
-                                handleReset={this.handleReset}
-                                activeCategory={this.state.activeCategory}
-                                handlePullToRefresh={this.handlePullToRefresh}
-                                loading={
-                                    typeof this.props.loading !== 'undefined'
-                                        ? this.props.loading
-                                        : this.state.loading
-                                }
-                                pullToRefreshEnable={this.isPullToRefreshEnable(
-                                    attributes
-                                )}
-                            />
-                        )}
-                    </Modal>
+          <View style={styles.container}>
+            <View style={styles.inputLabelWrapper}>
+              <TouchableOpacity
+                style={[styles.inputLabel]}
+                error={
+                  theme.changeTextInputColorOnError ? attributes.error : null
                 }
+                onPress={() => this.toggleModalVisible()}
+              >
+                <View style={styles.labelTextWrapper}>
+                  <Text style={[styles.labelText]} numberOfLines={2}>
+                    {attributes.label}
+                  </Text>
+                </View>
+                <View style={styles.valueWrapper}>
+                  <Text style={styles.inputText} numberOfLines={2}>
+                    {this.getLabel()}
+                  </Text>
+                </View>
+                {this.renderlookupIcon()}
+              </TouchableOpacity>
             </View>
+
+            <View style={{ paddingHorizontal: 20 }}>
+              <ErrorComponent {...{ attributes, theme }} />
+            </View>
+            {
+              <Modal
+                visible={this.state.modalVisible}
+                animationType="none"
+                transparent={true}
+                onRequestClose={() => this.toggleModalVisible()}
+              >
+                {this.state.searchModalVisible ||
+                this.state.filterModalVisible ? (
+                  this.renderComponent()
+                ) : (
+                  <LookupComponent
+                    modalVisible={this.state.modalVisible}
+                    theme={theme}
+                    attributes={attributes}
+                    toggleSelect={this.toggleSelect}
+                    onEndReached={this.onEndReached}
+                    toggleModalVisible={this.toggleModalVisible}
+                    toggleSearchModalVisible={this.toggleSearchModalVisible}
+                    toggleFilterModalVisible={this.toggleFilterModalVisible}
+                    searchEnable={this.isSearchEnable(attributes)}
+                    filterEnable={this.isFilterEnable(attributes)}
+                    filter={this.state.categoryToValue}
+                    handleReset={this.handleReset}
+                    activeCategory={this.state.activeCategory}
+                    handlePullToRefresh={this.handlePullToRefresh}
+                    loading={
+                      typeof this.props.loading !== "undefined"
+                        ? this.props.loading
+                        : this.state.loading
+                    }
+                    pullToRefreshEnable={this.isPullToRefreshEnable(attributes)}
+                  />
+                )}
+                {this.props.onLookupCreate &&
+                typeof this.props.onLookupCreate === "function" ? (
+                  <Fab
+                    active={true}
+                    direction="up"
+                    containerStyle={{}}
+                    style={{ backgroundColor: "rgb(0,151,235)" }}
+                    position="bottomRight"
+                    onPress={() => {
+                      this.toggleModalVisible();
+                      this.props.onLookupCreate(this.props);
+                    }}
+                  >
+                    <Icon type="FontAwesome" name="plus" />
+                  </Fab>
+                ) : null}
+              </Modal>
+            }
+          </View>
         );
     }
 }
