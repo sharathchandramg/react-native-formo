@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { TouchableOpacity, Modal } from 'react-native';
 import _ from 'lodash';
 import { isEmpty } from '../../utils/validators';
-import { View, Text, Icon } from 'native-base';
+import { View, Text, Icon, Fab } from 'native-base';
 import styles from './styles';
 import SearchComponent from '../../components/search';
 import LookupComponent from '../../components/lookup';
