@@ -1,30 +1,30 @@
 PODS:
   - QBImagePickerController (3.4.0)
-  - React/Core (0.59.0):
-    - yoga (= 0.59.0.React)
-  - React/fishhook (0.59.0)
-  - React/RCTActionSheet (0.59.0):
+  - React/Core (0.59.10):
+    - yoga (= 0.59.10.React)
+  - React/fishhook (0.59.10)
+  - React/RCTActionSheet (0.59.10):
     - React/Core
-  - React/RCTAnimation (0.59.0):
+  - React/RCTAnimation (0.59.10):
     - React/Core
-  - React/RCTBlob (0.59.0):
+  - React/RCTBlob (0.59.10):
     - React/Core
-  - React/RCTGeolocation (0.59.0):
+  - React/RCTGeolocation (0.59.10):
     - React/Core
-  - React/RCTImage (0.59.0):
+  - React/RCTImage (0.59.10):
     - React/Core
     - React/RCTNetwork
-  - React/RCTLinkingIOS (0.59.0):
+  - React/RCTLinkingIOS (0.59.10):
     - React/Core
-  - React/RCTNetwork (0.59.0):
+  - React/RCTNetwork (0.59.10):
     - React/Core
-  - React/RCTSettings (0.59.0):
+  - React/RCTSettings (0.59.10):
     - React/Core
-  - React/RCTText (0.59.0):
+  - React/RCTText (0.59.10):
     - React/Core
-  - React/RCTVibration (0.59.0):
+  - React/RCTVibration (0.59.10):
     - React/Core
-  - React/RCTWebSocket (0.59.0):
+  - React/RCTWebSocket (0.59.10):
     - React/Core
     - React/fishhook
     - React/RCTBlob
@@ -33,7 +33,7 @@ PODS:
     - React/Core
     - RSKImageCropper
   - RSKImageCropper (2.2.3)
-  - yoga (0.59.0.React)
+  - yoga (0.59.10.React)
 
 DEPENDENCIES:
   - React/Core (from `../node_modules/react-native`)
@@ -51,7 +51,7 @@ DEPENDENCIES:
   - yoga (from `../node_modules/react-native/ReactCommon/yoga/yoga.podspec`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - QBImagePickerController
     - RSKImageCropper
 
@@ -65,11 +65,11 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   QBImagePickerController: d54cf93db6decf26baf6ed3472f336ef35cae022
-  React: 0d6c719d9549bea0bd5676f8170b0e5c56e2c3c7
+  React: 36d0768f9e93be2473b37e7fa64f92c1d5341eef
   RNImageCropPicker: 6134b66a3d5bc13e2895a97c630a4254006902b4
   RSKImageCropper: a446db0e8444a036b34f3c43db01b2373baa4b2a
-  yoga: 26673abd38bbdf0c33e134ad9e690c5fbf16e8fc
+  yoga: 684513b14b03201579ba3cee20218c9d1298b0cc
 
 PODFILE CHECKSUM: 0bb84cb5c457cca632b494aaac0db87e992846d1
 
-COCOAPODS: 1.7.5
+COCOAPODS: 1.8.1

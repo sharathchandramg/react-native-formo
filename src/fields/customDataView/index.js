@@ -66,8 +66,8 @@ export default class CustomDataComponent extends Component {
                         }
                         onPress={() => this.handleOnclick()}
                     >
+                        {attributes['required'] && <StarIcon required={attributes['required']} />}
                         <View style = {[styles.labelTextWrapper,{flexDirection:'row'}]}>
-                            {attributes['required'] && <StarIcon required={attributes['required']} />}
                             <Text 
                                 style={[styles.labelText]} 
                                 numberOfLines={2}

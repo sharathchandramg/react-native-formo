@@ -752,8 +752,8 @@ export default class LookupField extends Component {
                         }
                         onPress={() => this.toggleModalVisible()}
                     >
+                        {attributes['required'] && <StarIcon required={attributes['required']} />}
                         <View style={[styles.labelTextWrapper,{flexDirection:'row'}]}>
-                            {attributes['required'] && <StarIcon required={attributes['required']} />}
                             <Text 
                                 style={[styles.labelText]} 
                                 numberOfLines={2}

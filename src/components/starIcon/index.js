@@ -1,15 +1,16 @@
-
 import React from 'react';
-import {Text} from 'native-base';
+import {Text,View} from 'native-base';
 import styles from './styles';
 
 const StarIcon = (props)=>{
     const required = props['required'];
     if(typeof required !=='undefined' && required){
         return(
-            <Text style={styles.iconStyle}>
+            <View style={styles.iconStyleWrapper}>
+                <Text style={styles.iconStyle}>
                 {'*'}
-            </Text>
+                </Text>
+            </View>
         )
     }
     return null;

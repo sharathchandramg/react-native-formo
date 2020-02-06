@@ -92,7 +92,7 @@
     {
         "type": "lookup",
         "name": "assignee",
-        "label": "Select Assignee",
+        "label": "Assignee 11111",
         "multiple": false,
         "required": true,
         "editable": true,
