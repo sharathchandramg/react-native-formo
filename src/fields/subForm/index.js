@@ -14,16 +14,15 @@ import {
     Button,
     Footer,
     Icon
-
 } from "native-base";
 
 import shortid from 'shortid';
 import styles from "./styles";
 import ChildField from "../childForm";
+import StarIcon from "../../components/starIcon"
 
 
 export default class SubForm extends Component {
-
     static propTypes = {
         attributes: PropTypes.object,
         updateValue: PropTypes.func,
@@ -31,17 +30,14 @@ export default class SubForm extends Component {
         ErrorComponent: PropTypes.func,
         onAddNewFields: PropTypes.func
     }
-
     constructor(props) {
         super(props);
-        
         this.state = {
             modalVisible: false,
             mode: 'create',
             subFormData:{},
         };        
     }
-
 
     handleChange =(name,value)=>{
         if(value && typeof value._id !=='undefined' && value._id !== null){
@@ -231,14 +227,45 @@ export default class SubForm extends Component {
         }    
     }
 
-    render() {
-
-        const { theme, attributes, ErrorComponent } = this.props;
+    renderComponent =()=>{
+        const { theme, attributes } = this.props;
+        return(
+            <Container style={{ flex: 1 }}>
+                <Header style={[theme.header]} androidStatusBarColor='#c8c8c8'>
+                    <Left>
+                        <Button transparent onPress={() => this.toggleModalVisible()}>
+                            <Icon name="arrow-back"   style={theme.headerLeftIcon} />
+                        </Button>
+                    </Left>
+                    <Body>
+                        <Title style={theme.headerText}>{attributes.label || "Select"}</Title>
+                    </Body>
+                    <Right />
+                </Header>
+                <Content>
+                    <ChildField
+                        ref={(c) => { this.child = c; }}
+                        {...this.props}
+                        formData={this.state.subFormData}
+                    />
+                </Content>
+                <Footer style={styles.button}>
+                    <TouchableOpacity style={styles.button} onPress={() => this.addNewFields()}>
+                        <Text style={styles.buttonText}>{this.state.mode ==='create'? 'Add':'Update'} </Text>
+                    </TouchableOpacity>
+                </Footer>
+            </Container>
+        )
         
+    }
+
+    render() {
+        const { theme, attributes, ErrorComponent } = this.props;
         return (
             <View style ={styles.container}>
                 <View style={[styles.inputField]}  error={theme.changeTextInputColorOnError ? attributes.error : null}>
                     <View style={[styles.inputLabel]}>
+                        {attributes['required'] && <StarIcon required={attributes['required']} />}
                         <Text style={[styles.labelText]}>{attributes.label}</Text>
                         {this.renderlookupIcon()}
                     </View>
@@ -252,33 +279,8 @@ export default class SubForm extends Component {
                     animationType="none"
                     onRequestClose={() => this.toggleModalVisible()}
                     transparent = {true}>
-                    <Container style={{ flex: 1 }}>
-                        <Header style={[theme.header]} androidStatusBarColor='#c8c8c8'>
-                            <Left>
-                                <Button transparent onPress={() => this.toggleModalVisible()}>
-                                    <Icon name="arrow-back"   style={theme.headerLeftIcon} />
-                                </Button>
-                            </Left>
-                            <Body>
-                                <Title style={theme.headerText}>{attributes.label || "Select"}</Title>
-                            </Body>
-                            <Right />
-                        </Header>
-                        <Content>
-                            <ChildField
-                                ref={(c) => { this.child = c; }}
-                                {...this.props}
-                                formData={this.state.subFormData}
-                            />
-                        </Content>
-                        <Footer style={styles.button}>
-                            <TouchableOpacity style={styles.button} onPress={() => this.addNewFields()}>
-                                <Text style={styles.buttonText}>{this.state.mode ==='create'? 'Add':'Update'} </Text>
-                            </TouchableOpacity>
-                        </Footer>
-                    </Container>
+                    {this.renderComponent()}
                 </Modal>
-                
                 <View style={{ paddingHorizontal:5 }}>
                     <ErrorComponent {...{ attributes, theme }} />
                 </View>

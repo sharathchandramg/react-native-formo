@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        paddingLeft:5
     },
 
     valueWrapper: {
@@ -67,6 +68,7 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         fontWeight: '300',
         paddingStart: 5,
+        flex:1
     },
 
     iconStyle: {

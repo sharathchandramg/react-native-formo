@@ -8,6 +8,7 @@ import styles from './styles';
 import SearchComponent from '../../components/search';
 import LookupComponent from '../../components/lookup';
 import FilterComponent from '../../components/filter';
+import StarIcon from "../../components/starIcon";
 
 export default class LookupField extends Component {
     static propTypes = {
@@ -751,13 +752,24 @@ export default class LookupField extends Component {
                         }
                         onPress={() => this.toggleModalVisible()}
                     >
-                        <View style={styles.labelTextWrapper}>
-                            <Text style={[styles.labelText]} numberOfLines={2}>
+                        <View style={[styles.labelTextWrapper,{flexDirection:'row'}]}>
+                            {attributes['required'] && <StarIcon required={attributes['required']} />}
+                            <Text 
+                                style={[styles.labelText]} 
+                                numberOfLines={2}
+                                adjustsFontSizeToFit={true}
+                                minimumFontScale={0.8}
+                                >
                                 {attributes.label}
                             </Text>
                         </View>
                         <View style={styles.valueWrapper}>
-                            <Text style={styles.inputText} numberOfLines={2}>
+                            <Text 
+                                style={styles.inputText} 
+                                numberOfLines={2}
+                                adjustsFontSizeToFit={true}
+                                minimumFontScale={0.8}
+                                >
                                 {this.getLabel()}
                             </Text>
                         </View>

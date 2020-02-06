@@ -10,6 +10,7 @@ import _ from 'lodash';
 import styles from "./styles"
 import {EditComponent,GridComponent} from  "../../components/grid";
 import {isEmpty} from "../../utils/validators";
+import StarIcon from "../../components/starIcon";
 
 export default class SimpleGrideView extends Component {
 
@@ -372,11 +373,22 @@ export default class SimpleGrideView extends Component {
                         }
                         onPress={() => this.toggleModal()}
                     >
+                        {attributes['required'] && <StarIcon required={attributes['required']} />}
                         <View style = {styles.labelTextWrapper}>
-                            <Text style={[styles.labelText]} numberOfLines={2}>{attributes.label}</Text>
+                            <Text 
+                                style={[styles.labelText]} 
+                                numberOfLines={2}
+                                adjustsFontSizeToFit={true}
+                                minimumFontScale={0.8}
+                                >{attributes.label}</Text>
                         </View>
                         <View style={styles.valueWrapper}>
-                            <Text style={styles.inputText} numberOfLines={2}>{this.getLabel(attributes.value)} </Text>
+                            <Text 
+                                style={styles.inputText} 
+                                numberOfLines={2}
+                                adjustsFontSizeToFit={true}
+                                minimumFontScale={0.8}
+                                >{this.getLabel(attributes.value)} </Text>
                         </View>
                         {this.renderChecklistIcon()}
                     </TouchableOpacity>

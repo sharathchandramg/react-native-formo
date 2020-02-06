@@ -8,8 +8,8 @@ import {
     Modal,
 } from 'react-native';
 import styles from './../../styles';
-
 import { View, Text } from 'native-base';
+import StarIcon from "../../components/starIcon";
 
 const Item = Picker.Item;
 
@@ -132,6 +132,8 @@ export default class StatusPickerField extends Component {
                         paddingVertical: 10,
                     }}
                 >
+                <View style={{flexDirection:'row' }}>
+                    {attributes['required'] && <StarIcon required={attributes['required']} />}
                     <Text
                         style={{
                             color: theme.inputColorPlaceholder,
@@ -140,9 +142,10 @@ export default class StatusPickerField extends Component {
                     >
                         {attributes.label}
                     </Text>
-                    <Text style={{ color: theme.inputColorPlaceholder }}>
-                        {isValueValid ? attributes.value : defaultValue }
-                    </Text>
+                </View>
+                <Text style={{ color: theme.inputColorPlaceholder }}>
+                    {isValueValid ? attributes.value : defaultValue }
+                </Text>
                 </TouchableOpacity>
                 {this.renderModal()}
             </View>
@@ -162,7 +165,8 @@ export default class StatusPickerField extends Component {
                     },
                 }}
             >
-                <View style={{ flex: 5 }}>
+                <View style={{ flex: 5,flexDirection:'row' }}>
+                    {attributes['required'] && <StarIcon required={attributes['required']} />}
                     <Text
                         style={{
                             color: theme.inputColorPlaceholder,

@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import { Platform,Modal,Picker,TouchableOpacity,TouchableHighlight } from "react-native";
 import { View, Item, Input, ListItem, Text } from "native-base";
 import { getKeyboardType } from "./../../utils/helper";
+import StarIcon from "../../components/starIcon";
 
 export default class CurrencyField extends Component {
 
@@ -135,6 +136,7 @@ export default class CurrencyField extends Component {
                 <View style={{ 
                     flex:2,
                     flexDirection:'row', 
+                    marginTop:5,
                     backgroundColor: theme.pickerBgColor,
                     borderBottomColor: theme.inputBorderColor,
                     borderBottomWidth: theme.borderWidth}}>
@@ -165,7 +167,7 @@ export default class CurrencyField extends Component {
                         borderBottomColor: theme.inputBorderColor,
                         borderBottomWidth: theme.borderWidth}}
                     onPress={() => this.setModalVisible(true)}>
-                    <Text style={{ color: theme.inputColorPlaceholder }}>{currencyType}</Text>
+                    <Text style={{ color: theme.inputColorPlaceholder}}>{currencyType}</Text>
                 </TouchableOpacity>
             )
         }
@@ -176,7 +178,8 @@ export default class CurrencyField extends Component {
         return (
             <View>
                 <ListItem style={{ borderBottomWidth: 0, paddingVertical: 5 }}>
-                    <View style={{ flex: 4,flexDirection:'row'}}>
+                    {attributes['required'] && <StarIcon required={attributes['required']} />}
+                    <View style={{ flex:5,flexDirection:'row'}}>
                         {attributes.showCurrencyOptions && 
                             <View style={{ flex:2,flexDirection:'row'}}>
                                 {this.renderCurrencyTypePicker()}
@@ -184,7 +187,7 @@ export default class CurrencyField extends Component {
                         }
                         <View
                             style={{ 
-                                flex:attributes.showCurrencyOptions?2:4,
+                                flex:attributes.showCurrencyOptions?3:5,
                                 flexDirection:'row', 
                                 backgroundColor: theme.pickerBgColor,
                                 borderBottomColor: theme.inputBorderColor,

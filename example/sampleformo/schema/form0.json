@@ -1,34 +1,8 @@
 [   
     {
-        "type": "location",
-        "name": "office_location",
-        "label": "Office Location",
-        "required": true,
-        "editable": true,
-        "hidden": false
-    },
-    
-    {
-        "type": "image",
-        "name": "bill",
-        "label": "Bill",
-        "required": true,
-        "editable": true,
-        "hidden": false
-
-    },
-    {
         "type": "text",
         "name": "data_source",
         "label": "Data Source",
-        "required": true,
-        "editable": true,
-        "hidden": false
-    },
-    {
-        "type": "text",
-        "name": "prospect_name",
-        "label": "Prospect Name",
         "required": true,
         "editable": true,
         "hidden": false
@@ -49,22 +23,26 @@
         "editable": true,
         "hidden": false
     },
+    
     {
-        "type": "text",
-        "name": "apartment_name",
-        "label": "Apartment Name",
+        "type": "image",
+        "name": "bill",
+        "label": "Bill",
+        "required": true,
+        "editable": true,
+        "hidden": false
+
+    },
+
+    {
+        "type": "location",
+        "name": "office_location",
+        "label": "Office Location",
         "required": true,
         "editable": true,
         "hidden": false
     },
-    {
-        "type": "number",
-        "name": "number_of_flats",
-        "label": "Number Of Flats",
-        "required": false,
-        "editable": true,
-        "hidden": false
-    },
+
     {
         "type": "date",
         "name": "date_of_birth",
@@ -75,69 +53,12 @@
         "mode": "date",
         "maxDate": "today"
     },
-    {
-        "type": "text",
-        "name": "highest_qualification",
-        "label": "Highest Qualification",
-        "required": false,
-        "editable": true,
-        "hidden": false
-    },
-    {
-        "type": "text",
-        "name": "relocated_to",
-        "label": "Relocated To",
-        "required": false,
-        "editable": true,
-        "hidden": false
-    },
-    {
-        "type": "text",
-        "name": "working_status",
-        "label": "Working Status",
-        "required": false,
-        "editable": true,
-        "hidden": false
-    },
-    {
-        "type": "date",
-        "name": "preferred_date",
-        "label": "Preferred Date",
-        "required": false,
-        "editable": true,
-        "hidden": false,
-        "mode": "date",
-        "minDate": "today",
-        "defaultDate": "tomorrow"
-    },
-    {
-        "type": "date",
-        "name": "preferred_time",
-        "label": "Preferred Time",
-        "required": false,
-        "editable": true,
-        "hidden": false,
-        "mode": "time"
-    },
-    {
-        "type": "picker",
-        "name": "status",
-        "label": "Status",
-        "required": false,
-        "editable": true,
-        "hidden": false,
-        "options": [
-            "Pending",
-            "On Hold",
-            "Shortlisted",
-            "Rejected"
-        ]
-    },
+
     {
         "type": "picker",
         "name": "stage",
         "label": "Stage",
-        "required": false,
+        "required": true,
         "editable": true,
         "hidden": false,
         "options": [
@@ -146,31 +67,311 @@
         ]
     },
     {
-        "type": "text",
-        "name": "notes",
-        "label": "Notes",
-        "required": false,
+        "type": "status_picker",
+        "name": "status",
+        "label": "Status",
+        "required": true,
+        "editable": true,
+        "hidden": false,
+        "options": [
+            "Pending",
+            "On Hold",
+            "Shortlisted",
+            "Rejected"
+        ],
+        "filter_options":[
+            { 
+                "create": ["-Select-" ,"Pending","On Hold"]
+            },
+            {
+                "update":["-Select-" , "Pending","Shortlisted", "Rejected"]
+            }
+        ],
+        "defaultValue":"Pending"
+    },
+    {
+        "type": "lookup",
+        "name": "assignee",
+        "label": "Select Assignee",
+        "multiple": false,
+        "required": true,
+        "editable": true,
+        "labelKey": "user_name",
+        "primaryKey": "user_id",
+        "objectType": true,
+        "options": [
+            {
+                "user_id":0,
+                "user_name": "Sharath",
+                "city": "Bengaluru",
+                "city_state": "Karnataka"
+            },
+            {
+                "user_id": 1,
+                "user_name": "Rabindra",
+                "city": "Sambalpur",
+                "city_state": "Odisha"
+            },
+            {
+                "user_id": 2,
+                "user_name": "Nitheesh",
+                "city": "Mangalore",
+                "city_state": "Karnataka"
+            }
+        ],
+        "additional":{
+            "searchEnable":true,
+            "filterEnable":true
+        },
+
+        "data_source" : {
+            "type" : "local", 
+            "key" : "" ,
+            "url": ""
+        },
+        "filterCategory":[ "user_name","city","city_state"]    
+    },
+    {
+        "type": "select",
+        "name": "assiggee_0",
+        "label": "Assignee 0",
+        "multiple": false,
+        "labelKey": "user_name",
+        "primaryKey": "user_id",
+        "objectType": true,
+        "required": true,
+        "options": [
+            {
+                "user_id": 1,
+                "user_name": "Sharath"
+            },
+            {
+                "user_id": 2,
+                "user_name": "Rabindra"
+            },
+            {
+                "user_id": 3,
+                "user_name": "Nitheesh"
+            }
+        ],
+        "defaultValue": [
+            {
+                "user_id": 3,
+                "user_name": "Nitheesh"
+            }
+        ]
+    },
+    
+    {
+        "type": "switch",
+        "name": "visited",
+        "label": "Visited",
+        "required": true,
         "editable": true,
         "hidden": false
     },
     {
-        "type": "date",
-        "name": "orientation_date",
-        "label": "Orientation Date",
-        "required": false,
+        "type": "sub-form",
+        "name": "customer",
+        "label": "Customer",
+        "required": true,
         "editable": true,
         "hidden": false,
-        "mode": "date",
-        "minDate": "today"
+        "fields": [
+            {
+                "type": "lookup",
+                "name": "select_name",
+                "label": "Select Customer",
+                "required": true,
+                "editable": true,
+                "hidden": false,
+                "multiple": false,
+                "labelKey": "customer_name",
+                "primaryKey": "customer_code",
+                "objectType": true,
+                "options": [
+                    {
+                        "customer_name": "Customer 1",
+                        "customer_code": "C-AQ-112345",
+                        "billing_address": "344, Jayanagar 1st Block, Bangalore - 85",
+                        "shipping_address": "344, Jayanagar 1st Block, Bangalore - 85"
+                    },
+                    {
+                        "customer_name": "Customer 2",
+                        "customer_code": "C-AQ-112346",
+                        "billing_address": "344, Jayanagar 1st Block, Bangalore - 85",
+                        "shipping_address": "344, Jayanagar 1st Block, Bangalore - 85"
+                    }
+                ],
+                "fields": [
+                    {
+                        "type": "text",
+                        "name": "customer_name",
+                        "label": "Customer Name",
+                        "required": true,
+                        "editable": false,
+                        "hidden": false
+                    },
+                    {
+                        "type": "text",
+                        "name": "customer_code",
+                        "label": "Customer Code",
+                        "required": true,
+                        "editable": false,
+                        "hidden": false
+                    },
+                    {
+                        "type": "text",
+                        "name": "billing_address",
+                        "label": "Billing Address",
+                        "required": true,
+                        "editable": false,
+                        "hidden": false
+                    }
+                ]
+            }
+        ]
     },
     {
-        "type": "date",
-        "name": "orientation_time",
-        "label": "Orientation Time",
-        "required": false,
+        "type": "simple-grid",
+        "label": "Audit List",
+        "name": "audit_list",
+        "required": true,
         "editable": true,
         "hidden": false,
-        "mode": "time"
+        "data":{
+
+            "header": {
+                "Critical": "Critical",
+                "Major": "Major",
+                "Minor": "Minor"
+            
+            },
+
+            "type": {
+                "Critical": "Number",
+                "Major": "string",
+                "Minor": "Number"
+            },
+
+            "style":{
+                "column_width":{
+                    "Critical": 80,
+                    "Major": 100,
+                    "Minor": 120
+                },
+                "row_height": 100
+            },
+
+            "Fabric": {
+                "Critical": 1,
+                "Major": "ABC",
+                "Minor": ""
+                
+            },
+            "Color": {
+                "Critical": 5,
+                "Major": null,
+                "Minor": 3
+            },
+            "Fabric1": {
+                "Critical": 1,
+                "Major": "ABC",
+                "Minor": ""
+                
+            },
+            "Color1": {
+                "Critical": 5,
+                "Major": null,
+                "Minor": 3
+            },
+            "Fabric2": {
+                "Critical": 1,
+                "Major": "ABC",
+                "Minor": ""
+                
+            },
+            "Color2": {
+                "Critical": 5,
+                "Major": null,
+                "Minor": 3
+            }
+        }
+    },
+    {
+        "type": "group",
+        "name": "work_address",
+        "label": "Address",
+        "required": true,
+        "editable": true,
+        "hidden": false,
+        "fields": [
+            {
+                "type": "text",
+                "name": "city",
+                "label": "City",
+                "required": true
+            },
+            {
+                "type": "text",
+                "name": "ccountry",
+                "label": "Country"
+            }
+        ]
+    },
+    {
+        "type": "customDataView",
+        "name": "product_catalog",
+        "label": "Select products",
+        "required": true,
+        "editable": true,
+        "hidden": false,
+        "multiple": false,
+        "objectType": true,
+        "view_name" : "mo_catalog_1", 
+        "data":[{}],
+        "data_source" : {
+            "type" : "asynstorage/filestorage/api",
+            "key" : ""  
+        },    
+        "defaultValue": {}
+    },
+    {
+        "type": "currency",
+        "name": "loan_amount",
+        "label": "Loan Amount",
+        "required": true,
+        "editable": true,
+        "hidden": false,
+        "showCurrencyOptions":true,
+        "currencyOptions": ["INR", "USD","EUR","CNY","GBP"],
+        "defaultValue":0,
+        "defaultCurrency" : "INR"
+    },
+    {
+        "type": "collaborator",
+        "name": "assiggee",
+        "label": "Collaborator",
+        "multiple": true,
+        "required": true,
+        "primaryKey": "designation_id",
+        "labelKey": "designation_name",
+        "objectType": true,
+        "options": []
+    },
+    {
+        "type": "assignee",
+        "name": "_mo_assignee",
+        "label": "Assignee",
+        "multiple": false,
+        "required": true,
+        "primaryKey": "designation_id",
+        "labelKey": "designation_name",
+        "objectType": true,
+        "options": [],
+        "config":{
+            "assignment_type" :"managers",
+            "level": 1
+        }
     }
-    
 ]

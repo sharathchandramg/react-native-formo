@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
         shadowRadius:4,
         backgroundColor:'white',
         shadowOffset: {width:0, height:0},
+        paddingStart:5
     },
 
     labelTextWrapper:{
@@ -69,7 +70,8 @@ const styles = StyleSheet.create({
         fontFamily:'roboto',
         textAlign: 'left',
         fontWeight:'300',
-        paddingStart:5
+        paddingStart:5,
+        flex:1
     },
 
     iconStyle:{

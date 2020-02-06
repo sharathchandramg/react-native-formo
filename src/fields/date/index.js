@@ -9,8 +9,8 @@ import {
     Modal,
     TouchableHighlight,
 } from 'react-native';
-import { View, Text, Item, Icon } from 'native-base';
-
+import { View, Text, Item,ListItem, Icon } from 'native-base';
+import StarIcon from "../../components/starIcon";
 const moment = require('moment');
 
 export default class DateField extends Component {
@@ -179,50 +179,40 @@ export default class DateField extends Component {
         }
 
         return (
-            <View
-                style={{
-                    backgroundColor: theme.pickerBgColor,
-                    borderBottomColor: theme.inputBorderColor,
-                    borderBottomWidth: theme.borderWidth,
-                    marginHorizontal: 10,
-                    marginVertical: 0,
-                    marginLeft: 15,
-                }}
-            >
-                <TouchableOpacity
-                    onPress={() => this.setModalVisible(true)}
-                    style={{
-                        paddingVertical: 10,
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                    }}
-                >
-                    <Text style={{ color: theme.labelActiveColor }}>
+            <View style={{flexDirection: 'row', flex:2}} >
+                <Item error={theme.changeTextInputColorOnError ? attributes.error : null} style={{paddingVertical:10}}>
+                    {attributes['required'] && <StarIcon required={attributes['required']} />}
+                    <Text
+                        style={{
+                            flex: 1,
+                            color:theme.labelActiveColor,
+                            paddingStart: 5,
+                        }}
+                        onPress={() => this.setModalVisible(true)}
+                    >
                         {attributes.label}
                     </Text>
-                    <View style={{ flexDirection: 'row' }} />
-                    <View
+                    <TouchableOpacity
+                        hitSlop={{ top: 10, bottom: 10, right: 50, left: 50 }}
                         style={{
                             marginHorizontal: 5,
                             justifyContent: 'center',
                             alignItems: 'center',
                             flexDirection: 'row',
                         }}
+                        onPress={() => this.setModalVisible(true)}
                     >
-                        <Text>
-                            {dateValue}
-                            <Icon
-                                name="ios-arrow-forward"
-                                style={{
-                                    fontSize: 18,
-                                    paddingStart: 10,
-                                    color: theme.inputColorPlaceholder,
-                                }}
-                            />
-                        </Text>
-                    </View>
-                </TouchableOpacity>
+                        <Text>{dateValue}</Text>
+                        <Icon
+                            name="ios-arrow-forward"
+                            style={{
+                                fontSize: 18,
+                                paddingStart: 10,
+                                color: theme.inputColorPlaceholder,
+                            }}
+                        />
+                    </TouchableOpacity>
+                </Item>
             </View>
         );
     };
@@ -253,40 +243,30 @@ export default class DateField extends Component {
         }
 
         return (
-            <TouchableOpacity
-                style={{
-                    backgroundColor: theme.pickerBgColor,
-                    borderBottomColor: theme.inputBorderColor,
-                    borderBottomWidth: theme.borderWidth,
-                    marginHorizontal: 15,
-                    marginVertical: 0,
-                    paddingVertical: 15,
-                    marginLeft: 20,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                }}
-            >
-                <Text
-                    style={{
-                        color: theme.inputColorPlaceholder,
-                        paddingStart: 5,
-                    }}
-                >
-                    {attributes.label}
-                </Text>
-                <View style={{ flexDirection: 'row', marginEnd: 10 }}>
-                    <TouchableOpacity
-                        hitSlop={{ top: 10, bottom: 10, right: 50, left: 50 }}
+            <View style={{flexDirection: 'row', flex:2}} >
+                <Item error={theme.changeTextInputColorOnError ? attributes.error : null} style={{paddingVertical:10}}>
+                    {attributes['required'] && <StarIcon required={attributes['required']} />}
+                    <Text
                         style={{
-                            marginHorizontal: 5,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            flexDirection: 'row',
+                            flex: 1,
+                            color: theme.inputColorPlaceholder,
+                            paddingStart: 5,
                         }}
                         onPress={() => handleOnPress()}
                     >
-                        <Text onPress={() => handleOnPress()}>{dateValue}</Text>
+                        {attributes.label}
+                    </Text>
+                    <TouchableOpacity
+                            hitSlop={{ top: 10, bottom: 10, right: 50, left: 50 }}
+                            style={{
+                                marginHorizontal: 5,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                flexDirection: 'row',
+                            }}
+                        onPress={() => handleOnPress()}
+                    >
+                        <Text>{dateValue}</Text>
                         <Icon
                             name="ios-arrow-forward"
                             style={{
@@ -296,8 +276,8 @@ export default class DateField extends Component {
                             }}
                         />
                     </TouchableOpacity>
-                </View>
-            </TouchableOpacity>
+                </Item>
+            </View>
         );
     };
 
@@ -381,10 +361,18 @@ export default class DateField extends Component {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
             <View>
-                {Platform.OS === 'ios'
-                    ? this.renderIOSDatePicker()
-                    : this.renderAndroidDatePicker()}
-                {this.renderModal()}
+                <ListItem
+                        style={{
+                            borderBottomWidth: 0,
+                            paddingVertical: 5,
+                            marginLeft: 20,
+                        }}
+                    >
+                    {Platform.OS === 'ios'
+                        ? this.renderIOSDatePicker()
+                        : this.renderAndroidDatePicker()}
+                    {this.renderModal()}
+                </ListItem>
                 <View style={{ paddingHorizontal: 15 }}>
                     <ErrorComponent {...{ attributes, theme }} />
                 </View>

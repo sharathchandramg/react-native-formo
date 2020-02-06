@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Platform, Alert, TouchableOpacity, Linking } from 'react-native';
-import { View, ListItem, Text } from 'native-base';
+import { View, ListItem, Text,Item } from 'native-base';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import { isEmpty } from '../../utils/validators';
 
@@ -11,6 +11,7 @@ import {
 } from './../../utils/helper';
 
 import styles from './styles';
+import StarIcon from "../../components/starIcon";
 
 const GPS_ALERT_MESSAGE = 'Poor GPS accuracy. Wait until accuracy improves';
 const GPS_ALERT = 'GPS Accuracy Alert';
@@ -228,13 +229,19 @@ export default class LocationField extends Component {
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
-            <View style={styles.container}>
+            <View>
                 <ListItem style={{ borderBottomWidth: 0, paddingVertical: 5 }}>
-                    <View style={{ flexDirection: 'row', flex: 1 }}>
-                        <Text style={styles.placeHolder}>
-                            {attributes.label}
-                        </Text>
-                        {this.renderPostionUrl(attributes)}
+                    <View style={{ flex: 1 }}>
+                        <View>
+                            <Item error={theme.changeTextInputColorOnError ? attributes.error : null} style={{paddingVertical:10}}>
+                                {attributes['required'] && <StarIcon required={attributes['required']} />}
+                                <Text style={styles.placeHolder}>
+                                    {attributes.label}
+                                </Text>
+                                    {this.renderPostionUrl(attributes)}
+                                {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null}
+                            </Item>
+                        </View>
                     </View>
                 </ListItem>
                 <View style={{ paddingHorizontal: 15 }}>
