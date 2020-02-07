@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { TouchableOpacity, Modal } from 'react-native';
 import _ from 'lodash';
 import { isEmpty } from '../../utils/validators';
-import { View, Text, Icon } from 'native-base';
+import { View, Text, Icon, Fab } from 'native-base';
 import styles from './styles';
 import SearchComponent from '../../components/search';
 import LookupComponent from '../../components/lookup';
@@ -18,6 +18,7 @@ export default class LookupField extends Component {
         ErrorComponent: PropTypes.func,
         onGetQuery: PropTypes.func,
         onSearchQuery: PropTypes.func,
+        onAddLookup: PropTypes.func
     };
 
     constructor(props) {
@@ -741,88 +742,100 @@ export default class LookupField extends Component {
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
-            <View style={styles.container}>
-                <View style={styles.inputLabelWrapper}>
-                    <TouchableOpacity
-                        style={[styles.inputLabel]}
-                        error={
-                            theme.changeTextInputColorOnError
-                                ? attributes.error
-                                : null
-                        }
-                        onPress={() => this.toggleModalVisible()}
-                    >
-                        {attributes['required'] && <StarIcon required={attributes['required']} />}
-                        <View style={[styles.labelTextWrapper,{flexDirection:'row'}]}>
-                            <Text 
-                                style={[styles.labelText]} 
-                                numberOfLines={2}
-                                adjustsFontSizeToFit={true}
-                                minimumFontScale={0.8}
-                                >
-                                {attributes.label}
-                            </Text>
-                        </View>
-                        <View style={styles.valueWrapper}>
-                            <Text 
-                                style={styles.inputText} 
-                                numberOfLines={2}
-                                adjustsFontSizeToFit={true}
-                                minimumFontScale={0.8}
-                                >
-                                {this.getLabel()}
-                            </Text>
-                        </View>
-                        {this.renderlookupIcon()}
-                    </TouchableOpacity>
-                </View>
-
-                <View style={{ paddingHorizontal: 20 }}>
-                    <ErrorComponent {...{ attributes, theme }} />
-                </View>
-                {
-                    <Modal
-                        visible={this.state.modalVisible}
-                        animationType="none"
-                        transparent={true}
-                        onRequestClose={() => this.toggleModalVisible()}
-                    >
-                        {this.state.searchModalVisible ||
-                        this.state.filterModalVisible ? (
-                            this.renderComponent()
-                        ) : (
-                            <LookupComponent
-                                modalVisible={this.state.modalVisible}
-                                theme={theme}
-                                attributes={attributes}
-                                toggleSelect={this.toggleSelect}
-                                onEndReached={this.onEndReached}
-                                toggleModalVisible={this.toggleModalVisible}
-                                toggleSearchModalVisible={
-                                    this.toggleSearchModalVisible
-                                }
-                                toggleFilterModalVisible={
-                                    this.toggleFilterModalVisible
-                                }
-                                searchEnable={this.isSearchEnable(attributes)}
-                                filterEnable={this.isFilterEnable(attributes)}
-                                filter={this.state.categoryToValue}
-                                handleReset={this.handleReset}
-                                activeCategory={this.state.activeCategory}
-                                handlePullToRefresh={this.handlePullToRefresh}
-                                loading={
-                                    typeof this.props.loading !== 'undefined'
-                                        ? this.props.loading
-                                        : this.state.loading
-                                }
-                                pullToRefreshEnable={this.isPullToRefreshEnable(
-                                    attributes
-                                )}
-                            />
-                        )}
-                    </Modal>
+          <View style={styles.container}>
+            <View style={styles.inputLabelWrapper}>
+              <TouchableOpacity
+                style={[styles.inputLabel]}
+                error={
+                  theme.changeTextInputColorOnError ? attributes.error : null
                 }
+                onPress={() => this.toggleModalVisible()}
+              >
+                {attributes["required"] && (
+                  <StarIcon required={attributes["required"]} />
+                )}
+                <View
+                  style={[styles.labelTextWrapper, { flexDirection: "row" }]}
+                >
+                  <Text
+                    style={[styles.labelText]}
+                    numberOfLines={2}
+                    adjustsFontSizeToFit={true}
+                    minimumFontScale={0.8}
+                  >
+                    {attributes.label}
+                  </Text>
+                </View>
+                <View style={styles.valueWrapper}>
+                  <Text
+                    style={styles.inputText}
+                    numberOfLines={2}
+                    adjustsFontSizeToFit={true}
+                    minimumFontScale={0.8}
+                  >
+                    {this.getLabel()}
+                  </Text>
+                </View>
+                {this.renderlookupIcon()}
+              </TouchableOpacity>
             </View>
+
+            <View style={{ paddingHorizontal: 20 }}>
+              <ErrorComponent {...{ attributes, theme }} />
+            </View>
+            {
+              <Modal
+                visible={this.state.modalVisible}
+                animationType="none"
+                transparent={true}
+                onRequestClose={() => this.toggleModalVisible()}
+              >
+                {this.state.searchModalVisible ||
+                this.state.filterModalVisible ? (
+                  this.renderComponent()
+                ) : (
+                  <LookupComponent
+                    modalVisible={this.state.modalVisible}
+                    theme={theme}
+                    attributes={attributes}
+                    toggleSelect={this.toggleSelect}
+                    onEndReached={this.onEndReached}
+                    toggleModalVisible={this.toggleModalVisible}
+                    toggleSearchModalVisible={this.toggleSearchModalVisible}
+                    toggleFilterModalVisible={this.toggleFilterModalVisible}
+                    searchEnable={this.isSearchEnable(attributes)}
+                    filterEnable={this.isFilterEnable(attributes)}
+                    filter={this.state.categoryToValue}
+                    handleReset={this.handleReset}
+                    activeCategory={this.state.activeCategory}
+                    handlePullToRefresh={this.handlePullToRefresh}
+                    loading={
+                      typeof this.props.loading !== "undefined"
+                        ? this.props.loading
+                        : this.state.loading
+                    }
+                    pullToRefreshEnable={this.isPullToRefreshEnable(attributes)}
+                  />
+                )}
+                {this.props.onAddLookup &&
+                typeof this.props.onAddLookup === "function" ? (
+                  <Fab
+                    active={true}
+                    direction="up"
+                    containerStyle={{}}
+                    style={{ backgroundColor: "rgb(0,151,235)" }}
+                    position="bottomRight"
+                    onPress={() => {
+                      this.toggleModalVisible();
+                      this.props.onAddLookup(this.props);
+                    }}
+                  >
+                    <Icon type="FontAwesome" name="plus" style={{fontSize:18}}/>
+                  </Fab>
+                ) : null}
+              </Modal>
+            }
+          </View>
         );
     }
 }
