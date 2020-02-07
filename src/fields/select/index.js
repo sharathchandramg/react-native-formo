@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Modal, Dimensions, TouchableOpacity } from "react-native";
+import { Modal,TouchableOpacity } from "react-native";
 const _ = require('lodash');
 import { isEmpty } from '../../utils/validators';
 import {
@@ -20,7 +20,7 @@ import {
     Footer
 } from "native-base";
 
-const deviceWidth = Dimensions.get('window').width;
+import StarIcon from "../../components/starIcon";
 import styles from "./styles";
 
 export default class SelectField extends Component {
@@ -211,6 +211,64 @@ export default class SelectField extends Component {
             </TouchableOpacity>
         );
     };
+
+    renderComponent =()=>{
+        const { theme, attributes } = this.props;
+        return(
+            <Container style={{ flex: 1 }}>
+                <Header style={[theme.header]} androidStatusBarColor='#c8c8c8'>
+                    <Left>
+                        <Button transparent onPress={() => this.toggleModalVisible()}>
+                            <Icon name="arrow-back" style={theme.headerLeftIcon} />
+                        </Button>
+                    </Left>
+                    <Body>
+                        <Title style={theme.headerText}>{attributes.label || "Select"}</Title>
+                    </Body>
+                    <Right />
+                </Header>
+
+                <Content>
+                    {
+                        !isEmpty(attributes['options']) && attributes.options.map((item, index) => {
+                            let isSelected = false;
+                            if (attributes.multiple) {
+                                isSelected = attributes.objectType ?
+                                    attributes.value && attributes.value.findIndex(option =>
+                                        option[attributes.primaryKey] === item[attributes.primaryKey]
+                                    ) !== -1 : (attributes.value && attributes.value.indexOf(item) !== -1);
+                            }
+                            return (
+                                <ListItem
+                                    key={index}
+                                    onPress={() => this.toggleSelect(item)}>
+                                    {attributes.multiple &&
+                                        <CheckBox
+                                            onPress={() => this.toggleSelect(item)}
+                                            checked={isSelected}
+                                        />
+                                    }
+                                    <Body>
+                                        <Text style={{ paddingHorizontal: 5 }}>
+                                            {attributes.objectType ? item[attributes.labelKey] : item}
+                                        </Text>
+                                    </Body>
+                                </ListItem>);
+                        })
+                    }
+                </Content>
+                { attributes && attributes['multiple']?
+                    <Footer style={styles.button}>
+                        <TouchableOpacity style={styles.button} onPress={() => this.handleAddPressed()}>
+                            <Text style={styles.buttonText}>{'Add'} </Text>
+                        </TouchableOpacity>
+                    </Footer>
+                    : null
+                }
+            </Container>
+        )
+
+    }
     
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
@@ -226,75 +284,36 @@ export default class SelectField extends Component {
                         }
                         onPress={() => this.toggleModalVisible()}
                     >
-                        <View style = {styles.labelTextWrapper}>
-                            <Text style={[styles.labelText]} numberOfLines={2}>{attributes.label}</Text>
+                        {attributes['required'] && <StarIcon required={attributes['required']} />}
+                        <View style = {[styles.labelTextWrapper,{flexDirection:'row'}]}>
+                            <Text 
+                                style={[styles.labelText]} 
+                                numberOfLines={2}
+                                adjustsFontSizeToFit={true}
+                                minimumFontScale={0.8}
+                                >{attributes.label}</Text>
                         </View>
                         <View style={styles.valueWrapper}>
-                            <Text style={styles.inputText} numberOfLines={2}>{this.getLabel()} </Text>
+                            <Text 
+                                style={styles.inputText} 
+                                numberOfLines={2}
+                                adjustsFontSizeToFit={true}
+                                minimumFontScale={0.8}
+                                >{this.getLabel()} </Text>
                         </View>
                         {this.renderIcon()}
                     </TouchableOpacity>
                 </View>
 
-                {
+                { this.state.modalVisible && (
                     <Modal
                         visible={this.state.modalVisible}
                         animationType="none"
                         onRequestClose={() => this.toggleModalVisible()}
                         transparent ={true}>
-                        <Container style={{ flex: 1 }}>
-
-                            <Header style={[theme.header]} androidStatusBarColor='#c8c8c8'>
-                                <Left>
-                                    <Button transparent onPress={() => this.toggleModalVisible()}>
-                                        <Icon name="arrow-back" style={theme.headerLeftIcon} />
-                                    </Button>
-                                </Left>
-                                <Body>
-                                    <Title style={theme.headerText}>{attributes.label || "Select"}</Title>
-                                </Body>
-                                <Right />
-                            </Header>
-
-                            <Content>
-                                {
-                                    !isEmpty(attributes['options']) && attributes.options.map((item, index) => {
-                                        let isSelected = false;
-                                        if (attributes.multiple) {
-                                            isSelected = attributes.objectType ?
-                                                attributes.value && attributes.value.findIndex(option =>
-                                                    option[attributes.primaryKey] === item[attributes.primaryKey]
-                                                ) !== -1 : (attributes.value && attributes.value.indexOf(item) !== -1);
-                                        }
-                                        return (
-                                            <ListItem
-                                                key={index}
-                                                onPress={() => this.toggleSelect(item)}>
-                                                {attributes.multiple &&
-                                                    <CheckBox
-                                                        onPress={() => this.toggleSelect(item)}
-                                                        checked={isSelected}
-                                                    />
-                                                }
-                                                <Body>
-                                                    <Text style={{ paddingHorizontal: 5 }}>
-                                                        {attributes.objectType ? item[attributes.labelKey] : item}
-                                                    </Text>
-                                                </Body>
-                                            </ListItem>);
-                                    })
-                                }
-                            </Content>
-                            { attributes && attributes['multiple']?
-                                <Footer style={styles.button}>
-                                    <TouchableOpacity style={styles.button} onPress={() => this.handleAddPressed()}>
-                                        <Text style={styles.buttonText}>{'Add'} </Text>
-                                    </TouchableOpacity>
-                                </Footer>
-                                : null
-                            }
-                        </Container>
-                    </Modal>
+                        {this.renderComponent()}
+                    </Modal>)
+                    
                 }
                 <View style={{ paddingHorizontal: 15 }}>
                     <ErrorComponent {...{ attributes, theme }} />

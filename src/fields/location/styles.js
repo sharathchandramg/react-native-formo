@@ -7,18 +7,14 @@ import {
 
 const styles = StyleSheet.create({
     container:{
-        marginHorizontal:15,
         borderBottomWidth:0.5,
         borderBottomColor:'#D9D5DC',
-        margin:10,
-        
-
     },
     textStyle:{
         color:'blue',
         fontFamily:'roboto',
         alignSelf:'flex-start',
-        fontSize:12,
+        fontSize:16,
         lineHeight:16,
         height:16,
         flex:1,
@@ -26,7 +22,8 @@ const styles = StyleSheet.create({
     placeHolder:{
         color:  '#ADADAD',
         alignSelf:'flex-start',
-        marginLeft: -10
+        paddingHorizontal:5
+        
     },
     valueContainer:{
         padding:5,

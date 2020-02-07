@@ -10,7 +10,7 @@ import {
     TouchableHighlight,
     Alert,
 } from 'react-native';
-import { View, ListItem, Text } from 'native-base';
+import { View, ListItem, Text, Item } from 'native-base';
 import ImagePicker from 'react-native-image-crop-picker';
 import BottomSheet from 'react-native-js-bottom-sheet';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -19,6 +19,7 @@ import FastImage from 'react-native-fast-image';
 import { isEmpty } from '../../utils/validators';
 import _ from 'lodash';
 const DEVICE_WIDTH = Dimensions.get('window').width;
+import StarIcon from "../../components/starIcon";
 
 export default class ImageField extends Component {
     static propTypes = {
@@ -446,28 +447,31 @@ export default class ImageField extends Component {
                         }}
                     >
                         <View style={{ flexDirection: 'row', flex: 2 }}>
-                            <Text
-                                style={{
-                                    flex: 1,
-                                    color: theme.inputColorPlaceholder,
-                                    paddingStart: 5,
-                                }}
-                            >
-                                {attributes.label}
-                            </Text>
-                            <TouchableOpacity
-                                style={{
-                                    flexDirection: 'row',
-                                    flex: 1,
-                                }}
-                                onPress={
-                                    Platform.OS === 'ios'
-                                        ? this._onPressImage
-                                        : () => this.bottomSheet.open()
-                                }
-                            >
-                                {this.renderAddImageIcon()}
-                            </TouchableOpacity>
+                            <Item error={theme.changeTextInputColorOnError ? attributes.error : null} style={{paddingVertical:10}}>
+                                {attributes['required'] && <StarIcon required={attributes['required']} />}
+                                    <Text
+                                        style={{
+                                            flex: 1,
+                                            color: theme.inputColorPlaceholder,
+                                            paddingStart: 5,
+                                        }}
+                                    >
+                                        {attributes.label}
+                                    </Text>
+                                    <TouchableOpacity
+                                        style={{
+                                            flexDirection: 'row',
+                                            flex: 1,
+                                        }}
+                                        onPress={
+                                            Platform.OS === 'ios'
+                                                ? this._onPressImage
+                                                : () => this.bottomSheet.open()
+                                        }
+                                    >
+                                        {this.renderAddImageIcon()}
+                                    </TouchableOpacity>
+                            </Item>
                         </View>
                     </ListItem>
                     {this.checkImageData() ? (

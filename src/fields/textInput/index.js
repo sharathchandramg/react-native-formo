@@ -5,6 +5,7 @@ import math from "mathjs"
 import { View, Item, Input, Icon, ListItem} from "native-base";
 import { getKeyboardType } from "./../../utils/helper";
 import {isEmpty} from "./../../utils/validators";
+import StarIcon from "../../components/starIcon"
 
 export default class TextInputField extends Component {
 
@@ -112,7 +113,7 @@ export default class TextInputField extends Component {
                     <View style={{ flex: 1}}>
                         <View>
                             <Item error={theme.changeTextInputColorOnError ? attributes.error : null}>
-                                {attributes.icon && <Icon color={theme.textInputIconColor} name={attributes.icon} />}
+                                {attributes['required'] && <StarIcon required={attributes['required']} />}
                                 {typeof attributes.type  !=='undefined' && attributes.type ==="calculated"?
                                     this.renderCalculatedField(attributes,theme) 
                                     :

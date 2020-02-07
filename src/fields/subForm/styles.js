@@ -32,12 +32,14 @@ const styles = StyleSheet.create({
 
     inputLabel:{
         height:30,
-        width:'100%',
+        width:'95%',
         flexDirection:'row',
         paddingBottom:5,
         alignItems:'center',
         justifyContent:'flex-start',
+        paddingEnd:10
     },
+
     inputValue:{
         minHeight:30,
         width:'100%',

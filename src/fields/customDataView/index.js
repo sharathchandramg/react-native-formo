@@ -7,6 +7,7 @@ import {
     Icon,
 } from "native-base";
 import styles from "./styles"
+import StarIcon from "../../components/starIcon";
 
 export default class CustomDataComponent extends Component {
 
@@ -65,11 +66,22 @@ export default class CustomDataComponent extends Component {
                         }
                         onPress={() => this.handleOnclick()}
                     >
-                        <View style = {styles.labelTextWrapper}>
-                            <Text style={[styles.labelText]} numberOfLines={2}>{attributes.label}</Text>
+                        {attributes['required'] && <StarIcon required={attributes['required']} />}
+                        <View style = {[styles.labelTextWrapper,{flexDirection:'row'}]}>
+                            <Text 
+                                style={[styles.labelText]} 
+                                numberOfLines={2}
+                                adjustsFontSizeToFit={true}
+                                minimumFontScale={0.8}
+                                >{attributes.label}</Text>
                         </View>
                         <View style={styles.valueWrapper}>
-                            <Text style={styles.inputText} numberOfLines={2}>{this.getLabel(attributes.value)} </Text>
+                            <Text 
+                                style={styles.inputText} 
+                                numberOfLines={2}
+                                adjustsFontSizeToFit={true}
+                                minimumFontScale={0.8}
+                                >{this.getLabel(attributes.value)} </Text>
                         </View>
                         {this.renderlookupIcon()}
                     </TouchableOpacity>

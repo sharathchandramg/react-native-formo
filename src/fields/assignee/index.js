@@ -4,7 +4,6 @@ import { Modal, TouchableOpacity } from 'react-native';
 import _ from 'lodash';
 import { isEmpty } from '../../utils/validators';
 import SearchHeader from '../../components/headers/searchHeader';
-
 import {
     View,
     Text,
@@ -22,6 +21,7 @@ import {
 } from 'native-base';
 
 import styles from './styles';
+import StarIcon from "../../components/starIcon";
 
 export default class AssigneeField extends Component {
     static propTypes = {
@@ -434,13 +434,24 @@ export default class AssigneeField extends Component {
                         }
                         onPress={() => this.toggleModalVisible()}
                     >
-                        <View style={styles.labelTextWrapper}>
-                            <Text style={[styles.labelText]} numberOfLines={2}>
+                        {attributes['required'] && <StarIcon required={attributes['required']} />}
+                        <View style={[styles.labelTextWrapper,{flexDirection:'row'}]}>
+                            <Text 
+                                style={[styles.labelText]} 
+                                numberOfLines={2}
+                                adjustsFontSizeToFit={true}
+                                minimumFontScale={0.8}
+                                >
                                 {attributes.label}
                             </Text>
                         </View>
                         <View style={styles.valueWrapper}>
-                            <Text style={styles.inputText} numberOfLines={2}>
+                            <Text 
+                                style={styles.inputText} 
+                                numberOfLines={2}
+                                adjustsFontSizeToFit={true}
+                                minimumFontScale={0.8}
+                                >
                                 {this.getLabel()}
                             </Text>
                         </View>

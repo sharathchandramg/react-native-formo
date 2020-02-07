@@ -66,3 +66,5 @@ Podfile.lock
 
 # android .setting file 
 android/.settings
+
+example/sampleformo/ios/sampleformo.xcodeproj/project.pbxproj

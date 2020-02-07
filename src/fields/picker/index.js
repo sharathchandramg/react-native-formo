@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { Platform, Picker, TouchableOpacity, TouchableHighlight, Modal } from "react-native";
 import styles from "./../../styles";
 import { View, Text} from "native-base";
-
+import StarIcon from "../../components/starIcon";
 const Item = Picker.Item;
 
 export default class PickerField extends Component {
@@ -106,9 +106,17 @@ export default class PickerField extends Component {
                         alignItems: "center",
                         paddingVertical: 10,
                     }}>
-                    <Text style={{ color: theme.inputColorPlaceholder,paddingStart:5 }}>
-                        {attributes.label}
-                    </Text>
+                    <View style={{flexDirection:'row' }}>
+                        {attributes['required'] && <StarIcon required={attributes['required']} />}
+                        <Text
+                            style={{
+                                color: theme.inputColorPlaceholder,
+                                paddingStart: 5,
+                            }}
+                        >
+                            {attributes.label}
+                        </Text>
+                    </View>
                     <Text style={{ color: theme.inputColorPlaceholder }}>
                         {isValueValid ? attributes.value : defaultValue}
                     </Text>
@@ -127,9 +135,17 @@ export default class PickerField extends Component {
                     borderBottomColor: theme.inputBorderColor,
                     borderBottomWidth: theme.borderWidth,
             }}}>
-                <View style={{ flex: 5 }}>
-                    <Text style={{ color: theme.inputColorPlaceholder,paddingStart:5}}>{attributes.label}</Text>
-                </View>
+            <View style={{ flex: 5,flexDirection:'row' }}>
+                {attributes['required'] && <StarIcon required={attributes['required']} />}
+                <Text
+                    style={{
+                        color: theme.inputColorPlaceholder,
+                        paddingStart: 5,
+                    }}
+                >
+                    {attributes.label}
+                </Text>
+            </View>
                 <View style={{ flex: 5 }}>
                     <Picker
                         style={{ padding: 2 }}
