@@ -81,6 +81,10 @@ export default class RecyclerList extends Component {
                             tintColor={'#008080'}
                             refreshing={this.props.loading}
                             onRefresh={() => this.props.handlePullToRefresh()}
+                            refreshing={ typeof this.props.loading !=='undefined' ?this.props.loading:false}
+                            onRefresh={() =>{
+                                typeof this.props.handlePullToRefresh ==='function' && this.props.handlePullToRefresh();
+                            }}
                         />
                     }
                 />
