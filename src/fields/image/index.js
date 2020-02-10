@@ -185,6 +185,7 @@ export default class ImageField extends Component {
                 maxFiles: multiple ? maxFiles : 1,
                 mediaType:'photo',
                 showsSelectedCount: true,
+                compressImageQuality: 0.6
             };
         } else {
             config = {
@@ -195,6 +196,7 @@ export default class ImageField extends Component {
                 maxFiles: multiple ? maxFiles : 1,
                 mediaType:'photo',
                 showsSelectedCount: true,
+                compressImageQuality:1
             };
         }
 
