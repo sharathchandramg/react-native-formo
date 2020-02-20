@@ -20,6 +20,8 @@ import { isEmpty } from '../../utils/validators';
 import _ from 'lodash';
 const DEVICE_WIDTH = Dimensions.get('window').width;
 import StarIcon from "../../components/starIcon";
+const options = ['Open camera','Select from the gallery','Cancel'];
+
 
 export default class ImageField extends Component {
     static propTypes = {
@@ -81,7 +83,7 @@ export default class ImageField extends Component {
         ]).start();
     };
 
-    _getImageFromStorage = images => {
+    _getImageFromStorage = (images,usedCamera = false )=> {
         const {
             attributes,
             updateValue,
@@ -92,7 +94,8 @@ export default class ImageField extends Component {
         const { multiple, maxFiles } = this.getImageConfiguration();
 
         if (typeof multiple !== 'undefined' && multiple) {
-            _.forEach(images, (image, index) => {
+            const mImages = usedCamera ? [images]: images;
+            _.forEach(mImages, (image, index) => {
                 if (index < maxFiles) {
                     filePath = Platform.OS.match(/ios/i)
                         ? image['path'].replace('file://', '', 1)
@@ -234,7 +237,7 @@ export default class ImageField extends Component {
                 if (config['multiple'] && images.length > config['maxFiles']) {
                     this.renderAlert(images, config['maxFiles']);
                 } else {
-                    this._getImageFromStorage(images);
+                    this._getImageFromStorage(images,true);
                 }
             })
             .catch(e => {
@@ -260,8 +263,6 @@ export default class ImageField extends Component {
     };
 
     _renderOptions = () => {
-        const options = ['Open camera', 'Select from the gallery', 'Cancel'];
-
         return [
             {
                 title: options[0],
@@ -291,7 +292,6 @@ export default class ImageField extends Component {
     };
 
     _onPressImage = () => {
-        const options = ['Open camera', 'Select from the gallery', 'Cancel'];
         ActionSheetIOS.showActionSheetWithOptions(
             { options, cancelButtonIndex: 2 },
             buttonIndex => {
