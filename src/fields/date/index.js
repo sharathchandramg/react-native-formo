@@ -312,7 +312,7 @@ export default class DateField extends Component {
                         }}
                     >
                         <View
-                            style={{ backgroundColor: '#fff', width: '100%' }}
+                            style={{ backgroundColor: '#828282', width: '100%' }}
                         >
                             <View style={{ flexDirection: 'row' }}>
                                 <TouchableHighlight
@@ -326,9 +326,8 @@ export default class DateField extends Component {
                                     }}
                                 >
                                     <View>
-                                        <Text style={{ fontSize: 20 }}>
-                                            {' '}
-                                            Done
+                                        <Text style={{ fontSize: 20,color:'rgb(0,151,235)' }}>
+                                            {'Done'}
                                         </Text>
                                     </View>
                                 </TouchableHighlight>

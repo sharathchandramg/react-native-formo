@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Platform, Alert, TouchableOpacity, Linking } from 'react-native';
-import { View, ListItem, Text,Item } from 'native-base';
+import { View, ListItem, Text,Item,Icon } from 'native-base';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import { isEmpty } from '../../utils/validators';
 

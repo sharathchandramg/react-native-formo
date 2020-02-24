@@ -58,10 +58,7 @@ export default class PickerField extends Component {
                             height: '100%', width: '100%', flexDirection: 'column-reverse', alignItems: 'flex-end'
                         }}
                     >
-                        <View style={{
-                            backgroundColor: '#fff',
-                            width: '100%',
-                        }}>
+                        <View style={{ backgroundColor: '#fff', width: '100%'}}>
                             <View style={{ flexDirection: 'row' }}>
                                 <TouchableHighlight
                                     onPress={() => this.setModalVisible(false)} style={{
@@ -71,7 +68,7 @@ export default class PickerField extends Component {
                                         marginTop: 10,
                                         marginRight: 20
                                     }}>
-                                    <View><Text style={{ fontSize: 20 }}> Done</Text></View>
+                                    <View><Text style={{ fontSize: 20,color:'rgb(0,151,235)' }}>{'Done'}</Text></View>
                                 </TouchableHighlight>
                             </View>
                             <Picker
