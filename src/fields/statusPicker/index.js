@@ -87,9 +87,8 @@ export default class StatusPickerField extends Component {
                                     }}
                                 >
                                     <View>
-                                        <Text style={{ fontSize: 20 }}>
-                                            {' '}
-                                            Done
+                                        <Text style={{ fontSize: 20,color:'rgb(0,151,235)' }}>
+                                            {'Done'}
                                         </Text>
                                     </View>
                                 </TouchableHighlight>
