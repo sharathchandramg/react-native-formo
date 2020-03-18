@@ -75,12 +75,12 @@ export default class SimpleGrideView extends Component {
             Object.keys(data).map((rk)=>{
                 if(!rk.match(/header/) && !rk.match(/style/) && !rk.match(/type/) && rk !== `${String.fromCharCode(931)}`){
                     if(header_type && header_type[ck].toLowerCase()==='number'){
-                        const ckValue = data[rk][ck];
+                        const ckValue = data[rk][ck] || '0';
                         if(ckValue){
                             ckTotal =  parseInt(ckTotal) +  parseInt(ckValue);
                         }
                     }else if(header_type && (header_type[ck].toLowerCase()==='string' || header_type[ck].toLowerCase()==='text')){
-                        const ckValue = data[rk][ck];
+                        const ckValue = data[rk][ck] ;
                         if(ckValue){
                             count += 1;
                             ckTotal =  count;
@@ -104,12 +104,12 @@ export default class SimpleGrideView extends Component {
                 const rk = item['rowKey'];
                 const ck = item['colKey'];
                 const value = item['value'];
-                const preColVal = data[rk][ck];
                 const preColSum = data[`${String.fromCharCode(931)}`][ck];
-                data[rk][ck] = value;
                 const header_type = data['type'];
                 const ck_type = header_type[ck];
                 if(ck_type.toLowerCase() ==='number'){
+                    const preColVal = data[rk][ck] || '0';
+                    data[rk][ck] = value;
                     if(value && !isNaN(value)){
                         if(preColVal){
                             const diff =  parseInt(value) - parseInt(preColVal);
@@ -121,6 +121,8 @@ export default class SimpleGrideView extends Component {
                         data[`${String.fromCharCode(931)}`][ck] = parseInt(preColSum) - parseInt(preColVal);
                     }
                 }else if(ck_type.toLowerCase()==='string' || ck_type.toLowerCase()==='text'){
+                    const preColVal = data[rk][ck] || '';
+                    data[rk][ck] = value;
                     if(value){
                         if(preColVal){
                             data[`${String.fromCharCode(931)}`][ck] = parseInt(preColSum)
