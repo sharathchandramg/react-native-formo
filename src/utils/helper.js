@@ -19,8 +19,6 @@ export function getKeyboardType(textType) {
 }
 
 export function getDefaultValue(field) {
-  console.log(`getDefaultValue`);
-  console.log(field);
   switch (field.type) {
     case "text":
     case "number":
@@ -158,8 +156,6 @@ export function getDefaultValue(field) {
 }
 
 export function getResetValue(field) {
-  console.log(`getResetValue`);
-  console.log(field);
   switch (field.type) {
     case "text":
     case "number":
@@ -238,8 +234,6 @@ export function getInitialState(fields) {
 export function autoValidate(field) {
   let error = false;
   let errorMsg = "";
-  console.log(`autoValidate`);
-  console.log(field);
   if (field.required) {
     switch (field.type) {
       case "email":
