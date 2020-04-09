@@ -1,0 +1,13 @@
+[
+    {
+        "type": "auto-incr-number",
+        "name": "_mo_order_number",
+        "label": "Order Number",
+        "required": true,
+        "editable": true,
+        "hidden": false,
+        "config": {
+            "initial_seed": 1000
+        }
+    }
+]

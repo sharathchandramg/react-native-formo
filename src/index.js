@@ -26,10 +26,10 @@ import {
   autoValidate,
   getInitialState,
   getDefaultValue,
-  getResetValue
+  getResetValue,
 } from "./utils/helper";
 
-const DefaultErrorComponent = props => {
+const DefaultErrorComponent = (props) => {
   const attributes = props.attributes;
   const theme = props.theme;
   if (attributes.error) {
@@ -49,7 +49,7 @@ export default class Form0 extends Component {
     autoValidation: PropTypes.bool,
     autoValidation: PropTypes.bool,
     customValidation: PropTypes.func,
-    onValueChange: PropTypes.func
+    onValueChange: PropTypes.func,
   };
 
   constructor(props) {
@@ -60,7 +60,7 @@ export default class Form0 extends Component {
 
     this.state = {
       ...initialState,
-      errorStatus: false
+      errorStatus: false,
     };
 
     this.getValues = this.getValues.bind(this);
@@ -113,7 +113,7 @@ export default class Form0 extends Component {
 
   onValidateFields() {
     const newFields = {};
-    Object.keys(this.state).forEach(fieldName => {
+    Object.keys(this.state).forEach((fieldName) => {
       const field = this.state[fieldName];
       if (field) {
         if (field.required !== undefined && field.required) {
@@ -142,7 +142,10 @@ export default class Form0 extends Component {
           let newValue;
           if (gIndex !== -1) {
             let preValue = Object.values(this.state)[gIndex].value;
-            let oIndex = _.findIndex(preValue, item => item._id === newObj._id);
+            let oIndex = _.findIndex(
+              preValue,
+              (item) => item._id === newObj._id
+            );
             if (oIndex !== -1) {
               preValue[oIndex] = newObj;
               newValue = preValue;
@@ -161,8 +164,8 @@ export default class Form0 extends Component {
     }
   }
 
-  getLookupSubsciberFields = name => {
-    const lookupSubscriberFields = _.filter(this.props.fields, field => {
+  getLookupSubsciberFields = (name) => {
+    const lookupSubscriberFields = _.filter(this.props.fields, (field) => {
       if (
         typeof field["data-pub"] !== "undefined" &&
         field["data-pub"] === name
@@ -211,7 +214,7 @@ export default class Form0 extends Component {
           const pk = valueObj["primaryKey"];
           const lk = valueObj["labelKey"];
           if (lookupSubscriberFields.length) {
-            _.forEach(lookupSubscriberFields, field => {
+            _.forEach(lookupSubscriberFields, (field) => {
               const key = field["name"];
               const val = value[key] || "";
               this.handleOnValueChange(field, val);
@@ -244,7 +247,7 @@ export default class Form0 extends Component {
     this.onValidateFields();
     const values = {};
     let isValidFields = true;
-    Object.keys(this.state).forEach(fieldName => {
+    Object.keys(this.state).forEach((fieldName) => {
       const field = this.state[fieldName];
       if (field) {
         if (field.error !== undefined && field.error) {
@@ -266,7 +269,7 @@ export default class Form0 extends Component {
 
   resetForm() {
     const newFields = {};
-    Object.keys(this.state).forEach(fieldName => {
+    Object.keys(this.state).forEach((fieldName) => {
       const field = this.state[fieldName];
       if (field) {
         field.value =
@@ -289,7 +292,7 @@ export default class Form0 extends Component {
     const field = fieldObj;
     if (field.type === "group") {
       const subFields = {};
-      Object.keys(value).forEach(fieldName => {
+      Object.keys(value).forEach((fieldName) => {
         subFields[fieldName] = value[fieldName];
       });
       this[field.name].group.setValues(subFields);
@@ -318,7 +321,7 @@ export default class Form0 extends Component {
   setValues(...args) {
     if (args && args.length && args[0]) {
       const newFields = {};
-      Object.keys(args[0]).forEach(fieldName => {
+      Object.keys(args[0]).forEach((fieldName) => {
         const field = this.state[fieldName];
         if (field) {
           newFields[field.name] = this.getFieldValue(field, args[0][fieldName]);
@@ -344,7 +347,7 @@ export default class Form0 extends Component {
           onAddNewFields: this.onAddNewFields,
           getValue: this.getValue,
           ErrorComponent: errorComponent || DefaultErrorComponent,
-          navigation: this.props["navigation"] || null
+          navigation: this.props["navigation"] || null,
         };
 
         switch (field.type) {
@@ -355,9 +358,10 @@ export default class Form0 extends Component {
           case "password":
           case "phone":
           case "calculated":
+          case "auto-incr-number":
             return (
               <TextInputField
-                ref={c => {
+                ref={(c) => {
                   this[field.name] = c;
                 }}
                 {...commonProps}
@@ -369,7 +373,7 @@ export default class Form0 extends Component {
           case "currency":
             return (
               <CurrencyField
-                ref={c => {
+                ref={(c) => {
                   this[field.name] = c;
                 }}
                 {...commonProps}
@@ -379,7 +383,7 @@ export default class Form0 extends Component {
           case "switch":
             return (
               <SwitchField
-                ref={c => {
+                ref={(c) => {
                   this[field.name] = c;
                 }}
                 {...commonProps}
@@ -390,7 +394,7 @@ export default class Form0 extends Component {
           case "date":
             return (
               <DateField
-                ref={c => {
+                ref={(c) => {
                   this[field.name] = c;
                 }}
                 {...commonProps}
@@ -401,7 +405,7 @@ export default class Form0 extends Component {
           case "picker":
             return (
               <PickerField
-                ref={c => {
+                ref={(c) => {
                   this[field.name] = c;
                 }}
                 {...commonProps}
@@ -412,7 +416,7 @@ export default class Form0 extends Component {
           case "status_picker":
             return (
               <StatusPicker
-                ref={c => {
+                ref={(c) => {
                   this[field.name] = c;
                 }}
                 {...commonProps}
@@ -423,7 +427,7 @@ export default class Form0 extends Component {
           case "select":
             return (
               <SelectField
-                ref={c => {
+                ref={(c) => {
                   this[field.name] = c;
                 }}
                 {...commonProps}
@@ -434,7 +438,7 @@ export default class Form0 extends Component {
           case "checklist":
             return (
               <ChecklistField
-                ref={c => {
+                ref={(c) => {
                   this[field.name] = c;
                 }}
                 {...commonProps}
@@ -445,7 +449,7 @@ export default class Form0 extends Component {
           case "image":
             return (
               <ImageField
-                ref={c => {
+                ref={(c) => {
                   this[field.name] = c;
                 }}
                 {...commonProps}
@@ -456,7 +460,7 @@ export default class Form0 extends Component {
           case "location":
             return (
               <LocationField
-                ref={c => {
+                ref={(c) => {
                   this[field.name] = c;
                 }}
                 {...commonProps}
@@ -467,7 +471,7 @@ export default class Form0 extends Component {
           case "group":
             return (
               <FormField
-                ref={c => {
+                ref={(c) => {
                   this[field.name] = c;
                 }}
                 {...commonProps}
@@ -478,7 +482,7 @@ export default class Form0 extends Component {
           case "sub-form":
             return (
               <SubForm
-                ref={c => {
+                ref={(c) => {
                   this[field.name] = c;
                 }}
                 {...commonProps}
@@ -489,7 +493,7 @@ export default class Form0 extends Component {
           case "lookup":
             return (
               <Lookupfield
-                ref={c => {
+                ref={(c) => {
                   this[field.name] = c;
                 }}
                 {...commonProps}
@@ -500,7 +504,7 @@ export default class Form0 extends Component {
           case "customDataView":
             return (
               <CustomDataComponent
-                ref={c => {
+                ref={(c) => {
                   this[field.name] = c;
                 }}
                 {...commonProps}
@@ -511,7 +515,7 @@ export default class Form0 extends Component {
           case "simple-grid":
             return (
               <SimpleGridView
-                ref={c => {
+                ref={(c) => {
                   this[field.name] = c;
                 }}
                 {...commonProps}
@@ -522,7 +526,7 @@ export default class Form0 extends Component {
           case "collaborator":
             return (
               <CollaboratorField
-                ref={c => {
+                ref={(c) => {
                   this[field.name] = c;
                 }}
                 {...commonProps}
@@ -532,7 +536,7 @@ export default class Form0 extends Component {
           case "assignee":
             return (
               <AssigneeField
-                ref={c => {
+                ref={(c) => {
                   this[field.name] = c;
                 }}
                 {...commonProps}
