@@ -254,7 +254,8 @@ export default class Form0 extends Component {
           isValidFields = false;
         }
         values[field.name] =
-          field.type && field.type.match(/number/i)
+          field.type &&
+          (field.type.match(/number/i) || field.type.match(/auto-incr-number/i))
             ? parseFloat(field.value)
             : field.value;
       }
