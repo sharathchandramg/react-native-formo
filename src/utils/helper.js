@@ -11,6 +11,7 @@ export function getKeyboardType(textType) {
     case "number":
     case "phone":
     case "currency":
+    case "auto-incr-number":
       return "numeric";
 
     default:
@@ -28,6 +29,7 @@ export function getDefaultValue(field) {
     case "phone":
     case "location":
     case "image":
+    case "auto-incr-number":
       return field.defaultValue || "";
 
     case "currency":
@@ -53,10 +55,10 @@ export function getDefaultValue(field) {
     case "checklist": {
       if (Array.isArray(field.defaultValue)) {
         const selected = [];
-        field.defaultValue.forEach(item => {
+        field.defaultValue.forEach((item) => {
           if (
             field.options.findIndex(
-              option => option[field.primaryKey] === item
+              (option) => option[field.primaryKey] === item
             ) !== -1
           ) {
             selected.push(item);
@@ -73,16 +75,16 @@ export function getDefaultValue(field) {
       if (Array.isArray(field.defaultValue)) {
         const selected = [];
         if (!field.objectType) {
-          field.defaultValue.forEach(item => {
+          field.defaultValue.forEach((item) => {
             if (field.options.indexOf(item) !== -1) {
               selected.push(item);
             }
           });
         } else {
-          field.defaultValue.forEach(item => {
+          field.defaultValue.forEach((item) => {
             if (
               field.options.findIndex(
-                option => option[field.primaryKey] === item[field.primaryKey]
+                (option) => option[field.primaryKey] === item[field.primaryKey]
               ) !== -1
             ) {
               selected.push(item);
@@ -108,20 +110,11 @@ export function getDefaultValue(field) {
         case "date":
         case "time":
         case "datetime":
-          if (field.defaultValue === "today")
-            return moment()
-              .utc()
-              .valueOf();
+          if (field.defaultValue === "today") return moment().utc().valueOf();
           else if (field.defaultValue === "tomorrow")
-            return moment()
-              .add(1, "day")
-              .utc()
-              .valueOf();
+            return moment().add(1, "day").utc().valueOf();
           else if (field.defaultValue === "yesterday")
-            return moment()
-              .subtract(1, "day")
-              .utc()
-              .valueOf();
+            return moment().subtract(1, "day").utc().valueOf();
           else if (
             typeof field.defaultValue !== "undefined" &&
             !_.isNaN(field.defaultValue)
@@ -166,6 +159,7 @@ export function getResetValue(field) {
     case "currency":
     case "location":
     case "image":
+    case "auto-incr-number":
       return null;
 
     case "picker":
@@ -179,10 +173,10 @@ export function getResetValue(field) {
     case "checklist": {
       if (Array.isArray(field.defaultValue)) {
         const selected = [];
-        field.defaultValue.forEach(item => {
+        field.defaultValue.forEach((item) => {
           if (
             field.options.findIndex(
-              option => option[field.primaryKey] === item
+              (option) => option[field.primaryKey] === item
             ) !== -1
           ) {
             selected.push(item);
@@ -219,7 +213,7 @@ export function getResetValue(field) {
 
 export function getInitialState(fields) {
   const state = {};
-  _.forEach(fields, field => {
+  _.forEach(fields, (field) => {
     const fieldObj = field;
     fieldObj.error = false;
     fieldObj.errorMsg = "";
@@ -263,6 +257,7 @@ export function autoValidate(field) {
         }
         break;
 
+      case "auto-incr-number":
       case "number":
         if (isEmpty(field.value)) {
           error = true;
@@ -354,18 +349,18 @@ export const getGeoLocation = (options, cb) => {
   let getLowAccuracyPosition = () => {
     console.log("REQUESTING POSITION", "HIGH ACCURACY FALSE");
     navigator.geolocation.getCurrentPosition(
-      position => {
+      (position) => {
         console.log("POSITION NETWORK OK", position);
         cb(position.coords);
       },
-      error => {
+      (error) => {
         console.log(error);
         cb(null, error);
       },
       {
         enableHighAccuracy: false,
         timeout: 10000,
-        maxAge: 0
+        maxAge: 0,
       }
     );
   };
@@ -373,14 +368,14 @@ export const getGeoLocation = (options, cb) => {
   if (highAccuracy) {
     console.log("REQUESTING POSITION", "HIGH ACCURACY TRUE");
     const watchId = navigator.geolocation.watchPosition(
-      position => {
+      (position) => {
         // location retrieved
         highAccuracySuccess = true;
         console.log("POSITION GPS OK", position);
         navigator.geolocation.clearWatch(watchId);
         cb(position.coords);
       },
-      error => {
+      (error) => {
         console.log(error);
         highAccuracyError = true;
         navigator.geolocation.clearWatch(watchId);
@@ -390,7 +385,7 @@ export const getGeoLocation = (options, cb) => {
         enableHighAccuracy: true,
         timeout: 20000,
         maxAge: 0,
-        distanceFilter: 1
+        distanceFilter: 1,
       }
     );
 
@@ -409,7 +404,7 @@ export async function requestLocationPermission() {
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
       {
         title: "Location Permission",
-        message: "This form required location"
+        message: "This form required location",
       }
     );
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
