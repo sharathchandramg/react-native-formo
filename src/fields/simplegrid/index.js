@@ -92,8 +92,11 @@ export default class SimpleGrideView extends Component {
         })
         data[`${String.fromCharCode(931)}`] = summary;
         this.setState({data:data})
-    
     }
+
+      getFormattedNumber = (value) => {
+        return Number(parseFloat(value).toFixed(2));
+      }
 
     handleOnSaveClick = ()=>{
         let data = this.state.data;
@@ -112,13 +115,13 @@ export default class SimpleGrideView extends Component {
                     data[rk][ck] = value;
                     if(value && !isNaN(value)){
                         if(preColVal){
-                            const diff =  parseInt(value) - parseInt(preColVal);
-                            data[`${String.fromCharCode(931)}`][ck] = parseInt(preColSum) + parseInt(diff);
+                            const diff =  this.getFormattedNumber(value) - this.getFormattedNumber(preColVal);
+                            data[`${String.fromCharCode(931)}`][ck] = this.getFormattedNumber(this.getFormattedNumber(preColSum) + diff);
                         }else{
-                            data[`${String.fromCharCode(931)}`][ck] = parseInt(preColSum) + parseInt(value);
+                            data[`${String.fromCharCode(931)}`][ck] = this.getFormattedNumber(this.getFormattedNumber(preColSum) + this.getFormattedNumber(value));
                         }
                     }else{
-                        data[`${String.fromCharCode(931)}`][ck] = parseInt(preColSum) - parseInt(preColVal);
+                        data[`${String.fromCharCode(931)}`][ck] = this.getFormattedNumber(this.getFormattedNumber(preColSum) - this.getFormattedNumber(preColVal));
                     }
                 }else if(ck_type.toLowerCase()==='string' || ck_type.toLowerCase()==='text'){
                     const preColVal = data[rk][ck] || '';
@@ -130,7 +133,7 @@ export default class SimpleGrideView extends Component {
                             data[`${String.fromCharCode(931)}`][ck] = parseInt(preColSum) + 1;
                         }
                     }else{
-                        data[`${String.fromCharCode(931)}`][ck] = parseInt(preColSum) - 1;
+                        data[`${String.fromCharCode(931)}`][ck] = preColSum ? parseInt(preColSum) - 1 : parseInt(preColSum);
                     }
                 }
                 selectedItm[rk] = data[rk];
