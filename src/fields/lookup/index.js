@@ -818,7 +818,9 @@ export default class LookupField extends Component {
                   />
                 )}
                 {this.props.onAddLookup &&
-                typeof this.props.onAddLookup === "function" ? (
+                typeof this.props.onAddLookup === "function" && 
+                !this.state.searchModalVisible && 
+                !this.state.filterModalVisible ? (
                   <Fab
                     active={true}
                     direction="up"
