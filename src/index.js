@@ -556,7 +556,7 @@ export default class Form0 extends Component {
 
   render() {
     return (
-      <ScrollView>
+      <ScrollView keyboardShouldPersistTaps={'handled'}>
         <View>{this.generateFields()}</View>
       </ScrollView>
     );
