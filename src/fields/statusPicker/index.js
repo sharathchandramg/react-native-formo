@@ -40,9 +40,7 @@ export default class StatusPickerField extends Component {
 
     renderModal = () => {
         const { theme, attributes } = this.props;
-        const pickerValue = attributes.options
-            .indexOf(attributes.value)
-            .toString();
+        const pickerValue = this.state.value !== null ? this.state.value : typeof attributes.value !=='undefined' && attributes.value !== null? attributes.value:'';
         return (
             <Modal
                 animationType="slide"
