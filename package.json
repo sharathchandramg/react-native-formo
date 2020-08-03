@@ -16,7 +16,7 @@
     "url": "https://github.com/sharathchandramg/react-native-formo/issues"
   },
   "homepage": "https://github.com/sharathchandramg/react-native-formo#readme",
-  "dependencies": {
+  "devDependencies": {
     "lodash": "4.17.19",
     "mathjs": "7.1.0",
     "moment": "2.27.0",
@@ -30,9 +30,7 @@
     "react-native-vector-icons": "7.0.0",
     "react-timer-mixin": "0.13.4",
     "recyclerlistview": "3.0.0",
-    "shortid": "2.2.15"
-  },
-  "devDependencies": {
+    "shortid": "2.2.15",
     "@babel/core": "7.11.0",
     "@babel/runtime": "7.11.0",
     "@react-native-community/eslint-config": "2.0.0",
