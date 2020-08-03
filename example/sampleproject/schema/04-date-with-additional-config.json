@@ -1,0 +1,14 @@
+[
+
+    {
+        "type": "date",
+        "name": "followup_date",
+        "label": "Followup Date",
+        "required": false,
+        "editable": true,
+        "hidden": false,
+        "mode": "datetime",
+        "minDate": "today",
+        "defaultDate":"120"
+    }
+]

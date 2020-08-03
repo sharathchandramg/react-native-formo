@@ -1,0 +1,196 @@
+[
+    {
+        "type": "sub-form",
+        "name": "address",
+        "label": "Address",
+        "multiple": false,
+        "required": true,
+        "editable": true,
+        "fields": [
+            {
+                "type": "select",
+                "name": "assiggee",
+                "label": "Assignee",
+                "multiple": false,
+                "labelKey": "user_name",
+                "primaryKey": "user_id",
+                "objectType": true,
+                "options": [
+                    {
+                        "user_id": 1,
+                        "user_name": "Sharath"
+                    },
+                    {
+                        "user_id": 2,
+                        "user_name": "Rabindra"
+                    },
+                    {
+                        "user_id": 3,
+                        "user_name": "Nitheesh"
+                    }
+                ],
+                "defaultValue": [
+                    {
+                        "user_id": 3,
+                        "user_name": "Nitheesh"
+                    }
+                ]
+            },
+            {
+                "type": "text",
+                "name": "city",
+                "label": "City",
+                "required": true,
+                "editable": true,
+                "hidden": false
+            },
+            {
+                "type": "text",
+                "name": "city_state",
+                "label": "State",
+                "required": true,
+                "editable": true,
+                "hidden": false
+            }
+        ]
+    },
+    {
+        "type": "lookup",
+        "name": "address",
+        "label": "Address",
+        "multiple": false,
+        "required": true,
+        "editable": true,
+        "labelKey": "user_name",
+        "primaryKey": "user_id",
+        "options": [
+            {
+                "user_id": 1,
+                "user_name": "Sharath",
+                "city": "Bengaluru",
+                "city_state":"Karnataka"
+
+            },
+            {
+                "user_id": 2,
+                "user_name": "Rabindra",
+                "city": "Bengaluru",
+                "city_state":"Karnataka"
+            },
+            {
+                "user_id": 3,
+                "user_name": "Nitheesh",
+                "city": "Bengaluru",
+                "city_state":"Karnataka"
+
+            }
+        ],
+        "fields": [
+
+            {
+                "type": "text",
+                "name": "city",
+                "label": "City",
+                "required": true,
+                "editable": true,
+                "hidden": false
+            },
+            {
+                "type": "text",
+                "name": "city_state",
+                "label": "State",
+                "required": true,
+                "editable": true,
+                "hidden": false
+            }
+        ]
+    },
+    {
+        "type": "date",
+        "name": "date_of_birth",
+        "label": "Date Of Birth",
+        "required": true,
+        "editable": true,
+        "hidden": false,
+        "mode": "date",
+        "minDate": "today"
+    },
+    {
+        "type": "date",
+        "name": "time_of_birth",
+        "label": "Time Of Birth",
+        "required": true,
+        "editable": true,
+        "hidden": false,
+        "mode": "time",
+        "minDate": "today"
+    },
+    {
+        "type": "date",
+        "name": "datetime_of_birth",
+        "label": "Date And Time Of Birth",
+        "required": true,
+        "editable": true,
+        "hidden": false,
+        "mode": "datetime",
+        "minDate": "today",
+        "defaultDate" : "tomorrow"
+    },
+    {
+        "type": "sub-form",
+        "name": "address",
+        "label": "Address",
+        "multiple" : false,
+        "required": true,
+        "editable": true,
+        "fields": [
+            {
+                "type": "select",
+                "name": "assiggee",
+                "label": "Assignee",
+                "multiple" : false,
+                "labelKey" : "user_name",
+                "primaryKey" : "user_id",
+                "objectType" : true,
+                "options" : [
+                    {
+                        "user_id" : 1,
+                        "user_name" : "Sharath"
+                    },
+                    {
+                        "user_id" : 2,
+                        "user_name" : "Rabindra"
+                    },
+                    {
+                        "user_id" : 3,
+                        "user_name" : "Nitheesh"
+                    }
+                ],
+                "defaultValue": [
+                    {
+                        "user_id" : 3,
+                        "user_name" : "Nitheesh"
+                    }
+                ]
+            },
+
+            {
+                "type": "text",
+                "name": "city",
+                "label": "City",
+                "required": true,
+                "editable": true,
+                "hidden": false
+            },
+            {
+                "type": "text",
+                "name": "city_state",
+                "label": "State",
+                "required": true,
+                "editable": true,
+                "hidden": false
+            }
+
+        ]
+    }
+]

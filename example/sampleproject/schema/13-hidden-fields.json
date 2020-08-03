@@ -1,0 +1,41 @@
+[
+    {
+        "type": "date",
+        "name": "created_date",
+        "label": "Created On",
+        "required": false,
+        "editable": false,
+        "hidden": true,
+        "mode": "date",
+        "defaultValue": "today"
+    },
+    {
+        "type": "date",
+        "name": "created_time",
+        "label": "Created At",
+        "required": false,
+        "editable": false,
+        "hidden": true,
+        "mode": "time",
+        "defaultValue": "today"
+    },
+    {
+        "type": "text",
+        "name": "data_source",
+        "label": "Data Source",
+        "required": true,
+        "editable": true,
+        "hidden": false
+    },
+    {
+        "type": "date",
+        "name": "orientation_date_time",
+        "label": "Orientation Date and Time",
+        "required": false,
+        "editable": true,
+        "hidden": false,
+        "mode": "datetime",
+        "minDate": "today",
+        "defaultValue" : 120 
+    }
+]

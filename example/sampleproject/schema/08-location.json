@@ -1,0 +1,19 @@
+[
+    {
+        "type": "text",
+        "name": "data_source",
+        "label": "Data Source",
+        "required": true,
+        "editable": true,
+        "hidden": false
+    },
+    
+    {
+        "type": "location",
+        "name": "office_location",
+        "label": "Office Location",
+        "required": true,
+        "editable": true,
+        "hidden": false
+    }
+]

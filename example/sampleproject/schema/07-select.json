@@ -1,0 +1,106 @@
+[
+    {
+        "type": "text",
+        "name": "data_source",
+        "label": "Data Source",
+        "required": true,
+        "editable": true,
+        "hidden": false
+    },
+    {
+        "type": "text",
+        "name": "prospect_name",
+        "label": "Prospect Name",
+        "required": true,
+        "editable": true,
+        "hidden": false
+    },
+    {
+        "type": "picker",
+        "name": "status",
+        "label": "Status",
+        "required": false,
+        "editable": true,
+        "hidden": false,
+        "options": [
+            "Pending",
+            "On Hold",
+            "Shortlisted",
+            "Rejected"
+        ]
+    },
+    {
+        "type": "select",
+        "name": "assiggee_0",
+        "label": "Assignee 0",
+        "multiple": false,
+        "labelKey": "user_name",
+        "primaryKey": "user_id",
+        "objectType": true,
+        "options": [
+            {
+                "user_id": 1,
+                "user_name": "Sharath"
+            },
+            {
+                "user_id": 2,
+                "user_name": "Rabindra"
+            },
+            {
+                "user_id": 3,
+                "user_name": "Nitheesh"
+            }
+        ],
+        "defaultValue": [
+            {
+                "user_id": 3,
+                "user_name": "Nitheesh"
+            }
+        ]
+    },
+    {
+        "type": "select",
+        "name": "assiggee",
+        "label": "Assignee",
+        "multiple": true,
+        "labelKey": "user_name",
+        "primaryKey": "user_id",
+        "objectType": true,
+        "options": [
+            {
+                "user_id": 1,
+                "user_name": "Sharath"
+            },
+            {
+                "user_id": 2,
+                "user_name": "Rabindra"
+            },
+            {
+                "user_id": 3,
+                "user_name": "Nitheesh"
+            }
+        ],
+        "defaultValue": [
+            {
+                "user_id": 3,
+                "user_name": "Nitheesh"
+            }
+        ]
+    },
+
+    {
+        "type": "select",
+        "name": "intrest",
+        "label": "Intrest",
+        "multiple": true,
+        "objectType": false,
+        "options": [
+            "Cricket",
+            "Football",
+            "Hockey"
+        ],
+        "defaultValue": [
+            "Cricket"
+        ]
+    }
+]

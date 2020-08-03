@@ -1,0 +1,47 @@
+[
+    {
+        "type": "text",
+        "name": "data_source",
+        "label": "Data Source",
+        "required": true,
+        "editable": true,
+        "hidden": false
+    },
+    {
+        "type": "text",
+        "name": "prospect_name",
+        "label": "Prospect Name",
+        "required": true,
+        "editable": true,
+        "hidden": false
+    },
+    {
+        "type": "date",
+        "name": "orientation_date",
+        "label": "Orientation Date",
+        "required": false,
+        "editable": true,
+        "hidden": false,
+        "mode": "date",
+        "minDate": "today"
+    },
+    {
+        "type": "date",
+        "name": "orientation_time",
+        "label": "Orientation Time",
+        "required": false,
+        "editable": true,
+        "hidden": false,
+        "mode": "time"
+    },
+    {
+        "type": "date",
+        "name": "followup_datetime",
+        "label": "Follow Up",
+        "required": false,
+        "editable": true,
+        "hidden": false,
+        "mode": "datetime",
+        "defaultValue" : 120 
+    }
+]
