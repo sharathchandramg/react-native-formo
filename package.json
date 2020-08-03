@@ -22,8 +22,6 @@
     "moment": "2.27.0",
     "native-base": "2.13.13",
     "prop-types": "15.7.2",
-    "react": "16.9.0",
-    "react-native": "0.61.0",
     "react-native-android-location-enabler": "1.2.1",
     "react-native-fast-image": "8.3.2",
     "react-native-image-crop-picker": "0.32.2",
@@ -42,6 +40,12 @@
     "eslint": "7.6.0",
     "jest": "26.2.2",
     "metro-react-native-babel-preset": "0.61.0",
+    "react": "16.9.0",
+    "react-native": "0.61.0",
     "react-test-renderer": "16.9.0"
+  },
+  "peerDependencies": {
+    "react": ">=16.9.0",
+    "react-native": ">=0.61.0"
   }
 }
