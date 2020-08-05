@@ -19,6 +19,7 @@
     "react-native-android-location-enabler": "1.2.1",
     "react-native-fast-image": "8.3.2",
     "react-native-form0": "0.0.113",
+    "react-native-geolocation-service": "5.0.0",
     "react-native-image-crop-picker": "0.32.2",
     "react-native-js-bottom-sheet": "1.1.0",
     "react-native-modalbox": "2.0.0",

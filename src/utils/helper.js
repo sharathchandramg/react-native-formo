@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { isEmail, isEmpty, validateMobileNumber, isNull } from "./validators";
 import { PermissionsAndroid } from "react-native";
+import Geolocation from 'react-native-geolocation-service';
 const moment = require("moment");
 
 export function getKeyboardType(textType) {
@@ -348,7 +349,7 @@ export const getGeoLocation = (options, cb) => {
 
   let getLowAccuracyPosition = () => {
     console.log("REQUESTING POSITION", "HIGH ACCURACY FALSE");
-    navigator.geolocation.getCurrentPosition(
+    Geolocation.getCurrentPosition(
       (position) => {
         console.log("POSITION NETWORK OK", position);
         cb(position.coords);
@@ -360,31 +361,31 @@ export const getGeoLocation = (options, cb) => {
       {
         enableHighAccuracy: false,
         timeout: 10000,
-        maxAge: 0,
+        maximumAge: 0,
       }
     );
   };
 
   if (highAccuracy) {
     console.log("REQUESTING POSITION", "HIGH ACCURACY TRUE");
-    const watchId = navigator.geolocation.watchPosition(
+    const watchId = Geolocation.watchPosition(
       (position) => {
         // location retrieved
         highAccuracySuccess = true;
         console.log("POSITION GPS OK", position);
-        navigator.geolocation.clearWatch(watchId);
+        Geolocation.clearWatch(watchId);
         cb(position.coords);
       },
       (error) => {
         console.log(error);
         highAccuracyError = true;
-        navigator.geolocation.clearWatch(watchId);
+        Geolocation.clearWatch(watchId);
         getLowAccuracyPosition();
       },
       {
         enableHighAccuracy: true,
         timeout: 20000,
-        maxAge: 0,
+        maximumAge: 0,
         distanceFilter: 1,
       }
     );
