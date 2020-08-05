@@ -16,21 +16,11 @@
     "url": "https://github.com/sharathchandramg/react-native-formo/issues"
   },
   "homepage": "https://github.com/sharathchandramg/react-native-formo#readme",
+  "dependencies": {
+    "react-native-modalbox": "2.0.0"
+  },
   "devDependencies": {
-    "lodash": "4.17.19",
-    "mathjs": "7.1.0",
-    "moment": "2.27.0",
-    "native-base": "2.13.13",
     "prop-types": "15.7.2",
-    "react-native-android-location-enabler": "1.2.1",
-    "react-native-fast-image": "8.3.2",
-    "react-native-image-crop-picker": "0.32.2",
-    "react-native-js-bottom-sheet": "1.1.0",
-    "react-native-modalbox": "2.0.0",
-    "react-native-vector-icons": "7.0.0",
-    "react-timer-mixin": "0.13.4",
-    "recyclerlistview": "3.0.0",
-    "shortid": "2.2.15",
     "@babel/core": "7.11.0",
     "@babel/runtime": "7.11.0",
     "@react-native-community/eslint-config": "2.0.0",
@@ -44,6 +34,18 @@
   },
   "peerDependencies": {
     "react": ">=16.9.0",
-    "react-native": ">=0.61.0"
+    "react-native": ">=0.61.0",
+    "lodash": ">=4.17.19",
+    "mathjs": ">=7.1.0",
+    "moment": ">=2.27.0",
+    "native-base": ">=2.13.13",
+    "react-native-android-location-enabler": ">=1.2.1",
+    "react-native-fast-image": ">=8.3.2",
+    "react-native-image-crop-picker": ">=0.32.2",
+    "react-native-js-bottom-sheet": ">=1.1.0",
+    "react-native-vector-icons": ">=7.0.0",
+    "react-timer-mixin": ">=0.13.4",
+    "recyclerlistview": ">=3.0.0",
+    "shortid": ">=2.2.15"
   }
 }
