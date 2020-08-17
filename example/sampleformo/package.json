@@ -3,30 +3,39 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint ."
   },
   "dependencies": {
-    "mathjs": "^5.3.1",
-    "moment": "^2.22.2",
-    "native-base": "^2.13.8",
-    "react": "16.8.3",
-    "react-native": "0.59.10",
-    "react-native-android-location-enabler": "1.0.6",
-    "react-native-fast-image": "6.1.1",
-    "react-native-form0": "0.0.110",
-    "react-native-image-crop-picker": "^0.24.1",
-    "react-native-js-bottom-sheet": "1.0.0",
-    "react-native-modalbox": "1.7.0",
-    "react-timer-mixin": "^0.13.4",
-    "recyclerlistview": "^1.2.6",
-    "shortid": "^2.2.14"
+    "lodash": "4.17.19",
+    "mathjs": "7.1.0",
+    "moment": "2.27.0",
+    "native-base": "2.13.13",
+    "react": "16.9.0",
+    "react-native": "0.61.0",
+    "react-native-android-location-enabler": "1.2.1",
+    "react-native-fast-image": "8.3.2",
+    "react-native-form0": "0.0.113",
+    "react-native-geolocation-service": "5.0.0",
+    "react-native-image-crop-picker": "0.32.2",
+    "react-native-js-bottom-sheet": "1.1.0",
+    "react-native-modalbox": "2.0.0",
+    "react-timer-mixin": "0.13.4",
+    "recyclerlistview": "3.0.0",
+    "shortid": "2.2.15"
   },
   "devDependencies": {
-    "babel-jest": "24.8.0",
-    "jest": "24.8.0",
-    "metro-react-native-babel-preset": "0.54.1",
-    "react-test-renderer": "16.8.3"
+    "@babel/core": "7.11.0",
+    "@babel/runtime": "7.11.0",
+    "@react-native-community/eslint-config": "2.0.0",
+    "babel-jest": "26.2.2",
+    "eslint": "7.5.0",
+    "jest": "26.2.2",
+    "metro-react-native-babel-preset": "0.61.0",
+    "react-test-renderer": "16.9.0"
   },
   "jest": {
     "preset": "react-native"

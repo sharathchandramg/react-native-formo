@@ -20,7 +20,7 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
-project.xcworkspace
+xcshareddata
 
 # Android/IntelliJ
 #
@@ -40,6 +40,7 @@ yarn-error.log
 buck-out/
 \.buckd/
 *.keystore
+!debug.keystore
 
 # fastlane
 #
@@ -55,16 +56,5 @@ buck-out/
 # Bundle artifact
 *.jsbundle
 
-# pod files
-Pods
-Podfile.lock
-
-# gradle build files
-.gradle/**/*.bin
-.gradle/**/*.lock
-
-
-# android .setting file 
-android/.settings
-
-example/sampleformo/ios/sampleformo.xcodeproj/project.pbxproj
+# CocoaPods
+/ios/Pods/
