@@ -10,7 +10,6 @@ import {
 	Text,
 	Container,
 	Content,
-	Footer
 } from "native-base";
 import CustomHeader from '../headers/hearder'
 import styles from "./styles";
@@ -85,16 +84,14 @@ const GridComponent= props => {
 						{data && Object.keys(data).length ? renderGridView(): null}
 					</View>
 				</Content>
-				<Footer style={styles.footer}>
-					<View style={styles.aggregateWrapper}>
-						<View style={styles.aggregateTextWrapper}>
-							<Text style={styles.summaryText}>{summary?summary:''}</Text>
-						</View>
+				<View style={styles.aggregateWrapper}>
+					<View style={styles.aggregateTextWrapper}>
+						<Text style={styles.summaryText}>{summary?summary:''}</Text>
 					</View>
-					<TouchableOpacity style={styles.button} onPress={() => handleOnDoneClick()}>
-						<Text style={styles.buttonText}>{'Done'} </Text>
-					</TouchableOpacity>
-                </Footer>
+				</View>
+				<TouchableOpacity style={styles.button} onPress={() => handleOnDoneClick()}>
+					<Text style={styles.buttonText}>{'Done'} </Text>
+				</TouchableOpacity>
 			</Container>
 		
 	);

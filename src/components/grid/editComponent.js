@@ -10,11 +10,9 @@ import {
 import {
 	Container,
 	Content,
-    Footer,
     Item,
     Input,
     Title
-
 } from "native-base";
 import CustomHeader from '../headers/hearder'
 import styles from "./styles";
@@ -77,11 +75,9 @@ const EditComponent = props => {
 						{!isEmpty(rowData) && Array.isArray(rowData)? renderItemList(rowData): null}
 					</View>
 				</Content>
-				<Footer style={[styles.footer,{borderTopWidth:0, height:50,}]}>
-					<TouchableOpacity style={styles.button} onPress={() => handleOnSaveClick()}>
-						<Text style={styles.buttonText}>{'SAVE'} </Text>
-					</TouchableOpacity>
-                </Footer>
+                <TouchableOpacity style={styles.button} onPress={() => handleOnSaveClick()}>
+                    <Text style={styles.buttonText}>{'SAVE'} </Text>
+                </TouchableOpacity>
 			</Container>
 		
 	);
