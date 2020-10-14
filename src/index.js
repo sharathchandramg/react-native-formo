@@ -216,7 +216,12 @@ export default class Form0 extends Component {
           if (lookupSubscriberFields.length) {
             _.forEach(lookupSubscriberFields, (field) => {
               const key = field["name"];
-              const val = value[key] || "";
+              let val = null;
+              if (typeof value[key] === "number") {
+                val = value[key];
+              } else {
+                val = value[key] || "";
+              }
               this.handleOnValueChange(field, val);
             });
           }
