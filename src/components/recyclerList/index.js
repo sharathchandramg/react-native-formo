@@ -57,9 +57,8 @@ export default class RecyclerList extends Component {
         return (
             <View
                 style={{
-                    minHeight: parseInt(height / 2),
-                    height: '100%',
-                    width: '100%',
+                    height: height * 0.95,
+                    width: width,
                 }}
             >
                 <RecyclerListView
