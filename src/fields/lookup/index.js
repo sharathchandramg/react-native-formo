@@ -108,6 +108,7 @@ export default class LookupField extends Component {
 
     handleOnSearchQuery = (searchText, lookAhead) => {
         this.setLookupFilter(searchText);
+        this.setLookupSearchReq();
         const { onSearchQuery, attributes } = this.props;
         const data_source = attributes['data_source'];
         if (!isEmpty(data_source) && data_source['type'] === 'remote') {
@@ -433,20 +434,19 @@ export default class LookupField extends Component {
                 });
             }
         } else if (this.state.searchModalVisible) {
-            this.setState({ searchText: searchText }, () => {
-                if (this.timeout) clearTimeout(this.timeout);
-                this.timeout = setTimeout(() => {
-                    if (this.state.searchText) {
-                        const lookAhead = true;
-                        this.handleOnSearchQuery(searchText, lookAhead);
-                    } else {
-                        const offset = 0;
-                        this.handleOnGetQuery(offset);
-                    }
-                }, 1000);
-            });
+            this.setState({ searchText: searchText });
         }
     };
+
+    setLookupSearchReq = () => {
+        const { setLookupSearchReq, attributes } = this.props;
+        const data_source = attributes["data_source"];
+        if (!isEmpty(data_source) && data_source["type"] === "remote") {
+          if (typeof setLookupSearchReq === "function") {
+            setLookupSearchReq();
+          }
+        }
+      };
 
     setLookupFilter = filter => {
         const { setLookupFilter, attributes } = this.props;
@@ -815,6 +815,8 @@ export default class LookupField extends Component {
                         : this.state.loading
                     }
                     pullToRefreshEnable={this.isPullToRefreshEnable(attributes)}
+                    lookupSearchReq={lookupSearchReq}
+                    searchText1={this.state.searchText}
                   />
                 )}
                 {this.props.onAddLookup &&

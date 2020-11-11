@@ -22,6 +22,8 @@ const LookupComponent = props => {
         onEndReached,
         handlePullToRefresh,
         loading,
+        lookupSearchReq,
+        searchText1,
     } = props;
 
     getLabel = item => {
@@ -135,7 +137,7 @@ const LookupComponent = props => {
                         >
                             <View style={styles.noDataWrapper}>
                                 <Text style={styles.nodataText}>
-                                    {'No matching result found. Pl try again'}
+                                    {lookupSearchReq ? `Searching the data for ${searchText1}` : 'No matching result found. Pl try again'}
                                 </Text>
                             </View>
                         </ScrollView>
