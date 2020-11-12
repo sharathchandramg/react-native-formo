@@ -740,7 +740,7 @@ export default class LookupField extends Component {
     };
 
     render() {
-        const { theme, attributes, ErrorComponent } = this.props;
+        const { theme, attributes, ErrorComponent, lookupSearchReq } = this.props;
         return (
           <View style={styles.container}>
             <View style={styles.inputLabelWrapper}>
