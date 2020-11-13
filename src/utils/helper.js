@@ -70,6 +70,7 @@ export function getDefaultValue(field) {
     }
 
     case "assignee":
+    case "user_directory":
     case "collaborator":
     case "lookup":
     case "select": {
@@ -189,6 +190,7 @@ export function getResetValue(field) {
     }
 
     case "assignee":
+    case "user_directory":
     case "collaborator":
     case "select":
     case "lookup":
@@ -310,6 +312,7 @@ export function autoValidate(field) {
         break;
 
       case "assignee":
+      case "user_directory":
       case "collaborator":
       case "lookup":
       case "checklist":
