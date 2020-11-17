@@ -21,6 +21,7 @@ import SimpleGridView from "./fields/simplegrid";
 import CollaboratorField from "./fields/collaborator";
 import AssigneeField from "./fields/assignee";
 import ChecklistField from "./fields/checklist";
+import UserDirectoryField from "./fields/userDirectory";
 
 import {
   autoValidate,
@@ -549,6 +550,16 @@ export default class Form0 extends Component {
                 {...this.props}
               />
             );
+            case "user_directory":
+              return (
+                <UserDirectoryField
+                  ref={(c) => {
+                    this[field.name] = c;
+                  }}
+                  {...commonProps}
+                  {...this.props}
+                />
+              );
 
           default:
             break;
