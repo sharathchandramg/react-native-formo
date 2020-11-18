@@ -178,17 +178,22 @@ export default class UserDirectoryField extends Component {
         const { attributes } = this.props;
         if (searchText) {
             options = _.filter(attributes.options, item => {
+                let userAliasSearch = !isEmpty(item['user_alias'])?item['user_alias']
+                .toString()
+                .toLowerCase()
+                .search(searchText.trim().toLowerCase()) > -1:false;
+
                 let sItem =
                     item[attributes.labelKey]
                         .toString()
                         .toLowerCase()
-                        .search(searchText.trim().toLowerCase()) > -1;
+                        .search(searchText.trim().toLowerCase()) > -1 || userAliasSearch;
                 if (sItem) {
                     return item;
                 }
             });
         } else {
-            options = this.state.options;
+            options = attributes.options;
         }
         this.setState({
             searchText: searchText,
@@ -201,11 +206,15 @@ export default class UserDirectoryField extends Component {
         const { attributes } = this.props;
         if (searchText) {
             options = _.filter(attributes.options, item => {
+                let userAliasSearch = !isEmpty(item['user_alias'])?item['user_alias']
+                .toString()
+                .toLowerCase()
+                .search(searchText.trim().toLowerCase()) > -1:false;
                 let sItem =
                     item[attributes.labelKey]
                         .toString()
                         .toLowerCase()
-                        .search(searchText.trim().toLowerCase()) > -1;
+                        .search(searchText.trim().toLowerCase()) > -1 || userAliasSearch;
                 if (sItem) {
                     return item;
                 }
