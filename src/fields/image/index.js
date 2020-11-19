@@ -263,6 +263,22 @@ export default class ImageField extends Component {
     };
 
     _renderOptions = () => {
+        const { additional_config } = this.props.attributes;
+        let galleryOption = [];
+        if(additional_config.show_gallery){
+            galleryOption.push({
+                title: options[1],
+                onPress: () => this._openPicker(),
+                icon: (
+                    <Icon
+                        name="image"
+                        size={24}
+                        type={'regular'}
+                        color={'#828282'}
+                    />
+                ),
+            })
+        }
         return [
             {
                 title: options[0],
@@ -276,28 +292,23 @@ export default class ImageField extends Component {
                     />
                 ),
             },
-            {
-                title: options[1],
-                onPress: () => this._openPicker(),
-                icon: (
-                    <Icon
-                        name="image"
-                        size={24}
-                        type={'regular'}
-                        color={'#828282'}
-                    />
-                ),
-            },
+            ...galleryOption
         ];
     };
 
     _onPressImage = () => {
+        const { additional_config } = this.props.attributes;
+        let options1 = ['Cancel','Open camera'];
+        if(additional_config.show_gallery){
+            options1 = [...options1,'Select from the gallery'];
+        }
         ActionSheetIOS.showActionSheetWithOptions(
-            { options, cancelButtonIndex: 2 },
+            { options:options1, cancelButtonIndex: 0 },
             buttonIndex => {
-                if (buttonIndex === 0) {
+                if (buttonIndex === 1) {
                     this._openCamera();
-                } else if (buttonIndex === 1) {
+                }
+                else if (buttonIndex === 2) {
                     this._openPicker();
                 }
             }
