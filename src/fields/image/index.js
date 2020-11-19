@@ -264,22 +264,7 @@ export default class ImageField extends Component {
 
     _renderOptions = () => {
         const { additional_config } = this.props.attributes;
-        let galleryOption = [];
-        if(!isEmpty(additional_config) && additional_config.show_gallery){
-            galleryOption.push({
-                title: options[1],
-                onPress: () => this._openPicker(),
-                icon: (
-                    <Icon
-                        name="image"
-                        size={24}
-                        type={'regular'}
-                        color={'#828282'}
-                    />
-                ),
-            })
-        }
-        return [
+        let galleryOption = [
             {
                 title: options[0],
                 onPress: () => this._openCamera(),
@@ -292,18 +277,48 @@ export default class ImageField extends Component {
                     />
                 ),
             },
-            ...galleryOption
+            {
+                title: options[1],
+                onPress: () => this._openPicker(),
+                icon: (
+                    <Icon
+                        name="image"
+                        size={24}
+                        type={'regular'}
+                        color={'#828282'}
+                    />
+                ),
+            }
         ];
+
+        if(!isEmpty(additional_config) && additional_config.hide_gallery){
+            galleryOption = [
+                {
+                    title: options[0],
+                    onPress: () => this._openCamera(),
+                    icon: (
+                        <Icon
+                            name="camera"
+                            size={24}
+                            type={'regular'}
+                            color={'#828282'}
+                        />
+                    ),
+                }  
+            ]
+        }
+
+        return [ ...galleryOption];
     };
 
     _onPressImage = () => {
         const { additional_config } = this.props.attributes;
-        let options1 = ['Cancel','Open camera'];
-        if(!isEmpty(additional_config) && additional_config.show_gallery){
-            options1 = [...options1, 'Select from the gallery'];
+        let options1 = ['Cancel','Open camera','Select from the gallery'];
+        if(!isEmpty(additional_config) && additional_config.hide_gallery){
+            options1 = ['Cancel','Open camera'];
         }
         ActionSheetIOS.showActionSheetWithOptions(
-            { options:options1, cancelButtonIndex: 0 },
+            { options: options1, cancelButtonIndex: 0 },
             buttonIndex => {
                 if (buttonIndex === 1) {
                     this._openCamera();
