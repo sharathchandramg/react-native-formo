@@ -265,7 +265,7 @@ export default class ImageField extends Component {
     _renderOptions = () => {
         const { additional_config } = this.props.attributes;
         let galleryOption = [];
-        if(additional_config.show_gallery){
+        if(!isEmpty(additional_config) && additional_config.show_gallery){
             galleryOption.push({
                 title: options[1],
                 onPress: () => this._openPicker(),
@@ -299,8 +299,8 @@ export default class ImageField extends Component {
     _onPressImage = () => {
         const { additional_config } = this.props.attributes;
         let options1 = ['Cancel','Open camera'];
-        if(additional_config.show_gallery){
-            options1 = [...options1,'Select from the gallery'];
+        if(!isEmpty(additional_config) && additional_config.show_gallery){
+            options1 = [...options1, 'Select from the gallery'];
         }
         ActionSheetIOS.showActionSheetWithOptions(
             { options:options1, cancelButtonIndex: 0 },
