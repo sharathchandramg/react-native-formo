@@ -739,6 +739,33 @@ export default class LookupField extends Component {
         }
     };
 
+    renderInlineCreationButton = () => {
+        if (
+          this.props.onAddLookup &&
+          typeof this.props.onAddLookup === "function" &&
+          !this.state.searchModalVisible &&
+          !this.state.filterModalVisible
+        ) {
+          return (
+            <Fab
+              active={true}
+              direction="up"
+              containerStyle={{}}
+              style={{ backgroundColor: "rgb(0,151,235)" }}
+              position="bottomRight"
+              onPress={() => {
+                this.toggleModalVisible();
+                this.props.onAddLookup(this.props);
+              }}
+            >
+              <Icon type="FontAwesome" name="plus" style={{ fontSize: 18 }} />
+            </Fab>
+          );
+        } else {
+          return null;
+        }
+    };
+
     render() {
         const { theme, attributes, ErrorComponent, lookupSearchReq } = this.props;
         return (
@@ -819,24 +846,11 @@ export default class LookupField extends Component {
                     searchText1={this.state.searchText}
                   />
                 )}
-                {this.props.onAddLookup &&
-                typeof this.props.onAddLookup === "function" && 
-                !this.state.searchModalVisible && 
-                !this.state.filterModalVisible ? (
-                  <Fab
-                    active={true}
-                    direction="up"
-                    containerStyle={{}}
-                    style={{ backgroundColor: "rgb(0,151,235)" }}
-                    position="bottomRight"
-                    onPress={() => {
-                      this.toggleModalVisible();
-                      this.props.onAddLookup(this.props);
-                    }}
-                  >
-                    <Icon type="FontAwesome" name="plus" style={{fontSize:18}}/>
-                  </Fab>
-                ) : null}
+                {!isEmpty(attributes) &&
+                !isEmpty(attributes["additional"]) &&
+                attributes["additional"]["hide_inline_creation"]
+                  ? null
+                  : this.renderInlineCreationButton()}
               </Modal>
             }
           </View>
