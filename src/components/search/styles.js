@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flex: 1,
     },
-
     nodataText: {
         height: 30,
         lineHeight: 20,
@@ -24,6 +23,47 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         textAlign: 'center',
     },
+    searchForWrapper:{
+        width: '100%',
+        height:60,
+        paddingLeft:20,
+        marginBottom:20,
+        backgroundColor: '#FFF',
+        borderBottomLeftRadius:20,
+        borderBottomRightRadius:20,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.22,
+        shadowRadius: 4,
+        elevation: 10,
+        ...Platform.select({
+            ios: {
+                shadowColor: '#000',
+            },
+            android: {
+                shadowColor: '#E0E0E0',
+            },
+        }),
+    },
+    searchForButton:{
+        flexDirection:'row',
+        alignItems:'center',
+        width:'100%',
+        height:'100%'
+    },
+    searchForText:{
+        height: 30,
+        lineHeight: 20,
+        color: '#989898',
+        fontFamily: 'roboto',
+        fontSize: 14,
+        padding: 5,
+        fontWeight: '700',
+        alignSelf: 'center',
+        textAlign: 'center',
+    }
 });
 
 export default styles;
