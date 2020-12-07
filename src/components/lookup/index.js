@@ -5,6 +5,7 @@ import {
     FlatList,
     ScrollView,
     RefreshControl,
+    Dimensions
 } from 'react-native';
 import RecyclerList from '../recyclerList';
 import { Text, Container, Content, Icon } from 'native-base';
@@ -12,6 +13,7 @@ import styles from './styles';
 import _ from 'lodash';
 import { isNull } from '../../utils/validators';
 import LookupHeader from '../headers/lookupHeader';
+const { width, height } = Dimensions.get('window');
 
 const LookupComponent = props => {
     const {
@@ -101,8 +103,8 @@ const LookupComponent = props => {
             <Content>
                 <View
                     style={{
-                        height: '100%',
-                        width: '100%',
+                        height: height * 0.95,
+                        width: '100%'
                     }}
                 >
                     {filter && filter.length > 0 ? (
