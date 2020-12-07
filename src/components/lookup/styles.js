@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         margin: 10,
-        flex: 1,
+        // flex: 1,
     },
 
     selectedContainer: {
