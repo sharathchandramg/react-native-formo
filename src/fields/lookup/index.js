@@ -248,6 +248,7 @@ export default class LookupField extends Component {
                 category: category['name'],
                 value: [item['value']],
                 categoryLabel: category['label'],
+                type: category['type'],
             };
             let index = _.findIndex(categoryToValue, {
                 category: category['name'],
