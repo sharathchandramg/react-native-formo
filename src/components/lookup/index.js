@@ -100,7 +100,12 @@ const LookupComponent = props => {
     return (
         <Container style={{ flex: 1 }}>
             <LookupHeader {...props} />
-            <Content>
+            <Content
+                contentContainerStyle={{
+                    height: '100%',
+                    width: '100%'
+                }}
+            >
                 <View
                     style={{
                         height: height * 0.95,
