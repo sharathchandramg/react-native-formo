@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     filterBodyBottom: {
         flex: 1,
         flexDirection: 'row',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
     },
     filterBodyBottomLeft: {
         flexDirection: 'column',
