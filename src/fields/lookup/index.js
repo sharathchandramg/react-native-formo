@@ -266,7 +266,7 @@ export default class LookupField extends Component {
                 } else {
                     updatedOptions.push(item['value']);
                 }
-                foundObj['value'] = [...updatedOptions];
+                foundObj['value'] = _.uniq([...updatedOptions]);
                 categoryToValue[index] = foundObj;
             } else {
                 categoryToValue.push(activeCategoryObj);
