@@ -78,6 +78,38 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         justifyContent: 'center',
     },
+    modalContent: {
+        backgroundColor: 'black',
+        flexDirection: 'column',
+        borderTopWidth: 2,
+        borderColor: '#d6d7da',
+        elevation: 20,
+        height: '100%',
+        width: '100%',
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+    },
+    modalHeader: {
+        height: '10%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalHeaderTitle: {
+        alignSelf: 'center',
+        fontWeight: 'bold',
+        color: '#fff',
+        fontSize: 12,
+        paddingLeft: 5,
+        lineHeight: 15,
+    },
+    imageWrapper: {
+        height: '86%',
+        width: '90%',
+        alignItems: 'center',
+        alignSelf: 'center',
+        justifyContent: 'center',
+    },
 });
 
 export default styles;
