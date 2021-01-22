@@ -9,6 +9,7 @@ import {
     Dimensions,
     TouchableHighlight,
     Alert,
+    Modal
 } from 'react-native';
 import { View, ListItem, Text, Item } from 'native-base';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -20,6 +21,7 @@ import { isEmpty } from '../../utils/validators';
 import _ from 'lodash';
 const DEVICE_WIDTH = Dimensions.get('window').width;
 import StarIcon from "../../components/starIcon";
+import ZoomImage from './../../components/zoomImage';
 const options = ['Open camera','Select from the gallery','Cancel'];
 
 
@@ -39,6 +41,8 @@ export default class ImageField extends Component {
             imageArray: undefined,
             height: new Animated.Value(0),
             stepIndex: 0,
+            openImageModal:false,
+            imgDetails:null
         };
     }
 
@@ -330,6 +334,13 @@ export default class ImageField extends Component {
         );
     };
 
+    openImageModalView = value => {
+        this.setState({
+            imgDetails: value,
+            openImageModal: true,
+        });
+    };
+
     renderImageItem = ({ item }) => {
         return (
             <View
@@ -340,15 +351,24 @@ export default class ImageField extends Component {
                 }}
                 key={item['uri']}
             >
-                <FastImage
-                    style={{ flex: 1 }}
-                    resizeMode={FastImage.resizeMode.cover}
-                    source={{
-                        uri: item['uri'],
-                        headers: item['headers'] || {},
-                        priority: item['priority'],
-                    }}
-                />
+                <TouchableOpacity 
+                    style={{
+                        height: 150,
+                        width: parseInt(DEVICE_WIDTH - 20),
+                        paddingEnd: 5,
+                    }} 
+                    onPress={() => this.openImageModalView(item)}
+                >
+                    <FastImage
+                        style={{ flex: 1 }}
+                        resizeMode={FastImage.resizeMode.cover}
+                        source={{
+                            uri: item['uri'],
+                            headers: item['headers'] || {},
+                            priority: item['priority'],
+                        }}
+                    />
+                </TouchableOpacity>
             </View>
         );
     };
@@ -462,6 +482,32 @@ export default class ImageField extends Component {
         return false;
     };
 
+    closeImageModalView = () => {
+        this.setState({
+            imgDetails: null,
+            openImageModal: false,
+        });
+    };
+
+    renderModalContent = item => {
+        return (
+            <View style={styles.modalContent}>
+                <TouchableOpacity
+                    style={styles.modalHeader}
+                    onPress={() =>this.closeImageModalView()}
+                >
+                    <Text style={styles.modalHeaderTitle}>{`Close`}</Text>
+                </TouchableOpacity>
+                <View style={styles.imageWrapper}>
+                    <ZoomImage
+                        item={item}
+                        closeModal={this.closeImageModalView}
+                    />
+                </View>
+            </View>
+        );
+    };
+
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
@@ -513,6 +559,17 @@ export default class ImageField extends Component {
                         </View>
                     ) : null}
 
+                    {this.state.openImageModal && (
+                        <Modal
+                            isVisible={this.state.openImageModal}
+                            animationType={'fade'}
+                            transparent={true}
+                            onRequestClose={() => this.closeImageModalView()}
+                            onPressOut={() => this.closeImageModalView()}
+                        >
+                            {this.state.imgDetails ? this.renderModalContent(this.state.imgDetails) : null}
+                        </Modal>
+                    )}
                     {Platform.OS === 'android' ? (
                         <BottomSheet
                             ref={ref => {
