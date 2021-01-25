@@ -20,7 +20,7 @@ const ImageView = props => {
             >
                 <FastImage
                     style={{ flex: 1 }}
-                    resizeMode={FastImage.resizeMode.cover}
+                    resizeMode={FastImage.resizeMode.contain}
                     source={{
                         uri: item['uri'],
                         headers: item['headers'] || {},
