@@ -16,7 +16,7 @@ const ImageView = props => {
                 imageHeight={'95%'}
                 enableSwipeDown={true}
                 onSwipeDown={() => props.closeModal()}
-                style={{ marginTop: '10%' }}
+                style={{ marginTop: '15%' }}
             >
                 <FastImage
                     style={{ flex: 1 }}
