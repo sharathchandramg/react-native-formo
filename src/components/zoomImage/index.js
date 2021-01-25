@@ -16,11 +16,11 @@ const ImageView = props => {
                 imageHeight={'95%'}
                 enableSwipeDown={true}
                 onSwipeDown={() => props.closeModal()}
-                style={{ marginTop: '10%' }}
+                style={{ marginTop: '15%' }}
             >
                 <FastImage
                     style={{ flex: 1 }}
-                    resizeMode={FastImage.resizeMode.cover}
+                    resizeMode={FastImage.resizeMode.contain}
                     source={{
                         uri: item['uri'],
                         headers: item['headers'] || {},
