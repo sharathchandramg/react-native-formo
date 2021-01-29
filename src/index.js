@@ -329,7 +329,7 @@ export default class Form0 extends Component {
     if (args && args.length && args[0]) {
       const newFields = {};
       Object.keys(args[0]).forEach((fieldName) => {
-        const field = this.state[fieldName];
+        const field = _.cloneDeep(this.state[fieldName]);
         if (field) {
           newFields[field.name] = this.getFieldValue(field, args[0][fieldName]);
         }
