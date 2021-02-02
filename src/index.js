@@ -329,7 +329,7 @@ export default class Form0 extends Component {
     if (args && args.length && args[0]) {
       const newFields = {};
       Object.keys(args[0]).forEach((fieldName) => {
-        const field = _.cloneDeep(this.state[fieldName]);
+        const field = this.state[fieldName];
         if (field) {
           newFields[field.name] = this.getFieldValue(field, args[0][fieldName]);
         }
@@ -349,7 +349,7 @@ export default class Form0 extends Component {
         const commonProps = {
           key: index,
           theme,
-          attributes: this.state[field.name],
+          attributes: _.cloneDeep(this.state[field.name]),
           updateValue: this.onValueChange,
           onAddNewFields: this.onAddNewFields,
           getValue: this.getValue,
