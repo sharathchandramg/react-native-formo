@@ -104,8 +104,8 @@ const styles = StyleSheet.create({
         lineHeight: 15,
     },
     imageWrapper: {
-        height: '86%',
-        width: '90%',
+        height: '90%',
+        width: '100%',
         alignItems: 'center',
         alignSelf: 'center',
         justifyContent: 'center',

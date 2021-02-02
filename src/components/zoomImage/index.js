@@ -1,7 +1,7 @@
 import React from 'react';
 import FastImage from 'react-native-fast-image';
-import { Dimensions } from 'react-native';
-import ImageZoom from 'react-native-image-pan-zoom';
+import { View, Dimensions } from 'react-native';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
@@ -9,25 +9,33 @@ const deviceWidth = Dimensions.get('window').width;
 const ImageView = props => {
         const item = props.item;
         return (
-            <ImageZoom
-                cropWidth={deviceWidth}
-                cropHeight={deviceHeight}
-                imageWidth={deviceWidth - 20}
-                imageHeight={'95%'}
-                enableSwipeDown={true}
-                onSwipeDown={() => props.closeModal()}
-                style={{ marginTop: '15%' }}
-            >
-                <FastImage
-                    style={{ flex: 1 }}
-                    resizeMode={FastImage.resizeMode.contain}
-                    source={{
-                        uri: item['uri'],
-                        headers: item['headers'] || {},
-                        priority: item['priority'],
+            <View style={props.style}>
+                <ImageViewer
+                    imageUrls={[
+                        {
+                            url: '',
+                            width: deviceWidth,
+                            height: deviceHeight,
+                        },
+                    ]}
+                    renderImage={props1 => {
+                        return (
+                            <FastImage
+                                style={props.style}
+                                source={{
+                                    uri: item['uri'],
+                                    headers: item['headers'] || {},
+                                    priority: item['priority'],
+                                }}
+                                resizeMode={FastImage.resizeMode.contain}
+                            />
+                        );
                     }}
+                    renderIndicator={() => <View />}
+                    renderHeader={() => <View />}
+                    renderFooter={() => <View />}
                 />
-            </ImageZoom>
+            </View>
     );
 };
 

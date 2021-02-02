@@ -502,6 +502,10 @@ export default class ImageField extends Component {
                     <ZoomImage
                         item={item}
                         closeModal={this.closeImageModalView}
+                        style={{
+                            width:'100%',
+                            height:'100%'
+                        }}
                     />
                 </View>
             </View>
