@@ -349,7 +349,7 @@ export default class Form0 extends Component {
         const commonProps = {
           key: index,
           theme,
-          attributes: _.cloneDeep(this.state[field.name]),
+          attributes: field.type === "image" ? _.cloneDeep(this.state[field.name]) : this.state[field.name],
           updateValue: this.onValueChange,
           onAddNewFields: this.onAddNewFields,
           getValue: this.getValue,

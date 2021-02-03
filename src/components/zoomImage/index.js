@@ -21,7 +21,7 @@ const ImageView = props => {
                     renderImage={props1 => {
                         return (
                             <FastImage
-                                style={props.style}
+                                style={props1.style}
                                 source={{
                                     uri: item['uri'],
                                     headers: item['headers'] || {},
