@@ -290,10 +290,20 @@ export function autoValidate(field) {
         break;
 
       case "picker":
-      case "status_picker":
         if (
           (field["value"] && field["value"] === "-Select-") ||
           isEmpty(field["value"])
+        ) {
+          error = true;
+          errorMsg = `${field.label} is required`;
+        }
+        break;
+
+      case "status_picker":
+        if (
+          (field["value"] && field["value"] === "-Select-") ||
+          isEmpty(field["value"]) || 
+          (field['options'].length>0 && !isEmpty(field["value"]) && !field['options'].includes(field["value"]))
         ) {
           error = true;
           errorMsg = `${field.label} is required`;
