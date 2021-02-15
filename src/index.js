@@ -249,6 +249,15 @@ export default class Form0 extends Component {
     }
   }
 
+  getFieldReturnValue = (field) => {
+    if(field.type &&(field.type.match(/number/i) || field.type.match(/auto-incr-number/i)))
+      return parseFloat(field.value)
+    else if(field.type && field.type === "picker" && field.value === "-Select-")
+      return ""
+    else 
+      return field.value
+  }
+
   getValues() {
     this.onValidateFields();
     const values = {};
@@ -259,11 +268,7 @@ export default class Form0 extends Component {
         if (field.error !== undefined && field.error) {
           isValidFields = false;
         }
-        values[field.name] =
-          field.type &&
-          (field.type.match(/number/i) || field.type.match(/auto-incr-number/i))
-            ? parseFloat(field.value)
-            : field.value;
+        values[field.name] = this.getFieldReturnValue(field);
       }
     });
     if (isValidFields) {
