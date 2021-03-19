@@ -28,6 +28,7 @@ import {
   getInitialState,
   getDefaultValue,
   getResetValue,
+  customValidateData
 } from "./utils/helper";
 
 const DefaultErrorComponent = (props) => {
@@ -119,6 +120,11 @@ export default class Form0 extends Component {
       if (field) {
         if (field.required !== undefined && field.required) {
           let validate = autoValidate(field);
+          field.error = validate.error;
+          field.errorMsg = validate.errorMsg;
+        }
+        if(field.type === 'number'){
+          let validate = customValidateData(field);
           field.error = validate.error;
           field.errorMsg = validate.errorMsg;
         }
