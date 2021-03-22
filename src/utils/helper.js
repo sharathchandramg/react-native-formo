@@ -261,7 +261,6 @@ export function autoValidate(field) {
         break;
 
       case "auto-incr-number":
-      case "number":
         if (isEmpty(field.value)) {
           error = true;
           errorMsg = `${field.label} is required`;
@@ -269,7 +268,6 @@ export function autoValidate(field) {
           error = true;
           errorMsg = `${field.label} should be a number`;
         }
-
         break;
 
       case "phone":
@@ -348,6 +346,34 @@ export function autoValidate(field) {
     }
   }
   return { error, errorMsg };
+}
+
+export function customValidateData(field) {
+  let error = false;
+  let errorMsg = "";
+    switch (field.type) {
+      case "number":
+        const additionalConfig = field['additional_config'];
+        if(isEmpty(field.value) && field.required){
+          error = true;
+          errorMsg = `${field.label} is required`;
+        }else if (!isEmpty(field.value)&&!isNumeric(field.value)) {
+          error = true;
+          errorMsg = `${field.label} should be a number`;
+        }else if(!isEmpty(field.value) && isNumeric(field.value) && additionalConfig && !isEmpty(additionalConfig['max']) && field.value>additionalConfig['max']){
+          error = true;
+          errorMsg = `Max allowed value is ${additionalConfig['max']}`;
+        }else if(!isEmpty(field.value) && isNumeric(field.value) && additionalConfig && !isEmpty(additionalConfig['min']) && field.value<additionalConfig['min']){
+          error = true;
+          errorMsg = `Min allowed value is ${additionalConfig['min']}`;
+        }
+        break;
+    }
+  return { error, errorMsg };
+}
+
+export function isNumeric(value) {
+  return !isNaN(parseFloat(value)) && isFinite(value);
 }
 
 export const getGeoLocation = (options, cb) => {

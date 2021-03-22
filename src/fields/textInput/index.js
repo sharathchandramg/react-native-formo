@@ -5,7 +5,7 @@ import math from "mathjs"
 import { View, Item, Input, Icon, ListItem} from "native-base";
 import { getKeyboardType } from "./../../utils/helper";
 import {isEmpty} from "./../../utils/validators";
-import StarIcon from "../../components/starIcon"
+import StarIcon from "../../components/starIcon";
 
 export default class TextInputField extends Component {
 
@@ -68,11 +68,16 @@ export default class TextInputField extends Component {
 
     renderInputField = (attributes,theme) =>{
         const inputProps = attributes.props;
-        const keyboardType = getKeyboardType(attributes.type);
+        let keyboardType = getKeyboardType(attributes.type);
+
+        if(attributes.type === 'number'){
+            const additionalConfig = attributes.additional_config;
+            if(additionalConfig && additionalConfig.allow_negative) keyboardType = Platform.OS === 'ios'?"numbers-and-punctuation":"numeric";
+        }
 
         let value = "";
         if(attributes['type']==='number'){
-            if(!isEmpty(attributes['value']) && !isNaN(attributes['value']) ){
+            if(!isEmpty(attributes['value'])){
                 value = attributes['value'].toString();
             }
         }else{
