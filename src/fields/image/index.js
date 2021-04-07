@@ -62,7 +62,8 @@ export default class ImageField extends Component {
                 handleDocumentUpdateAndDownload(
                     attributes,
                     value,
-                    (actionType = 'read')
+                    (actionType = 'read'),
+                    this.isFirstTime
                 );
                 this.isFirstTime = false;
             }
@@ -414,6 +415,13 @@ export default class ImageField extends Component {
         return null;
     };
 
+    getImguri=(item)=>{
+        if(!isEmpty(item['base64']))
+            return `data:${item['mime_type']};base64,${item['base64']}`;
+        else 
+            return item['url']
+    }
+
     renderPreview = attributes => {
         const value = attributes.value;
         const imageArray = this.state.imageArray;
@@ -426,10 +434,10 @@ export default class ImageField extends Component {
                     priority: FastImage.priority.normal,
                 });
             });
-        } else if (!isEmpty(value) && _.some(value, 'url')) {
+        } else if (!isEmpty(value) && (_.some(value, 'url')||_.some(value, 'base64'))) {
             _.forEach(value, image => {
                 data.push({
-                    uri: image['url'],
+                    uri: this.getImguri(image),
                     priority: FastImage.priority.normal,
                     headers: {
                         'content-type':
