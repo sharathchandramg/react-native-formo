@@ -416,8 +416,8 @@ export default class ImageField extends Component {
     };
 
     getImguri=(item)=>{
-        if(!isEmpty(item['base64']))
-            return `data:${item['mime_type']};base64,${item['base64']}`;
+        if(!isEmpty(item['base64Data']))
+            return `data:${item['mime_type']};base64,${item['base64Data']}`;
         else 
             return item['url']
     }
@@ -434,7 +434,7 @@ export default class ImageField extends Component {
                     priority: FastImage.priority.normal,
                 });
             });
-        } else if (!isEmpty(value) && (_.some(value, 'url')||_.some(value, 'base64'))) {
+        } else if (!isEmpty(value) && (_.some(value, 'url')||_.some(value, 'base64Data'))) {
             _.forEach(value, image => {
                 data.push({
                     uri: this.getImguri(image),
