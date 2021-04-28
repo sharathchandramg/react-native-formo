@@ -183,6 +183,17 @@ export default class Form0 extends Component {
     return lookupSubscriberFields;
   };
 
+  getLocationFieldState=()=>{
+    const locationFields = []
+    const keys = Object.keys(this.state);
+    keys.map(item=>{
+      if(item && this.state[item] && this.state[item]['type'] && this.state[item]['type'] === 'location'){
+        locationFields.push(this.state[item]);
+      }
+    })
+    return locationFields;
+  }
+
   handleOnValueChange = (valueObj, value) => {
     valueObj.value = value;
     //autovalidate the fields
@@ -195,6 +206,11 @@ export default class Form0 extends Component {
       typeof this.props.customValidation === "function"
     ) {
       Object.assign(valueObj, this.props.customValidation(valueObj));
+    }
+
+    if(valueObj.type==="location"){
+      const locationFields = this.getLocationFieldState();
+      this.props.calculateProximityBeacon(valueObj,value,locationFields)
     }
     // update state value
     const newField = {};
@@ -584,6 +600,7 @@ export default class Form0 extends Component {
   render() {
     return (
       <ScrollView keyboardShouldPersistTaps={'handled'}>
+        
         <View>{this.generateFields()}</View>
       </ScrollView>
     );
