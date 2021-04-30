@@ -31,17 +31,30 @@ export default class LocationField extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isPickingLocation: true,
+            isPickingLocation: false,
             url: null,
+            isFirstTime:true
         };
     }
 
     componentDidMount() {
-        const { value } = this.props.attributes;
-        if (isEmpty(value) && isEmpty(value['lat']) && isEmpty(value['long'])) {
+        this.setState({ isFirstTime: true });
+    }
+    
+    componentDidUpdate() {
+        if (this.state.isFirstTime) {
+          if (!isEmpty(this.props.formData)) {
+            const { value } = this.props.attributes;
+            if (isEmpty(value) && isEmpty(value['lat']) && isEmpty(value['long'])) {
+              this.setState({ isPickingLocation: true, isFirstTime: false });
+              this.promptForEnableLocationIfNeeded();
+            } else {
+              this.setState({ isPickingLocation: false, isFirstTime: false });
+            }
+          } else {
+            this.setState({ isPickingLocation: true, isFirstTime: false });
             this.promptForEnableLocationIfNeeded();
-        } else {
-            this.setState({ isPickingLocation: false });
+          }
         }
     }
 
@@ -163,6 +176,7 @@ export default class LocationField extends Component {
             this.setState(
                 {
                     url: url,
+                    latLng:latLng,
                     isPickingLocation: false,
                 },
                 () =>
@@ -194,7 +208,8 @@ export default class LocationField extends Component {
         } else {
             url = this.state.url;
         }
-        if (url) {
+
+        if (url && !this.state.isPickingLocation) {
             return (
                 <TouchableOpacity
                     style={styles.valueContainer}
@@ -239,6 +254,14 @@ export default class LocationField extends Component {
                                     {attributes.label}
                                 </Text>
                                     {this.renderPostionUrl(attributes)}
+                                    <Icon
+                                        name="navigate"
+                                        onPress={() => {
+                                        this.setState({ isPickingLocation: true, url: null }, () => {
+                                            this.promptForEnableLocationIfNeeded();
+                                        });
+                                        }}
+                                    />
                                 {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null}
                             </Item>
                         </View>
