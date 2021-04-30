@@ -33,7 +33,8 @@ export default class LocationField extends Component {
         this.state = {
             isPickingLocation: false,
             url: null,
-            isFirstTime:true
+            isFirstTime:true,
+            latLng:null
         };
     }
 
@@ -41,8 +42,18 @@ export default class LocationField extends Component {
         this.setState({ isFirstTime: true });
     }
     
+    /**
+     * On componentDidMount taking time to set the values on update form location fields
+     * because of this update form is showing the current location instead of existing location
+     * To fix this we have moved logic to componentDidUpdate
+     */
     componentDidUpdate() {
         if (this.state.isFirstTime) {
+            /**
+             * If form data does not exists, then fetch locaiton
+             * else check the location, if exists then do not fetch the location, render location
+             * else fetch the location
+             */
           if (!isEmpty(this.props.formData)) {
             const { value } = this.props.attributes;
             if (isEmpty(value) && isEmpty(value['lat']) && isEmpty(value['long'])) {
@@ -190,6 +201,7 @@ export default class LocationField extends Component {
 
     renderPostionUrl = attributes => {
         let url = null;
+        let latLng = null;
         if (
             !isEmpty(attributes.value) &&
             !isEmpty(attributes.value['lat']) &&
@@ -199,7 +211,7 @@ export default class LocationField extends Component {
                 ios: 'maps:http://maps.apple.com/?q=',
                 android: 'geo:http://maps.google.com/?q=',
             });
-            let latLng = `${attributes.value.lat},${attributes.value.long}`;
+            latLng = `${attributes.value.lat},${attributes.value.long}`;
             let label = 'You here';
             url = Platform.select({
                 ios: `${scheme}${label}@${latLng}`,
@@ -207,9 +219,10 @@ export default class LocationField extends Component {
             });
         } else {
             url = this.state.url;
+            latLng = this.state.latLng;
         }
 
-        if (url && !this.state.isPickingLocation) {
+        if (url && latLng && !this.state.isPickingLocation) {
             return (
                 <TouchableOpacity
                     style={styles.valueContainer}
@@ -226,7 +239,7 @@ export default class LocationField extends Component {
                     }}
                 >
                     <Text style={styles.textStyle} numberOfLines={1}>
-                        {url}
+                        {latLng}
                     </Text>
                 </TouchableOpacity>
             );
