@@ -208,9 +208,12 @@ export default class Form0 extends Component {
       Object.assign(valueObj, this.props.customValidation(valueObj));
     }
 
-    if(valueObj.type==="location"){
+    if (
+      valueObj.type === "location" &&
+      typeof this.props.calculateProximityBeacon === "function"
+    ) {
       const locationFields = this.getLocationFieldState();
-      this.props.calculateProximityBeacon(valueObj,value,locationFields)
+      this.props.calculateProximityBeacon(valueObj, value, locationFields);
     }
     // update state value
     const newField = {};

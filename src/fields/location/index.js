@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Platform, Alert, TouchableOpacity, Linking } from 'react-native';
-import { View, ListItem, Text,Item,Icon } from 'native-base';
+import { View, ListItem, Text, Item, Icon } from 'native-base';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import { isEmpty } from '../../utils/validators';
 
@@ -31,17 +31,41 @@ export default class LocationField extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isPickingLocation: true,
+            isPickingLocation: false,
             url: null,
+            isFirstTime:true,
+            latLng:null
         };
     }
 
     componentDidMount() {
-        const { value } = this.props.attributes;
-        if (isEmpty(value) && isEmpty(value['lat']) && isEmpty(value['long'])) {
+        this.setState({ isFirstTime: true });
+    }
+    
+    /**
+     * componentDidMount taking time to set location field value on update form 
+     * because of this update form is fetching the current location instead to show the existing location
+     * To fix this we have moved logic to componentDidUpdate
+     */
+    componentDidUpdate() {
+        if (this.state.isFirstTime) {
+            /**
+             * If form data does not exists, then fetch locaiton
+             * else check the location data, if location exists render location
+             * else fetch the location
+             */
+          if (!isEmpty(this.props.formData)) {
+            const { value } = this.props.attributes;
+            if (isEmpty(value) && isEmpty(value['lat']) && isEmpty(value['long'])) {
+              this.setState({ isPickingLocation: true, isFirstTime: false });
+              this.promptForEnableLocationIfNeeded();
+            } else {
+              this.setState({ isPickingLocation: false, isFirstTime: false });
+            }
+          } else {
+            this.setState({ isPickingLocation: true, isFirstTime: false });
             this.promptForEnableLocationIfNeeded();
-        } else {
-            this.setState({ isPickingLocation: false });
+          }
         }
     }
 
@@ -163,6 +187,7 @@ export default class LocationField extends Component {
             this.setState(
                 {
                     url: url,
+                    latLng:latLng,
                     isPickingLocation: false,
                 },
                 () =>
@@ -176,6 +201,7 @@ export default class LocationField extends Component {
 
     renderPostionUrl = attributes => {
         let url = null;
+        let latLng = null;
         if (
             !isEmpty(attributes.value) &&
             !isEmpty(attributes.value['lat']) &&
@@ -185,7 +211,7 @@ export default class LocationField extends Component {
                 ios: 'maps:http://maps.apple.com/?q=',
                 android: 'geo:http://maps.google.com/?q=',
             });
-            let latLng = `${attributes.value.lat},${attributes.value.long}`;
+            latLng = `${attributes.value.lat},${attributes.value.long}`;
             let label = 'You here';
             url = Platform.select({
                 ios: `${scheme}${label}@${latLng}`,
@@ -193,8 +219,10 @@ export default class LocationField extends Component {
             });
         } else {
             url = this.state.url;
+            latLng = this.state.latLng;
         }
-        if (url) {
+
+        if (url && latLng && !this.state.isPickingLocation) {
             return (
                 <TouchableOpacity
                     style={styles.valueContainer}
@@ -211,7 +239,7 @@ export default class LocationField extends Component {
                     }}
                 >
                     <Text style={styles.textStyle} numberOfLines={1}>
-                        {url}
+                        {latLng}
                     </Text>
                 </TouchableOpacity>
             );
@@ -239,6 +267,15 @@ export default class LocationField extends Component {
                                     {attributes.label}
                                 </Text>
                                     {this.renderPostionUrl(attributes)}
+                                    <Icon
+                                        name="sync"
+                                        style={{ fontSize: 24, color: '#828282' }}
+                                        onPress={() => {
+                                            this.setState({ isPickingLocation: true, url: null }, () => {
+                                                this.promptForEnableLocationIfNeeded();
+                                            });
+                                        }}
+                                    />
                                 {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null}
                             </Item>
                         </View>
