@@ -1,6 +1,6 @@
 {
   "name": "react-native-form0",
-  "version": "0.0.142",
+  "version": "0.0.143",
   "description": "Build model based simple forms for React Native",
   "main": "src/index.js",
   "scripts": {
