@@ -43,15 +43,15 @@ export default class LocationField extends Component {
     }
     
     /**
-     * On componentDidMount taking time to set the values on update form location fields
-     * because of this update form is showing the current location instead of existing location
+     * componentDidMount taking time to set location field value on update form 
+     * because of this update form is fetching the current location instead to show the existing location
      * To fix this we have moved logic to componentDidUpdate
      */
     componentDidUpdate() {
         if (this.state.isFirstTime) {
             /**
              * If form data does not exists, then fetch locaiton
-             * else check the location, if exists then do not fetch the location, render location
+             * else check the location data, if location exists render location
              * else fetch the location
              */
           if (!isEmpty(this.props.formData)) {
