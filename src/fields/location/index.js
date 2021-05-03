@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Platform, Alert, TouchableOpacity, Linking } from 'react-native';
-import { View, ListItem, Text,Item,Icon } from 'native-base';
+import { View, ListItem, Text, Item, Icon } from 'native-base';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import { isEmpty } from '../../utils/validators';
 
@@ -268,11 +268,12 @@ export default class LocationField extends Component {
                                 </Text>
                                     {this.renderPostionUrl(attributes)}
                                     <Icon
-                                        name="navigate"
+                                        name="sync"
+                                        style={{ fontSize: 24, color: '#828282' }}
                                         onPress={() => {
-                                        this.setState({ isPickingLocation: true, url: null }, () => {
-                                            this.promptForEnableLocationIfNeeded();
-                                        });
+                                            this.setState({ isPickingLocation: true, url: null }, () => {
+                                                this.promptForEnableLocationIfNeeded();
+                                            });
                                         }}
                                     />
                                 {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null}
