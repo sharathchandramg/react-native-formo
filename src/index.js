@@ -218,6 +218,16 @@ export default class Form0 extends Component {
     // update state value
     const newField = {};
     newField[valueObj.name] = valueObj;
+
+    if(valueObj && valueObj['expr_field'] && valueObj['expr_field'].length > 0){
+      const res = customFieldCalculations(valueObj,value, this.state);
+      if(res && res.length>0){
+        res.forEach(item=>{
+          newField[item.name] = item;
+        })
+      }
+    }
+
     if (
       this.props.onValueChange &&
       typeof this.props.onValueChange === "function"

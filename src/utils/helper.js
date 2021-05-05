@@ -2,6 +2,7 @@ import _ from "lodash";
 import { isEmail, isEmpty, validateMobileNumber, isNull } from "./validators";
 import { PermissionsAndroid } from "react-native";
 import Geolocation from 'react-native-geolocation-service';
+import { compileExpression } from 'filtrex';
 const moment = require("moment");
 
 export function getKeyboardType(textType) {
@@ -461,4 +462,59 @@ export async function requestLocationPermission() {
     response.permission = false;
     return response;
   }
+}
+
+const calculateConditionalMatch=(expressions, values)=>{
+  let res;
+    for (let i = 0; i < expressions.length; i++) {
+      const fn = compileExpression(expressions[i]);
+      const result = fn(values);
+      if (result !== "false") {
+        res = result;
+        break;
+      } else {
+        continue;
+      }
+    }
+  return res;
+}
+
+const calculateExpr=(type,expressions,values )=>{
+  switch(type){
+    case 'conditional_match':
+      return calculateConditionalMatch(expressions,values)
+  }
+}
+
+export const customFieldCalculations=(field,fieldValue, allFields)=>{
+  const exprFieldNames = !isEmpty(field) && !isEmpty(field['expr_field']) ?field['expr_field']:[];
+  const res = [];
+  for (let i = 0; i < exprFieldNames.length; i++) {
+      const exprField = allFields[exprFieldNames[i]];
+      const additionalConfig = !isEmpty(exprField) && !isEmpty(exprField['additional_config'])?exprField['additional_config']:null;
+
+      if(isEmpty(additionalConfig)) return;
+
+      const additionalConfigExpr = !isEmpty(additionalConfig) && !isEmpty(additionalConfig['expr']) ? additionalConfig['expr']:null;
+      if(isEmpty(additionalConfigExpr)) return;
+
+      const additionalConfigExprDF = !isEmpty(additionalConfigExpr) && !isEmpty(additionalConfigExpr['dependant_fields']) ? additionalConfigExpr['dependant_fields']:[];
+      const additionalConfigExprStmt = !isEmpty(additionalConfigExpr) && !isEmpty(additionalConfigExpr['stmt']) ? additionalConfigExpr['stmt']:[];
+      const additionalConfigExprType = !isEmpty(additionalConfigExpr) && !isEmpty(additionalConfigExpr['expr_type']) ? additionalConfigExpr['expr_type']:'';
+      
+      if(isEmpty(additionalConfigExprDF) || isEmpty(additionalConfigExprStmt)) return;
+
+      let dfValues = {};
+
+      for(let j = 0; j < additionalConfigExprDF.length; j++){
+        const dfObj = allFields[additionalConfigExprDF[j]];
+        const dfObjValue = !isEmpty(dfObj) && !isEmpty(dfObj['value']) ? dfObj['value'] : null;
+        const value = field['name'] === additionalConfigExprDF[j] ? fieldValue: !isEmpty(dfObjValue)?dfObjValue:null; 
+        if(!isEmpty(value)) dfValues[additionalConfigExprDF[j]] = value;
+      }
+
+      const updatedValue = calculateExpr(additionalConfigExprType,additionalConfigExprStmt,dfValues);
+      res.push({...exprField, value:updatedValue});
+  }
+  return res;
 }
