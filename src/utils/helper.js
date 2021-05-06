@@ -464,57 +464,64 @@ export async function requestLocationPermission() {
   }
 }
 
-const calculateConditionalMatch=(expressions, values)=>{
-  let res;
-    for (let i = 0; i < expressions.length; i++) {
-      const fn = compileExpression(expressions[i]);
-      const result = fn(values);
-      if (result !== "false") {
-        res = result;
-        break;
-      } else {
-        continue;
-      }
+/**
+ * Compile the expression, if result is false then return the default value
+ * else return the compile expression value
+ */
+const calculateConditionalMatch = (expressions, values,defaultValue) => {
+  for(const expr of expressions){
+    const fn = compileExpression(expr);
+    const result = fn(values);
+    if (result !== "false") {
+      return result;
     }
-  return res;
+  }
+  return !isEmpty(values) ? defaultValue : null;
 }
 
-const calculateExpr=(type,expressions,values )=>{
-  switch(type){
+const calculateExpr = (type, expressions, values,defaultValue) => {
+  switch (type) {
     case 'conditional_match':
-      return calculateConditionalMatch(expressions,values)
+      return calculateConditionalMatch(expressions, values,defaultValue);
+    default:
+      return null
   }
 }
 
-export const customFieldCalculations=(field,fieldValue, allFields)=>{
-  const exprFieldNames = !isEmpty(field) && !isEmpty(field['expr_field']) ?field['expr_field']:[];
+/**
+ * Check field has expr_field key, else return empty array
+ * Expr field shoudl have stmt, expr_type and dependant_fields, if any is not there then throw empty,
+ * otherwise calculate the values
+ */
+export const customFieldCalculations = (field, fieldValue, allFields) => {
+  const exprFieldNames = !isEmpty(field) && !isEmpty(field['expr_field']) ? field['expr_field'] : [];
   const res = [];
+
   for (let i = 0; i < exprFieldNames.length; i++) {
-      const exprField = allFields[exprFieldNames[i]];
-      const additionalConfig = !isEmpty(exprField) && !isEmpty(exprField['additional_config'])?exprField['additional_config']:null;
+    const exprField = allFields[exprFieldNames[i]];
+    const additionalConfig = !isEmpty(exprField) && !isEmpty(exprField['additional_config']) ? exprField['additional_config'] : null;
+    if (isEmpty(additionalConfig)) return;
 
-      if(isEmpty(additionalConfig)) return;
+    const additionalConfigExpr = !isEmpty(additionalConfig) && !isEmpty(additionalConfig['expr']) ? additionalConfig['expr'] : null;
+    if (isEmpty(additionalConfigExpr)) return;
 
-      const additionalConfigExpr = !isEmpty(additionalConfig) && !isEmpty(additionalConfig['expr']) ? additionalConfig['expr']:null;
-      if(isEmpty(additionalConfigExpr)) return;
+    const additionalConfigExprDF = !isEmpty(additionalConfigExpr) && !isEmpty(additionalConfigExpr['dependant_fields']) ? additionalConfigExpr['dependant_fields'] : [];
+    const additionalConfigExprStmt = !isEmpty(additionalConfigExpr) && !isEmpty(additionalConfigExpr['stmt']) ? additionalConfigExpr['stmt'] : [];
+    const additionalConfigExprType = !isEmpty(additionalConfigExpr) && !isEmpty(additionalConfigExpr['expr_type']) ? additionalConfigExpr['expr_type'] : '';
+    const defaultValue = !isEmpty(additionalConfigExpr) && !isEmpty(additionalConfigExpr['defaultValue']) ? additionalConfigExpr['defaultValue'] : null;
+    if (isEmpty(additionalConfigExprDF) || isEmpty(additionalConfigExprStmt)) return;
 
-      const additionalConfigExprDF = !isEmpty(additionalConfigExpr) && !isEmpty(additionalConfigExpr['dependant_fields']) ? additionalConfigExpr['dependant_fields']:[];
-      const additionalConfigExprStmt = !isEmpty(additionalConfigExpr) && !isEmpty(additionalConfigExpr['stmt']) ? additionalConfigExpr['stmt']:[];
-      const additionalConfigExprType = !isEmpty(additionalConfigExpr) && !isEmpty(additionalConfigExpr['expr_type']) ? additionalConfigExpr['expr_type']:'';
-      
-      if(isEmpty(additionalConfigExprDF) || isEmpty(additionalConfigExprStmt)) return;
+    let dfValues = {};
 
-      let dfValues = {};
+    for(const fieldName of additionalConfigExprDF){
+      const dfObj = allFields[fieldName];
+      const dfObjValue = !isEmpty(dfObj) && !isEmpty(dfObj['value']) ? dfObj['value'] : null;
+      const value = field['name'] === fieldName ? fieldValue : !isEmpty(dfObjValue) ? dfObjValue : null;
+      if (!isEmpty(value)) dfValues[fieldName] = value;
+    }
 
-      for(let j = 0; j < additionalConfigExprDF.length; j++){
-        const dfObj = allFields[additionalConfigExprDF[j]];
-        const dfObjValue = !isEmpty(dfObj) && !isEmpty(dfObj['value']) ? dfObj['value'] : null;
-        const value = field['name'] === additionalConfigExprDF[j] ? fieldValue: !isEmpty(dfObjValue)?dfObjValue:null; 
-        if(!isEmpty(value)) dfValues[additionalConfigExprDF[j]] = value;
-      }
-
-      const updatedValue = calculateExpr(additionalConfigExprType,additionalConfigExprStmt,dfValues);
-      res.push({...exprField, value:updatedValue});
+    const updatedValue = calculateExpr(additionalConfigExprType, additionalConfigExprStmt, dfValues,defaultValue);
+    res.push({ ...exprField, value: updatedValue });
   }
   return res;
 }
