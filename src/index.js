@@ -28,7 +28,8 @@ import {
   getInitialState,
   getDefaultValue,
   getResetValue,
-  customValidateData
+  customValidateData,
+  customFieldCalculations
 } from "./utils/helper";
 
 const DefaultErrorComponent = (props) => {

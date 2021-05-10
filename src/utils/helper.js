@@ -466,7 +466,7 @@ export async function requestLocationPermission() {
 
 /**
  * Compile the expression, if result is false then return the default value
- * else return the compile expression value
+ * else return the compiled expression value
  */
 const calculateConditionalMatch = (expressions, values,defaultValue) => {
   for(const expr of expressions){
@@ -500,27 +500,27 @@ export const customFieldCalculations = (field, fieldValue, allFields) => {
   for (let i = 0; i < exprFieldNames.length; i++) {
     const exprField = allFields[exprFieldNames[i]];
     const additionalConfig = !isEmpty(exprField) && !isEmpty(exprField['additional_config']) ? exprField['additional_config'] : null;
-    if (isEmpty(additionalConfig)) return;
+    if (isEmpty(additionalConfig)) return res;
 
-    const additionalConfigExpr = !isEmpty(additionalConfig) && !isEmpty(additionalConfig['expr']) ? additionalConfig['expr'] : null;
-    if (isEmpty(additionalConfigExpr)) return;
+    const acExpr = !isEmpty(additionalConfig) && !isEmpty(additionalConfig['expr']) ? additionalConfig['expr'] : null;
+    if (isEmpty(acExpr)) return res;
 
-    const additionalConfigExprDF = !isEmpty(additionalConfigExpr) && !isEmpty(additionalConfigExpr['dependant_fields']) ? additionalConfigExpr['dependant_fields'] : [];
-    const additionalConfigExprStmt = !isEmpty(additionalConfigExpr) && !isEmpty(additionalConfigExpr['stmt']) ? additionalConfigExpr['stmt'] : [];
-    const additionalConfigExprType = !isEmpty(additionalConfigExpr) && !isEmpty(additionalConfigExpr['expr_type']) ? additionalConfigExpr['expr_type'] : '';
-    const defaultValue = !isEmpty(additionalConfigExpr) && !isEmpty(additionalConfigExpr['defaultValue']) ? additionalConfigExpr['defaultValue'] : null;
-    if (isEmpty(additionalConfigExprDF) || isEmpty(additionalConfigExprStmt)) return;
+    const acExprDF = !isEmpty(acExpr) && !isEmpty(acExpr['dependant_fields']) ? acExpr['dependant_fields'] : [];
+    const acExprStmt = !isEmpty(acExpr) && !isEmpty(acExpr['stmt']) ? acExpr['stmt'] : [];
+    const acExprType = !isEmpty(acExpr) && !isEmpty(acExpr['expr_type']) ? acExpr['expr_type'] : '';
+    const defaultValue = !isEmpty(acExpr) && !isEmpty(acExpr['defaultValue']) ? acExpr['defaultValue'] : null;
+    if (isEmpty(acExprDF) || isEmpty(acExprStmt)) return res;
 
     let dfValues = {};
 
-    for(const fieldName of additionalConfigExprDF){
+    for(const fieldName of acExprDF){
       const dfObj = allFields[fieldName];
       const dfObjValue = !isEmpty(dfObj) && !isEmpty(dfObj['value']) ? dfObj['value'] : null;
       const value = field['name'] === fieldName ? fieldValue : !isEmpty(dfObjValue) ? dfObjValue : null;
       if (!isEmpty(value)) dfValues[fieldName] = value;
     }
 
-    const updatedValue = calculateExpr(additionalConfigExprType, additionalConfigExprStmt, dfValues,defaultValue);
+    const updatedValue = calculateExpr(acExprType, acExprStmt, dfValues,defaultValue);
     res.push({ ...exprField, value: updatedValue });
   }
   return res;
