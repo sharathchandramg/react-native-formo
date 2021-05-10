@@ -47,6 +47,7 @@
     "react-native-vector-icons": ">=7.0.0",
     "react-timer-mixin": ">=0.13.4",
     "recyclerlistview": ">=3.0.0",
-    "shortid": ">=2.2.15"
+    "shortid": ">=2.2.15",
+    "filtrex": ">=2.1.0"
   }
 }
