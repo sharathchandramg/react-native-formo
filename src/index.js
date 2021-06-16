@@ -370,7 +370,16 @@ export default class Form0 extends Component {
     if (args && args.length && args[0]) {
       const newFields = {};
       Object.keys(args[0]).forEach((fieldName) => {
-        const field = this.state[fieldName];
+        /**
+         * In update form, if any field value changes
+         * image is greyed out, to avoid we are using deep clone object
+         */
+        const field =
+        this.state &&
+        this.state[fieldName] &&
+        this.state[fieldName].type === 'image'
+            ? _.cloneDeep(this.state[fieldName])
+            : this.state[fieldName];
         if (field) {
           newFields[field.name] = this.getFieldValue(field, args[0][fieldName]);
         }
