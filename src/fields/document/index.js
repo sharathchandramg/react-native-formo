@@ -49,7 +49,8 @@ export default class DocumentField extends Component {
         return true;
     }
 
-    renderAlert = msg => {
+    renderAlert = (msg, deleteDocumentFile=null) => {
+        const { attributes } = this.props;
         Alert.alert(
             ``,
             `${msg}`,
@@ -65,6 +66,9 @@ export default class DocumentField extends Component {
                 {
                     text: 'OK',
                     onPress: () => {
+                        if(!isEmpty(deleteDocumentFile)){
+                            this.props.deleteDocument(attributes,deleteDocumentFile)
+                        }
                         console.log('OK');
                     },
                 },
@@ -72,6 +76,10 @@ export default class DocumentField extends Component {
             { cancelable: false }
         );
     };
+
+    deleteDocumentFile=(item)=>{
+        this.renderAlert(`Selected file will be deleted permanently. Are you sure you want to delete`,item)
+    }
 
     renderFileItem = ({ item }) => {
         const { theme } = this.props;
@@ -130,11 +138,11 @@ export default class DocumentField extends Component {
                                     onPress={() => console.log('tick')}
                                 />
                             )}
-                            {/* <Icon
+                            <Icon
                                 name={'trash'}
                                 style={{ fontSize: 18, color: '#828282' }}
-                                onPress={()=>console.log('cancel')}
-                            /> */}
+                                onPress={()=>this.deleteDocumentFile(item)}
+                            />
                         </View>
                     ) : null}
                 </TouchableOpacity>
@@ -225,7 +233,15 @@ export default class DocumentField extends Component {
         const { attributes, handleDocumentUpdateAndDownload } = this.props;
         const value = attributes.value;
 
-        if (!config['contentTypes'].includes(res['type'])) {
+        if (this.isFileExists(res['name'], value)) {
+            this.renderAlert(`File already exists`);
+        } else if (
+            !config['multiple'] &&
+            !isEmpty(value) &&
+            value.length >= 1
+        ) {
+            this.renderAlert(`Only one file allowed`);
+        } else if (!config['contentTypes'].includes(res['type'])) {
             this.renderAlert(`Selected file type is not allowed`);
         } else if (isEmpty(res['size'])) {
             this.renderAlert(`Please choose proper file`);
@@ -235,16 +251,6 @@ export default class DocumentField extends Component {
                     config['maxSize']
                 )} MB`
             );
-        } else if (
-            !config['multiple'] &&
-            !isEmpty(value) &&
-            value.length >= 1
-        ) {
-            this.renderAlert(`Only one file allowed`);
-        } else if (this.isFileExists(res['name'], value)) {
-            error = true;
-            this.renderAlert(`File already exists`);
-            return;
         } else {
             if (typeof handleDocumentUpdateAndDownload === 'function') {
                 handleDocumentUpdateAndDownload(attributes, [res], 'write');
@@ -350,18 +356,22 @@ export default class DocumentField extends Component {
     };
 
     onPressDocument = async () => {
-        const config = this.getDocumentConfiguration();
+        if(this.props.isConnected){
+            const config = this.getDocumentConfiguration();
 
-        if (config['multiple']) {
-            const results = await DocumentPicker.pickMultiple({
-                type: config['documentTypes'],
-            });
-            this.multiFileValidationsAndUpload(config, results);
+            if (config['multiple']) {
+                const results = await DocumentPicker.pickMultiple({
+                    type: config['documentTypes'],
+                });
+                this.multiFileValidationsAndUpload(config, results);
+            } else {
+                const res = await DocumentPicker.pick({
+                    type: config['documentTypes'],
+                });
+                this.singleFileValidationsAndUpload(config, res);
+            }
         } else {
-            const res = await DocumentPicker.pick({
-                type: config['documentTypes'],
-            });
-            this.singleFileValidationsAndUpload(config, res);
+            this.renderAlert(`This field required internet connectivity`);
         }
     };
 
