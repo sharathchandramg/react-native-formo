@@ -101,7 +101,6 @@ export default class DocumentField extends Component {
                         flexDirection: 'row',
                         alignItems: 'center',
                     }}
-                    onPress={() => FileViewer.open(item['uri'])}
                 >
                     <Text
                         numberOfLines={1}
@@ -111,6 +110,7 @@ export default class DocumentField extends Component {
                             paddingStart: 5,
                             width: '75%',
                         }}
+                        onPress={() => FileViewer.open(item['uri'])}
                     >
                         {item['name']}
                     </Text>
@@ -269,7 +269,7 @@ export default class DocumentField extends Component {
 
     isFileExists = (res, allFiles) => {
         if (!isEmpty(allFiles)) {
-            const fileIndex = allFiles.findIndex(ele => ele['name'] === res);
+            const fileIndex = allFiles.findIndex(ele => ele && ele['name'] === res);
             if (fileIndex >= 0) return true;
         }
         return false;
