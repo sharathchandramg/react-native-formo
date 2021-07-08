@@ -38,13 +38,6 @@ export default class DocumentField extends Component {
         ErrorComponent: PropTypes.func,
     };
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            filesArray: undefined,
-        };
-    }
-
     shouldComponentUpdate(nextProps, nextState) {
         return true;
     }
@@ -82,7 +75,7 @@ export default class DocumentField extends Component {
     }
 
     renderFileItem = ({ item }) => {
-        const { theme } = this.props;
+        const { theme, handlePreviewDocument } = this.props;
         return (
             <View
                 style={{
@@ -92,7 +85,7 @@ export default class DocumentField extends Component {
                     borderRadius: 5,
                     borderWidth: 1,
                 }}
-                key={item['uri']}
+                key={item['uri'] || item['file_path']}
             >
                 <TouchableOpacity
                     style={{
@@ -110,7 +103,11 @@ export default class DocumentField extends Component {
                             paddingStart: 5,
                             width: '75%',
                         }}
-                        onPress={() => FileViewer.open(item['uri'])}
+                        onPress={() => {
+                            if (typeof handlePreviewDocument === 'function') {
+                                handlePreviewDocument(item);
+                            }
+                        }}
                     >
                         {item['name']}
                     </Text>
@@ -170,15 +167,9 @@ export default class DocumentField extends Component {
 
     renderPreview = attributes => {
         const value = attributes.value;
-        const filesArray = this.state.filesArray;
 
         let data = [];
-        // if (!isEmpty(filesArray) && _.some(filesArray, 'uri')) {
-        //     _.forEach(filesArray, file => {
-        //         data.push(file);
-        //     });
-        // } else
-        if (!isEmpty(value) && _.some(value, 'uri')) {
+        if (!isEmpty(value) && (_.some(value, 'uri') || _.some(value, 'file_path'))) {
             _.forEach(value, file => {
                 data.push(file);
             });
@@ -393,9 +384,8 @@ export default class DocumentField extends Component {
     };
 
     isDocumentFilesExists = () => {
-        const filesArray = this.state.filesArray;
         const value = this.props.attributes['value'] || '';
-        if (!isEmpty(filesArray) || !isEmpty(value)) {
+        if (!isEmpty(value)) {
             return true;
         }
         return false;
