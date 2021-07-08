@@ -32,6 +32,7 @@ import {
   customValidateData,
   customFieldCalculations
 } from "./utils/helper";
+import { isEmpty } from "./utils/validators";
 
 const DefaultErrorComponent = (props) => {
   const attributes = props.attributes;
@@ -291,7 +292,18 @@ export default class Form0 extends Component {
       return parseFloat(field.value)
     else if(field.type && field.type === "picker" && field.value === "-Select-")
       return ""
-    else 
+    else if(field.type && field.type === "document"){
+      const updateValue = !isEmpty(field.value)
+        ? field.value.map(item => {
+            return {
+              name: item['name'],
+              file_path: item['filePath'],
+              content_type: item['type'],
+            };
+          })
+        : [];
+      return updateValue;
+    }else 
       return field.value
   }
 
