@@ -8,7 +8,6 @@ import styles from './styles';
 import { isEmpty } from '../../utils/validators';
 import _ from 'lodash';
 import StarIcon from '../../components/starIcon';
-import FileViewer from 'react-native-file-viewer';
 
 const allowedDocumentTypes = {
     pdf: [DocumentPicker.types.pdf],
@@ -70,10 +69,18 @@ export default class DocumentField extends Component {
         );
     };
 
-    deleteDocumentFile=(item)=>{
+    /**
+     * Delete document file
+     */
+    deleteDocumentFile = item => {
         this.renderAlert(`Selected file will be deleted permanently. Are you sure you want to delete`,item)
     }
 
+    /**
+     * Render success and warning icons
+     * if status is success or if file has file_path, then show the success icon
+     * otherwise warning
+     */
     renderSuccessWarningIcon = item => {
         return item['status'] === 'success' || item['file_path'] ? (
             <Icon
@@ -90,27 +97,17 @@ export default class DocumentField extends Component {
         );
     };
 
+    /**
+     * Render document 
+     */
     renderFileItem = ({ item }) => {
         const { theme, handlePreviewDocument } = this.props;
         return (
             <View
-                style={{
-                    height: 40,
-                    marginBottom: 10,
-                    borderColor: '#E0E0E0',
-                    borderRadius: 5,
-                    borderWidth: 1,
-                }}
+                style={styles.fileTopWrapper}
                 key={item['uri'] || item['file_path']}
             >
-                <TouchableOpacity
-                    style={{
-                        height: '100%',
-                        width: '100%',
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                    }}
-                >
+                <TouchableOpacity style={styles.fileInnerWrapper}>
                     <Text
                         numberOfLines={1}
                         ellipsizeMode="tail"
@@ -127,14 +124,7 @@ export default class DocumentField extends Component {
                     >
                         {item['name']}
                     </Text>
-                        <View
-                            style={{
-                                width: '25%',
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                                justifyContent: 'space-evenly',
-                            }}
-                        >
+                        <View style={styles.fileIconWrapper}>
                             {this.renderSuccessWarningIcon(item)}
                             <Icon
                                 name={'trash'}
@@ -165,9 +155,12 @@ export default class DocumentField extends Component {
         return null;
     };
 
-    renderPreview = attributes => {
+    /**
+     * Render all documents
+     * If attribute value has uri or file_path, then push that object to render data
+     */
+    renderAllDocuments = attributes => {
         const value = attributes.value;
-
         let data = [];
         if (!isEmpty(value) && (_.some(value, 'uri') || _.some(value, 'file_path'))) {
             _.forEach(value, file => {
@@ -175,12 +168,17 @@ export default class DocumentField extends Component {
             });
         }
         return (
-            <View style={[styles.topContainer]}>
+            <View style={styles.topContainer}>
                 {this.renderFileList(data)}
             </View>
         );
     };
 
+    /**
+     * Get the document configuration form field additional_config
+     * Create documentTypes and contentTypes based on the file_type values from additional_config
+     * Default value for max size is 1048576(1MB)
+     */
     getDocumentConfiguration = () => {
         const { additional_config } = this.props.attributes;
         let documentTypes = [];
@@ -220,7 +218,16 @@ export default class DocumentField extends Component {
         };
     };
 
-    singleFileValidationsAndUpload = (config, res) => {
+    /**
+     * Upload single file abd validations
+     * Validations: If selected file name is already exists, then throw alert
+     *              If user selects more than one file, then throw alert
+     *              If selected file content type is not in a additional_config, then throw alert
+     *              If selected file size is empty, then throw alert
+     *              If selected file size is greater than the additional_config max_size, then throw alert
+     * If all validation pass, the call the handleDocumentUpdateAndDownload function with values attributes and selected in array
+     */
+    uploadSingleFile = (config, res) => {
         const { attributes, handleDocumentUpdateAndDownload } = this.props;
         const value = attributes.value;
 
@@ -244,11 +251,14 @@ export default class DocumentField extends Component {
             );
         } else {
             if (typeof handleDocumentUpdateAndDownload === 'function') {
-                handleDocumentUpdateAndDownload(attributes, [res], 'write');
+                handleDocumentUpdateAndDownload(attributes, [res]);
             }
         }
     };
 
+    /**
+     * Get selected file and attribute value
+     */
     getAllFiles = results => {
         const { attributes } = this.props;
         const value =
@@ -258,6 +268,9 @@ export default class DocumentField extends Component {
         return [...results, ...value];
     };
 
+    /**
+     * Check is selected file is already exists or not
+     */
     isFileExists = (res, allFiles) => {
         if (!isEmpty(allFiles)) {
             const fileIndex = allFiles.findIndex(ele => ele && ele['name'] === res);
@@ -266,6 +279,9 @@ export default class DocumentField extends Component {
         return false;
     };
 
+    /**
+     * Remove duplicate selected files from array
+     */
     removeDuplicateFiles = (results, existsFiles) => {
         const updatedResults = [];
         if (!isEmpty(results)) {
@@ -278,7 +294,16 @@ export default class DocumentField extends Component {
         return updatedResults;
     };
 
-    multiFileValidationsAndUpload = (config, results) => {
+    /**
+     * Upload multiple files abd validations
+     * Validations: If selected files is greater than additional_config max files, then throw alert
+     *              If selected file content type is not in a additional_config, then throw alert
+     *              If selected file size is empty, then throw alert
+     *              If selected file size is greater than the additional_config max_size, then throw alert
+     * If user selects existing file, then don't throw alert, remove duplicates from all selected files
+     * If all validation pass, the call the handleDocumentUpdateAndDownload function with values attributes and selected in array
+     */
+    uploadMultipleFiles = (config, results) => {
         const { attributes, handleDocumentUpdateAndDownload } = this.props;
 
         let error = false;
@@ -335,17 +360,23 @@ export default class DocumentField extends Component {
             if (typeof handleDocumentUpdateAndDownload === 'function') {
                 handleDocumentUpdateAndDownload(
                     attributes,
-                    updatedResults,
-                    'write'
+                    updatedResults
                 );
             }
         }
     };
 
+    /**
+     * Convert file size bytes to MB
+     */
     getBytesToMB = bytes => {
         return bytes / (1024 * 1024);
     };
 
+    /**
+     * Open file select on click of document field if internet is connected
+     * Otherwise throw alert
+     */
     onPressDocument = async () => {
         if(this.props.isConnected){
             const config = this.getDocumentConfiguration();
@@ -354,18 +385,21 @@ export default class DocumentField extends Component {
                 const results = await DocumentPicker.pickMultiple({
                     type: config['documentTypes'],
                 });
-                this.multiFileValidationsAndUpload(config, results);
+                this.uploadMultipleFiles(config, results);
             } else {
                 const res = await DocumentPicker.pick({
                     type: config['documentTypes'],
                 });
-                this.singleFileValidationsAndUpload(config, res);
+                this.uploadSingleFile(config, res);
             }
         } else {
             this.renderAlert(`This field required internet connectivity`);
         }
     };
 
+    /**
+     * Render file icon
+     */
     renderFileIcon = () => {
         return (
             <TouchableOpacity
@@ -383,7 +417,10 @@ export default class DocumentField extends Component {
         );
     };
 
-    isDocumentFilesExists = () => {
+    /**
+     * Check is attributes value exists or not, to render the documents
+     */
+    isFilesExists = () => {
         const value = this.props.attributes['value'] || '';
         if (!isEmpty(value)) {
             return true;
@@ -438,8 +475,8 @@ export default class DocumentField extends Component {
                             </Item>
                         </View>
                     </ListItem>
-                    {this.isDocumentFilesExists()
-                        ? this.renderPreview(attributes)
+                    {this.isFilesExists()
+                        ? this.renderAllDocuments(attributes)
                         : null}
                 </View>
                 <View style={{ paddingHorizontal: 15 }}>
