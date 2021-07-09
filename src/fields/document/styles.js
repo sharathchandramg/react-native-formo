@@ -29,10 +29,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     fileIconWrapper:{
-        width: '25%',
+        width: '23%',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-evenly',  
+        justifyContent: 'flex-end',  
     }
 });
 

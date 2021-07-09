@@ -125,7 +125,7 @@ export default class DocumentField extends Component {
                         {item['name']}
                     </Text>
                         <View style={styles.fileIconWrapper}>
-                            {this.renderSuccessWarningIcon(item)}
+                            {/* {this.renderSuccessWarningIcon(item)} */}
                             <Icon
                                 name={'trash'}
                                 style={{ fontSize: 18, color: '#828282' }}
@@ -245,7 +245,7 @@ export default class DocumentField extends Component {
             this.renderAlert(`Please choose proper file`);
         } else if (res['size'] > config['maxSize']) {
             this.renderAlert(
-                `Please choose file less than ${this.getBytesToMB(
+                `Please select file size less than ${this.getBytesToMB(
                     config['maxSize']
                 )} MB`
             );
@@ -317,7 +317,7 @@ export default class DocumentField extends Component {
         if (config['multiple'] && allFiles.length > config['maxFiles']) {
             error = true;
             this.renderAlert(
-                `Maximum files to be allowed is ${config['maxFiles']}`
+                `Please note maximum files allowed is ${config['maxFiles']}`
             );
             return;
         }
