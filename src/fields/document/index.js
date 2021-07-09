@@ -18,7 +18,7 @@ const allowedDocumentTypes = {
 
 const allowedContentTypes = {
     pdf: ['application/pdf'],
-    images: ['image/gif', 'image/jpeg', 'image/png', 'image/webp'],
+    images: ['image/jpeg', 'image/png'],
     doc: [
         'application/msword',
         'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
