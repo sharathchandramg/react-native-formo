@@ -247,6 +247,7 @@ export function autoValidate(field) {
       case "url":
       case "location":
       case "image":
+      case "document":
       case "password":
         if (isEmpty(field.value)) {
           error = true;
