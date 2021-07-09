@@ -74,6 +74,22 @@ export default class DocumentField extends Component {
         this.renderAlert(`Selected file will be deleted permanently. Are you sure you want to delete`,item)
     }
 
+    renderSuccessWarningIcon = item => {
+        return item['status'] === 'success' || item['file_path'] ? (
+            <Icon
+                name={'check'}
+                size={18}
+                style={{ fontSize: 18, color: '#0CBD5B' }}
+            />
+        ) : (
+            <Icon
+                name={'exclamation-triangle'}
+                size={18}
+                style={{ fontSize: 18, color: '#FA9917' }}
+            />
+        );
+    };
+
     renderFileItem = ({ item }) => {
         const { theme, handlePreviewDocument } = this.props;
         return (
@@ -111,7 +127,6 @@ export default class DocumentField extends Component {
                     >
                         {item['name']}
                     </Text>
-                    {!isEmpty(item['status']) ? (
                         <View
                             style={{
                                 width: '25%',
@@ -120,28 +135,13 @@ export default class DocumentField extends Component {
                                 justifyContent: 'space-evenly',
                             }}
                         >
-                            {item['status'] === 'success' ? (
-                                <Icon
-                                    name={'check'}
-                                    size={18}
-                                    style={{ fontSize: 18, color: '#0CBD5B' }}
-                                    onPress={() => console.log('tick')}
-                                />
-                            ) : (
-                                <Icon
-                                    name={'exclamation-triangle'}
-                                    size={18}
-                                    style={{ fontSize: 18, color: '#FA9917' }}
-                                    onPress={() => console.log('tick')}
-                                />
-                            )}
+                            {this.renderSuccessWarningIcon(item)}
                             <Icon
                                 name={'trash'}
                                 style={{ fontSize: 18, color: '#828282' }}
                                 onPress={()=>this.deleteDocumentFile(item)}
                             />
                         </View>
-                    ) : null}
                 </TouchableOpacity>
             </View>
         );
