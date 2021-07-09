@@ -384,11 +384,13 @@ export default class DocumentField extends Component {
             if (config['multiple']) {
                 const results = await DocumentPicker.pickMultiple({
                     type: config['documentTypes'],
+                    copyTo: 'documentDirectory',
                 });
                 this.uploadMultipleFiles(config, results);
             } else {
                 const res = await DocumentPicker.pick({
                     type: config['documentTypes'],
+                    copyTo: 'documentDirectory',
                 });
                 this.uploadSingleFile(config, res);
             }
