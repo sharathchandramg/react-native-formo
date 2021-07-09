@@ -342,7 +342,7 @@ export default class DocumentField extends Component {
                         res['name']
                     } file size is greater than ${this.getBytesToMB(
                         config['maxSize']
-                    )} MB. Please choose file less than ${this.getBytesToMB(
+                    )} MB. Please select file size less than ${this.getBytesToMB(
                         config['maxSize']
                     )} MB`
                 );
