@@ -294,14 +294,22 @@ export default class Form0 extends Component {
       return ""
     else if(field.type && field.type === "document"){
       const updateValue = !isEmpty(field.value)
-        ? field.value.map(item => {
+      ? field.value.map(item => {
             return {
-              name: item['name'],
-              file_path: item['filePath'],
-              content_type: item['type'],
+                name: item['name'],
+                file_path: item['filePath']
+                    ? item['filePath']
+                    : item['file_path']
+                    ? item['file_path']
+                    : '',
+                content_type: item['type']
+                    ? item['type']
+                    : item['content_type']
+                    ? item['content_type']
+                    : '',
             };
-          })
-        : [];
+        })
+      : [];
       return updateValue;
     }else 
       return field.value
