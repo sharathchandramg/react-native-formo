@@ -219,13 +219,13 @@ export default class DocumentField extends Component {
     };
 
     /**
-     * Upload single file abd validations
-     * Validations: If selected file name is already exists, then throw alert
-     *              If user selects more than one file, then throw alert
-     *              If selected file content type is not in a additional_config, then throw alert
-     *              If selected file size is empty, then throw alert
-     *              If selected file size is greater than the additional_config max_size, then throw alert
-     * If all validation pass, the call the handleDocumentUpdateAndDownload function with values attributes and selected in array
+     * Upload single file and validations
+     * Validations: If selected file name is already exists
+     *              If user selects more than one file
+     *              If selected file content type is not in a additional_config
+     *              If selected file size is empty
+     *              If selected file size is greater than the additional_config max_size
+     * If all validations pass, the call the handleDocumentUpdateAndDownload function with values attributes and selected file in array
      */
     uploadSingleFile = (config, res) => {
         const { attributes, handleDocumentUpdateAndDownload } = this.props;
@@ -295,11 +295,11 @@ export default class DocumentField extends Component {
     };
 
     /**
-     * Upload multiple files abd validations
-     * Validations: If selected files is greater than additional_config max files, then throw alert
-     *              If selected file content type is not in a additional_config, then throw alert
-     *              If selected file size is empty, then throw alert
-     *              If selected file size is greater than the additional_config max_size, then throw alert
+     * Upload multiple files and validations
+     * Validations: If selected files are greater than additional_config max files
+     *              If selected file content type is not in a additional_config
+     *              If selected file size is empty
+     *              If selected file size is greater than the additional_config max_size
      * If user selects existing file, then don't throw alert, remove duplicates from all selected files
      * If all validation pass, the call the handleDocumentUpdateAndDownload function with values attributes and selected in array
      */
@@ -367,14 +367,16 @@ export default class DocumentField extends Component {
     };
 
     /**
-     * Convert file size bytes to MB
+     * Convert bytes to MB
      */
     getBytesToMB = bytes => {
         return bytes / (1024 * 1024);
     };
 
     /**
-     * Open file select on click of document field if internet is connected
+     * Open file select on click of document field 
+     * ased on additional_config multiple key, it will open multiple file select or single file select
+     * Only allowed when internet is connected
      * Otherwise throw alert
      */
     onPressDocument = async () => {
