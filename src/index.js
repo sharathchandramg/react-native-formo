@@ -22,6 +22,7 @@ import CollaboratorField from "./fields/collaborator";
 import AssigneeField from "./fields/assignee";
 import ChecklistField from "./fields/checklist";
 import UserDirectoryField from "./fields/userDirectory";
+import DocumentField from './fields/document';
 
 import {
   autoValidate,
@@ -31,6 +32,7 @@ import {
   customValidateData,
   customFieldCalculations
 } from "./utils/helper";
+import { isEmpty } from "./utils/validators";
 
 const DefaultErrorComponent = (props) => {
   const attributes = props.attributes;
@@ -290,7 +292,26 @@ export default class Form0 extends Component {
       return parseFloat(field.value)
     else if(field.type && field.type === "picker" && field.value === "-Select-")
       return ""
-    else 
+    else if(field.type && field.type === "document"){
+      const updateValue = !isEmpty(field.value)
+      ? field.value.map(item => {
+            return {
+                name: item['name'],
+                file_path: item['filePath']
+                    ? item['filePath']
+                    : item['file_path']
+                    ? item['file_path']
+                    : '',
+                content_type: item['type']
+                    ? item['type']
+                    : item['content_type']
+                    ? item['content_type']
+                    : '',
+            };
+        })
+      : [];
+      return updateValue;
+    }else 
       return field.value
   }
 
@@ -513,6 +534,17 @@ export default class Form0 extends Component {
                 {...this.props}
               />
             );
+
+          case 'document':
+            return(
+              <DocumentField 
+                ref={(c) => {
+                  this[field.name] = c;
+                }}
+                {...commonProps}
+                {...this.props}
+              />
+            )
 
           case "location":
             return (
