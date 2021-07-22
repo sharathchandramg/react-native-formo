@@ -39,7 +39,23 @@ const DefaultErrorComponent = (props) => {
   const theme = props.theme;
   if (attributes.error) {
     return (
-      <Text style={{ color: theme.errorMsgColor }}>{attributes.errorMsg}</Text>
+      <Text
+      style={{
+        color: theme.errorMsgColor,
+        paddingStart: [
+          'select',
+          'user_directory',
+          'checklist',
+          'lookup',
+          'simple-grid',
+          'customDataView',
+        ].includes(attributes['type'])
+          ? 0
+          : 5,
+      }}
+    >
+      {attributes.errorMsg}
+    </Text>
     );
   }
   return null;

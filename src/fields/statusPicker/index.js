@@ -162,7 +162,7 @@ export default class StatusPickerField extends Component {
                     },
                 }}
             >
-                <View style={{ flex: 5,flexDirection:'row' }}>
+                <View style={{ flex: 5, flexDirection:'row', alignItems:'center' }}>
                     {attributes['required'] && <StarIcon required={attributes['required']} />}
                     <Text
                         style={{

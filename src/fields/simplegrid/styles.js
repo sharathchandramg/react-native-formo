@@ -39,14 +39,14 @@ const styles = StyleSheet.create({
         shadowRadius:4,
         backgroundColor:'white',
         shadowOffset: {width:0, height:0},
+        paddingLeft:5
     },
 
     labelTextWrapper:{
         height:50,
         flex:1,
-        alignItems:'center',
+        // alignItems:'center',
         justifyContent:'center',
-        paddingLeft:5
     },
 
     valueWrapper:{
@@ -65,8 +65,8 @@ const styles = StyleSheet.create({
 
     labelText:{
         fontSize: 18,
-        lineHeight:20,
-        minHeight:20,
+        // lineHeight:20,
+        // minHeight:20,
         color: '#ADADAD',
         fontFamily:'roboto',
         textAlign: 'left',

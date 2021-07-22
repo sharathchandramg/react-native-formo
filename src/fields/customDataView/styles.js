@@ -39,14 +39,14 @@ const styles = StyleSheet.create({
         shadowRadius:4,
         backgroundColor:'white',
         shadowOffset: {width:0, height:0},
+        paddingLeft:5
     },
 
     labelTextWrapper:{
         height:50,
         flex:1,
         alignItems:'center',
-        justifyContent:'center',
-        paddingLeft:5
+        justifyContent:'center'
     },
 
     valueWrapper:{

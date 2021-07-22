@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
         flex:1,
         alignItems:'center',
         justifyContent:'center',
-        paddingLeft:5
+        // paddingLeft:5
     },
 
     valueWrapper:{

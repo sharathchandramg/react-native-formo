@@ -132,7 +132,7 @@ export default class PickerField extends Component {
                     borderBottomColor: theme.inputBorderColor,
                     borderBottomWidth: theme.borderWidth,
             }}}>
-            <View style={{ flex: 5,flexDirection:'row' }}>
+            <View style={{ flex: 5, flexDirection:'row', alignItems:'center' }}>
                 {attributes['required'] && <StarIcon required={attributes['required']} />}
                 <Text
                     style={{
