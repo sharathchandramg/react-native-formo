@@ -808,7 +808,7 @@ export default class LookupField extends Component {
               </TouchableOpacity>
             </View>
 
-            <View style={{ paddingHorizontal: 20 }}>
+            <View style={{ paddingHorizontal: 15 }}>
               <ErrorComponent {...{ attributes, theme }} />
             </View>
             {
