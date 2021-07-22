@@ -113,6 +113,7 @@ export default class TextInputField extends Component {
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
+            <View>
                 <ListItem style={{ borderBottomWidth: 0, paddingVertical: 5 }}>
                     <View style={{ flex: 1}}>
                         <View>
@@ -128,6 +129,10 @@ export default class TextInputField extends Component {
                         </View>
                     </View>
                 </ListItem>
+                <View style={{ paddingHorizontal: 15 }}>
+                    <ErrorComponent {...{ attributes, theme }} />
+                </View>
+            </View>
         );
     }
 }
