@@ -72,7 +72,6 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         fontWeight:'300',
         paddingStart:5,
-        flex:1,
     },
 
     iconStyle:{
