@@ -1,59 +1,111 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Platform } from "react-native";
+import { Platform, Animated } from "react-native";
 import math from "mathjs"
-import { View, Item, Input, Icon, ListItem, Label, Text} from "native-base";
+import { View, Item, Input, Icon, ListItem } from "native-base";
 import { getKeyboardType } from "./../../utils/helper";
-import {isEmpty} from "./../../utils/validators";
+import { isEmpty } from "./../../utils/validators";
 import StarIcon from "../../components/starIcon";
 
 export default class TextInputField extends Component {
-
     static propTypes = {
         attributes: PropTypes.object,
         theme: PropTypes.object,
         onSummitTextInput: PropTypes.func,
         ErrorComponent: PropTypes.func,
         updateValue: PropTypes.func,
+    };
+
+    state = {
+        isFocused: false,
+    };
+
+    componentWillMount() {
+        this._animatedIsFocused = new Animated.Value(
+            isEmpty(this.getInputValue()) ? 0 : 1
+        );
     }
 
-    constructor(props) {
-        super(props);
+    componentDidUpdate() {
+        Animated.timing(this._animatedIsFocused, {
+            toValue:
+                this.state.isFocused || !isEmpty(this.getInputValue()) ? 1 : 0,
+            duration: 200,
+        }).start();
     }
+
+    handleFocus = () => this.setState({ isFocused: true });
+    handleBlur = () => this.setState({ isFocused: false });
 
     handleChange(text) {
         this.props.updateValue(this.props.attributes.name, text);
     }
 
-    getCalculatedValue = (attributes)=>{
+    getInputValue = () => {
+        const { attributes } = this.props;
+        if (
+            typeof attributes.type !== 'undefined' &&
+            attributes.type === 'calculated'
+        ) {
+            return this.getCalculatedValue();
+        } else {
+            let value = '';
+            if (attributes['type'] === 'number') {
+                if (!isEmpty(attributes['value'])) {
+                    value = attributes['value'].toString();
+                }
+            } else {
+                if (!isEmpty(attributes['value'])) {
+                    value = attributes['value'].toString();
+                }
+            }
+            return value;
+        }
+    };
+
+    getCalculatedValue = attributes => {
         let calculateOnFields = attributes.fields;
         let expression = attributes.expression;
         let value = '';
-        if(typeof calculateOnFields ==='object'){
+        if (typeof calculateOnFields === 'object') {
             let scope = {};
-            for(let i = 0;i < calculateOnFields.length ; i++){
-                scope[calculateOnFields[i]] = parseFloat(this.props.getValue(calculateOnFields[i]));
+            for (let i = 0; i < calculateOnFields.length; i++) {
+                scope[calculateOnFields[i]] = parseFloat(
+                    this.props.getValue(calculateOnFields[i])
+                );
             }
-            if(Object.values(scope).length === calculateOnFields.length){
-                value = math.eval(expression , scope)
-                if(!isNaN(value) && value.toString() !== attributes.value.toString()){
-                    this.props.updateValue(attributes.name, value.toString()); 
+            if (Object.values(scope).length === calculateOnFields.length) {
+                value = math.eval(expression, scope);
+                if (
+                    !isNaN(value) &&
+                    value.toString() !== attributes.value.toString()
+                ) {
+                    this.props.updateValue(attributes.name, value.toString());
                 }
             }
         }
-        return isNaN(value)?'':value.toString();
-    }
+        return isNaN(value) ? '' : value.toString();
+    };
 
-    renderCalculatedField =(attributes,theme)=>{
+    renderCalculatedField = (attributes, theme) => {
         const inputProps = attributes.props;
         const keyboardType = getKeyboardType(attributes.type);
-        return(
+        return (
             <Input
                 style={{
-                    height: inputProps && inputProps.multiline && (Platform.OS === 'ios' ? undefined : null),
-                    paddingStart:5,
+                    ...Platform.select({
+                        ios: {
+                            lineHeight: 30
+                        },
+                        android: {
+                            paddingBottom: 5,
+                            textAlignVertical: 'bottom',
+                        }
+                    })
                 }}
-                ref={(c) => { this.textInputCalculated = c; }}
+                ref={c => {
+                    this.textInputCalculated = c;
+                }}
                 keyboardType={keyboardType}
                 underlineColorAndroid="transparent"
                 numberOfLines={2}
@@ -63,66 +115,100 @@ export default class TextInputField extends Component {
                 value={this.getCalculatedValue(attributes)}
                 {...inputProps}
             />
-        )
-    }
+        );
+    };
 
-    renderInputField = (attributes,theme) =>{
+    renderInputField = (attributes, theme) => {
         const inputProps = attributes.props;
         let keyboardType = getKeyboardType(attributes.type);
 
-        if(attributes.type === 'number'){
+        if (attributes.type === 'number') {
             const additionalConfig = attributes.additional_config;
-            if(additionalConfig && additionalConfig.allow_negative) keyboardType = Platform.OS === 'ios'?"numbers-and-punctuation":"numeric";
+            if (additionalConfig && additionalConfig.allow_negative)
+                keyboardType =
+                    Platform.OS === 'ios'
+                        ? 'numbers-and-punctuation'
+                        : 'numeric';
         }
 
-        let value = "";
-        if(attributes['type']==='number'){
-            if(!isEmpty(attributes['value'])){
+        let value = '';
+        if (attributes['type'] === 'number') {
+            if (!isEmpty(attributes['value'])) {
                 value = attributes['value'].toString();
             }
-        }else{
-            if(!isEmpty(attributes['value'])){
+        } else {
+            if (!isEmpty(attributes['value'])) {
                 value = attributes['value'].toString();
             }
         }
 
-        return(
+        return (
             <Input
                 style={{
-                    // height: 45,
-                    // paddingStart:5,
+                    ...Platform.select({
+                        ios: {
+                            lineHeight: 30
+                        },
+                        android: {
+                            paddingBottom: 5,
+                            textAlignVertical: 'bottom',
+                        }
+                    })
                 }}
-                ref={(c) => { this.textInput = c; }}
+                ref={c => { this.textInput = c; }}
                 keyboardType={keyboardType}
                 underlineColorAndroid="transparent"
                 numberOfLines={2}
                 secureTextEntry={attributes.secureTextEntry || attributes.type === "password"}
-                placeholder={attributes.label}
                 blurOnSubmit={false}
-                placeholderTextColor={theme.inputColorPlaceholder}
                 editable={attributes.editable}
                 onChangeText={text => this.handleChange(text)}
                 value={value}
+                onFocus={this.handleFocus}
+                onBlur={this.handleBlur}
                 {...inputProps}
             />
-        )
+        );
+    };
 
+    getLabelStyles = () => {
+        const { theme } = this.props;
+        return {
+            position: 'absolute',
+            left: 0,
+            fontSize: this._animatedIsFocused.interpolate({
+                inputRange: [0, 1],
+                outputRange: [18, 16],
+            }),
+            paddingStart: 5,
+            top: this._animatedIsFocused.interpolate({
+                inputRange: [0, 1],
+                outputRange: [20, Platform.OS === 'ios' ? 0 : -5],
+            }),
+            color: theme.inputColorPlaceholder,
+        }
     }
-
 
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
             <View>
-                <ListItem style={{ borderBottomWidth: 0, paddingVertical: 5 }}>
-                    <View style={{ flex: 1}}>
+                <ListItem style={{ borderBottomWidth: 0, paddingBottom: 5, paddingVertical: 5 }}>
+                    <View style={{ flex: 1 }}>
                         <View>
-                            <Item floatingLabel={true} error={theme.changeTextInputColorOnError ? attributes.error : null}>
-                                <Label style={{paddingStart: 5, color: theme.inputColorPlaceholder}}>{attributes['required'] && <StarIcon required={attributes['required']} />} {attributes.label}</Label>
-                                {typeof attributes.type  !=='undefined' && attributes.type ==="calculated"?
-                                    this.renderCalculatedField(attributes,theme) 
+                            <Item error={theme.changeTextInputColorOnError ? attributes.error : null }>
+                                <Animated.Text style={this.getLabelStyles()}>
+                                    {attributes['required'] && (
+                                        <StarIcon
+                                            required={attributes['required']}
+                                        />
+                                    )}{' '}
+                                    {attributes.label}
+                                </Animated.Text>
+                                {typeof attributes.type !== 'undefined' && attributes.type === 'calculated' ? 
+                                   this.renderCalculatedField(attributes, theme)
                                     :
-                                    this.renderInputField(attributes,theme)
+                                    this.renderInputField(attributes, theme)
                                 }
                                 {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null}
                             </Item>
