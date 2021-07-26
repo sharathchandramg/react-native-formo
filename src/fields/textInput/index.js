@@ -93,11 +93,15 @@ export default class TextInputField extends Component {
         return (
             <Input
                 style={{
-                    height:
-                        inputProps &&
-                        inputProps.multiline &&
-                        (Platform.OS === 'ios' ? undefined : null),
-                    paddingStart: 5,
+                    ...Platform.select({
+                        ios: {
+                            lineHeight: 30
+                        },
+                        android: {
+                            paddingBottom: 5,
+                            textAlignVertical: 'bottom',
+                        }
+                    })
                 }}
                 ref={c => {
                     this.textInputCalculated = c;
@@ -140,6 +144,17 @@ export default class TextInputField extends Component {
 
         return (
             <Input
+                style={{
+                    ...Platform.select({
+                        ios: {
+                            lineHeight: 30
+                        },
+                        android: {
+                            paddingBottom: 5,
+                            textAlignVertical: 'bottom',
+                        }
+                    })
+                }}
                 ref={c => { this.textInput = c; }}
                 keyboardType={keyboardType}
                 underlineColorAndroid="transparent"
@@ -168,7 +183,7 @@ export default class TextInputField extends Component {
             paddingStart: 5,
             top: this._animatedIsFocused.interpolate({
                 inputRange: [0, 1],
-                outputRange: [26, -7],
+                outputRange: [20, Platform.OS === 'ios' ? 0 : -5],
             }),
             color: theme.inputColorPlaceholder,
         }
@@ -178,7 +193,7 @@ export default class TextInputField extends Component {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
             <View>
-                <ListItem style={{ borderBottomWidth: 0, paddingVertical: 5 }}>
+                <ListItem style={{ borderBottomWidth: 0, paddingBottom: 5, paddingVertical: 5 }}>
                     <View style={{ flex: 1 }}>
                         <View>
                             <Item error={theme.changeTextInputColorOnError ? attributes.error : null }>
