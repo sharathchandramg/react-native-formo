@@ -49,6 +49,7 @@
     "recyclerlistview": ">=3.0.0",
     "shortid": ">=2.2.15",
     "filtrex": ">=2.1.0",
-    "react-native-document-picker": ">=5.2.0"
+    "react-native-document-picker": ">=5.2.0",
+    "react-native-signature-capture": ">=0.4.12"
   }
 }
