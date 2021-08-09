@@ -70,35 +70,7 @@ export default class ImageField extends Component {
     shouldComponentUpdate(nextProps, nextState) {
         return true;
     }
-    _nextScrollIndex = () => {
-        const { stepIndex, imageArray } = this.state;
-        const { attributes } = this.props;
-        let currentFlatlistIndex = stepIndex;
-        const len =
-            !isEmpty(imageArray) && Array.isArray(imageArray)
-                ? imageArray.length
-                : !isEmpty(attributes['value']) &&
-                  Array.isArray(attributes['value'])
-                ? attributes['value'].length
-                : 0;
-        if (currentFlatlistIndex < len - 1) {
-            currentFlatlistIndex = currentFlatlistIndex + 1;
-            this.flatListRef.scrollToIndex({
-                index: currentFlatlistIndex,
-                animated: true,
-            });
-            this.setState({ stepIndex: currentFlatlistIndex });
-        } else {
-            currentFlatlistIndex = 0;
-            this.flatListRef.scrollToIndex({
-                index: currentFlatlistIndex,
-                animated: true,
-            });
-            this.setState({ stepIndex: currentFlatlistIndex });
-        }
-    };
 
-    
     openImageModalView = value => {
         this.setState({
             imgDetails: value,
@@ -153,26 +125,6 @@ export default class ImageField extends Component {
                             this.flatListRef = ref;
                         }}
                     />
-                    {images.length > 1 && (
-                        <View style={styles.moreIconContainer}>
-                            <TouchableHighlight
-                                style={styles.moreIconOuter}
-                                onPress={() => this._nextScrollIndex()}
-                                activeOpacity={0.0}
-                                underlayColor={'white'}
-                            >
-                                <View style={styles.moreIconInner}>
-                                    <Icon
-                                        name={'arrow-right'}
-                                        type="regular"
-                                        size={18}
-                                        color={'#0097eb'}
-                                        style={{ alignSelf: 'center' }}
-                                    />
-                                </View>
-                            </TouchableHighlight>
-                        </View>
-                    )}
                 </View>
             );
         }
@@ -189,16 +141,36 @@ export default class ImageField extends Component {
     }
 
     _onSaveEvent=(result)=> {
-        this.setState({signature:result,viewMode:'portrait'},()=>{
+        const { attributes, handleDocumentUpdateAndDownload } = this.props;
+        this.setState({ signature: result, viewMode: 'portrait'},()=>{
             this.closeImageModalView()
         });
+
+        if (typeof handleDocumentUpdateAndDownload === 'function') {
+            const filePath = Platform.OS.match(/ios/i)
+            ? result['pathName'].replace('file://', '', 1)
+            : result['pathName'];
+            handleDocumentUpdateAndDownload(
+                attributes,
+                [
+                    {
+                        mime_type: "image/png",
+                        file_path: filePath,
+                        base64_data: result['encoded'],
+                    }
+                ],
+                (actionType = 'write')
+            );
+        }
     }
 
-    getImguri=()=>{
-        // if(!isEmpty(item['base64Data']))
-            return `data:image/png;base64,${this.state.signature['encoded']}`;
-        // else 
-        //     return item['url']
+    getImguri=(item, isFromLocal=false)=>{
+        if(isFromLocal){
+            return `data:image/png;base64,${item['encoded']}`;
+        }else if(!isEmpty(item['base64Data']))
+            return `data:image/png;base64,${item['base64Data']}`;
+        else 
+            return item['url']
     }
 
     renderPreview = attributes => {
@@ -206,25 +178,25 @@ export default class ImageField extends Component {
         const imageArray = this.state.imageArray;
 
         let data = [];
-        // if (!isEmpty(imageArray) && _.some(imageArray, 'file_path')) {
-        //     _.forEach(imageArray, image => {
-        //         data.push({
-        //             uri: image['file_path'],
-        //             priority: FastImage.priority.normal,
-        //         });
-        //     });
-        // } else if (!isEmpty(value) && (_.some(value, 'url')||_.some(value, 'base64Data'))) {
-        //     _.forEach(value, image => {
+        if (!isEmpty(imageArray)) {
+            data.push({
+                uri: this.getImguri(this.state.signature, true),
+                priority: FastImage.priority.normal,
+                headers: {
+                    'content-type':
+                        "image/png",
+                },
+            });
+        } else if (!isEmpty(value) && (_.some(value, 'url')||_.some(value, 'base64Data'))) {
                 data.push({
-                    uri: this.getImguri(),
+                    uri: this.getImguri(value[0]),
                     priority: FastImage.priority.normal,
                     headers: {
                         'content-type':
                             "image/png",
                     },
                 });
-        //     });
-        // }
+        }
 
         return (
             <View style={[styles.topContainer, { borderColor: '#a94442' }]}>
@@ -257,7 +229,8 @@ export default class ImageField extends Component {
     };
 
     checkImageData = () => {
-        if (!isEmpty(this.state.signature)) {
+        const value = this.props.attributes['value'] || '';
+        if (!isEmpty(this.state.signature) || !isEmpty(value)) {
             return true;
         }
         return false;
@@ -306,13 +279,12 @@ export default class ImageField extends Component {
                         viewMode={this.state.viewMode}
                     />
                 <View style={{ flexDirection: "row" }}>
-                    <TouchableHighlight style={styles.button} onPress={() => this.saveSign()} >
+                    <TouchableOpacity style={styles.button} onPress={() => this.saveSign()} >
                         <Text>Save</Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight style={styles.button} onPress={() => this.resetSign()}>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={() => this.resetSign()}>
                         <Text>Reset</Text>
-                    </TouchableHighlight>
-
+                    </TouchableOpacity>
                 </View>
                 </View> }
             </View>
