@@ -5,8 +5,7 @@ import {
     TouchableOpacity,
     FlatList,
     Dimensions,
-    TouchableHighlight,
-    Modal
+    Modal,
 } from 'react-native';
 import { View, ListItem, Text, Item } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -15,10 +14,10 @@ import FastImage from 'react-native-fast-image';
 import { isEmpty } from '../../utils/validators';
 import _ from 'lodash';
 const DEVICE_WIDTH = Dimensions.get('window').width;
-import StarIcon from "../../components/starIcon";
-import ZoomImage from './../../components/zoomImage';
+import StarIcon from '../../components/starIcon';
+import ZoomImage from '../../components/zoomImage';
 import SignatureCapture from 'react-native-signature-capture';
-
+const moment = require('moment');
 
 export default class ImageField extends Component {
     static propTypes = {
@@ -33,13 +32,10 @@ export default class ImageField extends Component {
         this.isLocal = false;
         this.isFirstTime = true;
         this.state = {
-            imageArray: undefined,
-            height: new Animated.Value(0),
-            stepIndex: 0,
-            openImageModal:false,
-            imgDetails:null,
-            viewMode:'portrait',
-            canvasSignature:null
+            openImageModal: false,
+            imgDetails: null,
+            viewMode: 'portrait',
+            signature: null
         };
     }
 
@@ -88,12 +84,12 @@ export default class ImageField extends Component {
                 }}
                 key={item['uri']}
             >
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={{
                         height: 150,
                         width: parseInt(DEVICE_WIDTH - 20),
                         paddingEnd: 5,
-                    }} 
+                    }}
                     onPress={() => this.openImageModalView(item)}
                 >
                     <FastImage
@@ -131,71 +127,80 @@ export default class ImageField extends Component {
         return null;
     };
 
-    saveSign=() =>{
+    saveSign = () => {
         console.log('saveSignsaveSignsaveSignsaveSign');
-        this.refs["sign"].saveImage();
+        this.refs['sign'].saveImage();
+    };
+
+    resetSign = () => {
+        this.refs['sign'].resetImage();
+    };
+
+
+    getUpdatedPath=(filePath)=>{
+        const splitPath=filePath?filePath.split('/'):[];
+        if(splitPath.length>0){
+            splitPath[splitPath.length-1] = `signature_${moment().utc().valueOf()}.png`;
+        }
+        return splitPath.join('/');
     }
 
-    resetSign=()=> {
-        this.refs["sign"].resetImage();
-    }
-
-    _onSaveEvent=(result)=> {
+    _onSaveEvent = result => {
         const { attributes, handleDocumentUpdateAndDownload } = this.props;
-        this.setState({ signature: result, viewMode: 'portrait'},()=>{
-            this.closeImageModalView()
+        this.setState({ signature: result, viewMode: 'portrait' }, () => {
+            this.closeImageModalView();
         });
 
         if (typeof handleDocumentUpdateAndDownload === 'function') {
             const filePath = Platform.OS.match(/ios/i)
-            ? result['pathName'].replace('file://', '', 1)
-            : result['pathName'];
+                ? result['pathName'].replace('file://', '', 1)
+                : result['pathName'];
             handleDocumentUpdateAndDownload(
                 attributes,
                 [
                     {
-                        mime_type: "image/png",
-                        file_path: filePath,
+                        mime_type: 'image/png',
+                        file_path: this.getUpdatedPath(filePath),
                         base64_data: result['encoded'],
-                    }
+                    },
                 ],
                 (actionType = 'write')
             );
         }
-    }
+    };
 
-    getImguri=(item, isFromLocal=false)=>{
-        if(isFromLocal){
+    getImguri = (item, isFromLocal = false) => {
+        if (isFromLocal) {
             return `data:image/png;base64,${item['encoded']}`;
-        }else if(!isEmpty(item['base64Data']))
+        } else if (!isEmpty(item['base64Data']))
             return `data:image/png;base64,${item['base64Data']}`;
-        else 
-            return item['url']
-    }
+        else return item['url'];
+    };
 
     renderPreview = attributes => {
         const value = attributes.value;
-        const imageArray = this.state.imageArray;
+        const signatureObj = this.state.signature;
 
         let data = [];
-        if (!isEmpty(imageArray)) {
+        if (!isEmpty(signatureObj)) {
             data.push({
-                uri: this.getImguri(this.state.signature, true),
+                uri: this.getImguri(signatureObj, true),
                 priority: FastImage.priority.normal,
                 headers: {
-                    'content-type':
-                        "image/png",
+                    'content-type': 'image/png',
                 },
             });
-        } else if (!isEmpty(value) && (_.some(value, 'url')||_.some(value, 'base64Data'))) {
-                data.push({
-                    uri: this.getImguri(value[0]),
-                    priority: FastImage.priority.normal,
-                    headers: {
-                        'content-type':
-                            "image/png",
-                    },
-                });
+        } else if (
+            !isEmpty(value) &&
+            (_.some(value, 'url') || _.some(value, 'base64Data'))
+        ) {
+            data.push({
+                uri: this.getImguri(value[0]),
+                priority: FastImage.priority.normal,
+                headers: {
+                    'content-type': 'image/png',
+                },
+            });
         }
 
         return (
@@ -215,7 +220,12 @@ export default class ImageField extends Component {
         return (
             <TouchableOpacity
                 style={styles.valueContainer}
-                onPress={() => this.setState({ openImageModal: true,viewMode:'portrait'})}
+                onPress={() =>
+                    this.setState({
+                        openImageModal: true,
+                        viewMode: 'portrait',
+                    })
+                }
             >
                 <Icon
                     name="image"
@@ -240,53 +250,62 @@ export default class ImageField extends Component {
         this.setState({
             imgDetails: null,
             openImageModal: false,
-            viewMode:'portrait'
+            viewMode: 'portrait',
         });
     };
 
     renderModalContent = item => {
         return (
-            <View style={[styles.modalContent,{backgroundColor:'white'}]}>
+            <View style={styles.modalContent}>
                 <TouchableOpacity
-                    style={[styles.modalHeader,{backgroundColor:'black'}]}
-                    onPress={() =>this.closeImageModalView()}
+                    style={[styles.modalHeader, { backgroundColor: 'black' }]}
+                    onPress={() => this.closeImageModalView()}
                 >
                     <Text style={styles.modalHeaderTitle}>{`Close`}</Text>
                 </TouchableOpacity>
-                {item ?
+                {item ? (
                     <View style={styles.imageWrapper}>
-                    <ZoomImage
-                        item={item}
-                        closeModal={this.closeImageModalView}
-                        style={{
-                            width:'100%',
-                            height:'100%'
-                        }}
-                    />
-                </View>:
-                <View  style={{ flex: 1, flexDirection: "column" }}>
-                    <SignatureCapture
-                        style={{
-                            flex: 1,
-                            borderColor: '#000033',
-                            borderWidth: 1,
-                        }}
-                        ref="sign"
-                        onSaveEvent={this._onSaveEvent}
-                        saveImageFileInExtStorage={false}
-                        showNativeButtons={false}
-                        showTitleLabel={false}
-                        viewMode={this.state.viewMode}
-                    />
-                <View style={{ flexDirection: "row" }}>
-                    <TouchableOpacity style={styles.button} onPress={() => this.saveSign()} >
-                        <Text>Save</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => this.resetSign()}>
-                        <Text>Reset</Text>
-                    </TouchableOpacity>
-                </View>
-                </View> }
+                        <ZoomImage
+                            item={item}
+                            closeModal={this.closeImageModalView}
+                            backgroundColor="white"
+                            style={{
+                                width: '100%',
+                                height: '100%'
+                            }}
+                        />
+                    </View>
+                ) : (
+                    <View style={{ flex: 1, flexDirection: 'column' }}>
+                        <SignatureCapture
+                            style={{
+                                flex: 1,
+                                borderColor: '#000033',
+                                borderWidth: 1,
+                            }}
+                            ref="sign"
+                            onSaveEvent={this._onSaveEvent}
+                            saveImageFileInExtStorage={false}
+                            showNativeButtons={false}
+                            showTitleLabel={false}
+                            viewMode={this.state.viewMode}
+                        />
+                        <View style={{ flexDirection: 'row' }}>
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={() => this.saveSign()}
+                            >
+                                <Text>Save</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={styles.button}
+                                onPress={() => this.resetSign()}
+                            >
+                                <Text>Reset</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                )}
             </View>
         );
     };
@@ -304,26 +323,42 @@ export default class ImageField extends Component {
                         }}
                     >
                         <View style={{ flexDirection: 'row', flex: 2 }}>
-                            <Item error={theme.changeTextInputColorOnError ? attributes.error : null} style={{paddingVertical:10}}>
-                                {attributes['required'] && <StarIcon required={attributes['required']} />}
-                                    <Text
-                                        style={{
-                                            flex: 1,
-                                            color: theme.inputColorPlaceholder,
-                                            paddingStart: 5,
-                                        }}
-                                    >
-                                        {attributes.label}
-                                    </Text>
-                                    <TouchableOpacity
-                                        style={{
-                                            flexDirection: 'row',
-                                            flex: 1,
-                                        }}
-                                        onPress={() => this.setState({ openImageModal: true,viewMode:'portrait'})}
-                                    >
-                                        {this.renderAddImageIcon()}
-                                    </TouchableOpacity>
+                            <Item
+                                error={
+                                    theme.changeTextInputColorOnError
+                                        ? attributes.error
+                                        : null
+                                }
+                                style={{ paddingVertical: 10 }}
+                            >
+                                {attributes['required'] && (
+                                    <StarIcon
+                                        required={attributes['required']}
+                                    />
+                                )}
+                                <Text
+                                    style={{
+                                        flex: 1,
+                                        color: theme.inputColorPlaceholder,
+                                        paddingStart: 5,
+                                    }}
+                                >
+                                    {attributes.label}
+                                </Text>
+                                <TouchableOpacity
+                                    style={{
+                                        flexDirection: 'row',
+                                        flex: 1,
+                                    }}
+                                    onPress={() =>
+                                        this.setState({
+                                            openImageModal: true,
+                                            viewMode: 'portrait',
+                                        })
+                                    }
+                                >
+                                    {this.renderAddImageIcon()}
+                                </TouchableOpacity>
                             </Item>
                         </View>
                     </ListItem>
@@ -336,7 +371,7 @@ export default class ImageField extends Component {
                         >
                             {this.renderPreview(attributes)}
                         </View>
-                     ) : null}
+                    ) : null}
 
                     {this.state.openImageModal && (
                         <Modal
