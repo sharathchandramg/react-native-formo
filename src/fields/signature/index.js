@@ -19,7 +19,7 @@ import ZoomImage from '../../components/zoomImage';
 import SignatureCapture from 'react-native-signature-capture';
 const moment = require('moment');
 
-export default class ImageField extends Component {
+export default class SignatureField extends Component {
     static propTypes = {
         attributes: PropTypes.object,
         theme: PropTypes.object,
