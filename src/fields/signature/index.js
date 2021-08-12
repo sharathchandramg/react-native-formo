@@ -31,6 +31,7 @@ export default class SignatureField extends Component {
         super(props);
         this.isLocal = false;
         this.isFirstTime = true;
+        this.myRef = React.createRef();
         this.state = {
             openImageModal: false,
             imgDetails: null,
@@ -128,12 +129,11 @@ export default class SignatureField extends Component {
     };
 
     saveSign = () => {
-        console.log('saveSignsaveSignsaveSignsaveSign');
-        this.refs['sign'].saveImage();
+        this.myRef.current.saveImage();
     };
 
     resetSign = () => {
-        this.refs['sign'].resetImage();
+        this.myRef.current.resetImage();
     };
 
 
@@ -283,7 +283,7 @@ export default class SignatureField extends Component {
                                 borderColor: '#000033',
                                 borderWidth: 1,
                             }}
-                            ref="sign"
+                            ref={this.myRef}
                             onSaveEvent={this._onSaveEvent}
                             saveImageFileInExtStorage={false}
                             showNativeButtons={false}
