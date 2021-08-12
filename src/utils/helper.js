@@ -33,7 +33,8 @@ export function getDefaultValue(field) {
     case "image":
     case "auto-incr-number":
       return field.defaultValue || "";
-
+    case "signature":
+      return [];
     case "currency":
       let curr_type = field.defaultCurrency
         ? field.defaultCurrency
@@ -162,6 +163,7 @@ export function getResetValue(field) {
     case "currency":
     case "location":
     case "image":
+    case "signature":
     case "auto-incr-number":
       return null;
 
@@ -247,6 +249,7 @@ export function autoValidate(field) {
       case "url":
       case "location":
       case "image":
+      case "signature":
       case "document":
       case "password":
         if (isEmpty(field.value)) {
