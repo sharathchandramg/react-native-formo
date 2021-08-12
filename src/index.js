@@ -10,6 +10,7 @@ import DateField from "./fields/date";
 import PickerField from "./fields/picker";
 import SelectField from "./fields/select";
 import ImageField from "./fields/image";
+import SignatureField from "./fields/signature";
 import LocationField from "./fields/location";
 import FormField from "./fields/form";
 import SubForm from "./fields/subForm";
@@ -550,6 +551,17 @@ export default class Form0 extends Component {
                 {...this.props}
               />
             );
+
+          case "signature":
+            return (
+              <SignatureField
+                ref={(c) => {
+                  this[field.name] = c;
+                }}
+                {...commonProps}
+                {...this.props}
+              />
+          );
 
           case 'document':
             return(

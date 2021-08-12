@@ -21,7 +21,7 @@ const ImageView = props => {
                     renderImage={props1 => {
                         return (
                             <FastImage
-                                style={props1.style}
+                                style={[props1.style, { backgroundColor: props.backgroundColor ? props.backgroundColor : 'inherit'}]}
                                 source={{
                                     uri: item['uri'],
                                     headers: item['headers'] || {},
