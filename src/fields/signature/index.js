@@ -149,6 +149,7 @@ export default class SignatureField extends Component {
         const { attributes, handleDocumentUpdateAndDownload } = this.props;
         this.setState({ signature: result, viewMode: 'portrait' }, () => {
             this.closeImageModalView();
+            this.isLocal = true;
         });
 
         if (typeof handleDocumentUpdateAndDownload === 'function') {
