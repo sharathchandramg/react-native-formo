@@ -140,6 +140,7 @@ export function getDefaultValue(field) {
       return null;
 
     case "simple-grid":
+    case "product-catalog-sale":
     case "customDataView": {
       if (typeof field.defaultValue === "object" && field.defaultValue) {
         return field.defaultValue;
@@ -206,6 +207,7 @@ export function getResetValue(field) {
       return null;
 
     case "simple-grid":
+    case "product-catalog-sale":
     case "customDataView": {
       if (typeof field.defaultValue === "object" && field.defaultValue) {
         return field.defaultValue;
@@ -338,6 +340,7 @@ export function autoValidate(field) {
 
       case "simple-grid":
       case "customDataView":
+      case "product-catalog-sale":
         if (
           typeof field.value !== "object" ||
           !field.value ||

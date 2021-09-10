@@ -50,6 +50,7 @@ const DefaultErrorComponent = (props) => {
           'lookup',
           'simple-grid',
           'customDataView',
+          'product-catalog-sale'
         ].includes(attributes['type'])
           ? 0
           : 5,
@@ -619,6 +620,7 @@ export default class Form0 extends Component {
             );
 
           case "customDataView":
+          case "product-catalog-sale":
             return (
               <CustomDataComponent
                 ref={(c) => {
