@@ -342,7 +342,13 @@ export default class UserDirectoryField extends Component {
                 }
             });
         }
-        return list.length ? list : null;
+        return list.length ? (
+          list
+        ) : (
+          <View style={styles.noDataWrapper}>
+            <Text style={styles.nodataText}>No records found</Text>
+          </View>
+        );
     };
 
     renderHeader = () => {
