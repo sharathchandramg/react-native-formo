@@ -41,7 +41,7 @@ export default class TextInputField extends Component {
 
   getInputValue = () => {
     const { attributes } = this.props;
-    let value = '';
+    let value = "";
     if (!isEmpty(attributes["value"])) {
       value = attributes["value"].toString();
     }
@@ -50,10 +50,19 @@ export default class TextInputField extends Component {
 
   renderInputField = (attributes, theme) => {
     const inputProps = attributes.props;
+    const additionalConfig = attributes["additional_config"];
     let keyboardType = getKeyboardType(attributes.type);
     let value = "";
+    let maxLength = 300;
     if (!isEmpty(attributes["value"])) {
       value = attributes["value"].toString();
+    }
+
+    if (
+      !isEmpty(additionalConfig) &&
+      !isEmpty(additionalConfig["max_length"])
+    ) {
+      maxLength = Number(additionalConfig["max_length"]);
     }
 
     return (
@@ -89,6 +98,7 @@ export default class TextInputField extends Component {
         onFocus={this.handleFocus}
         onBlur={this.handleBlur}
         multiline={true}
+        maxLength={maxLength}
         {...inputProps}
       />
     );
