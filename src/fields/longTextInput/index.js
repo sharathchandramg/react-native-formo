@@ -10,13 +10,13 @@ export default class TextInputField extends Component {
   static propTypes = {
     attributes: PropTypes.object,
     theme: PropTypes.object,
-    onSummitTextInput: PropTypes.func,
     ErrorComponent: PropTypes.func,
     updateValue: PropTypes.func,
   };
 
   state = {
     isFocused: false,
+    height: 0
   };
 
   componentWillMount() {
@@ -75,10 +75,9 @@ export default class TextInputField extends Component {
               lineHeight: 20,
             },
             android: {
-              minHeight: 50,
-              maxHeight: 110,
+              height: Math.min(100, Math.max(50, this.state.height)),
               lineHeight: 20,
-              // textAlignVertical: "top",
+              textAlignVertical: "top",
             },
           }),
         }}
@@ -99,6 +98,9 @@ export default class TextInputField extends Component {
         onBlur={this.handleBlur}
         multiline={true}
         maxLength={maxLength}
+        onContentSizeChange={(event) => 
+          this.setState({ height:event.nativeEvent.contentSize.height})
+        }
         {...inputProps}
       />
     );

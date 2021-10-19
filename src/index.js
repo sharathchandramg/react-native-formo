@@ -475,7 +475,6 @@ export default class Form0 extends Component {
                 }}
                 {...commonProps}
                 {...this.props}
-                onSummitTextInput={this.onSummitTextInput}
               />
             );
 
