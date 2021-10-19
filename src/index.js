@@ -5,6 +5,7 @@ import { View, Keyboard, Text, ScrollView } from "react-native";
 import baseTheme from "./theme";
 
 import TextInputField from "./fields/textInput";
+import LongTextInputField from "./fields/longTextInput";
 import SwitchField from "./fields/switch";
 import DateField from "./fields/date";
 import PickerField from "./fields/picker";
@@ -466,6 +467,18 @@ export default class Form0 extends Component {
               />
             );
 
+          case "long-text":
+            return (
+              <LongTextInputField
+                ref={(c) => {
+                  this[field.name] = c;
+                }}
+                {...commonProps}
+                {...this.props}
+                onSummitTextInput={this.onSummitTextInput}
+              />
+            );
+
           case "currency":
             return (
               <CurrencyField
@@ -562,18 +575,18 @@ export default class Form0 extends Component {
                 {...commonProps}
                 {...this.props}
               />
-          );
+            );
 
-          case 'document':
-            return(
-              <DocumentField 
+          case "document":
+            return (
+              <DocumentField
                 ref={(c) => {
                   this[field.name] = c;
                 }}
                 {...commonProps}
                 {...this.props}
               />
-            )
+            );
 
           case "location":
             return (
@@ -652,6 +665,7 @@ export default class Form0 extends Component {
                 {...this.props}
               />
             );
+            
           case "assignee":
             return (
               <AssigneeField
@@ -662,16 +676,17 @@ export default class Form0 extends Component {
                 {...this.props}
               />
             );
-            case "user_directory":
-              return (
-                <UserDirectoryField
-                  ref={(c) => {
-                    this[field.name] = c;
-                  }}
-                  {...commonProps}
-                  {...this.props}
-                />
-              );
+
+          case "user_directory":
+            return (
+              <UserDirectoryField
+                ref={(c) => {
+                  this[field.name] = c;
+                }}
+                {...commonProps}
+                {...this.props}
+              />
+            );
 
           default:
             break;
