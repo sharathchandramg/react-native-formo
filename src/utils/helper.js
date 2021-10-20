@@ -256,10 +256,25 @@ export function autoValidate(field) {
       case "signature":
       case "document":
       case "password":
-        case "long-text":
         if (isEmpty(field.value)) {
           error = true;
           errorMsg = `${field.label} is required`;
+        }
+        break;
+
+      case "long-text":
+        const additionalConfig = field["additional_config"];
+        if (isEmpty(field.value)) {
+          error = true;
+          errorMsg = `${field.label} is required`;
+        } else if (
+          !isEmpty(additionalConfig) &&
+          !isEmpty(additionalConfig["max_length"])
+        ) {
+          if (field.value.length > Number(additionalConfig["max_length"])) {
+            error = true;
+            errorMsg = `Maximum characters allowed is ${additionalConfig["max_length"]}`;
+          }
         }
         break;
 
@@ -310,8 +325,10 @@ export function autoValidate(field) {
       case "status_picker":
         if (
           (field["value"] && field["value"] === "-Select-") ||
-          isEmpty(field["value"]) || 
-          (field['options'].length>0 && !isEmpty(field["value"]) && !field['options'].includes(field["value"]))
+          isEmpty(field["value"]) ||
+          (field["options"].length > 0 &&
+            !isEmpty(field["value"]) &&
+            !field["options"].includes(field["value"]))
         ) {
           error = true;
           errorMsg = `${field.label} is required`;
