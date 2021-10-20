@@ -32,7 +32,7 @@ export function getDefaultValue(field) {
     case "location":
     case "image":
     case "auto-incr-number":
-    case "long-text":
+    case "longtext":
       return field.defaultValue || "";
     case "signature":
       return [];
@@ -167,7 +167,7 @@ export function getResetValue(field) {
     case "image":
     case "signature":
     case "auto-incr-number":
-      case "long-text":
+      case "longtext":
       return null;
 
     case "picker":
@@ -262,7 +262,7 @@ export function autoValidate(field) {
         }
         break;
 
-      case "long-text":
+      case "longtext":
         const additionalConfig = field["additional_config"];
         if (isEmpty(field.value)) {
           error = true;

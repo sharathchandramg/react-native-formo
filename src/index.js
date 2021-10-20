@@ -467,7 +467,7 @@ export default class Form0 extends Component {
               />
             );
 
-          case "long-text":
+          case "longtext":
             return (
               <LongTextInputField
                 ref={(c) => {
