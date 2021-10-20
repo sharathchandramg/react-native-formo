@@ -118,7 +118,7 @@ export default class TextInputField extends Component {
       paddingStart: 5,
       top: this._animatedIsFocused.interpolate({
         inputRange: [0, 1],
-        outputRange: [25, Platform.OS === "ios" ? -15 : -15],
+        outputRange: [25, -15],
       }),
       color: theme.inputColorPlaceholder,
     };
