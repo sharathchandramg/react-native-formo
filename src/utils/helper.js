@@ -271,7 +271,7 @@ export function autoValidate(field) {
           !isEmpty(additionalConfig) &&
           !isEmpty(additionalConfig["max_length"])
         ) {
-          if (field.value.length > Number(additionalConfig["max_length"])) {
+          if (field.value.trim().length > Number(additionalConfig["max_length"])) {
             error = true;
             errorMsg = `Maximum characters allowed is ${additionalConfig["max_length"]}`;
           }
