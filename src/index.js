@@ -347,7 +347,7 @@ export default class Form0 extends Component {
         : [];
       return updateValue;
     } else if (field.type === "longtext") {
-      return field.value.trim();
+      return !isEmpty(field.value) ? field.value.trim() : field.value;
     } else return field.value;
   };
 
