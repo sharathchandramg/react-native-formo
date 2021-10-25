@@ -32,6 +32,7 @@ export function getDefaultValue(field) {
     case "location":
     case "image":
     case "auto-incr-number":
+    case "longtext":
       return field.defaultValue || "";
     case "signature":
       return [];
@@ -166,6 +167,7 @@ export function getResetValue(field) {
     case "image":
     case "signature":
     case "auto-incr-number":
+      case "longtext":
       return null;
 
     case "picker":
@@ -260,6 +262,22 @@ export function autoValidate(field) {
         }
         break;
 
+      case "longtext":
+        const additionalConfig = field["additional_config"];
+        if (isEmpty(field.value)) {
+          error = true;
+          errorMsg = `${field.label} is required`;
+        } else if (
+          !isEmpty(additionalConfig) &&
+          !isEmpty(additionalConfig["max_length"])
+        ) {
+          if (field.value.trim().length > Number(additionalConfig["max_length"])) {
+            error = true;
+            errorMsg = `Maximum characters allowed is ${additionalConfig["max_length"]}`;
+          }
+        }
+        break;
+
       case "currency":
         if (isEmpty(field.value.curr_value)) {
           error = true;
@@ -307,8 +325,10 @@ export function autoValidate(field) {
       case "status_picker":
         if (
           (field["value"] && field["value"] === "-Select-") ||
-          isEmpty(field["value"]) || 
-          (field['options'].length>0 && !isEmpty(field["value"]) && !field['options'].includes(field["value"]))
+          isEmpty(field["value"]) ||
+          (field["options"].length > 0 &&
+            !isEmpty(field["value"]) &&
+            !field["options"].includes(field["value"]))
         ) {
           error = true;
           errorMsg = `${field.label} is required`;

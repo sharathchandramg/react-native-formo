@@ -5,6 +5,7 @@ import { View, Keyboard, Text, ScrollView } from "react-native";
 import baseTheme from "./theme";
 
 import TextInputField from "./fields/textInput";
+import LongTextInputField from "./fields/longTextInput";
 import SwitchField from "./fields/switch";
 import DateField from "./fields/date";
 import PickerField from "./fields/picker";
@@ -144,7 +145,7 @@ export default class Form0 extends Component {
           field.error = validate.error;
           field.errorMsg = validate.errorMsg;
         }
-        if(field.type === 'number'){
+        if (field.type === "number") {
           let validate = customValidateData(field);
           field.error = validate.error;
           field.errorMsg = validate.errorMsg;
@@ -204,16 +205,21 @@ export default class Form0 extends Component {
     return lookupSubscriberFields;
   };
 
-  getLocationFieldState=()=>{
-    const locationFields = []
+  getLocationFieldState = () => {
+    const locationFields = [];
     const keys = Object.keys(this.state);
-    keys.map(item=>{
-      if(item && this.state[item] && this.state[item]['type'] && this.state[item]['type'] === 'location'){
+    keys.map((item) => {
+      if (
+        item &&
+        this.state[item] &&
+        this.state[item]["type"] &&
+        this.state[item]["type"] === "location"
+      ) {
         locationFields.push(this.state[item]);
       }
-    })
+    });
     return locationFields;
-  }
+  };
 
   handleOnValueChange = (valueObj, value) => {
     valueObj.value = value;
@@ -240,12 +246,16 @@ export default class Form0 extends Component {
     const newField = {};
     newField[valueObj.name] = valueObj;
 
-    if(valueObj && valueObj['expr_field'] && valueObj['expr_field'].length > 0){
-      const res = customFieldCalculations(valueObj,value, this.state);
-      if(res && res.length>0){
-        res.forEach(item=>{
+    if (
+      valueObj &&
+      valueObj["expr_field"] &&
+      valueObj["expr_field"].length > 0
+    ) {
+      const res = customFieldCalculations(valueObj, value, this.state);
+      if (res && res.length > 0) {
+        res.forEach((item) => {
           newField[item.name] = item;
-        })
+        });
       }
     }
 
@@ -306,32 +316,40 @@ export default class Form0 extends Component {
   }
 
   getFieldReturnValue = (field) => {
-    if(field.type &&(field.type.match(/number/i) || field.type.match(/auto-incr-number/i)))
-      return parseFloat(field.value)
-    else if(field.type && field.type === "picker" && field.value === "-Select-")
-      return ""
-    else if(field.type && field.type === "document"){
+    if (
+      field.type &&
+      (field.type.match(/number/i) || field.type.match(/auto-incr-number/i))
+    )
+      return parseFloat(field.value);
+    else if (
+      field.type &&
+      field.type === "picker" &&
+      field.value === "-Select-"
+    )
+      return "";
+    else if (field.type && field.type === "document") {
       const updateValue = !isEmpty(field.value)
-      ? field.value.map(item => {
+        ? field.value.map((item) => {
             return {
-                name: item['name'],
-                file_path: item['filePath']
-                    ? item['filePath']
-                    : item['file_path']
-                    ? item['file_path']
-                    : '',
-                content_type: item['type']
-                    ? item['type']
-                    : item['content_type']
-                    ? item['content_type']
-                    : '',
+              name: item["name"],
+              file_path: item["filePath"]
+                ? item["filePath"]
+                : item["file_path"]
+                ? item["file_path"]
+                : "",
+              content_type: item["type"]
+                ? item["type"]
+                : item["content_type"]
+                ? item["content_type"]
+                : "",
             };
-        })
-      : [];
+          })
+        : [];
       return updateValue;
-    }else 
-      return field.value
-  }
+    } else if (field.type === "longtext") {
+      return !isEmpty(field.value) ? field.value.trim() : field.value;
+    } else return field.value;
+  };
 
   getValues() {
     this.onValidateFields();
@@ -414,9 +432,9 @@ export default class Form0 extends Component {
          * image is greyed out, to avoid we are using deep clone object
          */
         const field =
-        this.state &&
-        this.state[fieldName] &&
-        this.state[fieldName].type === 'image'
+          this.state &&
+          this.state[fieldName] &&
+          this.state[fieldName].type === "image"
             ? _.cloneDeep(this.state[fieldName])
             : this.state[fieldName];
         if (field) {
@@ -438,7 +456,10 @@ export default class Form0 extends Component {
         const commonProps = {
           key: index,
           theme,
-          attributes: field.type === "image" ? _.cloneDeep(this.state[field.name]) : this.state[field.name],
+          attributes:
+            field.type === "image"
+              ? _.cloneDeep(this.state[field.name])
+              : this.state[field.name],
           updateValue: this.onValueChange,
           onAddNewFields: this.onAddNewFields,
           getValue: this.getValue,
@@ -462,6 +483,17 @@ export default class Form0 extends Component {
                 }}
                 {...commonProps}
                 onSummitTextInput={this.onSummitTextInput}
+                {...this.props}
+              />
+            );
+
+          case "longtext":
+            return (
+              <LongTextInputField
+                ref={(c) => {
+                  this[field.name] = c;
+                }}
+                {...commonProps}
                 {...this.props}
               />
             );
@@ -562,18 +594,18 @@ export default class Form0 extends Component {
                 {...commonProps}
                 {...this.props}
               />
-          );
+            );
 
-          case 'document':
-            return(
-              <DocumentField 
+          case "document":
+            return (
+              <DocumentField
                 ref={(c) => {
                   this[field.name] = c;
                 }}
                 {...commonProps}
                 {...this.props}
               />
-            )
+            );
 
           case "location":
             return (
@@ -652,6 +684,7 @@ export default class Form0 extends Component {
                 {...this.props}
               />
             );
+
           case "assignee":
             return (
               <AssigneeField
@@ -662,16 +695,17 @@ export default class Form0 extends Component {
                 {...this.props}
               />
             );
-            case "user_directory":
-              return (
-                <UserDirectoryField
-                  ref={(c) => {
-                    this[field.name] = c;
-                  }}
-                  {...commonProps}
-                  {...this.props}
-                />
-              );
+
+          case "user_directory":
+            return (
+              <UserDirectoryField
+                ref={(c) => {
+                  this[field.name] = c;
+                }}
+                {...commonProps}
+                {...this.props}
+              />
+            );
 
           default:
             break;
@@ -684,8 +718,7 @@ export default class Form0 extends Component {
 
   render() {
     return (
-      <ScrollView keyboardShouldPersistTaps={'handled'}>
-        
+      <ScrollView keyboardShouldPersistTaps={"handled"}>
         <View>{this.generateFields()}</View>
       </ScrollView>
     );
