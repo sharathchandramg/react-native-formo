@@ -45,7 +45,7 @@ export default class BarcodeField extends Component {
           </Text>
         )}
         <Icon
-          name="image"
+          name="qrcode"
           size={24}
           type={"regular"}
           color={"#828282"}
