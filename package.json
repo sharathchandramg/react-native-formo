@@ -50,6 +50,7 @@
     "shortid": ">=2.2.15",
     "filtrex": ">=2.1.0",
     "react-native-document-picker": ">=5.2.0",
-    "react-native-signature-capture": ">=0.4.12"
+    "react-native-signature-capture": ">=0.4.12",
+    "react-native-camera": ">=4.2.1"
   }
 }

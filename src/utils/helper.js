@@ -33,6 +33,7 @@ export function getDefaultValue(field) {
     case "image":
     case "auto-incr-number":
     case "longtext":
+    case "barcode":
       return field.defaultValue || "";
     case "signature":
       return [];
@@ -167,7 +168,8 @@ export function getResetValue(field) {
     case "image":
     case "signature":
     case "auto-incr-number":
-      case "longtext":
+    case "longtext":
+    case "barcode":
       return null;
 
     case "picker":
@@ -256,6 +258,7 @@ export function autoValidate(field) {
       case "signature":
       case "document":
       case "password":
+      case "barcode":
         if (isEmpty(field.value)) {
           error = true;
           errorMsg = `${field.label} is required`;
