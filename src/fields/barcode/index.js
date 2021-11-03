@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { TouchableOpacity, Alert, Modal } from "react-native";
+import { TouchableOpacity, Animated, Modal, Platform } from "react-native";
 import { View, ListItem, Text, Item } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { RNCamera } from "react-native-camera";
@@ -22,26 +22,49 @@ export default class BarcodeField extends Component {
     super(props);
     this.state = {
       openModal: false,
+      isFocused: false,
     };
   }
 
+  componentWillMount() {
+    this._animatedIsFocused = new Animated.Value(
+      isEmpty(this.getInputValue()) ? 0 : 1
+    );
+  }
+
+  componentDidUpdate() {
+    Animated.timing(this._animatedIsFocused, {
+      toValue: this.state.isFocused || !isEmpty(this.getInputValue()) ? 1 : 0,
+      duration: 200,
+    }).start();
+  }
+
+  getInputValue = () => {
+    const { attributes } = this.props;
+    let value = "";
+    if (!isEmpty(attributes["value"])) {
+      value = attributes["value"].toString();
+    }
+    return value;
+  };
+
   renderAddImageIcon = () => {
-    const { attributes, theme } = this.props;
+    const { theme } = this.props;
     return (
       <TouchableOpacity
         style={styles.valueContainer}
         onPress={() => this.setState({ openModal: true })}
       >
-        {!isEmpty(attributes) && !isEmpty(attributes.value) && (
+        {!isEmpty(this.getInputValue()) && (
           <Text
             style={{
               color: theme.inputColorPlaceholder,
               paddingEnd: 15,
+              paddingStart: 25,
             }}
-            adjustsFontSizeToFit
             numberOfLines={1}
           >
-            {attributes.value}
+            {this.getInputValue()}
           </Text>
         )}
         <Icon
@@ -57,7 +80,10 @@ export default class BarcodeField extends Component {
 
   onBarCodeRead = (code) => {
     this.props.updateValue(this.props.attributes.name, code.data);
-    this.setState({ openModal: false });
+    this.setState({
+      openModal: false,
+      isFocused: !isEmpty(code.data) ? true : false,
+    });
   };
 
   renderModalContent = () => {
@@ -71,6 +97,24 @@ export default class BarcodeField extends Component {
         />
       </View>
     );
+  };
+
+  getLabelStyles = () => {
+    const { theme } = this.props;
+    return {
+      position: "absolute",
+      left: 0,
+      fontSize: this._animatedIsFocused.interpolate({
+        inputRange: [0, 1],
+        outputRange: [18, 16],
+      }),
+      paddingStart: 5,
+      top: this._animatedIsFocused.interpolate({
+        inputRange: [0, 1],
+        outputRange: [10, Platform.OS === "ios" ? -5 : -10],
+      }),
+      color: theme.inputColorPlaceholder,
+    };
   };
 
   render() {
@@ -93,18 +137,12 @@ export default class BarcodeField extends Component {
                 }
                 style={{ paddingVertical: 10 }}
               >
-                {attributes["required"] && (
-                  <StarIcon required={attributes["required"]} />
-                )}
-                <Text
-                  style={{
-                    flex: 1,
-                    color: theme.inputColorPlaceholder,
-                    paddingStart: 5,
-                  }}
-                >
+                <Animated.Text style={this.getLabelStyles()}>
+                  {attributes["required"] && (
+                    <StarIcon required={attributes["required"]} />
+                  )}{" "}
                   {attributes.label}
-                </Text>
+                </Animated.Text>
                 <TouchableOpacity
                   style={{
                     flexDirection: "row",
