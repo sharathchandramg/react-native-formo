@@ -52,15 +52,21 @@ export default class BarcodeField extends Component {
     const { theme } = this.props;
     return (
       <TouchableOpacity
-        style={styles.valueContainer}
+        style={[
+          styles.valueContainer,
+          {
+            justifyContent: !isEmpty(this.getInputValue())
+              ? "space-between"
+              : "flex-end",
+          },
+        ]}
         onPress={() => this.setState({ openModal: true })}
       >
         {!isEmpty(this.getInputValue()) && (
           <Text
             style={{
               color: theme.inputColorPlaceholder,
-              paddingEnd: 15,
-              paddingStart: 25,
+              width: "90%",
             }}
             numberOfLines={1}
           >
