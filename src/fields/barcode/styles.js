@@ -3,7 +3,6 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
     valueContainer: {
         alignItems: 'center',
-        justifyContent: 'flex-end',
         flexDirection:'row',
         flex: 1,
     },
