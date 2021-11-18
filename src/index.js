@@ -407,12 +407,12 @@ export default class Form0 extends Component {
     } else {
       field.value = value;
       //Validate and check for errors
-      if (
-        this.props.autoValidation === undefined ||
-        this.props.autoValidation
-      ) {
-        Object.assign(field, autoValidate(field));
-      }
+      // if (
+      //   this.props.autoValidation === undefined ||
+      //   this.props.autoValidation
+      // ) {
+      //   Object.assign(field, autoValidate(field));
+      // }
       // Validate through customValidation if it is present in props
       if (
         this.props.customValidation &&
