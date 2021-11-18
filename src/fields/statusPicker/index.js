@@ -10,7 +10,6 @@ import {
 import styles from './../../styles';
 import { View, Text } from 'native-base';
 import StarIcon from "../../components/starIcon";
-import { isEmpty } from "./../../utils/validators";
 
 const Item = Picker.Item;
 
@@ -192,23 +191,10 @@ export default class StatusPickerField extends Component {
         );
     };
 
-    // Verify is default value present in the options
-    // if present, send the default value or '-Select-'
-    getDefaultValue = (attributes) => {
-        if (
-          !isEmpty(attributes.options) &&
-          !isEmpty(attributes.defaultValue) &&
-          attributes.options.includes(attributes.defaultValue)
-        ) {
-          return attributes.defaultValue;
-        }
-        return '-Select-';
-      };
-
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
         const value = attributes['value']|| '';
-        const defaultValue = this.getDefaultValue(attributes);
+        const defaultValue = attributes['defaultValue'] || "-Select-" ;
 
         const isValueValid = attributes.options.indexOf(attributes.value) > -1;
         const pickerValue =  this.state.value !== null ? this.state.value : value || defaultValue;
