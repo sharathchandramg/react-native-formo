@@ -49,6 +49,10 @@ export default class LookupField extends Component {
         this.setInitialData();
     }
 
+    /**
+     * On barcode search, if we get only one option
+     * automatically select option and close lookup modal
+     */
     componentDidUpdate(){
         if (this.props.closeModal) {
           this.setState({ modalVisible: false });
@@ -499,48 +503,53 @@ export default class LookupField extends Component {
     };
 
     onBarCodeRead = code => {
-        const searchText = code.data;
-
-        this.setLookupFilter(searchText);
-        const { onSearchQuery, attributes } = this.props;
-        const data_source = attributes['data_source'];
-        if (!isEmpty(data_source) && data_source['type'] === 'remote') {
-            if (typeof onSearchQuery === 'function') {
-                onSearchQuery(attributes, searchText, 0, true);
+        const searchText = code && code.data ? code.data : null;
+        if (!isEmpty(searchText)) {
+          this.setLookupFilter(searchText);
+          const { onSearchQuery, attributes } = this.props;
+          const data_source = attributes["data_source"];
+          if (!isEmpty(data_source) && data_source["type"] === "remote") {
+            if (typeof onSearchQuery === "function") {
+              onSearchQuery(attributes, searchText, 0, true);
             }
-        } else {
+          } else {
             let options = [];
             if (searchText) {
-                options = _.filter(this.state.options, item => {
-                    let sItem =
-                        item[attributes.labelKey]
-                            .toString()
-                            .toLowerCase()
-                            .search(searchText.trim().toLowerCase()) > -1;
-                    if (sItem) {
-                        return item;
-                    }
-                });
+              options = _.filter(this.state.options, (item) => {
+                let sItem =
+                  item[attributes.labelKey]
+                    .toString()
+                    .toLowerCase()
+                    .search(searchText.trim().toLowerCase()) > -1;
+                if (sItem) {
+                  return item;
+                }
+              });
             } else {
-                options = this.state.options;
+              options = this.state.options;
             }
-            attributes['options'] = options;
-        }
+            attributes["options"] = options;
+          }
 
-        if (searchText) {
+          if (searchText) {
             let obj = {
-                category: attributes['labelKey'],
-                categoryLabel: 'Search',
-                value: searchText,
+              category: attributes["labelKey"],
+              categoryLabel: "Search",
+              value: searchText,
             };
             let categoryToValue = [];
             categoryToValue.push(obj);
 
             this.setState({
-                barcodeModalVisible:false,
-                barcodeSearchText: searchText,
-                categoryToValue: categoryToValue,
+              barcodeModalVisible: false,
+              barcodeSearchText: searchText,
+              categoryToValue: categoryToValue,
             });
+          }
+        } else {
+          this.setState({
+            barcodeModalVisible: false,
+          });
         }
     };
 
@@ -679,7 +688,12 @@ export default class LookupField extends Component {
                 ? attributes['options'].length
                 : 0;
             if (filter !== null && typeof onSearchQuery === 'function') {
-                onSearchQuery(attributes, filter, offset, !isEmpty(barcodeSearchText) ? true : false);
+                onSearchQuery(
+                  attributes,
+                  filter,
+                  offset,
+                  !isEmpty(barcodeSearchText) ? true : false
+                );
             } else {
                 this.handleOnGetQuery(offset);
             }
