@@ -20,7 +20,8 @@ export default class LookupField extends Component {
         ErrorComponent: PropTypes.func,
         onGetQuery: PropTypes.func,
         onSearchQuery: PropTypes.func,
-        onAddLookup: PropTypes.func
+        onAddLookup: PropTypes.func,
+        closeLookupModal: PropTypes.func
     };
 
     constructor(props) {
@@ -46,6 +47,13 @@ export default class LookupField extends Component {
 
     componentDidMount() {
         this.setInitialData();
+    }
+
+    componentDidUpdate(){
+        if (this.props.closeModal) {
+          this.setState({ modalVisible: false });
+          this.props.closeLookupModal();
+        }
     }
 
     componentWillUnmount() {
