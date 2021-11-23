@@ -633,6 +633,7 @@ export default class LookupField extends Component {
         const { attributes, pullToRefresh } = this.props;
         const searchText = this.state.searchText;
         const categoryToValue = this.state.categoryToValue;
+        const barcodeSearchText = this.state.barcodeSearchText;
         // based on parameter call filter, search and get
         if (
             !isEmpty(attributes) &&
