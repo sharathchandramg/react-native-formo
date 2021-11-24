@@ -508,10 +508,18 @@ export default class LookupField extends Component {
           this.setLookupFilter(searchText);
           this.setLookupSearchReq();
           const { onSearchQuery, attributes } = this.props;
+          const categoryToValue = [
+            {
+              category: attributes["barcodeKey"],
+              categoryLabel: "Search",
+              value: [searchText],
+              type: "text",
+            },
+          ];
           const data_source = attributes["data_source"];
           if (!isEmpty(data_source) && data_source["type"] === "remote") {
             if (typeof onSearchQuery === "function") {
-              onSearchQuery(attributes, searchText, 0, true);
+              onSearchQuery(attributes, categoryToValue, 0, true);
             }
           } else {
             let options = [];
@@ -531,22 +539,11 @@ export default class LookupField extends Component {
             }
             attributes["options"] = options;
           }
-
-          if (searchText) {
-            let obj = {
-              category: attributes["labelKey"],
-              categoryLabel: "Search",
-              value: searchText,
-            };
-            let categoryToValue = [];
-            categoryToValue.push(obj);
-
             this.setState({
               barcodeModalVisible: false,
               barcodeSearchText: searchText,
-              categoryToValue: categoryToValue,
+              categoryToValue,
             });
-          }
         } else {
           this.setState({
             barcodeModalVisible: false,
@@ -634,16 +631,13 @@ export default class LookupField extends Component {
         const { attributes, pullToRefresh } = this.props;
         const searchText = this.state.searchText;
         const categoryToValue = this.state.categoryToValue;
-        const barcodeSearchText = this.state.barcodeSearchText;
         // based on parameter call filter, search and get
         if (
             !isEmpty(attributes) &&
             !isEmpty(attributes['data_source']) &&
             attributes['data_source']['type'] === 'remote'
         ) {
-                const filter = !isEmpty(barcodeSearchText)
-                ? barcodeSearchText
-                : searchText
+                const filter = searchText
                 ? searchText
                 : categoryToValue.length > 0
                 ? categoryToValue
@@ -657,7 +651,7 @@ export default class LookupField extends Component {
                       attributes,
                       filter,
                       offset,
-                      (action = !isEmpty(barcodeSearchText)
+                      (action = !isEmpty(this.state.barcodeSearchText)
                         ? "barcode"
                         : "search/filter")
                     );
@@ -672,16 +666,13 @@ export default class LookupField extends Component {
         const { attributes, onSearchQuery } = this.props;
         const searchText = this.state.searchText;
         const categoryToValue = this.state.categoryToValue;
-        const barcodeSearchText = this.state.barcodeSearchText;
         // based on parameter call filter, search and get
         if (
             !isEmpty(attributes) &&
             !isEmpty(attributes['data_source']) &&
             attributes['data_source']['type'] === 'remote'
         ) {
-            const filter = !isEmpty(barcodeSearchText)
-              ? barcodeSearchText
-              : searchText
+            const filter = searchText
               ? searchText
               : categoryToValue.length > 0
               ? categoryToValue
@@ -694,7 +685,7 @@ export default class LookupField extends Component {
                   attributes,
                   filter,
                   offset,
-                  !isEmpty(barcodeSearchText) ? true : false
+                  !isEmpty(this.state.barcodeSearchText) ? true : false
                 );
             } else {
                 this.handleOnGetQuery(offset);
