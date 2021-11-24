@@ -506,6 +506,7 @@ export default class LookupField extends Component {
         const searchText = code && code.data ? code.data : null;
         if (!isEmpty(searchText)) {
           this.setLookupFilter(searchText);
+          this.setLookupSearchReq();
           const { onSearchQuery, attributes } = this.props;
           const data_source = attributes["data_source"];
           if (!isEmpty(data_source) && data_source["type"] === "remote") {
@@ -969,7 +970,11 @@ export default class LookupField extends Component {
                     }
                     pullToRefreshEnable={this.isPullToRefreshEnable(attributes)}
                     lookupSearchReq={lookupSearchReq}
-                    searchText1={this.state.searchText}
+                    searchText1={
+                      !isEmpty(this.state.barcodeSearchText)
+                        ? this.state.barcodeSearchText
+                        : this.state.searchText
+                    }
                   />
                 )}
                 {!isEmpty(attributes) &&
