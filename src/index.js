@@ -86,6 +86,7 @@ export default class Form0 extends Component {
     this.state = {
       ...initialState,
       errorStatus: false,
+      closeModal: false,
     };
 
     this.getValues = this.getValues.bind(this);
@@ -446,6 +447,15 @@ export default class Form0 extends Component {
     }
   }
 
+  /**
+   * Close lookup modal
+   * on barcode search, if only one options is there then 
+   * automatically select that option and close the lookup modal
+   */
+  closeLookupModal = () => {
+    this.setState({ closeModal: !this.state.closeModal });
+  };
+
   generateFields() {
     const theme = Object.assign(baseTheme, this.props.theme);
     const { customComponents, errorComponent } = this.props;
@@ -499,16 +509,16 @@ export default class Form0 extends Component {
               />
             );
 
-            case "barcode":
-              return (
-                <BarcodeField
-                  ref={(c) => {
-                    this[field.name] = c;
-                  }}
-                  {...commonProps}
-                  {...this.props}
-                />
-              );
+          case "barcode":
+            return (
+              <BarcodeField
+                ref={(c) => {
+                  this[field.name] = c;
+                }}
+                {...commonProps}
+                {...this.props}
+              />
+            );
 
           case "currency":
             return (
@@ -658,6 +668,8 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                closeModal={this.state.closeModal}
+                closeLookupModal={this.closeLookupModal}
                 {...commonProps}
                 {...this.props}
               />

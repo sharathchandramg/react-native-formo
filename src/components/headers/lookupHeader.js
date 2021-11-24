@@ -6,8 +6,10 @@ const LookupHeader = props => {
         label,
         filterEnable,
         searchEnable,
+        barcodeEnable,
         toggleFilterModalVisible,
         toggleSearchModalVisible,
+        toggleBarcodeModalVisible,
         toggleModalVisible,
         theme,
         handlePullToRefresh,
@@ -54,6 +56,18 @@ const LookupHeader = props => {
                     >
                         <Icon
                             name="filter"
+                            style={[theme.headerLeftIcon, { fontSize: 18 }]}
+                            type="FontAwesome"
+                        />
+                    </Button>
+                ) : null}
+                {barcodeEnable ? (
+                    <Button
+                        transparent
+                        onPress={() => toggleBarcodeModalVisible()}
+                    >
+                        <Icon
+                            name="qrcode"
                             style={[theme.headerLeftIcon, { fontSize: 18 }]}
                             type="FontAwesome"
                         />

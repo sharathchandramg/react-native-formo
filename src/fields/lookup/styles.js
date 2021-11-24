@@ -157,6 +157,15 @@ const styles = StyleSheet.create({
         borderWidth:1,
         borderColor: 'grey',
     },
+    modalContainer: {
+        flex: 1,
+        flexDirection: 'row',
+    },
+    modalPreview: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+    },
 })
 
 export default styles;
