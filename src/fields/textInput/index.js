@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Platform, Animated } from "react-native";
-import math from "mathjs"
-import { View, Item, Input, Icon, ListItem } from "native-base";
+import { Platform, Animated, View } from "react-native";
+import math from "mathjs";
+import { Item, Input, Icon, ListItem } from "native-base";
 import { getKeyboardType } from "./../../utils/helper";
 import { isEmpty } from "./../../utils/validators";
 import StarIcon from "../../components/starIcon";

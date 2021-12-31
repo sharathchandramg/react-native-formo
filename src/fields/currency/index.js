@@ -1,9 +1,13 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Platform,Modal,Picker,TouchableOpacity,TouchableHighlight } from "react-native";
-import { View, Item, Input, ListItem, Text } from "native-base";
+import { Platform,Modal,TouchableOpacity,TouchableHighlight } from "react-native";
+import { View, Input, ListItem, Text } from "native-base";
+import { Picker } from '@react-native-picker/picker';
+
 import { getKeyboardType } from "./../../utils/helper";
 import StarIcon from "../../components/starIcon";
+
+const Item = Picker.Item;
 
 export default class CurrencyField extends Component {
 

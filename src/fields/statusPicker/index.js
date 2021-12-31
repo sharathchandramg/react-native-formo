@@ -2,13 +2,14 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import {
     Platform,
-    Picker,
     TouchableOpacity,
     TouchableHighlight,
     Modal,
 } from 'react-native';
-import styles from './../../styles';
 import { View, Text } from 'native-base';
+import { Picker } from '@react-native-picker/picker';
+
+import styles from './../../styles';
 import StarIcon from "../../components/starIcon";
 
 const Item = Picker.Item;
