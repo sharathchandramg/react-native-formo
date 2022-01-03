@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Platform, Animated } from "react-native";
-import { View, Item, Input, Icon, ListItem } from "native-base";
+import { View, Input, Icon } from "native-base";
 import { getKeyboardType } from "./../../utils/helper";
 import { isEmpty } from "./../../utils/validators";
 import StarIcon from "../../components/starIcon";
@@ -68,6 +68,11 @@ export default class TextInputField extends Component {
     return (
       <Input
         style={{
+          borderTopWidth: 0,
+          borderRightWidth: 0,
+          borderLeftWidth: 0,
+          borderBottomColor: theme.inputColorPlaceholder,
+          fontSize: 18,
           ...Platform.select({
             ios: {
               minHeight: 50,
@@ -98,8 +103,8 @@ export default class TextInputField extends Component {
         onBlur={this.handleBlur}
         multiline={true}
         maxLength={maxLength}
-        onContentSizeChange={(event) => 
-          this.setState({ height:event.nativeEvent.contentSize.height})
+        onContentSizeChange={(event) =>
+          this.setState({ height: event.nativeEvent.contentSize.height })
         }
         {...inputProps}
       />
@@ -128,16 +133,11 @@ export default class TextInputField extends Component {
     const { theme, attributes, ErrorComponent } = this.props;
     return (
       <View>
-        <ListItem
-          style={{ borderBottomWidth: 0, paddingBottom: 5, paddingVertical: 5 }}
+        <View
+          style={{ borderBottomWidth: 0, paddingBottom: 5, paddingTop: 15, paddingHorizontal: 15, }}
         >
           <View style={{ flex: 1 }}>
             <View>
-              <Item
-                error={
-                  theme.changeTextInputColorOnError ? attributes.error : null
-                }
-              >
                 <Animated.Text style={this.getLabelStyles()}>
                   {attributes["required"] && (
                     <StarIcon required={attributes["required"]} />
@@ -145,13 +145,12 @@ export default class TextInputField extends Component {
                   {attributes.label}
                 </Animated.Text>
                 {this.renderInputField(attributes, theme)}
-                {theme.textInputErrorIcon && attributes.error ? (
+                {/* {theme.textInputErrorIcon && attributes.error ? (
                   <Icon name={theme.textInputErrorIcon} />
-                ) : null}
-              </Item>
+                ) : null} */}
             </View>
           </View>
-        </ListItem>
+        </View>
         <View style={{ paddingHorizontal: 15 }}>
           <ErrorComponent {...{ attributes, theme }} />
         </View>
