@@ -1,59 +1,51 @@
-import React from 'react';
-import {
-    Header,
-    Left,
-    Right,
-    Icon,
-    Body,
-    Button,
-    Input,
-    Item,
-} from 'native-base';
+import React from "react";
+import { Input, View, ArrowBackIcon, SearchIcon } from "native-base";
+import { TouchableOpacity } from "react-native";
 
-const SearchHeader = props => {
-    const {
-        toggleSearchModalVisible,
-        handleOnSearchQuery,
-        handleTextChange,
-        theme,
-        searchText,
-    } = props;
-    return (
-        <Header style={[theme.header]} androidStatusBarColor="#c8c8c8">
-            <Left>
-                <Button transparent onPress={() => toggleSearchModalVisible()}>
-                    <Icon name="arrow-back" style={theme.headerLeftIcon} />
-                </Button>
-            </Left>
-            <Body>
-                <Item style={{ height: 30, width: '100%' }}>
-                    <Input
-                        keyboardType={'default'}
-                        underlineColorAndroid="transparent"
-                        numberOfLines={2}
-                        placeholder={'Search'}
-                        autoFocus={true}
-                        value={searchText}
-                        onChangeText={text => handleTextChange(text)}
-                        returnKeyType={'search'}
-                        onSubmitEditing={() => handleOnSearchQuery(searchText,false)}
-                    />
-                </Item>
-            </Body>
-            <Right>
-                <Button
-                    transparent
-                    onPress={() => handleOnSearchQuery(searchText,false)}
-                >
-                    <Icon
-                        name="search"
-                        style={[theme.headerLeftIcon, { fontSize: 18 }]}
-                        type="FontAwesome"
-                    />
-                </Button>
-            </Right>
-        </Header>
-    );
+import styles from "./../../fields/userDirectory/styles";
+
+const SearchHeader = (props) => {
+  const {
+    toggleSearchModalVisible,
+    handleOnSearchQuery,
+    handleTextChange,
+    searchText,
+  } = props;
+  return (
+    <View style={styles.headerWrapper}>
+      <View style={styles.header}>
+        <View style={styles.headerLeft}>
+          <TouchableOpacity
+            style={styles.headerLeft}
+            onPress={() => toggleSearchModalVisible()}
+          >
+            <ArrowBackIcon size={"6"} color={"rgb(0,151,235)"} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.headerCenter}>
+          <Input
+            style={styles.searchBar}
+            keyboardType={"default"}
+            placeholder="Search"
+            placeholderTextColor={"rgb(0,151,235)"}
+            underlineColorAndroid="transparent"
+            autoFocus={true}
+            value={searchText}
+            onChangeText={(text) => handleTextChange(text)}
+            returnKeyType={"search"}
+            onSubmitEditing={() => handleOnSearchQuery(searchText, false)}
+          />
+        </View>
+        <View style={styles.headerRight}>
+          <TouchableOpacity
+            onPress={() => handleOnSearchQuery(searchText, false)}
+          >
+            <SearchIcon size={"6"} color={"rgb(0,151,235)"} />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
 };
 
 export default SearchHeader;
