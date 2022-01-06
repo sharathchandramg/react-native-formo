@@ -3,25 +3,19 @@ import React, { Component } from 'react';
 import { Modal, TouchableOpacity } from 'react-native';
 import _ from 'lodash';
 import { isEmpty } from '../../utils/validators';
-import SearchHeader from '../../components/headers/searchHeader';
 import {
     View,
     Text,
-    Container,
-    Header,
-    Content,
-    ListItem,
-    CheckBox,
-    Left,
-    Right,
-    Icon,
-    Body,
-    Title,
-    Button,
-    Footer,
+    ArrowBackIcon,
+    ArrowForwardIcon,
+    SearchIcon,
+    Checkbox
 } from 'native-base';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import LinearGradient from 'react-native-linear-gradient';
 
 import styles from './styles';
+import SearchHeader from '../../components/headers/searchHeader';
 import StarIcon from "../../components/starIcon";
 
 export default class UserDirectoryField extends Component {
@@ -273,7 +267,7 @@ export default class UserDirectoryField extends Component {
                 style={styles.iconWrapper}
                 onPress={() => this.toggleModalVisible()}
             >
-                <Icon name="ios-arrow-forward" style={styles.iconStyle} />
+                <ArrowForwardIcon size={"6"} color={'#41E1FD'}/>
             </TouchableOpacity>
         );
     };
@@ -318,26 +312,35 @@ export default class UserDirectoryField extends Component {
                               attributes.value.indexOf(item) !== -1;
                     }
                     return (
-                        <ListItem
-                            key={index}
+                      <TouchableOpacity
+                        key={index}
+                        onPress={() => this.toggleSelect(item)}
+                        style={{
+                          height: 50,
+                          marginHorizontal: 20,
+                          borderBottomWidth: 1,
+                          borderBottomColor: "rgb(230, 230, 230)",
+                          alignItems: "center",
+                          flexDirection: "row",
+                        }}
+                      >
+                        {attributes.multiple && (
+                          <Checkbox
                             onPress={() => this.toggleSelect(item)}
-                        >
-                            {attributes.multiple && (
-                                <CheckBox
-                                    onPress={() => this.toggleSelect(item)}
-                                    checked={isSelected}
-                                />
-                            )}
-                            <Body>
-                                <Text
-                                    style={{
-                                        paddingHorizontal: 5,
-                                    }}
-                                >
-                                    {this.displayLabelKey(item)}
-                                </Text>
-                            </Body>
-                        </ListItem>
+                            isChecked={isSelected}
+                            colorScheme={"rgb(0,151,235)"}
+                          />
+                        )}
+                        <View>
+                          <Text
+                            style={{
+                              paddingHorizontal: 5,
+                            }}
+                          >
+                            {this.displayLabelKey(item)}
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
                     );
                 }
             });
@@ -351,51 +354,60 @@ export default class UserDirectoryField extends Component {
         );
     };
 
-    renderHeader = () => {
-        const { theme, attributes } = this.props;
+    renderHeaderBottom = () => {
         return (
-            <Header style={[theme.header]} androidStatusBarColor="#c8c8c8">
-                <Left>
-                    <Button
-                        transparent
-                        onPress={() => this.toggleModalVisible()}
-                    >
-                        <Icon name="arrow-back" style={theme.headerLeftIcon} />
-                    </Button>
-                </Left>
-                <Body>
-                    <Title style={theme.headerText}>
-                        {attributes.label || 'Select'}
-                    </Title>
-                </Body>
-                <Right>
-                    <Button
-                        transparent
-                        onPress={() => this.toggleSearchModalVisible()}
-                    >
-                        <Icon
-                            name="search"
-                            style={[theme.headerLeftIcon, { fontSize: 18 }]}
-                            type="FontAwesome"
-                        />
-                    </Button>
-                </Right>
-            </Header>
+            <LinearGradient
+                colors={['#03F299', '#0089F8']}
+                style={styles.headerBottom}
+                start={{ x: 0.0, y: 1.0 }}
+                end={{ x: 1.0, y: 1.0 }}
+                locations={[0.8, 1]}
+            >
+                <View style={styles.headerBottom} />
+            </LinearGradient>
         );
     };
 
-    renderFotter = () => {
+    renderHeader=()=>{
+        const { theme, attributes } = this.props;
+        return (
+          <View style={styles.headerWrapper}>
+            <View style={styles.header}>
+              <TouchableOpacity
+                style={styles.headerLeft}
+                onPress={() => this.toggleModalVisible()}
+              >
+                <ArrowBackIcon size={"6"} color={"rgb(0,151,235)"} />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.headerCenter}>
+                <Text style={theme.headerText}>
+                  {attributes.label || "Select"}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.headerCenterIconView}
+                onPress={() => this.toggleSearchModalVisible()}
+              >
+                <SearchIcon size={"6"} color={"rgb(0,151,235)"} />
+              </TouchableOpacity>
+            </View>
+            {this.renderHeaderBottom()}
+          </View>
+        );
+    }
+
+    renderFooter = () => {
         const { attributes } = this.props;
         if (attributes && attributes['multiple']) {
             return (
-                <Footer style={styles.button}>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => this.handleAddPressed()}
-                    >
-                        <Text style={styles.buttonText}>{'Add'} </Text>
-                    </TouchableOpacity>
-                </Footer>
+              <View style={styles.footerWrapper}>
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => this.handleAddPressed()}
+                >
+                  <Text style={styles.buttonText}>{"Add"} </Text>
+                </TouchableOpacity>
+              </View>
             );
         }
         return null;
@@ -434,28 +446,26 @@ export default class UserDirectoryField extends Component {
     };
 
     renderComponent = () => {
-        const { theme } = this.props;
         if (this.state.searchModalVisible) {
             return (
-                <Container style={{ flex: 1 }}>
+                <View style={styles.modalContent}>
                     <SearchHeader
                         toggleSearchModalVisible={this.toggleSearchModalVisible}
                         handleOnSearchQuery={this.handleOnSearchQuery}
                         handleTextChange={this.handleTextChange}
-                        theme={theme}
                         searchText={this.state.searchText}
                     />
-                    <Content>{this.renderOptionList()}</Content>
-                </Container>
+                    <View>{this.renderOptionList()}</View>
+                </View>
             );
         } else {
             return (
-                <Container style={{ flex: 1 }}>
+                <View style={styles.modalContent}>
                     {this.renderHeader()}
                     {this.renderSearchText()}
-                    <Content>{this.renderOptionList()}</Content>
-                    {this.renderFotter()}
-                </Container>
+                    <View>{this.renderOptionList()}</View>
+                    {this.renderFooter()}
+                </View>
             );
         }
     };
