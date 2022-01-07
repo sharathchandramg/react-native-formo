@@ -14,7 +14,7 @@ import {
     Input,
     Title
 } from "native-base";
-import CustomHeader from '../headers/hearder'
+import CustomHeader from '../headers/header'
 import styles from "./styles";
 import {isEmpty} from "../../utils/validators";
 

@@ -11,7 +11,7 @@ import {
 	Container,
 	Content,
 } from "native-base";
-import CustomHeader from '../headers/hearder'
+import CustomHeader from '../headers/header'
 import styles from "./styles";
 import { Row, Rows } from "./rows";
 import { Table, TableWrapper } from "./table";
