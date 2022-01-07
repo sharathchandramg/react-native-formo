@@ -1,27 +1,20 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Modal, TouchableOpacity } from "react-native";
-const _ = require("lodash");
-import { isEmpty } from "../../utils/validators";
+import LinearGradient from 'react-native-linear-gradient';
 import {
   View,
   Text,
-  Container,
-  Header,
-  Content,
-  ListItem,
-  CheckBox,
-  Left,
-  Right,
-  Icon,
-  Body,
-  Title,
-  Button,
-  Footer
+  Checkbox,
+  ArrowForwardIcon,
+  ArrowBackIcon
 } from "native-base";
 
 import StarIcon from "../../components/starIcon";
+import { isEmpty } from "../../utils/validators";
 import styles from "./styles";
+
+const _ = require("lodash");
 
 export default class SelectField extends Component {
   static propTypes = {
@@ -227,30 +220,47 @@ export default class SelectField extends Component {
         style={styles.iconWrapper}
         onPress={() => this.toggleModalVisible()}
       >
-        <Icon name="ios-arrow-forward" style={styles.iconStyle} />
+        <ArrowForwardIcon size={"6"} color={'#41E1FD'}/>
       </TouchableOpacity>
     );
   };
 
+  renderHeaderBottom = () => {
+    return (
+        <LinearGradient
+            colors={['#03F299', '#0089F8']}
+            style={styles.headerBottom}
+            start={{ x: 0.0, y: 1.0 }}
+            end={{ x: 1.0, y: 1.0 }}
+            locations={[0.8, 1]}
+        >
+            <View style={styles.headerBottom} />
+        </LinearGradient>
+    );
+};
+
   renderComponent = () => {
     const { theme, attributes } = this.props;
     return (
-      <Container style={{ flex: 1 }}>
-        <Header style={[theme.header]} androidStatusBarColor="#c8c8c8">
-          <Left>
-            <Button transparent onPress={() => this.toggleModalVisible()}>
-              <Icon name="arrow-back" style={theme.headerLeftIcon} />
-            </Button>
-          </Left>
-          <Body>
-            <Title style={theme.headerText}>
-              {attributes.label || "Select"}
-            </Title>
-          </Body>
-          <Right />
-        </Header>
+      <View style={styles.modalContent}>
+        <View style={styles.headerWrapper}>
+            <View style={styles.header}>
+              <TouchableOpacity
+                style={styles.headerLeft}
+                onPress={() => this.toggleModalVisible()}
+              >
+                <ArrowBackIcon size={"6"} color={"rgb(0,151,235)"} />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.headerCenter}>
+                <Text style={theme.headerText}>
+                  {attributes.label || "Select"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            {this.renderHeaderBottom()}
+          </View>
 
-        <Content>
+        <View>
           {!isEmpty(attributes["options"]) &&
             attributes.options.map((item, index) => {
               let isSelected = false;
@@ -265,33 +275,46 @@ export default class SelectField extends Component {
                   : attributes.value && attributes.value.indexOf(item) !== -1;
               }
               return (
-                <ListItem key={index} onPress={() => this.toggleSelect(item)}>
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => this.toggleSelect(item)}
+                  style={{
+                    height: 50,
+                    marginHorizontal: 20,
+                    borderBottomWidth: 1,
+                    borderBottomColor: "rgb(230, 230, 230)",
+                    alignItems: "center",
+                    flexDirection: "row",
+                  }}
+                >
                   {attributes.multiple && (
-                    <CheckBox
+                    <Checkbox
                       onPress={() => this.toggleSelect(item)}
-                      checked={isSelected}
+                      isChecked={isSelected}
+                      colorScheme={"rgb(0,151,235)"}
                     />
                   )}
-                  <Body>
+                  <View>
                     <Text style={{ paddingHorizontal: 5 }}>
                       {attributes.objectType ? item[attributes.labelKey] : item}
                     </Text>
-                  </Body>
-                </ListItem>
+                  </View>
+                </TouchableOpacity>
               );
             })}
-        </Content>
+        </View>
+
         {attributes && attributes["multiple"] ? (
-          <Footer style={styles.button}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => this.handleAddPressed()}
-            >
-              <Text style={styles.buttonText}>{"Add"} </Text>
-            </TouchableOpacity>
-          </Footer>
+          <View style={styles.footerWrapper}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => this.handleAddPressed()}
+              >
+                <Text style={styles.buttonText}>{"Add"} </Text>
+              </TouchableOpacity>
+          </View>
         ) : null}
-      </Container>
+      </View>
     );
   };
 
