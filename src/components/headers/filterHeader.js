@@ -1,21 +1,28 @@
-import React from 'react';
-import { Header, Left, Right, Icon, Body, Button, Title } from 'native-base';
+import React from "react";
+import { View, ArrowBackIcon, Text } from "native-base";
+import { TouchableOpacity } from "react-native";
 
-const FilterHeader = props => {
-    const { theme, toggleFilterModalVisible } = props;
-    return (
-        <Header style={[theme.header]} androidStatusBarColor="#c8c8c8">
-            <Left>
-                <Button transparent onPress={() => toggleFilterModalVisible()}>
-                    <Icon name="arrow-back" style={theme.headerLeftIcon} />
-                </Button>
-            </Left>
-            <Body>
-                <Title style={theme.headerText}>{'Filter'}</Title>
-            </Body>
-            <Right />
-        </Header>
-    );
+import styles from "./../../fields/userDirectory/styles";
+
+const FilterHeader = (props) => {
+  const { theme, toggleFilterModalVisible } = props;
+  return (
+    <View style={styles.headerWrapper}>
+      <View style={styles.header}>
+        <View style={styles.headerLeft}>
+          <TouchableOpacity
+            style={styles.headerLeft}
+            onPress={() => toggleFilterModalVisible()}
+          >
+            <ArrowBackIcon size={"6"} color={"rgb(0,151,235)"} />
+          </TouchableOpacity>
+        </View>
+        <View style={styles.headerCenter}>
+          <Text style={theme.headerText}>{"Filter"}</Text>
+        </View>
+      </View>
+    </View>
+  );
 };
 
 export default FilterHeader;

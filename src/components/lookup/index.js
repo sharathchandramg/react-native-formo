@@ -8,7 +8,8 @@ import {
     Dimensions
 } from 'react-native';
 import RecyclerList from '../recyclerList';
-import { Text, Container, Content, Icon } from 'native-base';
+import { Text } from 'native-base';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './styles';
 import _ from 'lodash';
 import { isNull } from '../../utils/validators';
@@ -98,14 +99,9 @@ const LookupComponent = props => {
     };
 
     return (
-        <Container style={{ flex: 1 }}>
+        <View style={styles.modalContent}>
             <LookupHeader {...props} />
-            <Content
-                contentContainerStyle={{
-                    height: '100%',
-                    width: '100%'
-                }}
-            >
+            <View>
                 <View
                     style={{
                         height: height * 0.95,
@@ -150,8 +146,8 @@ const LookupComponent = props => {
                         </ScrollView>
                     )}
                 </View>
-            </Content>
-        </Container>
+            </View>
+        </View>
     );
 };
 

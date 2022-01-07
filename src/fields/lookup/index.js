@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { TouchableOpacity, Modal } from 'react-native';
 import _ from 'lodash';
-import { View, Text, Icon, Fab } from 'native-base';
+import { View, Text, Icon, Fab, ArrowForwardIcon } from 'native-base';
 import { RNCamera } from "react-native-camera";
 
 import { isEmpty } from '../../utils/validators';
@@ -651,12 +651,12 @@ export default class LookupField extends Component {
                       attributes,
                       filter,
                       offset,
-                      (action = !isEmpty(this.state.barcodeSearchText)
+                      !isEmpty(this.state.barcodeSearchText)
                         ? "barcode"
-                        : "search/filter")
+                        : "search/filter"
                     );
                 } else {
-                    pullToRefresh(attributes, '', offset, (action = 'get'));
+                    pullToRefresh(attributes, '', offset, 'get');
                 }
             }
         }
@@ -741,7 +741,7 @@ export default class LookupField extends Component {
                 style={styles.iconWrapper}
                 onPress={() => this.toggleModalVisible()}
             >
-                <Icon name="ios-arrow-forward" style={styles.iconStyle} />
+                <ArrowForwardIcon size={"6"} color={'#41E1FD'}/>
             </TouchableOpacity>
         );
     };
@@ -864,18 +864,17 @@ export default class LookupField extends Component {
         ) {
           return (
             <Fab
-              active={true}
-              direction="up"
-              containerStyle={{}}
-              style={{ backgroundColor: "rgb(0,151,235)" }}
-              position="bottomRight"
+              colorScheme={"rgb(0,151,235)"}
+              right={10}
+              bottom={10}
               onPress={() => {
                 this.toggleModalVisible();
                 this.props.onAddLookup(this.props);
               }}
-            >
-              <Icon type="FontAwesome" name="plus" style={{ fontSize: 18 }} />
-            </Fab>
+              icon={
+                <Icon type="FontAwesome" name="plus" style={{ fontSize: 18 }} />
+              }
+            />
           );
         } else {
           return null;

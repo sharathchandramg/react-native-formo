@@ -1,6 +1,5 @@
 import React from 'react';
 import SearchHeader from '../headers/searchHeader';
-import { Container, Content } from 'native-base';
 import RecyclerList from '../recyclerList';
 import { View, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { Icon } from 'native-base';
@@ -17,9 +16,9 @@ const SearchComponent = props => {
         toggleSelect,
     } = props;
     return (
-        <Container style={{ flex: 1 }}>
+        <View style={styles.modalContent}>
             <SearchHeader {...props} />
-            <Content>
+            <View>
                 <View style={{ height: '100%', width: '100%' }}>
                     {searchText.length > 0 ? (
                         <View style={styles.searchForWrapper}>
@@ -63,8 +62,8 @@ const SearchComponent = props => {
                         </ScrollView>
                     )}
                 </View>
-            </Content>
-        </Container>
+            </View>
+        </View>
     );
 };
 
