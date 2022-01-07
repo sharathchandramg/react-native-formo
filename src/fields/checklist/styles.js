@@ -92,7 +92,11 @@ const styles = StyleSheet.create({
         alignSelf:'center',
         fontWeight:'100',
     },
-
+    footerWrapper:{
+        position:'absolute',
+        bottom:0,
+        width:'100%'
+    },
     button: {
         height: 50,
         backgroundColor: '#48BBEC',
@@ -104,7 +108,80 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'white',
         alignSelf: 'center'
-    }
+    },
+    headerWrapper: {
+        alignSelf: 'stretch',
+        backgroundColor: 'rgb(255,255,255)',
+        height: 60,
+        ...Platform.select({
+            ios: {
+                paddingTop: 30,
+                height: 120,
+                marginBottom: 30,
+            },
+            android: {
+                paddingTop: 0,
+                marginBottom: 0,
+            },
+        }),
+    },
+    header: {
+        alignSelf: 'stretch',
+        backgroundColor: 'rgb(255,255,255)',
+        flexDirection: 'row',
+        elevation: 5,
+        height: 59,
+    },
+    headerLeft: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    headerCenter: {
+        flex: 4,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    headerCenterIconView: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        flexDirection: 'column',
+        borderTopWidth: 2,
+        borderColor: '#d6d7da',
+        elevation: 20,
+        height: '100%',
+        width: '100%',
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+    },
+    headerBottom: {
+        height: 1,
+        alignSelf: 'stretch',
+        flexDirection: 'row',
+        elevation: 2,
+        opacity: 1,
+        backgroundColor: 'transparent',
+    },
+    headerRight: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
+    },
+    searchBar: {
+        height: 40,
+        alignSelf: 'stretch',
+        color: 'rgb(0,151,235)',
+        fontSize: 18,
+        borderTopWidth:0,
+        borderLeftWidth:0,
+        borderRightWidth:0
+    },
 })
 
 export default styles;
