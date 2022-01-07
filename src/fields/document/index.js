@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { TouchableOpacity, FlatList, Alert } from 'react-native';
-import { View, ListItem, Text, Item } from 'native-base';
+import { View, Text } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DocumentPicker from 'react-native-document-picker';
 import styles from './styles';
@@ -435,58 +435,55 @@ export default class DocumentField extends Component {
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
+          <View>
             <View>
-                <View>
-                    <ListItem
-                        style={{
-                            borderBottomWidth: 0,
-                            paddingVertical: 5,
-                            marginLeft: 20,
-                        }}
-                    >
-                        <View style={{ flexDirection: 'row', flex: 2 }}>
-                            <Item
-                                error={
-                                    theme.changeTextInputColorOnError
-                                        ? attributes.error
-                                        : null
-                                }
-                                style={{ paddingVertical: 10 }}
-                            >
-                                {attributes['required'] && (
-                                    <StarIcon
-                                        required={attributes['required']}
-                                    />
-                                )}
-                                <Text
-                                    style={{
-                                        flex: 1,
-                                        color: theme.inputColorPlaceholder,
-                                        paddingStart: 5,
-                                    }}
-                                >
-                                    {attributes.label}
-                                </Text>
-                                <TouchableOpacity
-                                    style={{
-                                        flexDirection: 'row',
-                                        flex: 1,
-                                    }}
-                                    onPress={() => this.onPressDocument()}
-                                >
-                                    {this.renderFileIcon()}
-                                </TouchableOpacity>
-                            </Item>
-                        </View>
-                    </ListItem>
-                    {this.isFilesExists()
-                        ? this.renderAllDocuments(attributes)
-                        : null}
+              <View
+                style={{
+                  paddingVertical: 5,
+                  paddingHorizontal: 15,
+                }}
+              >
+                <View
+                  style={{
+                    borderBottomWidth: 1,
+                    borderBottomColor: theme.inputColorPlaceholder,
+                    flex: 2,
+                    flexDirection: "row",
+                    paddingVertical: 10,
+                  }}
+                >
+                  {attributes["required"] && (
+                    <StarIcon required={attributes["required"]} />
+                  )}
+                  <Text
+                    style={{
+                      flex: 1,
+                      color: theme.inputColorPlaceholder,
+                      paddingStart: 5,
+                      fontSize:18
+                    }}
+                  >
+                    {attributes.label}
+                  </Text>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: "row",
+                      flex: 1,
+                    }}
+                    onPress={() => this.onPressDocument()}
+                  >
+                    {this.renderFileIcon()}
+                  </TouchableOpacity>
                 </View>
-                <View style={{ paddingHorizontal: 15 }}>
-                    <ErrorComponent {...{ attributes, theme }} />
-                </View>
+              </View>
+              {this.isFilesExists()
+                ? this.renderAllDocuments(attributes)
+                : null}
             </View>
+            <View style={{ paddingHorizontal: 15 }}>
+              <ErrorComponent {...{ attributes, theme }} />
+            </View>
+          </View>
         );
     }
 }
