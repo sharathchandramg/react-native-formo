@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Platform,Modal,TouchableOpacity,TouchableHighlight } from "react-native";
-import { View, Input, ListItem, Text } from "native-base";
+import { View, Input, Text } from "native-base";
 import { Picker } from '@react-native-picker/picker';
 
 import { getKeyboardType } from "./../../utils/helper";
@@ -181,7 +181,7 @@ export default class CurrencyField extends Component {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
             <View>
-                <ListItem style={{ borderBottomWidth: 0, paddingVertical: 5 }}>
+                <View style={{ borderBottomWidth: 0, paddingVertical: 5, paddingTop: 15, paddingHorizontal: 15, }}>
                     {attributes['required'] && <StarIcon required={attributes['required']} />}
                     <View style={{ flex:5,flexDirection:'row'}}>
                         {attributes.showCurrencyOptions && 
@@ -200,7 +200,7 @@ export default class CurrencyField extends Component {
                             {this.renderInputField(attributes,theme)}
                         </View>
                     </View>
-                </ListItem>
+                </View>
                 <View style={{marginHorizontal:15}}>
                     <ErrorComponent {...{ attributes, theme }} />
                 </View>
