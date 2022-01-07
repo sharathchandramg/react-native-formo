@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Platform, Alert, TouchableOpacity, Linking } from 'react-native';
-import { View, ListItem, Text, Item, Icon } from 'native-base';
+import { View, Text, Icon } from 'native-base';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import { isEmpty } from '../../utils/validators';
 
@@ -262,10 +262,10 @@ export default class LocationField extends Component {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
             <View>
-                <ListItem style={{ borderBottomWidth: 0, paddingVertical: 5 }}>
+                <View style={{ borderBottomWidth: 0, paddingVertical: 5, paddingTop: 15, paddingHorizontal: 15, }}>
                     <View style={{ flex: 1 }}>
                         <View>
-                            <Item error={theme.changeTextInputColorOnError ? attributes.error : null} style={{paddingVertical:10}}>
+                            <View style={{borderBottomWidth: 1,borderBottomColor: theme.inputColorPlaceholder,flexDirection:'row'}}>
                                 {attributes['required'] && <StarIcon required={attributes['required']} />}
                                 <Text style={styles.placeHolder}>
                                     {attributes.label}
@@ -280,11 +280,11 @@ export default class LocationField extends Component {
                                             });
                                         }}
                                     />
-                                {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null}
-                            </Item>
+                                {/* {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null} */}
+                            </View>
                         </View>
                     </View>
-                </ListItem>
+                </View>
                 <View style={{ paddingHorizontal: 15 }}>
                     <ErrorComponent {...{ attributes, theme }} />
                 </View>
