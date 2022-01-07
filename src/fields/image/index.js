@@ -11,7 +11,7 @@ import {
     Alert,
     Modal
 } from 'react-native';
-import { View, ListItem, Text, Item } from 'native-base';
+import { View, Text } from 'native-base';
 import ImagePicker from 'react-native-image-crop-picker';
 import BottomSheet from 'react-native-js-bottom-sheet';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -62,7 +62,7 @@ export default class ImageField extends Component {
                 handleDocumentUpdateAndDownload(
                     attributes,
                     value,
-                    (actionType = 'read'),
+                    'read',
                     this.isFirstTime
                 );
                 this.isFirstTime = false;
@@ -139,7 +139,7 @@ export default class ImageField extends Component {
             handleDocumentUpdateAndDownload(
                 attributes,
                 imageArray,
-                (actionType = 'write')
+                'write'
             );
         }
     };
@@ -523,83 +523,93 @@ export default class ImageField extends Component {
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
+          <View>
             <View>
-                <View>
-                    <ListItem
-                        style={{
-                            borderBottomWidth: 0,
-                            paddingVertical: 5,
-                            marginLeft: 20,
-                        }}
-                    >
-                        <View style={{ flexDirection: 'row', flex: 2 }}>
-                            <Item error={theme.changeTextInputColorOnError ? attributes.error : null} style={{paddingVertical:10}}>
-                                {attributes['required'] && <StarIcon required={attributes['required']} />}
-                                    <Text
-                                        style={{
-                                            flex: 1,
-                                            color: theme.inputColorPlaceholder,
-                                            paddingStart: 5,
-                                        }}
-                                    >
-                                        {attributes.label}
-                                    </Text>
-                                    <TouchableOpacity
-                                        style={{
-                                            flexDirection: 'row',
-                                            flex: 1,
-                                        }}
-                                        onPress={
-                                            Platform.OS === 'ios'
-                                                ? this._onPressImage
-                                                : () => this.bottomSheet.open()
-                                        }
-                                    >
-                                        {this.renderAddImageIcon()}
-                                    </TouchableOpacity>
-                            </Item>
-                        </View>
-                    </ListItem>
-                    {this.checkImageData() ? (
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                flex: 1,
-                            }}
-                        >
-                            {this.renderPreview(attributes)}
-                        </View>
-                    ) : null}
+              <View
+                style={{
+                  paddingVertical: 5,
+                  paddingHorizontal: 15,
+                }}
+              >
+                <View
+                  style={{
+                    borderBottomWidth: 1,
+                    borderBottomColor: theme.inputColorPlaceholder,
+                    flex: 2,
+                    flexDirection: "row",
+                    paddingVertical: 10,
+                  }}
+                >
+                  {attributes["required"] && (
+                    <StarIcon required={attributes["required"]} />
+                  )}
+                  <Text
+                    style={{
+                      flex: 1,
+                      color: theme.inputColorPlaceholder,
+                      paddingStart: 5,
+                      fontSize: 18
+                    }}
+                  >
+                    {attributes.label}
+                  </Text>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: "row",
+                      flex: 1,
+                    }}
+                    onPress={
+                      Platform.OS === "ios"
+                        ? this._onPressImage
+                        : () => this.bottomSheet.open()
+                    }
+                  >
+                    {this.renderAddImageIcon()}
+                  </TouchableOpacity>
+                </View>
+              </View>
+              {this.checkImageData() ? (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    flex: 1,
+                  }}
+                >
+                  {this.renderPreview(attributes)}
+                </View>
+              ) : null}
 
-                    {this.state.openImageModal && (
-                        <Modal
-                            isVisible={this.state.openImageModal}
-                            animationType={'fade'}
-                            transparent={true}
-                            onRequestClose={() => this.closeImageModalView()}
-                            onPressOut={() => this.closeImageModalView()}
-                        >
-                            {this.state.imgDetails ? this.renderModalContent(this.state.imgDetails) : null}
-                        </Modal>
-                    )}
-                    {Platform.OS === 'android' ? (
-                        <BottomSheet
-                            ref={ref => {
-                                this.bottomSheet = ref;
-                            }}
-                            title={'Choose image from'}
-                            options={this._renderOptions()}
-                            coverScreen={true}
-                            titleFontFamily={styles.titleFontFamily}
-                            styleContainer={styles.styleContainer}
-                            fontFamily={styles.fontFamily}
-                        />
-                    ) : null}
-                </View>
-                <View style={{ paddingHorizontal: 15 }}>
-                    <ErrorComponent {...{ attributes, theme }} />
-                </View>
+              {this.state.openImageModal && (
+                <Modal
+                  isVisible={this.state.openImageModal}
+                  animationType={"fade"}
+                  transparent={true}
+                  onRequestClose={() => this.closeImageModalView()}
+                  onPressOut={() => this.closeImageModalView()}
+                >
+                  {this.state.imgDetails
+                    ? this.renderModalContent(this.state.imgDetails)
+                    : null}
+                </Modal>
+              )}
+              {Platform.OS === "android" ? (
+                <BottomSheet
+                  ref={(ref) => {
+                    this.bottomSheet = ref;
+                  }}
+                  title={"Choose image from"}
+                  options={this._renderOptions()}
+                  coverScreen={true}
+                  titleFontFamily={styles.titleFontFamily}
+                  styleContainer={styles.styleContainer}
+                  fontFamily={styles.fontFamily}
+                />
+              ) : null}
             </View>
+            <View style={{ paddingHorizontal: 15 }}>
+              <ErrorComponent {...{ attributes, theme }} />
+            </View>
+          </View>
         );
     }
 }
