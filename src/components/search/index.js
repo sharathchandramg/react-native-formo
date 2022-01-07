@@ -2,7 +2,7 @@ import React from 'react';
 import SearchHeader from '../headers/searchHeader';
 import RecyclerList from '../recyclerList';
 import { View, ScrollView, Text, TouchableOpacity } from 'react-native';
-import { Icon } from 'native-base';
+import { SearchIcon } from 'native-base';
 import { isNull } from '../../utils/validators';
 import styles from './styles';
 
@@ -28,14 +28,7 @@ const SearchComponent = props => {
                                 }
                                 style={styles.searchForButton}
                             >
-                                <Icon
-                                    name="search"
-                                    type="FontAwesome"
-                                    style={[
-                                        theme.headerLeftIcon,
-                                        { fontSize: 18, paddingRight: 20 },
-                                    ]}
-                                />
+                                <SearchIcon size={"6"} color={'rgb(0,151,235)'} />
                                 <Text style={styles.searchForText}>
                                     {`Search for "${searchText}"`}
                                 </Text>

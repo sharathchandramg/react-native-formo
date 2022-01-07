@@ -4,19 +4,11 @@ import {Modal,TouchableOpacity } from "react-native";
 import {
     View,
     Text,
-    Container,
-    Header,
-    Content,
-    Left,
-    Right,
-    Body,
-    Title,
-    Button,
-    Footer,
-    Icon
+    Icon,
+    ArrowBackIcon
 } from "native-base";
-
 import shortid from 'shortid';
+
 import styles from "./styles";
 import ChildField from "../childForm";
 import StarIcon from "../../components/starIcon"
@@ -229,33 +221,44 @@ export default class SubForm extends Component {
 
     renderComponent =()=>{
         const { theme, attributes } = this.props;
-        return(
-            <Container style={{ flex: 1 }}>
-                <Header style={[theme.header]} androidStatusBarColor='#c8c8c8'>
-                    <Left>
-                        <Button transparent onPress={() => this.toggleModalVisible()}>
-                            <Icon name="arrow-back"   style={theme.headerLeftIcon} />
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Title style={theme.headerText}>{attributes.label || "Select"}</Title>
-                    </Body>
-                    <Right />
-                </Header>
-                <Content>
-                    <ChildField
-                        ref={(c) => { this.child = c; }}
-                        {...this.props}
-                        formData={this.state.subFormData}
-                    />
-                </Content>
-                <Footer style={styles.button}>
-                    <TouchableOpacity style={styles.button} onPress={() => this.addNewFields()}>
-                        <Text style={styles.buttonText}>{this.state.mode ==='create'? 'Add':'Update'} </Text>
-                    </TouchableOpacity>
-                </Footer>
-            </Container>
-        )
+        return (
+          <View style={styles.modalContent}>
+            <View style={styles.headerWrapper}>
+              <View style={styles.header}>
+                <TouchableOpacity
+                  style={styles.headerLeft}
+                  onPress={() => this.toggleModalVisible()}
+                >
+                  <ArrowBackIcon size={"6"} color={"rgb(0,151,235)"} />
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.headerCenter}>
+                  <Text style={theme.headerText}>
+                    {attributes.label || "Select"}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View>
+              <ChildField
+                ref={(c) => {
+                  this.child = c;
+                }}
+                {...this.props}
+                formData={this.state.subFormData}
+              />
+            </View>
+            <View style={styles.footerWrapper}>
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => this.addNewFields()}
+              >
+                <Text style={styles.buttonText}>
+                  {this.state.mode === "create" ? "Add" : "Update"}
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        );
         
     }
 

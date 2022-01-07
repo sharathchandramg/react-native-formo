@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import Form0 from "./../../index";
-import { View, Text,ListItem } from "native-base";
+import { View, Text } from "native-base";
 import StarIcon from "../../components/starIcon";
 
 export default class FormField extends Component {
@@ -44,12 +44,12 @@ export default class FormField extends Component {
         } = this.props;
         return (
             <View>
-                <ListItem>
+                <View>
                     <View style={{flexDirection:'row',flex:1 }}>
                         {attributes['required'] && <StarIcon required={attributes['required']} />}
                         <Text style={{ fontWeight: '500', fontSize: 17,paddingStart:5,flex:1 }}>{attributes.label}</Text>
                     </View>
-                </ListItem>
+                </View>
                 <View>
                     <Form0
                         ref={(c) => { this.group = c; }}

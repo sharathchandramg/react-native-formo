@@ -9,7 +9,6 @@ import {
     Checkbox,
     ArrowForwardIcon,
     ArrowBackIcon,
-    ArrowForwardIcon,
     SearchIcon,
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';

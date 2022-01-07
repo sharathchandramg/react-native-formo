@@ -4,7 +4,7 @@ import {TouchableOpacity } from "react-native";
 import {
     View,
     Text,
-    Icon,
+    ArrowForwardIcon
 } from "native-base";
 import styles from "./styles"
 import StarIcon from "../../components/starIcon";
@@ -44,10 +44,7 @@ export default class CustomDataComponent extends Component {
                 style={styles.iconWrapper}
                 onPress={() => this.handleOnclick()}
             >
-                <Icon
-                    name="ios-arrow-forward"
-                    style={styles.iconStyle}
-                />
+                <ArrowForwardIcon size={"6"} color={'#41E1FD'}/>
             </TouchableOpacity>
         );
     };
