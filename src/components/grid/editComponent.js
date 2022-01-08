@@ -23,7 +23,7 @@ const EditComponent = props => {
     
 	renderItemList =(rowData)=>{
         return rowData ? (
-            <View style={{ borderBottomWidth: 0, paddingVertical: 5 }} >
+            <View style={{ borderBottomWidth: 0, paddingVertical: 5, flex:1, }} >
                 <View style={{marginVertical:20,marginHorizontal:10}}>
                     <Text style={styles.topLabel}>
                         {rowData[0]['rowKey']||''}
