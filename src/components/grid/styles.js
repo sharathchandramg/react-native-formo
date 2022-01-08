@@ -197,7 +197,19 @@ topLabel:{
   minWidth:'18%',
   paddingHorizontal:15,
   textAlign:'center',
-}
+},
+modalContent: {
+  backgroundColor: 'white',
+  flexDirection: 'column',
+  borderTopWidth: 2,
+  borderColor: '#d6d7da',
+  elevation: 20,
+  height: '100%',
+  width: '100%',
+  position: 'absolute',
+  top: 0,
+  bottom: 0,
+},
 });
 
 export default styles;

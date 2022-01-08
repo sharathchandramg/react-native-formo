@@ -169,6 +169,7 @@ export default class StatusPickerField extends Component {
                         style={{
                             color: theme.inputColorPlaceholder,
                             paddingStart: 5,
+                            fontSize: 18
                         }}
                     >
                         {attributes.label}

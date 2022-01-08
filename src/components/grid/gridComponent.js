@@ -6,11 +6,7 @@ import {
 	ScrollView
 } from "react-native";
 
-import {
-	Text,
-	Container,
-	Content,
-} from "native-base";
+import { Text } from "native-base";
 import CustomHeader from '../headers/header'
 import styles from "./styles";
 import { Row, Rows } from "./rows";
@@ -77,24 +73,28 @@ const GridComponent= props => {
 	}
 
 	return (
-		<Container style={{ flex: 1 }}>
-				<CustomHeader {...props} />
-				<Content style={{marginBottom:150}}>
-					<View style={styles.container}>
-						{data && Object.keys(data).length ? renderGridView(): null}
-					</View>
-				</Content>
-				<View style={styles.aggregateWrapper}>
-					<View style={styles.aggregateTextWrapper}>
-						<Text style={styles.summaryText}>{summary?summary:''}</Text>
-					</View>
-				</View>
-				<TouchableOpacity style={styles.button} onPress={() => handleOnDoneClick()}>
-					<Text style={styles.buttonText}>{'Done'} </Text>
-				</TouchableOpacity>
-			</Container>
-		
-	);
+    <View style={styles.modalContent}>
+      <CustomHeader {...props} />
+      <View style={{ marginBottom: 150, flex: 1 }}>
+        <ScrollView>
+          <View style={styles.container}>
+            {data && Object.keys(data).length ? renderGridView() : null}
+          </View>
+        </ScrollView>
+      </View>
+      <View style={styles.aggregateWrapper}>
+        <View style={styles.aggregateTextWrapper}>
+          <Text style={styles.summaryText}>{summary ? summary : ""}</Text>
+        </View>
+      </View>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => handleOnDoneClick()}
+      >
+        <Text style={styles.buttonText}>{"Done"} </Text>
+      </TouchableOpacity>
+    </View>
+  );
 };
 
 export default GridComponent;
