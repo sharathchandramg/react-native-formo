@@ -261,34 +261,50 @@ export default class LocationField extends Component {
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
-            <View>
-                <View style={{ borderBottomWidth: 0, paddingVertical: 5, paddingTop: 15, paddingHorizontal: 15, }}>
-                    <View style={{ flex: 1 }}>
-                        <View>
-                            <View style={{borderBottomWidth: 1,borderBottomColor: theme.inputColorPlaceholder,flexDirection:'row'}}>
-                                {attributes['required'] && <StarIcon required={attributes['required']} />}
-                                <Text style={styles.placeHolder}>
-                                    {attributes.label}
-                                </Text>
-                                    {this.renderPostionUrl(attributes)}
-                                    <Icon
-                                        name="sync"
-                                        style={{ fontSize: 24, color: '#828282' }}
-                                        onPress={() => {
-                                            this.setState({ isPickingLocation: true, url: null }, () => {
-                                                this.promptForEnableLocationIfNeeded();
-                                            });
-                                        }}
-                                    />
-                                {/* {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null} */}
-                            </View>
-                        </View>
-                    </View>
+          <View>
+            <View
+              style={{
+                borderBottomWidth: 0,
+                paddingVertical: 5,
+                paddingTop: 15,
+                paddingHorizontal: 15,
+              }}
+            >
+              <View style={{ flex: 1 }}>
+                <View>
+                  <View
+                    style={{
+                      borderBottomColor: theme.inputBorderColor,
+                      borderBottomWidth: theme.borderWidth,
+                      flexDirection: "row",
+                    }}
+                  >
+                    {attributes["required"] && (
+                      <StarIcon required={attributes["required"]} />
+                    )}
+                    <Text style={styles.placeHolder}>{attributes.label}</Text>
+                    {this.renderPostionUrl(attributes)}
+                    <Icon
+                      name="sync"
+                      style={{ fontSize: 24, color: "#828282" }}
+                      onPress={() => {
+                        this.setState(
+                          { isPickingLocation: true, url: null },
+                          () => {
+                            this.promptForEnableLocationIfNeeded();
+                          }
+                        );
+                      }}
+                    />
+                    {/* {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null} */}
+                  </View>
                 </View>
-                <View style={{ paddingHorizontal: 15 }}>
-                    <ErrorComponent {...{ attributes, theme }} />
-                </View>
+              </View>
             </View>
+            <View style={{ paddingHorizontal: 15 }}>
+              <ErrorComponent {...{ attributes, theme }} />
+            </View>
+          </View>
         );
     }
 }

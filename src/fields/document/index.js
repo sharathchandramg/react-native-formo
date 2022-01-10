@@ -445,8 +445,8 @@ export default class DocumentField extends Component {
               >
                 <View
                   style={{
-                    borderBottomWidth: 1,
-                    borderBottomColor: theme.inputColorPlaceholder,
+                    borderBottomColor: theme.inputBorderColor,
+                    borderBottomWidth: theme.borderWidth,
                     flex: 2,
                     flexDirection: "row",
                     paddingVertical: 10,

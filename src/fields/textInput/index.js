@@ -149,7 +149,7 @@ export default class TextInputField extends Component {
               borderTopWidth: 0,
               borderRightWidth: 0,
               borderLeftWidth: 0,
-              borderBottomColor: theme.inputColorPlaceholder,
+              borderBottomColor: theme.inputBorderColor,
               fontSize: 18,
               ...Platform.select({
                 ios: {
