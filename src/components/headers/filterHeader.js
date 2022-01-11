@@ -2,6 +2,7 @@ import React from "react";
 import { View, ArrowBackIcon, Text } from "native-base";
 import { TouchableOpacity } from "react-native";
 
+import LinearGradientHeader from './linearGradientHeader';
 import styles from "./../../fields/userDirectory/styles";
 
 const FilterHeader = (props) => {
@@ -21,6 +22,7 @@ const FilterHeader = (props) => {
           <Text style={theme.headerText}>{"Filter"}</Text>
         </View>
       </View>
+      <LinearGradientHeader />
     </View>
   );
 };

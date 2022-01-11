@@ -11,6 +11,7 @@ import shortid from 'shortid';
 
 import styles from "./styles";
 import ChildField from "../childForm";
+import LinearGradientHeader from './../../components/headers/linearGradientHeader';
 import StarIcon from "../../components/starIcon"
 
 
@@ -237,6 +238,7 @@ export default class SubForm extends Component {
                   </Text>
                 </TouchableOpacity>
               </View>
+              <LinearGradientHeader />
             </View>
             <View>
               <ChildField

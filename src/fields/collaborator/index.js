@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Modal, TouchableOpacity } from 'react-native';
 import _ from 'lodash';
-import LinearGradient from 'react-native-linear-gradient';
 import {
     View,
     Text,
@@ -16,6 +15,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './styles';
 import StarIcon from "../../components/starIcon";
 import { isEmpty } from '../../utils/validators';
+import LinearGradientHeader from './../../components/headers/linearGradientHeader';
 import SearchHeader from '../../components/headers/searchHeader';
 
 export default class CollaboratorField extends Component {
@@ -343,20 +343,6 @@ export default class CollaboratorField extends Component {
         return list.length ? list : null;
     };
 
-    renderHeaderBottom = () => {
-        return (
-            <LinearGradient
-                colors={['#03F299', '#0089F8']}
-                style={styles.headerBottom}
-                start={{ x: 0.0, y: 1.0 }}
-                end={{ x: 1.0, y: 1.0 }}
-                locations={[0.8, 1]}
-            >
-                <View style={styles.headerBottom} />
-            </LinearGradient>
-        );
-    };
-
     renderHeader = () => {
         const { theme, attributes } = this.props;
         return (
@@ -380,7 +366,7 @@ export default class CollaboratorField extends Component {
                 <SearchIcon size={"6"} color={"rgb(0,151,235)"} />
               </TouchableOpacity>
             </View>
-            {this.renderHeaderBottom()}
+            <LinearGradientHeader />
           </View>
         );
     };

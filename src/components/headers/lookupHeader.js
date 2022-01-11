@@ -2,6 +2,7 @@ import React from 'react';
 import { View, ArrowBackIcon, Text } from 'native-base';
 import { TouchableOpacity } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import LinearGradientHeader from './linearGradientHeader';
 
 import styles from './../../fields/userDirectory/styles';
 
@@ -96,6 +97,7 @@ const LookupHeader = props => {
                  ) : null} 
             </View>
             </View>
+            <LinearGradientHeader />
         </View>
     );
 };

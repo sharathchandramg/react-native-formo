@@ -40,57 +40,65 @@ export default class PickerField extends Component {
         const pickerValue =  this.state.value !== null ? this.state.value : typeof attributes.value !=='undefined' && attributes.value !== null? attributes.value:'';
         
         return (
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={this.state.modalVisible}
-                onRequestClose={() => this.setModalVisible(false)}
-                style={{ backgroundColor: '#00000052' }}
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={this.state.modalVisible}
+            onRequestClose={() => this.setModalVisible(false)}
+            style={{ backgroundColor: "#00000052" }}
+          >
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "column",
+                justifyContent: "flex-end",
+                backgroundColor: "#00000052",
+              }}
             >
-
-                <View style={{
-                    flex: 1,
-                    flexDirection: 'column',
-                    justifyContent: 'flex-end',
-                    backgroundColor: '#00000052'
-                }}>
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        onPressOut={() => this.setModalVisible(false)}
-                        style={{
-                            height: '100%', width: '100%', flexDirection: 'column-reverse', alignItems: 'flex-end'
-                        }}
+              <TouchableOpacity
+                activeOpacity={1}
+                style={{
+                  height: "100%",
+                  width: "100%",
+                  flexDirection: "column-reverse",
+                  alignItems: "flex-end",
+                }}
+              >
+                <View style={{ backgroundColor: "#fff", width: "100%" }}>
+                  <View style={{ flexDirection: "row" }}>
+                    <TouchableHighlight
+                      onPress={() => this.setModalVisible(false)}
+                      style={{
+                        flex: 1,
+                        flexDirection: "row",
+                        justifyContent: "flex-end",
+                        marginTop: 10,
+                        marginRight: 20,
+                      }}
                     >
-                        <View style={{ backgroundColor: '#fff', width: '100%'}}>
-                            <View style={{ flexDirection: 'row' }}>
-                                <TouchableHighlight
-                                    onPress={() => this.setModalVisible(false)} style={{
-                                        flex: 1,
-                                        flexDirection: 'row',
-                                        justifyContent: 'flex-end',
-                                        marginTop: 10,
-                                        marginRight: 20
-                                    }}>
-                                    <View><Text style={{ fontSize: 20,color:'rgb(0,151,235)' }}>{'Done'}</Text></View>
-                                </TouchableHighlight>
-                            </View>
-                            <Picker
-                                style={{ padding: 2 }}
-                                textStyle={{ color: theme.pickerColorSelected }}
-                                mode={attributes.mode}
-                                selectedValue={pickerValue}
-                                onValueChange={value => this.handleChange(value)}>
-                                {
-                                    attributes.options.map((item, index) => (
-                                        <Item key={index} label={item} value={item} />
-                                    ))
-                                }
-                            </Picker>
-                        </View>
-                    </TouchableOpacity>
+                      <View>
+                        <Text style={{ fontSize: 20, color: "rgb(0,151,235)" }}>
+                          {"Done"}
+                        </Text>
+                      </View>
+                    </TouchableHighlight>
+                  </View>
+                  <Picker
+                    style={{ padding: 2 }}
+                    textStyle={{ color: theme.pickerColorSelected }}
+                    mode={attributes.mode}
+                    selectedValue={pickerValue}
+                    onValueChange={(value) => this.handleChange(value)}
+                  >
+                    {attributes.options.map((item, index) => (
+                      <Item key={index} label={item} value={item} />
+                    ))}
+                  </Picker>
                 </View>
-            </Modal>
-        )
+              </TouchableOpacity>
+            </View>
+          </Modal>
+        );
     }
 
     renderIOSPicker =(isValueValid,defaultValue)=>{
@@ -112,6 +120,7 @@ export default class PickerField extends Component {
                             style={{
                                 color: theme.inputColorPlaceholder,
                                 paddingStart: 5,
+                                fontSize: 18
                             }}
                         >
                             {attributes.label}

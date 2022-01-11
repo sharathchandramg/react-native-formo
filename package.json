@@ -51,6 +51,7 @@
     "react-native-document-picker": ">=7.1.1",
     "react-native-signature-capture": ">=0.4.12",
     "react-native-camera": ">=4.2.1",
-    "@react-native-picker/picker": ">=2.2.1"
+    "@react-native-picker/picker": ">=2.2.1",
+    "react-native-linear-gradient": ">=2.5.6"
   }
 }

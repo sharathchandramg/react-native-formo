@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Modal, TouchableOpacity } from "react-native";
-import LinearGradient from 'react-native-linear-gradient';
 import {
   View,
   Text,
@@ -12,6 +11,7 @@ import {
 
 import StarIcon from "../../components/starIcon";
 import { isEmpty } from "../../utils/validators";
+import LinearGradientHeader from './../../components/headers/linearGradientHeader';
 import styles from "./styles";
 
 const _ = require("lodash");
@@ -225,20 +225,6 @@ export default class SelectField extends Component {
     );
   };
 
-  renderHeaderBottom = () => {
-    return (
-        <LinearGradient
-            colors={['#03F299', '#0089F8']}
-            style={styles.headerBottom}
-            start={{ x: 0.0, y: 1.0 }}
-            end={{ x: 1.0, y: 1.0 }}
-            locations={[0.8, 1]}
-        >
-            <View style={styles.headerBottom} />
-        </LinearGradient>
-    );
-};
-
   renderComponent = () => {
     const { theme, attributes } = this.props;
     return (
@@ -257,7 +243,7 @@ export default class SelectField extends Component {
                 </Text>
               </TouchableOpacity>
             </View>
-            {this.renderHeaderBottom()}
+            <LinearGradientHeader />
           </View>
 
         <View>

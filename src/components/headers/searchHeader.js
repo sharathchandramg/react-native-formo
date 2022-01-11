@@ -3,6 +3,7 @@ import { Input, View, ArrowBackIcon, SearchIcon } from "native-base";
 import { TouchableOpacity } from "react-native";
 
 import styles from "./../../fields/userDirectory/styles";
+import LinearGradientHeader from './linearGradientHeader';
 
 const SearchHeader = (props) => {
   const {
@@ -11,6 +12,7 @@ const SearchHeader = (props) => {
     handleTextChange,
     searchText,
   } = props;
+
   return (
     <View style={styles.headerWrapper}>
       <View style={styles.header}>
@@ -44,6 +46,7 @@ const SearchHeader = (props) => {
           </TouchableOpacity>
         </View>
       </View>
+      <LinearGradientHeader />
     </View>
   );
 };

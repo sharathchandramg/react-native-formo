@@ -22,7 +22,8 @@ const styles = StyleSheet.create({
     placeHolder:{
         color:  '#ADADAD',
         alignSelf:'flex-start',
-        paddingHorizontal:5
+        paddingHorizontal:5,
+        fontSize:18
         
     },
     valueContainer:{

@@ -117,7 +117,6 @@ const styles = StyleSheet.create({
         ...Platform.select({
             ios: {
                 paddingTop: 30,
-                height: 120,
                 marginBottom: 30,
             },
             android: {

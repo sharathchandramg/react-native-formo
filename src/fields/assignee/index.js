@@ -12,7 +12,7 @@ import {
     Checkbox
 } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradientHeader from './../../components/headers/linearGradientHeader';
 
 import styles from './styles';
 import SearchHeader from '../../components/headers/searchHeader';
@@ -335,20 +335,6 @@ export default class AssigneeField extends Component {
         return list.length ? list : null;
     };
 
-    renderHeaderBottom = () => {
-        return (
-            <LinearGradient
-                colors={['#03F299', '#0089F8']}
-                style={styles.headerBottom}
-                start={{ x: 0.0, y: 1.0 }}
-                end={{ x: 1.0, y: 1.0 }}
-                locations={[0.8, 1]}
-            >
-                <View style={styles.headerBottom} />
-            </LinearGradient>
-        );
-    };
-
     renderHeader = () => {
         const { theme, attributes } = this.props;
         return (
@@ -372,7 +358,7 @@ export default class AssigneeField extends Component {
                 <SearchIcon size={"6"} color={"rgb(0,151,235)"} />
               </TouchableOpacity>
             </View>
-            {this.renderHeaderBottom()}
+            <LinearGradientHeader />
           </View>
         );
     };

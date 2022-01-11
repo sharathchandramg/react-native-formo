@@ -60,7 +60,6 @@ export default class StatusPickerField extends Component {
                 >
                     <TouchableOpacity
                         activeOpacity={1}
-                        onPressOut={() => this.setModalVisible(false)}
                         style={{
                             height: '100%',
                             width: '100%',
@@ -136,6 +135,7 @@ export default class StatusPickerField extends Component {
                         style={{
                             color: theme.inputColorPlaceholder,
                             paddingStart: 5,
+                            fontSize: 18
                         }}
                     >
                         {attributes.label}

@@ -1,6 +1,7 @@
 import React from "react";
 import { View, ArrowBackIcon, Text } from "native-base";
 import { TouchableOpacity } from "react-native";
+import LinearGradientHeader from './linearGradientHeader';
 
 import styles from "../../fields/userDirectory/styles";
 
@@ -21,6 +22,7 @@ const CustomHeader = (props) => {
           <Text style={theme.headerText}>{attributes.label || "Select"}</Text>
         </View>
       </View>
+      <LinearGradientHeader />
     </View>
   );
 };
