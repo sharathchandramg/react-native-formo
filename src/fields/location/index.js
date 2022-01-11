@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Platform, Alert, TouchableOpacity, Linking } from 'react-native';
-import { View, Text, Icon } from 'native-base';
+import { View, Text } from 'native-base';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
-import { isEmpty } from '../../utils/validators';
 
 import {
     getGeoLocation,
     requestLocationPermission,
 } from './../../utils/helper';
-
 import styles from './styles';
+import { isEmpty } from '../../utils/validators';
 import StarIcon from "../../components/starIcon";
 
 const GPS_ALERT_MESSAGE = 'Poor GPS accuracy. Wait until accuracy improves';
@@ -286,7 +286,9 @@ export default class LocationField extends Component {
                     {this.renderPostionUrl(attributes)}
                     <Icon
                       name="sync"
-                      style={{ fontSize: 24, color: "#828282" }}
+                      size={18}
+                      color={"#828282"}
+                      style={{ marginRight: 10 }}
                       onPress={() => {
                         this.setState(
                           { isPickingLocation: true, url: null },
