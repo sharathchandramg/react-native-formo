@@ -207,7 +207,7 @@ export default class StatusPickerField extends Component {
             {Platform.OS !== "ios"
               ? this.renderAndroidPicker(pickerValue)
               : this.renderIOSPicker(isValueValid, defaultValue)}
-            <View>
+            <View style={{ paddingHorizontal: 15 }}>
               <ErrorComponent {...{ attributes, theme }} />
             </View>
           </View>
