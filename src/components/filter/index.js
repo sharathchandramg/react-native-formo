@@ -109,7 +109,8 @@ const FilterComponent = props => {
                                 {
                                     fontSize: 14,
                                     paddingEnd: 5,
-                                    padding: 0
+                                    paddingLeft: 10,
+                                    alignSelf:'flex-start'
                                 },
                             ]}
                         >

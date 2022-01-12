@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         width: '70%',
-        marginHorizontal: 15
+        // marginHorizontal: 15
     },
     filterText: {
         fontSize: 12,
