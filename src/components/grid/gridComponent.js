@@ -98,5 +98,3 @@ const GridComponent= props => {
 };
 
 export default GridComponent;
-
-

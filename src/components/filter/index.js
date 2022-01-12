@@ -35,10 +35,13 @@ const FilterComponent = props => {
                 <TouchableOpacity
                     style={{
                         height: 50,
-                        width: '100%',
-                        justifyContent: 'center',
-                        alignItem: 'center',
-                        flexDirection:'row'
+                        width: '98%',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        flexDirection:'row',
+                        borderBottomColor: "#D9D5DC",
+                        borderBottomWidth: 0.5,
+                        paddingLeft: 10
                     }}
                     key={index}
                     onPress={() => filterFunction(item)}
@@ -48,27 +51,17 @@ const FilterComponent = props => {
                         isChecked={item.selected}
                         colorScheme={'rgb(0,151,235)'}
                     />
-                    <View
-                        style={{
-                            height: 50,
-                            width: '100%',
-                            justifyContent: 'center',
-                            alignItem: 'flex-start',
-                        }}
-                    >
                         <Text
                             style={[
                                 styles.filterText,
                                 {
                                     fontSize: 12,
                                     paddingEnd: 5,
-                                    alignSelf: 'stretch',
                                 },
                             ]}
                         >
                             {attributes.objectType ? item['label'] : item}
                         </Text>
-                    </View>
                 </TouchableOpacity>
             );
         }
@@ -81,7 +74,8 @@ const FilterComponent = props => {
                 extraData={props}
                 keyExtractor={(item, index) => index.toString()}
                 listKey={(item, index) => 'D' + index.toString()}
-                renderItem={this.renderCategoryDataItem}
+                renderItem={renderCategoryDataItem}
+                style={{ width: '100%' }}
             />
         );
     };
@@ -115,7 +109,7 @@ const FilterComponent = props => {
                                 {
                                     fontSize: 14,
                                     paddingEnd: 5,
-                                    alignSelf: 'stretch',
+                                    padding: 0
                                 },
                             ]}
                         >
@@ -134,7 +128,7 @@ const FilterComponent = props => {
                 extraData={props}
                 keyExtractor={(item, index) => index.toString()}
                 listKey={(item, index) => 'D' + index.toString()}
-                renderItem={this.renderCategoryItem}
+                renderItem={renderCategoryItem}
                 style={{ width: '100%' }}
             />
         );
@@ -171,8 +165,8 @@ const FilterComponent = props => {
                 {renderCategory()}
               </View>
               <View style={styles.filterBodyBottomRight}>
-                <View style={styles.searchContainer}>
-                  <SearchIcon size={"6"} color={"grey"} />
+                <View style={[styles.searchContainer,{width:'98%'}]}>
+                  <SearchIcon size={"4"} color={"grey"} />
                   <View style={styles.inputWrapper}>
                     <Input
                       style={[
@@ -200,13 +194,13 @@ const FilterComponent = props => {
     };
 
     return (
-        <View style={styles.modalContent}>
-            <FilterHeader {...props} />
-            <View>
-                <View style={styles.filterContainer}>{renderFilterBody()}</View>
-            </View>
-            <View style={styles.footerWrapper}>{renderfilterBottom()}</View>
+      <View style={styles.modalContent}>
+        <FilterHeader {...props} />
+        <View style={{ flex: 1 }}>
+          <View style={styles.filterContainer}>{renderFilterBody()}</View>
         </View>
+        <View style={styles.footerWrapper}>{renderfilterBottom()}</View>
+      </View>
     );
 };
 

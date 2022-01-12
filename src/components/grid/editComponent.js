@@ -78,5 +78,3 @@ const EditComponent = props => {
 };
 
 export default EditComponent;
-
-
