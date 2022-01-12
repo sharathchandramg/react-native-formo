@@ -195,7 +195,7 @@ export default class PickerField extends Component {
                 
 
         return (
-          <View style={{ paddingHorizontal: 15 }}>
+          <View>
             {Platform.OS !== "ios"
               ? this.renderAndroidPicker(pickerValue)
               : this.renderIOSPicker(isValueValid, defaultValue)}

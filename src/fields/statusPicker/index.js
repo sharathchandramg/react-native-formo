@@ -203,7 +203,7 @@ export default class StatusPickerField extends Component {
         const pickerValue =  this.state.value !== null ? this.state.value : value || defaultValue;
 
         return (
-          <View style={{ paddingHorizontal: 15 }}>
+          <View>
             {Platform.OS !== "ios"
               ? this.renderAndroidPicker(pickerValue)
               : this.renderIOSPicker(isValueValid, defaultValue)}
