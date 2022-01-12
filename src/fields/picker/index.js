@@ -75,6 +75,7 @@ export default class PickerField extends Component {
                         marginTop: 10,
                         marginRight: 20,
                       }}
+                      underlayColor={"#fff"}
                     >
                       <View>
                         <Text style={{ fontSize: 20, color: "rgb(0,151,235)" }}>
@@ -120,7 +121,7 @@ export default class PickerField extends Component {
                             style={{
                                 color: theme.inputColorPlaceholder,
                                 paddingStart: 5,
-                                fontSize: 18
+                                fontSize: 16
                             }}
                         >
                             {attributes.label}
@@ -139,39 +140,47 @@ export default class PickerField extends Component {
     renderAndroidPicker =(pickerValue)=>{
         const { theme, attributes} = this.props;
         return (
-            <View style={{...styles.pickerMainAndroid,...{
-                    backgroundColor: theme.pickerBgColor,
-                    borderBottomColor: theme.inputBorderColor,
-                    borderBottomWidth: theme.borderWidth,
-            }}}>
-            <View style={{ flex: 5, flexDirection:'row', alignItems:'center' }}>
-                {attributes['required'] && <StarIcon required={attributes['required']} />}
-                <Text
-                    style={{
-                        color: theme.inputColorPlaceholder,
-                        paddingStart: 5,
-                        fontSize: 18
-                    }}
-                >
-                    {attributes.label}
-                </Text>
+          <View
+            style={{
+              ...styles.pickerMainAndroid,
+              ...{
+                backgroundColor: theme.pickerBgColor,
+                borderBottomColor: theme.inputBorderColor,
+                borderBottomWidth: theme.borderWidth,
+              },
+            }}
+          >
+            <View
+              style={{ flex: 5, flexDirection: "row", alignItems: "center" }}
+            >
+              {attributes["required"] && (
+                <StarIcon required={attributes["required"]} />
+              )}
+              <Text
+                style={{
+                  color: theme.inputColorPlaceholder,
+                  paddingStart: 5,
+                  fontSize: 16,
+                }}
+              >
+                {attributes.label}
+              </Text>
             </View>
-                <View style={{ flex: 5 }}>
-                    <Picker
-                        style={{ padding: 2 }}
-                        textStyle={{ color: theme.pickerColorSelected }}
-                        iosHeader="Select one"
-                        mode={attributes.mode}
-                        selectedValue={pickerValue}
-                        onValueChange={value => this.handleChange(value)}>
-                        {
-                            attributes.options.map((item, index) => (
-                                <Item key={index} label={item} value={item} />
-                            ))
-                        }
-                    </Picker>
-                </View>
+            <View style={{ flex: 5 }}>
+              <Picker
+                style={{ padding: 2 }}
+                textStyle={{ color: theme.pickerColorSelected }}
+                iosHeader="Select one"
+                mode={attributes.mode}
+                selectedValue={pickerValue}
+                onValueChange={(value) => this.handleChange(value)}
+              >
+                {attributes.options.map((item, index) => (
+                  <Item key={index} label={item} value={item} />
+                ))}
+              </Picker>
             </View>
+          </View>
         );
     }
 
@@ -185,17 +194,15 @@ export default class PickerField extends Component {
         const pickerValue =  this.state.value !== null ? this.state.value : value || defaultValue;
                 
 
-        return(
+        return (
+          <View style={{ paddingHorizontal: 15 }}>
+            {Platform.OS !== "ios"
+              ? this.renderAndroidPicker(pickerValue)
+              : this.renderIOSPicker(isValueValid, defaultValue)}
             <View>
-                {Platform.OS !== "ios"?     
-                    this.renderAndroidPicker(pickerValue)
-                    :
-                    this.renderIOSPicker(isValueValid,defaultValue)
-                }
-                <View style={{ paddingHorizontal: 15 }}>
-                    <ErrorComponent {...{ attributes, theme }} />
-                </View>
+              <ErrorComponent {...{ attributes, theme }} />
             </View>
-        )
+          </View>
+        );
     }
 }

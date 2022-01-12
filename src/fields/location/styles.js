@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         color:  '#ADADAD',
         alignSelf:'flex-start',
         paddingHorizontal:5,
-        fontSize:18
+        fontSize:16
         
     },
     valueContainer:{

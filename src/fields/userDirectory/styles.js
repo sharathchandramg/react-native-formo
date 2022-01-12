@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
         minHeight: 40,
         alignItems: 'flex-start',
         justifyContent: 'center',
-        margin: 15,
+        marginVertical: 10,
         marginHorizontal: 5,
     },
 

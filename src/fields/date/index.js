@@ -194,7 +194,7 @@ export default class DateField extends Component {
             <Text
               style={{
                 flex: 1,
-                color: theme.labelActiveColor,
+                color: theme.inputColorPlaceholder,
                 paddingStart: 5,
                 fontSize: 18,
               }}

@@ -460,7 +460,7 @@ export default class DocumentField extends Component {
                       flex: 1,
                       color: theme.inputColorPlaceholder,
                       paddingStart: 5,
-                      fontSize:18
+                      fontSize:16
                     }}
                   >
                     {attributes.label}

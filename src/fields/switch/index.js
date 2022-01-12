@@ -43,7 +43,7 @@ export default class SwitchField extends Component {
                       <View style={{ flex: 1 }}>
                         <Text
                           style={{
-                            fontSize: 18,
+                            fontSize: 16,
                             color: theme.inputColorPlaceholder,
                             padding: 5,
                           }}

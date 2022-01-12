@@ -83,6 +83,7 @@ export default class StatusPickerField extends Component {
                                         marginTop: 10,
                                         marginRight: 20,
                                     }}
+                                    underlayColor={"#fff"}
                                 >
                                     <View>
                                         <Text style={{ fontSize: 20,color:'rgb(0,151,235)' }}>
@@ -135,7 +136,7 @@ export default class StatusPickerField extends Component {
                         style={{
                             color: theme.inputColorPlaceholder,
                             paddingStart: 5,
-                            fontSize: 18
+                            fontSize: 16
                         }}
                     >
                         {attributes.label}
@@ -169,7 +170,7 @@ export default class StatusPickerField extends Component {
                         style={{
                             color: theme.inputColorPlaceholder,
                             paddingStart: 5,
-                            fontSize: 18
+                            fontSize: 16
                         }}
                     >
                         {attributes.label}
@@ -202,14 +203,14 @@ export default class StatusPickerField extends Component {
         const pickerValue =  this.state.value !== null ? this.state.value : value || defaultValue;
 
         return (
+          <View style={{ paddingHorizontal: 15 }}>
+            {Platform.OS !== "ios"
+              ? this.renderAndroidPicker(pickerValue)
+              : this.renderIOSPicker(isValueValid, defaultValue)}
             <View>
-                {Platform.OS !== 'ios'
-                    ? this.renderAndroidPicker(pickerValue)
-                    : this.renderIOSPicker(isValueValid,defaultValue)}
-                <View style={{ paddingHorizontal: 15 }}>
-                    <ErrorComponent {...{ attributes, theme }} />
-                </View>
+              <ErrorComponent {...{ attributes, theme }} />
             </View>
+          </View>
         );
     }
 }

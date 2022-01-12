@@ -271,12 +271,12 @@ export default class LocationField extends Component {
               }}
             >
               <View style={{ flex: 1 }}>
-                <View>
                   <View
                     style={{
                       borderBottomColor: theme.inputBorderColor,
                       borderBottomWidth: theme.borderWidth,
                       flexDirection: "row",
+                      paddingVertical:5
                     }}
                   >
                     {attributes["required"] && (
@@ -286,7 +286,7 @@ export default class LocationField extends Component {
                     {this.renderPostionUrl(attributes)}
                     <Icon
                       name="sync"
-                      size={18}
+                      size={16}
                       color={"#828282"}
                       style={{ marginRight: 10 }}
                       onPress={() => {
@@ -300,7 +300,6 @@ export default class LocationField extends Component {
                     />
                     {/* {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null} */}
                   </View>
-                </View>
               </View>
             </View>
             <View style={{ paddingHorizontal: 15 }}>
