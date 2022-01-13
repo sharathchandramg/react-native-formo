@@ -423,7 +423,7 @@ export default class AssigneeField extends Component {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
             <View style={styles.container}>
-                <View style={styles.inputLabelWrapper}>
+                <View style={[styles.inputLabelWrapper, { width: '95%' }]}>
                     <TouchableOpacity
                         style={[styles.inputLabel]}
                         error={

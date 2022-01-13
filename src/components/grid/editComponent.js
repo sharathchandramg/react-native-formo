@@ -24,7 +24,7 @@ const EditComponent = props => {
 	renderItemList =(rowData)=>{
         return rowData ? (
             <View style={{ borderBottomWidth: 0, paddingVertical: 5, flex:1, }} >
-                <View style={{marginVertical:20,marginHorizontal:10}}>
+                <View style={{ marginVertical: 20 }}>
                     <Text style={styles.topLabel}>
                         {rowData[0]['rowKey']||''}
                     </Text>
@@ -34,7 +34,7 @@ const EditComponent = props => {
                     const keyboardType =  item['type'] && item['type'].toLowerCase()==='number'? 'numeric': 'default';
                     const editable = !item['editable'] ? item['editable'] : true;
                     return(
-                        <View key ={`${item['rowKey']+""+item['colKey']}`} style={{flex:1,marginBottom:5}}>
+                        <View key={`${item['rowKey'] + "" + item['colKey']}`} style={{ marginBottom: 5 }}>
                             <View style={{height:50}}>
                                 <Input
                                     style={{

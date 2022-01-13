@@ -53,7 +53,7 @@ export default class CustomDataComponent extends Component {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
             <View  style = {styles.container}>
-                <View style = {styles.inputLabelWrapper}>
+                <View style={[styles.inputLabelWrapper, { width: '95%' }]}>
                     <TouchableOpacity
                         style={[styles.inputLabel]}
                         error={
