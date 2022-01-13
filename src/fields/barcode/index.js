@@ -131,7 +131,7 @@ export default class BarcodeField extends Component {
         <View>
           <View
             style={{
-              paddingVertical: 5,
+              paddingVertical: 10,
               paddingHorizontal: 15,
             }}
           >
