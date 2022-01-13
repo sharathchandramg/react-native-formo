@@ -145,7 +145,9 @@ export default class PickerField extends Component {
               ...styles.pickerMainAndroid,
               ...{
                 backgroundColor: theme.pickerBgColor,
-                borderBottomColor: theme.inputBorderColor,
+                borderBottomColor: attributes["error"]
+                  ? theme.errorMsgColor
+                  : theme.inputBorderColor,
                 borderBottomWidth: theme.borderWidth,
               },
             }}

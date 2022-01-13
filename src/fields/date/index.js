@@ -181,7 +181,9 @@ export default class DateField extends Component {
         return (
           <View
             style={{
-              borderBottomColor: theme.inputBorderColor,
+                borderBottomColor: attributes["error"]
+                ? theme.errorMsgColor
+                : theme.inputBorderColor,
               borderBottomWidth: theme.borderWidth,
               flex: 2,
               flexDirection: "row",
@@ -250,7 +252,9 @@ export default class DateField extends Component {
         return (
           <View
             style={{
-              borderBottomColor: theme.inputBorderColor,
+                borderBottomColor: attributes["error"]
+                ? theme.errorMsgColor
+                : theme.inputBorderColor,
               borderBottomWidth: theme.borderWidth,
               flex: 2,
               flexDirection: "row",

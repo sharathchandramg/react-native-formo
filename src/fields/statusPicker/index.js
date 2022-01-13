@@ -154,43 +154,49 @@ export default class StatusPickerField extends Component {
     renderAndroidPicker = pickerValue => {
         const { theme, attributes } = this.props;
         return (
+          <View
+            style={{
+              ...styles.pickerMainAndroid,
+              ...{
+                backgroundColor: theme.pickerBgColor,
+                borderBottomColor: attributes["error"]
+                  ? theme.errorMsgColor
+                  : theme.inputBorderColor,
+                borderBottomWidth: theme.borderWidth,
+              },
+            }}
+          >
             <View
-                style={{
-                    ...styles.pickerMainAndroid,
-                    ...{
-                        backgroundColor: theme.pickerBgColor,
-                        borderBottomColor: theme.inputBorderColor,
-                        borderBottomWidth: theme.borderWidth,
-                    },
-                }}
+              style={{ flex: 5, flexDirection: "row", alignItems: "center" }}
             >
-                <View style={{ flex: 5, flexDirection:'row', alignItems:'center' }}>
-                    {attributes['required'] && <StarIcon required={attributes['required']} />}
-                    <Text
-                        style={{
-                            color: theme.inputColorPlaceholder,
-                            paddingStart: 5,
-                            fontSize: 16
-                        }}
-                    >
-                        {attributes.label}
-                    </Text>
-                </View>
-                <View style={{ flex: 5 }}>
-                    <Picker
-                        style={{ padding: 2 }}
-                        textStyle={{ color: theme.pickerColorSelected }}
-                        iosHeader="Select one"
-                        mode={attributes.mode}
-                        selectedValue={pickerValue}
-                        onValueChange={value => this.handleChange(value)}
-                    >
-                        {attributes.options.map((item, index) => (
-                            <Item key={index} label={item} value={item} />
-                        ))}
-                    </Picker>
-                </View>
+              {attributes["required"] && (
+                <StarIcon required={attributes["required"]} />
+              )}
+              <Text
+                style={{
+                  color: theme.inputColorPlaceholder,
+                  paddingStart: 5,
+                  fontSize: 16,
+                }}
+              >
+                {attributes.label}
+              </Text>
             </View>
+            <View style={{ flex: 5 }}>
+              <Picker
+                style={{ padding: 2 }}
+                textStyle={{ color: theme.pickerColorSelected }}
+                iosHeader="Select one"
+                mode={attributes.mode}
+                selectedValue={pickerValue}
+                onValueChange={(value) => this.handleChange(value)}
+              >
+                {attributes.options.map((item, index) => (
+                  <Item key={index} label={item} value={item} />
+                ))}
+              </Picker>
+            </View>
+          </View>
         );
     };
 

@@ -273,7 +273,9 @@ export default class LocationField extends Component {
               <View style={{ flex: 1 }}>
                   <View
                     style={{
-                      borderBottomColor: theme.inputBorderColor,
+                        borderBottomColor: attributes["error"]
+                        ? theme.errorMsgColor
+                        : theme.inputBorderColor,
                       borderBottomWidth: theme.borderWidth,
                       flexDirection: "row",
                       paddingVertical:5

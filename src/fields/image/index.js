@@ -533,7 +533,9 @@ export default class ImageField extends Component {
               >
                 <View
                   style={{
-                    borderBottomColor: theme.inputBorderColor,
+                    borderBottomColor: attributes["error"]
+                      ? theme.errorMsgColor
+                      : theme.inputBorderColor,
                     borderBottomWidth: theme.borderWidth,
                     flex: 2,
                     flexDirection: "row",
@@ -548,7 +550,7 @@ export default class ImageField extends Component {
                       flex: 1,
                       color: theme.inputColorPlaceholder,
                       paddingStart: 5,
-                      fontSize: 16
+                      fontSize: 16,
                     }}
                   >
                     {attributes.label}

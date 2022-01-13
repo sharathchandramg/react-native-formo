@@ -92,30 +92,38 @@ export default class TextInputField extends Component {
         const inputProps = attributes.props;
         const keyboardType = getKeyboardType(attributes.type);
         return (
-            <Input
-                style={{
-                    ...Platform.select({
-                        ios: {
-                            lineHeight: 30
-                        },
-                        android: {
-                            paddingBottom: 5,
-                            textAlignVertical: 'bottom',
-                        }
-                    })
-                }}
-                ref={c => {
-                    this.textInputCalculated = c;
-                }}
-                keyboardType={keyboardType}
-                underlineColorAndroid="transparent"
-                numberOfLines={2}
-                placeholder={attributes.label}
-                placeholderTextColor={theme.inputColorPlaceholder}
-                editable={attributes.editable}
-                value={this.getCalculatedValue(attributes)}
-                {...inputProps}
-            />
+          <Input
+            style={{
+              borderTopWidth: 0,
+              borderRightWidth: 0,
+              borderLeftWidth: 0,
+              borderBottomColor: attributes["error"]
+                ? theme.errorMsgColor
+                : theme.inputBorderColor,
+              borderBottomWidth: theme.borderWidth,
+              fontSize: 18,
+              ...Platform.select({
+                ios: {
+                  lineHeight: 30,
+                },
+                android: {
+                  paddingBottom: 5,
+                  textAlignVertical: "bottom",
+                },
+              }),
+            }}
+            ref={(c) => {
+              this.textInputCalculated = c;
+            }}
+            keyboardType={keyboardType}
+            underlineColorAndroid="transparent"
+            numberOfLines={2}
+            placeholder={attributes.label}
+            placeholderTextColor={theme.inputColorPlaceholder}
+            editable={attributes.editable}
+            value={this.getCalculatedValue(attributes)}
+            {...inputProps}
+          />
         );
     };
 
@@ -149,7 +157,10 @@ export default class TextInputField extends Component {
               borderTopWidth: 0,
               borderRightWidth: 0,
               borderLeftWidth: 0,
-              borderBottomColor: theme.inputBorderColor,
+              borderBottomColor: attributes["error"]
+                ? theme.errorMsgColor
+                : theme.inputBorderColor,
+              borderBottomWidth: theme.borderWidth,
               fontSize: 18,
               ...Platform.select({
                 ios: {
