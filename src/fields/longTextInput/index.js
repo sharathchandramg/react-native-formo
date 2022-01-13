@@ -1,10 +1,11 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Platform, Animated } from "react-native";
-import { View, Input, Icon } from "native-base";
+import { View, Input } from "native-base";
 import { getKeyboardType } from "./../../utils/helper";
 import { isEmpty } from "./../../utils/validators";
 import StarIcon from "../../components/starIcon";
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 export default class TextInputField extends Component {
   static propTypes = {
@@ -134,20 +135,32 @@ export default class TextInputField extends Component {
     return (
       <View>
         <View
-          style={{ borderBottomWidth: 0, paddingBottom: 5, paddingTop: 15, paddingHorizontal: 15, }}
+          style={{
+            borderBottomWidth: 0,
+            paddingBottom: 5,
+            paddingTop: 15,
+            paddingHorizontal: 15,
+          }}
         >
           <View style={{ flex: 1 }}>
-            <View>
-                <Animated.Text style={this.getLabelStyles()}>
-                  {attributes["required"] && (
-                    <StarIcon required={attributes["required"]} />
-                  )}{" "}
-                  {attributes.label}
-                </Animated.Text>
-                {this.renderInputField(attributes, theme)}
-                {/* {theme.textInputErrorIcon && attributes.error ? (
-                  <Icon name={theme.textInputErrorIcon} />
-                ) : null} */}
+            <View  style={{ flex: 1, position: "relative" }}>
+              <Animated.Text style={this.getLabelStyles()}>
+                {attributes["required"] && (
+                  <StarIcon required={attributes["required"]} />
+                )}{" "}
+                {attributes.label}
+              </Animated.Text>
+              {this.renderInputField(attributes, theme)}
+              {theme.textInputErrorIcon && attributes.error ? (
+                <View style={{ position: "absolute", right: 0, bottom: 10 }}>
+                  <Icon
+                    name={"times-circle"}
+                    size={20}
+                    color={theme.errorMsgColor}
+                    solid
+                  />
+                </View>
+              ) : null}
             </View>
           </View>
         </View>

@@ -2,7 +2,8 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Platform, Animated } from "react-native";
 import math from "mathjs";
-import { View, Input, Icon } from "native-base";
+import { View, Input } from "native-base";
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { getKeyboardType } from "./../../utils/helper";
 import { isEmpty } from "./../../utils/validators";
@@ -223,7 +224,7 @@ export default class TextInputField extends Component {
               }}
             >
               <View style={{ flex: 1 }}>
-                <View>
+                <View style={{ flex: 1, position: "relative" }}>
                   <Animated.Text style={this.getLabelStyles()}>
                     {attributes["required"] && (
                       <StarIcon required={attributes["required"]} />
@@ -234,7 +235,18 @@ export default class TextInputField extends Component {
                   attributes.type === "calculated"
                     ? this.renderCalculatedField(attributes, theme)
                     : this.renderInputField(attributes, theme)}
-                  {/* {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null} */}
+                  {theme.textInputErrorIcon && attributes.error ? (
+                    <View
+                      style={{ position: "absolute", right: 0, bottom: 10 }}
+                    >
+                      <Icon
+                        name={"times-circle"}
+                        size={20}
+                        color={theme.errorMsgColor}
+                        solid
+                      />
+                    </View>
+                  ) : null}
                 </View>
               </View>
             </View>
