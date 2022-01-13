@@ -42,11 +42,10 @@ export default class TextInputField extends Component {
 
   getInputValue = () => {
     const { attributes } = this.props;
-    let value = "";
     if (!isEmpty(attributes["value"])) {
-      value = attributes["value"].toString();
+      return attributes["value"].toString();
     }
-    return value;
+    return "";
   };
 
   renderInputField = (attributes, theme) => {

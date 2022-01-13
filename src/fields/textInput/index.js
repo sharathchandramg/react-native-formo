@@ -46,23 +46,16 @@ export default class TextInputField extends Component {
     getInputValue = () => {
         const { attributes } = this.props;
         if (
-            typeof attributes.type !== 'undefined' &&
-            attributes.type === 'calculated'
+          typeof attributes.type !== "undefined" &&
+          attributes.type === "calculated"
         ) {
-            return this.getCalculatedValue();
-        } else {
-            let value = '';
-            if (attributes['type'] === 'number') {
-                if (!isEmpty(attributes['value'])) {
-                    value = attributes['value'].toString();
-                }
-            } else {
-                if (!isEmpty(attributes['value'])) {
-                    value = attributes['value'].toString();
-                }
-            }
-            return value;
+          return this.getCalculatedValue();
         }
+
+        if (!isEmpty(attributes["value"])) {
+          return attributes["value"].toString();
+        }
+        return "";
     };
 
     getCalculatedValue = attributes => {

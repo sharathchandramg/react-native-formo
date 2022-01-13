@@ -37,7 +37,7 @@
     "lodash": ">=4.17.21",
     "mathjs": ">=9.5.0",
     "moment": ">=2.29.1",
-    "native-base": ">=3.2.2",
+    "native-base": ">=3.3.1",
     "react-native-android-location-enabler": ">=1.2.2",
     "react-native-fast-image": ">=8.3.2",
     "react-native-geolocation-service": ">=5.2.0",
