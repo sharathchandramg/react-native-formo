@@ -195,11 +195,11 @@ export default class PickerField extends Component {
                 
 
         return (
-          <View>
+          <View style={{ paddingHorizontal: 15 }}>
             {Platform.OS !== "ios"
               ? this.renderAndroidPicker(pickerValue)
               : this.renderIOSPicker(isValueValid, defaultValue)}
-            <View style={{ paddingHorizontal: 15 }}>
+            <View>
               <ErrorComponent {...{ attributes, theme }} />
             </View>
           </View>
