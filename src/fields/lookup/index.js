@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { TouchableOpacity, Modal } from 'react-native';
 import _ from 'lodash';
-import { View, Text, Icon, Fab, ArrowForwardIcon } from 'native-base';
+import { View, Text, ArrowForwardIcon } from 'native-base';
 import { RNCamera } from "react-native-camera";
 
 import { isEmpty } from '../../utils/validators';
@@ -855,37 +855,16 @@ export default class LookupField extends Component {
         }
     };
 
-    renderInlineCreationButton = () => {
-        if (
-          this.props.onAddLookup &&
-          typeof this.props.onAddLookup === "function" &&
-          !this.state.searchModalVisible &&
-          !this.state.filterModalVisible
-        ) {
-          return (
-            <Fab
-              colorScheme={"rgb(0,151,235)"}
-              right={10}
-              bottom={10}
-              onPress={() => {
-                this.toggleModalVisible();
-                this.props.onAddLookup(this.props);
-              }}
-              icon={
-                <Icon type="FontAwesome" name="plus" style={{ fontSize: 18 }} />
-              }
-            />
-          );
-        } else {
-          return null;
-        }
-    };
+    onClickInlineCreationButton = () => {
+        this.toggleModalVisible();
+        this.props.onAddLookup(this.props);
+    }
 
     render() {
         const { theme, attributes, ErrorComponent, lookupSearchReq } = this.props;
         return (
           <View style={styles.container}>
-            <View style={[styles.inputLabelWrapper, { width: '95%' }]}>
+            <View style={[styles.inputLabelWrapper, { width: "95%" }]}>
               <TouchableOpacity
                 style={[styles.inputLabel]}
                 error={
@@ -965,13 +944,15 @@ export default class LookupField extends Component {
                         ? this.state.barcodeSearchText
                         : this.state.searchText
                     }
+                    hideInlineCreation={
+                      !isEmpty(attributes) &&
+                      !isEmpty(attributes["additional"]) &&
+                      attributes["additional"]["hide_inline_creation"]
+                    }
+                    onAddLookup={this.props.onAddLookup}
+                    onClickInlineCreationButton={this.onClickInlineCreationButton}
                   />
                 )}
-                {!isEmpty(attributes) &&
-                !isEmpty(attributes["additional"]) &&
-                attributes["additional"]["hide_inline_creation"]
-                  ? null
-                  : this.renderInlineCreationButton()}
               </Modal>
             }
             {this.state.barcodeModalVisible && (
