@@ -143,7 +143,7 @@ export default class TextInputField extends Component {
         >
           <View style={{ flex: 1 }}>
             <View  style={{ flex: 1, position: "relative" }}>
-              <Animated.Text style={this.getLabelStyles()}>
+              <Animated.Text style={this.getLabelStyles()} numberOfLines={1}>
                 {attributes["required"] && (
                   <StarIcon required={attributes["required"]} />
                 )}{" "}
