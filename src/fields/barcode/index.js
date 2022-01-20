@@ -35,7 +35,8 @@ export default class BarcodeField extends Component {
   componentDidUpdate() {
     Animated.timing(this._animatedIsFocused, {
       toValue: this.state.isFocused || !isEmpty(this.getInputValue()) ? 1 : 0,
-      duration: 200,
+      duration: 100,
+      useNativeDriver: false
     }).start();
   }
 

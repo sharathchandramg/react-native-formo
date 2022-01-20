@@ -439,7 +439,7 @@ export default class DocumentField extends Component {
             <View>
               <View
                 style={{
-                  paddingVertical: 5,
+                  height: 50,
                   paddingHorizontal: 15,
                 }}
               >
@@ -451,7 +451,8 @@ export default class DocumentField extends Component {
                     borderBottomWidth: theme.borderWidth,
                     flex: 2,
                     flexDirection: "row",
-                    paddingVertical: 10,
+                    alignItems:'center',
+                    paddingStart: 5,
                   }}
                 >
                   {attributes["required"] && (

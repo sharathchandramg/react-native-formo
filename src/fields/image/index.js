@@ -527,8 +527,8 @@ export default class ImageField extends Component {
             <View>
               <View
                 style={{
-                  paddingVertical: 5,
                   paddingHorizontal: 15,
+                  height: 50,
                 }}
               >
                 <View
@@ -539,7 +539,8 @@ export default class ImageField extends Component {
                     borderBottomWidth: theme.borderWidth,
                     flex: 2,
                     flexDirection: "row",
-                    paddingVertical: 10,
+                    alignItems:'center',
+                    paddingStart: 5,
                   }}
                 >
                   {attributes["required"] && (
@@ -575,6 +576,7 @@ export default class ImageField extends Component {
                   style={{
                     flexDirection: "row",
                     flex: 1,
+                    marginTop: 10
                   }}
                 >
                   {this.renderPreview(attributes)}

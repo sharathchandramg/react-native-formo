@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
         minHeight:80,
         alignItems:'flex-start',
         justifyContent:'center',
-        marginBottom:10,
+        marginVertical:10,
         marginHorizontal:15,
     },
     

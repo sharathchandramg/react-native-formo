@@ -265,9 +265,8 @@ export default class LocationField extends Component {
             <View
               style={{
                 borderBottomWidth: 0,
-                paddingVertical: 5,
-                paddingTop: 15,
                 paddingHorizontal: 15,
+                height: 50
               }}
             >
               <View style={{ flex: 1 }}>
@@ -278,7 +277,9 @@ export default class LocationField extends Component {
                         : theme.inputBorderColor,
                       borderBottomWidth: theme.borderWidth,
                       flexDirection: "row",
-                      paddingVertical:5
+                      height: 50,
+                      alignItems:'center',
+                      paddingStart: 5
                     }}
                   >
                     {attributes["required"] && (

@@ -29,7 +29,8 @@ export default class TextInputField extends Component {
   componentDidUpdate() {
     Animated.timing(this._animatedIsFocused, {
       toValue: this.state.isFocused || !isEmpty(this.getInputValue()) ? 1 : 0,
-      duration: 200,
+      duration: 100,
+      useNativeDriver: false
     }).start();
   }
 
@@ -141,7 +142,6 @@ export default class TextInputField extends Component {
             paddingHorizontal: 15,
           }}
         >
-          <View style={{ flex: 1 }}>
             <View  style={{ flex: 1, position: "relative" }}>
               <Animated.Text style={this.getLabelStyles()} numberOfLines={1}>
                 {attributes["required"] && (
@@ -161,7 +161,6 @@ export default class TextInputField extends Component {
                 </View>
               ) : null}
             </View>
-          </View>
         </View>
         <View style={{ paddingHorizontal: 15 }}>
           <ErrorComponent {...{ attributes, theme }} />

@@ -130,7 +130,7 @@ export default class StatusPickerField extends Component {
                         paddingVertical: 10,
                     }}
                 >
-                <View style={{flexDirection:'row' }}>
+                <View style={{flexDirection:'row', paddingStart: 5 }}>
                     {attributes['required'] && <StarIcon required={attributes['required']} />}
                     <Text
                         style={{
@@ -142,7 +142,7 @@ export default class StatusPickerField extends Component {
                         {attributes.label}
                     </Text>
                 </View>
-                <Text style={{ color: theme.inputColorPlaceholder }}>
+                <Text style={{ color: theme.inputColorPlaceholder, fontSize: 16 }}>
                     {isValueValid ? attributes.value : defaultValue }
                 </Text>
                 </TouchableOpacity>
@@ -167,7 +167,7 @@ export default class StatusPickerField extends Component {
             }}
           >
             <View
-              style={{ flex: 5, flexDirection: "row", alignItems: "center" }}
+              style={{ flex: 5, flexDirection: "row", alignItems: "center", paddingStart: 5, }}
             >
               {attributes["required"] && (
                 <StarIcon required={attributes["required"]} />
@@ -192,7 +192,7 @@ export default class StatusPickerField extends Component {
                 onValueChange={(value) => this.handleChange(value)}
               >
                 {attributes.options.map((item, index) => (
-                  <Item key={index} label={item} value={item} />
+                  <Item key={index} label={item} value={item} style={{ fontSize: 16 }}/>
                 ))}
               </Picker>
             </View>

@@ -318,8 +318,9 @@ export default class SignatureField extends Component {
             <View>
               <View
                 style={{
-                  paddingVertical: 5,
+                  height: 50,
                   paddingHorizontal: 15,
+                  paddingStart: 5
                 }}
               >
                 <View
@@ -330,7 +331,7 @@ export default class SignatureField extends Component {
                     borderBottomWidth: theme.borderWidth,
                     flex: 2,
                     flexDirection: "row",
-                    paddingVertical: 10,
+                    alignItems:'center'
                   }}
                 >
                   {attributes["required"] && (

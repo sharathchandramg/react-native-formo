@@ -32,7 +32,8 @@ export default class TextInputField extends Component {
         Animated.timing(this._animatedIsFocused, {
             toValue:
                 this.state.isFocused || !isEmpty(this.getInputValue()) ? 1 : 0,
-            duration: 200,
+            duration: 100,
+            useNativeDriver: false
         }).start();
     }
 
@@ -88,6 +89,7 @@ export default class TextInputField extends Component {
         return (
           <Input
             style={{
+              height: 60,
               borderTopWidth: 0,
               borderRightWidth: 0,
               borderLeftWidth: 0,
@@ -101,7 +103,6 @@ export default class TextInputField extends Component {
                   lineHeight: 30,
                 },
                 android: {
-                  paddingBottom: 5,
                   textAlignVertical: "bottom",
                 },
               }),
@@ -111,7 +112,6 @@ export default class TextInputField extends Component {
             }}
             keyboardType={keyboardType}
             underlineColorAndroid="transparent"
-            numberOfLines={2}
             placeholder={attributes.label}
             placeholderTextColor={theme.inputColorPlaceholder}
             editable={attributes.editable}
@@ -148,6 +148,7 @@ export default class TextInputField extends Component {
         return (
           <Input
             style={{
+              height: 60,
               borderTopWidth: 0,
               borderRightWidth: 0,
               borderLeftWidth: 0,
@@ -161,7 +162,6 @@ export default class TextInputField extends Component {
                   lineHeight: 30,
                 },
                 android: {
-                  paddingBottom: 5,
                   textAlignVertical: "bottom",
                 },
               }),
@@ -171,7 +171,6 @@ export default class TextInputField extends Component {
             }}
             keyboardType={keyboardType}
             underlineColorAndroid="transparent"
-            numberOfLines={2}
             secureTextEntry={
               attributes.secureTextEntry || attributes.type === "password"
             }
@@ -211,12 +210,9 @@ export default class TextInputField extends Component {
             <View
               style={{
                 borderBottomWidth: 0,
-                paddingBottom: 5,
-                paddingVertical: 5,
                 paddingHorizontal: 15,
               }}
             >
-              <View style={{ flex: 1 }}>
                 <View style={{ flex: 1, position: "relative" }}>
                   <Animated.Text style={this.getLabelStyles()} numberOfLines={1}>
                     {attributes["required"] && (
@@ -240,7 +236,6 @@ export default class TextInputField extends Component {
                       />
                     </View>
                   ) : null}
-                </View>
               </View>
             </View>
             <View style={{ paddingHorizontal: 15 }}>

@@ -24,9 +24,8 @@ export default class SwitchField extends Component {
                 <View
                   style={{
                     borderBottomWidth: 0,
-                    paddingVertical: 5,
-                    paddingTop: 15,
                     paddingHorizontal: 15,
+                    height: 50,
                   }}
                 >
                   <View style={{ flex: 1 }}>
@@ -37,6 +36,9 @@ export default class SwitchField extends Component {
                           : theme.inputBorderColor,
                         borderBottomWidth: theme.borderWidth,
                         flexDirection: "row",
+                        alignItems:'center',
+                        height:'100%',
+                        paddingStart: 5
                       }}
                     >
                       {attributes["required"] && (
@@ -46,8 +48,7 @@ export default class SwitchField extends Component {
                         <Text
                           style={{
                             fontSize: 16,
-                            color: theme.inputColorPlaceholder,
-                            padding: 5,
+                            color: theme.inputColorPlaceholder
                           }}
                         >
                           {attributes.label}
