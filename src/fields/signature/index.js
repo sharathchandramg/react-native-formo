@@ -319,7 +319,7 @@ export default class SignatureField extends Component {
               <View
                 style={{
                   height: 50,
-                  paddingHorizontal: 15,
+                  marginHorizontal: 15,
                   paddingStart: 5
                 }}
               >
