@@ -7,7 +7,7 @@ import {
     Dimensions,
     Modal,
 } from 'react-native';
-import { View, ListItem, Text, Item } from 'native-base';
+import { View, Text } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './styles';
 import FastImage from 'react-native-fast-image';
@@ -56,7 +56,7 @@ export default class SignatureField extends Component {
                 handleDocumentUpdateAndDownload(
                     attributes,
                     value,
-                    (actionType = 'read'),
+                    'read',
                     this.isFirstTime
                 );
                 this.isFirstTime = false;
@@ -165,7 +165,7 @@ export default class SignatureField extends Component {
                         base64_data: result['encoded'],
                     },
                 ],
-                (actionType = 'write')
+                 'write'
             );
         }
     };
@@ -314,82 +314,83 @@ export default class SignatureField extends Component {
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
+          <View>
             <View>
-                <View>
-                    <ListItem
-                        style={{
-                            borderBottomWidth: 0,
-                            paddingVertical: 5,
-                            marginLeft: 20,
-                        }}
-                    >
-                        <View style={{ flexDirection: 'row', flex: 2 }}>
-                            <Item
-                                error={
-                                    theme.changeTextInputColorOnError
-                                        ? attributes.error
-                                        : null
-                                }
-                                style={{ paddingVertical: 10 }}
-                            >
-                                {attributes['required'] && (
-                                    <StarIcon
-                                        required={attributes['required']}
-                                    />
-                                )}
-                                <Text
-                                    style={{
-                                        flex: 1,
-                                        color: theme.inputColorPlaceholder,
-                                        paddingStart: 5,
-                                    }}
-                                >
-                                    {attributes.label}
-                                </Text>
-                                <TouchableOpacity
-                                    style={{
-                                        flexDirection: 'row',
-                                        flex: 1,
-                                    }}
-                                    onPress={() =>
-                                        this.setState({
-                                            openImageModal: true,
-                                            viewMode: 'portrait',
-                                        })
-                                    }
-                                >
-                                    {this.renderAddImageIcon()}
-                                </TouchableOpacity>
-                            </Item>
-                        </View>
-                    </ListItem>
-                    {this.checkImageData() ? (
-                        <View
-                            style={{
-                                flexDirection: 'row',
-                                flex: 1,
-                            }}
-                        >
-                            {this.renderPreview(attributes)}
-                        </View>
-                    ) : null}
+              <View
+                style={{
+                  height: 50,
+                  marginHorizontal: 15,
+                  paddingStart: 5
+                }}
+              >
+                <View
+                  style={{
+                    borderBottomColor: attributes["error"]
+                      ? theme.errorMsgColor
+                      : theme.inputBorderColor,
+                    borderBottomWidth: theme.borderWidth,
+                    flex: 2,
+                    flexDirection: "row",
+                    alignItems:'center'
+                  }}
+                >
+                  {attributes["required"] && (
+                    <StarIcon required={attributes["required"]} />
+                  )}
+                  <Text
+                    style={{
+                      flex: 1,
+                      color: theme.inputColorPlaceholder,
+                      paddingStart: 5,
+                      fontSize: 16,
+                    }}
+                  >
+                    {attributes.label}
+                  </Text>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: "row",
+                      flex: 1,
+                    }}
+                    onPress={() =>
+                      this.setState({
+                        openImageModal: true,
+                        viewMode: "portrait",
+                      })
+                    }
+                  >
+                    {this.renderAddImageIcon()}
+                  </TouchableOpacity>
+                </View>
+              </View>
+              {this.checkImageData() ? (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    flex: 1,
+                    paddingTop: 10,
+                  }}
+                >
+                  {this.renderPreview(attributes)}
+                </View>
+              ) : null}
 
-                    {this.state.openImageModal && (
-                        <Modal
-                            isVisible={this.state.openImageModal}
-                            animationType={'fade'}
-                            transparent={true}
-                            onRequestClose={() => this.closeImageModalView()}
-                            onPressOut={() => this.closeImageModalView()}
-                        >
-                            {this.renderModalContent(this.state.imgDetails)}
-                        </Modal>
-                    )}
-                </View>
-                <View style={{ paddingHorizontal: 15 }}>
-                    <ErrorComponent {...{ attributes, theme }} />
-                </View>
+              {this.state.openImageModal && (
+                <Modal
+                  isVisible={this.state.openImageModal}
+                  animationType={"fade"}
+                  transparent={true}
+                  onRequestClose={() => this.closeImageModalView()}
+                  onPressOut={() => this.closeImageModalView()}
+                >
+                  {this.renderModalContent(this.state.imgDetails)}
+                </Modal>
+              )}
             </View>
+            <View style={{ paddingHorizontal: 15 }}>
+              <ErrorComponent {...{ attributes, theme }} />
+            </View>
+          </View>
         );
     }
 }

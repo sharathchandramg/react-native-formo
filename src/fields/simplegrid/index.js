@@ -4,7 +4,7 @@ import {TouchableOpacity, Modal } from "react-native";
 import {
     View,
     Text,
-    Icon,
+    ArrowForwardIcon,
 } from "native-base";
 import _ from 'lodash';
 import styles from "./styles"
@@ -205,10 +205,7 @@ export default class SimpleGrideView extends Component {
                 style={styles.iconWrapper}
                 onPress={() => this.toggleModal()}
             >
-                <Icon
-                    name="ios-arrow-forward"
-                    style={styles.iconStyle}
-                />
+                <ArrowForwardIcon size={"6"} color={'#41E1FD'}/>
             </TouchableOpacity>
         );
     };
@@ -368,7 +365,7 @@ export default class SimpleGrideView extends Component {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
             <View  style = {styles.container}>
-                <View style = {styles.inputLabelWrapper}>
+                <View style={[styles.inputLabelWrapper, { width: '95%' }]}>
                     <TouchableOpacity
                         style={[styles.inputLabel]}
                         error={

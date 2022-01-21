@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { TouchableOpacity, Animated, Modal, Platform } from "react-native";
-import { View, ListItem, Text, Item } from "native-base";
+import { View, Text } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { RNCamera } from "react-native-camera";
 import _ from "lodash";
@@ -35,7 +35,8 @@ export default class BarcodeField extends Component {
   componentDidUpdate() {
     Animated.timing(this._animatedIsFocused, {
       toValue: this.state.isFocused || !isEmpty(this.getInputValue()) ? 1 : 0,
-      duration: 200,
+      duration: 300,
+      useNativeDriver: false
     }).start();
   }
 
@@ -129,38 +130,40 @@ export default class BarcodeField extends Component {
     return (
       <View>
         <View>
-          <ListItem
+          <View
             style={{
-              borderBottomWidth: 0,
-              paddingVertical: 5,
-              marginLeft: 20,
+              paddingVertical: 10,
+              paddingHorizontal: 15,
             }}
           >
-            <View style={{ flexDirection: "row", flex: 2 }}>
-              <Item
-                error={
-                  theme.changeTextInputColorOnError ? attributes.error : null
-                }
-                style={{ paddingVertical: 10 }}
+            <View
+              style={{
+                borderBottomColor: attributes["error"]
+                  ? theme.errorMsgColor
+                  : theme.inputBorderColor,
+                borderBottomWidth: theme.borderWidth,
+                flex: 2,
+                flexDirection: "row",
+                paddingVertical: 10,
+              }}
+            >
+              <Animated.Text style={this.getLabelStyles()} numberOfLines={1}>
+                {attributes["required"] && (
+                  <StarIcon required={attributes["required"]} />
+                )}{" "}
+                {attributes.label}
+              </Animated.Text>
+              <TouchableOpacity
+                style={{
+                  flexDirection: "row",
+                  flex: 1,
+                }}
+                onPress={() => this.setState({ openModal: true })}
               >
-                <Animated.Text style={this.getLabelStyles()}>
-                  {attributes["required"] && (
-                    <StarIcon required={attributes["required"]} />
-                  )}{" "}
-                  {attributes.label}
-                </Animated.Text>
-                <TouchableOpacity
-                  style={{
-                    flexDirection: "row",
-                    flex: 1,
-                  }}
-                  onPress={() => this.setState({ openModal: true })}
-                >
-                  {this.renderAddImageIcon()}
-                </TouchableOpacity>
-              </Item>
+                {this.renderAddImageIcon()}
+              </TouchableOpacity>
             </View>
-          </ListItem>
+          </View>
           {this.state.openModal && (
             <Modal
               isVisible={this.state.openModal}

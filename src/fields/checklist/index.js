@@ -1,35 +1,29 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Modal, TouchableOpacity } from "react-native";
-const _ = require("lodash");
-import { isEmpty } from "../../utils/validators";
 import {
   View,
   Text,
-  Container,
-  Header,
-  Content,
-  ListItem,
-  CheckBox,
-  Left,
-  Right,
-  Icon,
-  Body,
-  Title,
-  Button,
-  Footer
+  ArrowBackIcon,
+  ArrowForwardIcon,
+  SearchIcon,
+  Checkbox
 } from "native-base";
 
+import { isEmpty } from "../../utils/validators";
 import StarIcon from "../../components/starIcon";
+import LinearGradientHeader from './../../components/headers/linearGradientHeader';
 import SearchHeader from "../../components/headers/searchHeader";
 import styles from "./styles";
+
+const _ = require("lodash");
 
 export default class ChecklistField extends Component {
   static propTypes = {
     attributes: PropTypes.object,
     updateValue: PropTypes.func,
     theme: PropTypes.object,
-    ErrorComponent: PropTypes.func
+    ErrorComponent: PropTypes.func,
   };
 
   constructor(props) {
@@ -42,7 +36,7 @@ export default class ChecklistField extends Component {
       newSelected: null,
       options: [],
       searchModalVisible: false,
-      searchText: ""
+      searchText: "",
     };
   }
 
@@ -51,7 +45,7 @@ export default class ChecklistField extends Component {
     this.setLocalOptions(attributes["options"]);
   }
 
-  setLocalOptions = options => {
+  setLocalOptions = (options) => {
     if (!isEmpty(options)) {
       this.setState({ options: options, copyOptions: options });
     }
@@ -71,13 +65,13 @@ export default class ChecklistField extends Component {
       const attributes = this.props.attributes;
       if (!isEmpty(attributes) && !isEmpty(attributes["value"])) {
         this.setState({
-          newSelected: attributes["value"]
+          newSelected: attributes["value"],
         });
       }
     }
     this.setState({
       modalVisible: !this.state.modalVisible,
-      searchText: ""
+      searchText: "",
     });
   }
 
@@ -86,7 +80,9 @@ export default class ChecklistField extends Component {
     let newSelected = attributes.value || [];
 
     const index = attributes.objectType
-      ? newSelected.findIndex(option => option === value[attributes.primaryKey])
+      ? newSelected.findIndex(
+          (option) => option === value[attributes.primaryKey]
+        )
       : newSelected.indexOf(value);
 
     if (index === -1) {
@@ -98,7 +94,7 @@ export default class ChecklistField extends Component {
     this.setState(
       {
         modalVisible: this.state.modalVisible,
-        newSelected: newSelected
+        newSelected: newSelected,
       },
       () => this.props.updateValue(this.props.attributes.name, newSelected)
     );
@@ -110,15 +106,15 @@ export default class ChecklistField extends Component {
       searchModalVisible: !this.state.searchModalVisible,
       modalVisible: true,
       searchText: "",
-      options: attributes["options"]
+      options: attributes["options"],
     });
   };
 
-  handleTextChange = searchText => {
+  handleTextChange = (searchText) => {
     let options = [];
     const { attributes } = this.props;
     if (searchText) {
-      options = _.filter(attributes.options, item => {
+      options = _.filter(attributes.options, (item) => {
         let sItem =
           item[attributes.labelKey]
             .toString()
@@ -133,7 +129,7 @@ export default class ChecklistField extends Component {
     }
     this.setState({
       searchText: searchText,
-      options: options
+      options: options,
     });
   };
 
@@ -141,9 +137,9 @@ export default class ChecklistField extends Component {
     const { attributes } = this.props;
     let label = "None";
     if (!isEmpty(attributes["value"])) {
-      const labelKeyArr = attributes["value"].map(obj => {
+      const labelKeyArr = attributes["value"].map((obj) => {
         const optionObj = _.find(attributes.options, {
-          [attributes.primaryKey]: obj
+          [attributes.primaryKey]: obj,
         });
         const labelKey = attributes.objectType
           ? optionObj[attributes.labelKey]
@@ -164,7 +160,7 @@ export default class ChecklistField extends Component {
         style={styles.iconWrapper}
         onPress={() => this.toggleModalVisible()}
       >
-        <Icon name="ios-arrow-forward" style={styles.iconStyle} />
+        <ArrowForwardIcon size={"6"} color={'#41E1FD'}/>
       </TouchableOpacity>
     );
   };
@@ -172,98 +168,109 @@ export default class ChecklistField extends Component {
   renderHeader = () => {
     const { theme, attributes } = this.props;
     return (
-      <Header style={[theme.header]} androidStatusBarColor="#c8c8c8">
-        <Left>
-          <Button transparent onPress={() => this.toggleModalVisible()}>
-            <Icon name="arrow-back" style={theme.headerLeftIcon} />
-          </Button>
-        </Left>
-        <Body>
-          <Title style={theme.headerText}>{attributes.label || "Select"}</Title>
-        </Body>
-        <Right>
-          <Button transparent onPress={() => this.toggleSearchModalVisible()}>
-            <Icon
-              name="search"
-              style={[theme.headerLeftIcon, { fontSize: 18 }]}
-              type="FontAwesome"
-            />
-          </Button>
-        </Right>
-      </Header>
+      <View style={styles.headerWrapper}>
+        <View style={styles.header}>
+          <TouchableOpacity
+            style={styles.headerLeft}
+            onPress={() => this.toggleModalVisible()}
+          >
+            <ArrowBackIcon size={"6"} color={"rgb(0,151,235)"} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.headerCenter}>
+            <Text style={theme.headerText}>{attributes.label || "Select"}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.headerCenterIconView}
+            onPress={() => this.toggleSearchModalVisible()}
+          >
+            <SearchIcon size={"6"} color={"rgb(0,151,235)"} />
+          </TouchableOpacity>
+        </View>
+        <LinearGradientHeader />
+      </View>
     );
   };
 
   renderContent = () => {
     const { attributes } = this.props;
     return (
-      <Content>
+      <View>
         {!isEmpty(this.state.options) &&
           this.state.options.map((item, index) => {
             let isSelected = false;
             isSelected = attributes.objectType
               ? attributes.value &&
                 attributes.value.findIndex(
-                  option => option === item[attributes.primaryKey]
+                  (option) => option === item[attributes.primaryKey]
                 ) !== -1
               : attributes.value && attributes.value.indexOf(item) !== -1;
             return (
-              <ListItem key={index} onPress={() => this.toggleSelect(item)}>
-                <CheckBox
+              <TouchableOpacity
+                key={index}
+                onPress={() => this.toggleSelect(item)}
+                style={{
+                  height: 50,
+                  marginHorizontal: 20,
+                  borderBottomWidth: 1,
+                  borderBottomColor: "rgb(230, 230, 230)",
+                  alignItems: "center",
+                  flexDirection: "row",
+                }}
+              >
+                <Checkbox
                   onPress={() => this.toggleSelect(item)}
-                  checked={isSelected}
+                  isChecked={isSelected}
+                  colorScheme={"rgb(0,151,235)"}
                 />
-                <Body>
+                <View>
                   <Text style={{ paddingHorizontal: 5 }}>
                     {attributes.objectType ? item[attributes.labelKey] : item}
                   </Text>
-                </Body>
-              </ListItem>
+                </View>
+              </TouchableOpacity>
             );
           })}
-      </Content>
+      </View>
     );
   };
 
-  renderFotter = () => {
+  renderFooter = () => {
     const { attributes } = this.props;
     if (attributes) {
       return (
-        <Footer style={styles.button}>
+        <View style={styles.footerWrapper}>
           <TouchableOpacity
             style={styles.button}
             onPress={() => this.handleAddPressed()}
           >
             <Text style={styles.buttonText}>{"Add"} </Text>
           </TouchableOpacity>
-        </Footer>
+        </View>
       );
     }
     return null;
   };
 
   renderComponent = () => {
-    const { theme } = this.props;
     if (this.state.searchModalVisible) {
       return (
-        <Container style={{ flex: 1 }}>
+        <View style={styles.modalContent}>
           <SearchHeader
             toggleSearchModalVisible={this.toggleSearchModalVisible}
             handleOnSearchQuery={this.handleTextChange}
             handleTextChange={this.handleTextChange}
-            theme={theme}
             searchText={this.state.searchText}
           />
           {this.renderContent()}
-        </Container>
+        </View>
       );
     } else {
       return (
-        <Container style={{ flex: 1 }}>
+        <View style={styles.modalContent}>
           {this.renderHeader()}
           {this.renderContent()}
-          {this.renderFotter()}
-        </Container>
+          {this.renderFooter()}
+        </View>
       );
     }
   };
@@ -272,7 +279,7 @@ export default class ChecklistField extends Component {
     const { theme, attributes, ErrorComponent } = this.props;
     return (
       <View style={styles.container}>
-        <View style={styles.inputLabelWrapper}>
+        <View style={[styles.inputLabelWrapper, { width: '95%' }]}>
           <TouchableOpacity
             style={[styles.inputLabel]}
             error={theme.changeTextInputColorOnError ? attributes.error : null}

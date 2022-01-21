@@ -5,17 +5,14 @@ import _ from 'lodash';
 import FilterHeader from '../headers/filterHeader';
 
 import {
-    Container,
-    Content,
-    Footer,
     View,
     Text,
-    ListItem,
-    CheckBox,
-    Icon,
+    Checkbox,
     Button,
     Input,
+    SearchIcon
 } from 'native-base';
+import { TouchableOpacity } from "react-native";
 
 import styles from './styles';
 
@@ -35,42 +32,37 @@ const FilterComponent = props => {
     renderCategoryDataItem = ({ item, index }) => {
         if (!isEmpty(item) && !isEmpty(activeCategory)) {
             return (
-                <ListItem
+                <TouchableOpacity
                     style={{
                         height: 50,
-                        width: '100%',
-                        justifyContent: 'center',
-                        alignItem: 'flex-start',
+                        width: '98%',
+                        justifyContent: 'flex-start',
+                        alignItems: 'center',
+                        flexDirection:'row',
+                        borderBottomColor: "#D9D5DC",
+                        borderBottomWidth: 0.5,
+                        paddingLeft: 10
                     }}
                     key={index}
                     onPress={() => filterFunction(item)}
                 >
-                    <CheckBox
+                    <Checkbox
                         onPress={() => filterFunction(item)}
-                        checked={item.selected}
+                        isChecked={item.selected}
+                        colorScheme={'rgb(0,151,235)'}
                     />
-                    <View
-                        style={{
-                            height: 50,
-                            width: '100%',
-                            justifyContent: 'center',
-                            alignItem: 'flex-start',
-                        }}
-                    >
                         <Text
                             style={[
                                 styles.filterText,
                                 {
                                     fontSize: 12,
                                     paddingEnd: 5,
-                                    alignSelf: 'stretch',
                                 },
                             ]}
                         >
                             {attributes.objectType ? item['label'] : item}
                         </Text>
-                    </View>
-                </ListItem>
+                </TouchableOpacity>
             );
         }
     };
@@ -82,7 +74,8 @@ const FilterComponent = props => {
                 extraData={props}
                 keyExtractor={(item, index) => index.toString()}
                 listKey={(item, index) => 'D' + index.toString()}
-                renderItem={this.renderCategoryDataItem}
+                renderItem={renderCategoryDataItem}
+                style={{ width: '100%' }}
             />
         );
     };
@@ -90,7 +83,7 @@ const FilterComponent = props => {
     renderCategoryItem = ({ item, index }) => {
         if (!isEmpty(item) && !isEmpty(activeCategory)) {
             return (
-                <ListItem
+                <TouchableOpacity
                     style={[
                         styles.filterCategoryItem,
                         {
@@ -116,14 +109,15 @@ const FilterComponent = props => {
                                 {
                                     fontSize: 14,
                                     paddingEnd: 5,
-                                    alignSelf: 'stretch',
+                                    paddingLeft: 10,
+                                    alignSelf:'flex-start'
                                 },
                             ]}
                         >
                             {item['label']}
                         </Text>
                     </View>
-                </ListItem>
+                </TouchableOpacity>
             );
         }
     };
@@ -135,7 +129,7 @@ const FilterComponent = props => {
                 extraData={props}
                 keyExtractor={(item, index) => index.toString()}
                 listKey={(item, index) => 'D' + index.toString()}
-                renderItem={this.renderCategoryItem}
+                renderItem={renderCategoryItem}
                 style={{ width: '100%' }}
             />
         );
@@ -166,46 +160,48 @@ const FilterComponent = props => {
 
     renderFilterBody = () => {
         return (
-            <View style={styles.filterBody}>
-                <View style={styles.filterBodyBottom}>
-                    <View style={styles.filterBodyBottomLeft}>
-                        {renderCategory()}
-                    </View>
-                    <View style={styles.filterBodyBottomRight}>
-                        <View style={styles.searchContainer}>
-                            <Icon
-                                name="search"
-                                style={{ color: 'grey', fontSize: 16 }}
-                                type="FontAwesome"
-                            />
-                            <View style={styles.inputWrapper}>
-                                <Input
-                                    style={styles.inputText}
-                                    placeholder={'Search'}
-                                    value={searchText}
-                                    onChangeText={text =>
-                                        handleTextChange(text)
-                                    }
-                                />
-                            </View>
-                        </View>
-                        {filterData && filterData.length > 0
-                            ? renderCategoryData()
-                            : null}
-                    </View>
+          <View style={styles.filterBody}>
+            <View style={styles.filterBodyBottom}>
+              <View style={styles.filterBodyBottomLeft}>
+                {renderCategory()}
+              </View>
+              <View style={styles.filterBodyBottomRight}>
+                <View style={[styles.searchContainer,{width:'98%'}]}>
+                  <SearchIcon size={"4"} color={"grey"} />
+                  <View style={styles.inputWrapper}>
+                    <Input
+                      style={[
+                        styles.inputText,
+                        {
+                          borderTopWidth: 0,
+                          borderLeftWidth: 0,
+                          borderRightWidth: 0,
+                          borderBottomWidth: 0,
+                        },
+                      ]}
+                      placeholder={"Search"}
+                      value={searchText}
+                      onChangeText={(text) => handleTextChange(text)}
+                    />
+                  </View>
                 </View>
+                {filterData && filterData.length > 0
+                  ? renderCategoryData()
+                  : null}
+              </View>
             </View>
+          </View>
         );
     };
 
     return (
-        <Container style={{ flex: 1 }}>
-            <FilterHeader {...props} />
-            <Content>
-                <View style={styles.filterContainer}>{renderFilterBody()}</View>
-            </Content>
-            <Footer style={styles.button}>{renderfilterBottom()}</Footer>
-        </Container>
+      <View style={styles.modalContent}>
+        <FilterHeader {...props} />
+        <View style={{ flex: 1 }}>
+          <View style={styles.filterContainer}>{renderFilterBody()}</View>
+        </View>
+        <View style={styles.footerWrapper}>{renderfilterBottom()}</View>
+      </View>
     );
 };
 

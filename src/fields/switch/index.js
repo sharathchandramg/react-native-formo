@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { View, Text, Switch ,Item,Icon, ListItem} from "native-base";
+import { View, Text, Switch, Icon} from "native-base";
 import StarIcon from "../../components/starIcon"
 
 export default class SwitchField extends Component {
@@ -20,30 +20,53 @@ export default class SwitchField extends Component {
     render() {
         const { attributes, theme, ErrorComponent } = this.props;
             return (
-                <View>
-                    <ListItem style={{ borderBottomWidth: 0, paddingVertical: 5 }}>
-                        <View style={{ flex: 1}}>
-                            <View>
-                                <Item error={theme.changeTextInputColorOnError ? attributes.error : null}>
-                                    {attributes['required'] && <StarIcon required={attributes['required']} />}
-                                    <View style={{flex:1 }}>
-                                        <Text style={{ color:theme.inputColorPlaceholder,padding:5 }}>
-                                            {attributes.label}
-                                        </Text>
-                                    </View>
-                                    <Switch
-                                        onTrackColor={"blue"}
-                                        onValueChange={value => this.handleChange(value)}
-                                        value={attributes.value} />
-                                    {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null}
-                                </Item>
-                            </View>
-                        </View>
-                    </ListItem>
-                    <View style={{ paddingHorizontal: 15 }}>
-                        <ErrorComponent {...{ attributes, theme }} />
+              <View>
+                <View
+                  style={{
+                    borderBottomWidth: 0,
+                    paddingHorizontal: 15,
+                    height: 50,
+                  }}
+                >
+                  <View style={{ flex: 1 }}>
+                    <View
+                      style={{
+                        borderBottomColor: attributes["error"]
+                          ? theme.errorMsgColor
+                          : theme.inputBorderColor,
+                        borderBottomWidth: theme.borderWidth,
+                        flexDirection: "row",
+                        alignItems:'center',
+                        height:'100%',
+                        paddingStart: 5
+                      }}
+                    >
+                      {attributes["required"] && (
+                        <StarIcon required={attributes["required"]} />
+                      )}
+                      <View style={{ flex: 1 }}>
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            color: theme.inputColorPlaceholder
+                          }}
+                        >
+                          {attributes.label}
+                        </Text>
+                      </View>
+                      <Switch
+                        onTrackColor={"blue"}
+                        onValueChange={(value) => this.handleChange(value)}
+                        value={attributes.value}
+                      />
+                      {/* {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null} */}
                     </View>
+                  </View>
                 </View>
+                <View style={{ paddingHorizontal: 15 }}>
+                  <ErrorComponent {...{ attributes, theme }} />
+                </View>
+              </View>
             );
     }
 }

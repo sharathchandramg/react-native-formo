@@ -1,8 +1,10 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Platform, Animated } from "react-native";
-import math from "mathjs"
-import { View, Item, Input, Icon, ListItem } from "native-base";
+import math from "mathjs";
+import { View, Input } from "native-base";
+import Icon from 'react-native-vector-icons/FontAwesome5';
+
 import { getKeyboardType } from "./../../utils/helper";
 import { isEmpty } from "./../../utils/validators";
 import StarIcon from "../../components/starIcon";
@@ -30,7 +32,8 @@ export default class TextInputField extends Component {
         Animated.timing(this._animatedIsFocused, {
             toValue:
                 this.state.isFocused || !isEmpty(this.getInputValue()) ? 1 : 0,
-            duration: 200,
+            duration: 300,
+            useNativeDriver: false
         }).start();
     }
 
@@ -44,23 +47,16 @@ export default class TextInputField extends Component {
     getInputValue = () => {
         const { attributes } = this.props;
         if (
-            typeof attributes.type !== 'undefined' &&
-            attributes.type === 'calculated'
+          typeof attributes.type !== "undefined" &&
+          attributes.type === "calculated"
         ) {
-            return this.getCalculatedValue();
-        } else {
-            let value = '';
-            if (attributes['type'] === 'number') {
-                if (!isEmpty(attributes['value'])) {
-                    value = attributes['value'].toString();
-                }
-            } else {
-                if (!isEmpty(attributes['value'])) {
-                    value = attributes['value'].toString();
-                }
-            }
-            return value;
+          return this.getCalculatedValue();
         }
+
+        if (!isEmpty(attributes["value"])) {
+          return attributes["value"].toString();
+        }
+        return "";
     };
 
     getCalculatedValue = attributes => {
@@ -91,30 +87,37 @@ export default class TextInputField extends Component {
         const inputProps = attributes.props;
         const keyboardType = getKeyboardType(attributes.type);
         return (
-            <Input
-                style={{
-                    ...Platform.select({
-                        ios: {
-                            lineHeight: 30
-                        },
-                        android: {
-                            paddingBottom: 5,
-                            textAlignVertical: 'bottom',
-                        }
-                    })
-                }}
-                ref={c => {
-                    this.textInputCalculated = c;
-                }}
-                keyboardType={keyboardType}
-                underlineColorAndroid="transparent"
-                numberOfLines={2}
-                placeholder={attributes.label}
-                placeholderTextColor={theme.inputColorPlaceholder}
-                editable={attributes.editable}
-                value={this.getCalculatedValue(attributes)}
-                {...inputProps}
-            />
+          <Input
+            style={{
+              height: 60,
+              borderTopWidth: 0,
+              borderRightWidth: 0,
+              borderLeftWidth: 0,
+              borderBottomColor: attributes["error"]
+                ? theme.errorMsgColor
+                : theme.inputBorderColor,
+              borderBottomWidth: theme.borderWidth,
+              fontSize: 18,
+              ...Platform.select({
+                ios: {
+                  lineHeight: 30,
+                },
+                android: {
+                  textAlignVertical: "bottom",
+                },
+              }),
+            }}
+            ref={(c) => {
+              this.textInputCalculated = c;
+            }}
+            keyboardType={keyboardType}
+            underlineColorAndroid="transparent"
+            placeholder={attributes.label}
+            placeholderTextColor={theme.inputColorPlaceholder}
+            editable={attributes.editable}
+            value={this.getCalculatedValue(attributes)}
+            {...inputProps}
+          />
         );
     };
 
@@ -143,31 +146,42 @@ export default class TextInputField extends Component {
         }
 
         return (
-            <Input
-                style={{
-                    ...Platform.select({
-                        ios: {
-                            lineHeight: 30
-                        },
-                        android: {
-                            paddingBottom: 5,
-                            textAlignVertical: 'bottom',
-                        }
-                    })
-                }}
-                ref={c => { this.textInput = c; }}
-                keyboardType={keyboardType}
-                underlineColorAndroid="transparent"
-                numberOfLines={2}
-                secureTextEntry={attributes.secureTextEntry || attributes.type === "password"}
-                blurOnSubmit={false}
-                editable={attributes.editable}
-                onChangeText={text => this.handleChange(text)}
-                value={value}
-                onFocus={this.handleFocus}
-                onBlur={this.handleBlur}
-                {...inputProps}
-            />
+          <Input
+            style={{
+              height: 60,
+              borderTopWidth: 0,
+              borderRightWidth: 0,
+              borderLeftWidth: 0,
+              borderBottomColor: attributes["error"]
+                ? theme.errorMsgColor
+                : theme.inputBorderColor,
+              borderBottomWidth: theme.borderWidth,
+              fontSize: 18,
+              ...Platform.select({
+                ios: {
+                  lineHeight: 30,
+                },
+                android: {
+                  textAlignVertical: "bottom",
+                },
+              }),
+            }}
+            ref={(c) => {
+              this.textInput = c;
+            }}
+            keyboardType={keyboardType}
+            underlineColorAndroid="transparent"
+            secureTextEntry={
+              attributes.secureTextEntry || attributes.type === "password"
+            }
+            blurOnSubmit={false}
+            editable={attributes.editable}
+            onChangeText={(text) => this.handleChange(text)}
+            value={value}
+            onFocus={this.handleFocus}
+            onBlur={this.handleBlur}
+            {...inputProps}
+          />
         );
     };
 
@@ -183,7 +197,7 @@ export default class TextInputField extends Component {
             paddingStart: 5,
             top: this._animatedIsFocused.interpolate({
                 inputRange: [0, 1],
-                outputRange: [20, Platform.OS === 'ios' ? 0 : -5],
+                outputRange: [25, Platform.OS === "ios" ? 0 : 5],
             }),
             color: theme.inputColorPlaceholder,
         }
@@ -192,33 +206,42 @@ export default class TextInputField extends Component {
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
-            <View>
-                <ListItem style={{ borderBottomWidth: 0, paddingBottom: 5, paddingVertical: 5 }}>
-                    <View style={{ flex: 1 }}>
-                        <View>
-                            <Item error={theme.changeTextInputColorOnError ? attributes.error : null }>
-                                <Animated.Text style={this.getLabelStyles()}>
-                                    {attributes['required'] && (
-                                        <StarIcon
-                                            required={attributes['required']}
-                                        />
-                                    )}{' '}
-                                    {attributes.label}
-                                </Animated.Text>
-                                {typeof attributes.type !== 'undefined' && attributes.type === 'calculated' ? 
-                                   this.renderCalculatedField(attributes, theme)
-                                    :
-                                    this.renderInputField(attributes, theme)
-                                }
-                                {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null}
-                            </Item>
-                        </View>
+          <View>
+            <View
+              style={{
+                borderBottomWidth: 0,
+                paddingHorizontal: 15,
+              }}
+            >
+                <View style={{ flex: 1, position: "relative" }}>
+                  <Animated.Text style={this.getLabelStyles()} numberOfLines={1}>
+                    {attributes["required"] && (
+                      <StarIcon required={attributes["required"]} />
+                    )}{" "}
+                    {attributes.label}
+                  </Animated.Text>
+                  {typeof attributes.type !== "undefined" &&
+                  attributes.type === "calculated"
+                    ? this.renderCalculatedField(attributes, theme)
+                    : this.renderInputField(attributes, theme)}
+                  {theme.textInputErrorIcon && attributes.error ? (
+                    <View
+                      style={{ position: "absolute", right: 0, bottom: 10 }}
+                    >
+                      <Icon
+                        name={"times-circle"}
+                        size={20}
+                        color={theme.errorMsgColor}
+                        solid
+                      />
                     </View>
-                </ListItem>
-                <View style={{ paddingHorizontal: 15 }}>
-                    <ErrorComponent {...{ attributes, theme }} />
-                </View>
+                  ) : null}
+              </View>
             </View>
+            <View style={{ paddingHorizontal: 15 }}>
+              <ErrorComponent {...{ attributes, theme }} />
+            </View>
+          </View>
         );
     }
 }

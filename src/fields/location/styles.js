@@ -17,12 +17,12 @@ const styles = StyleSheet.create({
         fontSize:16,
         lineHeight:16,
         height:16,
-        flex:1,
     },
     placeHolder:{
         color:  '#ADADAD',
-        alignSelf:'flex-start',
-        paddingHorizontal:5
+        // alignSelf:'flex-start',
+        paddingHorizontal:5,
+        fontSize:16
         
     },
     valueContainer:{

@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         width: '70%',
-        marginHorizontal: 15
+        // marginHorizontal: 15
     },
     filterText: {
         fontSize: 12,
@@ -318,6 +318,23 @@ const styles = StyleSheet.create({
         margin: 0,
         alignSelf: 'stretch',
         justifyContent: 'center'
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        flexDirection: 'column',
+        borderTopWidth: 2,
+        borderColor: '#d6d7da',
+        elevation: 20,
+        height: '100%',
+        width: '100%',
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+    },
+    footerWrapper:{
+        position:'absolute',
+        bottom:0,
+        width:'100%'
     },
 });
 

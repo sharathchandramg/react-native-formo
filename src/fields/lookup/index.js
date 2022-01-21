@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { TouchableOpacity, Modal } from 'react-native';
 import _ from 'lodash';
-import { View, Text, Icon, Fab } from 'native-base';
+import { View, Text, ArrowForwardIcon } from 'native-base';
 import { RNCamera } from "react-native-camera";
 
 import { isEmpty } from '../../utils/validators';
@@ -651,12 +651,12 @@ export default class LookupField extends Component {
                       attributes,
                       filter,
                       offset,
-                      (action = !isEmpty(this.state.barcodeSearchText)
+                      !isEmpty(this.state.barcodeSearchText)
                         ? "barcode"
-                        : "search/filter")
+                        : "search/filter"
                     );
                 } else {
-                    pullToRefresh(attributes, '', offset, (action = 'get'));
+                    pullToRefresh(attributes, '', offset, 'get');
                 }
             }
         }
@@ -741,7 +741,7 @@ export default class LookupField extends Component {
                 style={styles.iconWrapper}
                 onPress={() => this.toggleModalVisible()}
             >
-                <Icon name="ios-arrow-forward" style={styles.iconStyle} />
+                <ArrowForwardIcon size={"6"} color={'#41E1FD'}/>
             </TouchableOpacity>
         );
     };
@@ -855,38 +855,16 @@ export default class LookupField extends Component {
         }
     };
 
-    renderInlineCreationButton = () => {
-        if (
-          this.props.onAddLookup &&
-          typeof this.props.onAddLookup === "function" &&
-          !this.state.searchModalVisible &&
-          !this.state.filterModalVisible
-        ) {
-          return (
-            <Fab
-              active={true}
-              direction="up"
-              containerStyle={{}}
-              style={{ backgroundColor: "rgb(0,151,235)" }}
-              position="bottomRight"
-              onPress={() => {
-                this.toggleModalVisible();
-                this.props.onAddLookup(this.props);
-              }}
-            >
-              <Icon type="FontAwesome" name="plus" style={{ fontSize: 18 }} />
-            </Fab>
-          );
-        } else {
-          return null;
-        }
-    };
+    onClickInlineCreationButton = () => {
+        this.toggleModalVisible();
+        this.props.onAddLookup(this.props);
+    }
 
     render() {
         const { theme, attributes, ErrorComponent, lookupSearchReq } = this.props;
         return (
           <View style={styles.container}>
-            <View style={styles.inputLabelWrapper}>
+            <View style={[styles.inputLabelWrapper, { width: "95%" }]}>
               <TouchableOpacity
                 style={[styles.inputLabel]}
                 error={
@@ -966,13 +944,15 @@ export default class LookupField extends Component {
                         ? this.state.barcodeSearchText
                         : this.state.searchText
                     }
+                    hideInlineCreation={
+                      !isEmpty(attributes) &&
+                      !isEmpty(attributes["additional"]) &&
+                      attributes["additional"]["hide_inline_creation"]
+                    }
+                    onAddLookup={this.props.onAddLookup}
+                    onClickInlineCreationButton={this.onClickInlineCreationButton}
                   />
                 )}
-                {!isEmpty(attributes) &&
-                !isEmpty(attributes["additional"]) &&
-                attributes["additional"]["hide_inline_creation"]
-                  ? null
-                  : this.renderInlineCreationButton()}
               </Modal>
             }
             {this.state.barcodeModalVisible && (

@@ -1,5 +1,10 @@
 import React from 'react';
-import { Header, Left, Right, Icon, Body, Button, Title } from 'native-base';
+import { View, ArrowBackIcon, Text } from 'native-base';
+import { TouchableOpacity } from "react-native";
+import Icon from 'react-native-vector-icons/FontAwesome';
+import LinearGradientHeader from './linearGradientHeader';
+
+import styles from './../../fields/userDirectory/styles';
 
 const LookupHeader = props => {
     const {
@@ -18,20 +23,25 @@ const LookupHeader = props => {
     } = props;
 
     return (
-        <Header style={[theme.header]} androidStatusBarColor="#c8c8c8">
-            <Left>
-                <Button transparent onPress={() => toggleModalVisible()}>
-                    <Icon name="arrow-back" style={theme.headerLeftIcon} />
-                </Button>
-            </Left>
-            <Body>
-                <Title style={theme.headerText}>{label || 'Select'}</Title>
-            </Body>
-            <Right>
-                {pullToRefreshEnable &&
-                typeof handlePullToRefresh === 'function' ? (
-                    <Button
-                        transparent
+        <View style={styles.headerWrapper}>
+             <View style={styles.header}>
+                <View style={styles.headerLeft}>
+                    <TouchableOpacity
+                        style={styles.headerLeft}
+                        onPress={() => toggleModalVisible()}
+                    >
+                        <ArrowBackIcon size={"6"} color={"rgb(0,151,235)"} />
+                    </TouchableOpacity>
+                </View>
+                <View style={[styles.headerCenter,{flex:3}]}>
+                    <Text style={theme.headerText}>{label || 'Select'}</Text>
+                </View>
+
+            <View style={[styles.headerRight,{flex:2}]}>
+                 {pullToRefreshEnable &&
+                typeof handlePullToRefresh === 'function' ? ( 
+                    <TouchableOpacity
+                    style={styles.headerLeft}
                         onPress={() => !loading && handlePullToRefresh()}
                     >
                         <Icon
@@ -47,11 +57,11 @@ const LookupHeader = props => {
                             ]}
                             type="FontAwesome"
                         />
-                    </Button>
-                ) : null}
-                {filterEnable ? (
-                    <Button
-                        transparent
+                    </TouchableOpacity>
+                   ) : null}  
+                  {filterEnable ? (  
+                    <TouchableOpacity
+                    style={styles.headerLeft}
                         onPress={() => toggleFilterModalVisible()}
                     >
                         <Icon
@@ -59,11 +69,11 @@ const LookupHeader = props => {
                             style={[theme.headerLeftIcon, { fontSize: 18 }]}
                             type="FontAwesome"
                         />
-                    </Button>
-                ) : null}
-                {barcodeEnable ? (
-                    <Button
-                        transparent
+                    </TouchableOpacity>
+                  ) : null}  
+                  {barcodeEnable ? (  
+                    <TouchableOpacity
+                    style={styles.headerLeft}
                         onPress={() => toggleBarcodeModalVisible()}
                     >
                         <Icon
@@ -71,11 +81,11 @@ const LookupHeader = props => {
                             style={[theme.headerLeftIcon, { fontSize: 18 }]}
                             type="FontAwesome"
                         />
-                    </Button>
-                ) : null}
-                {searchEnable ? (
-                    <Button
-                        transparent
+                    </TouchableOpacity>
+                   ) : null}  
+                 {searchEnable ? ( 
+                    <TouchableOpacity
+                    style={styles.headerLeft}
                         onPress={() => toggleSearchModalVisible()}
                     >
                         <Icon
@@ -83,10 +93,12 @@ const LookupHeader = props => {
                             style={[theme.headerLeftIcon, { fontSize: 18 }]}
                             type="FontAwesome"
                         />
-                    </Button>
-                ) : null}
-            </Right>
-        </Header>
+                    </TouchableOpacity>
+                 ) : null} 
+            </View>
+            </View>
+            <LinearGradientHeader />
+        </View>
     );
 };
 

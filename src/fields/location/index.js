@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { Platform, Alert, TouchableOpacity, Linking } from 'react-native';
-import { View, ListItem, Text, Item, Icon } from 'native-base';
+import { View, Text } from 'native-base';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
-import { isEmpty } from '../../utils/validators';
 
 import {
     getGeoLocation,
     requestLocationPermission,
 } from './../../utils/helper';
-
 import styles from './styles';
+import { isEmpty } from '../../utils/validators';
 import StarIcon from "../../components/starIcon";
 
 const GPS_ALERT_MESSAGE = 'Poor GPS accuracy. Wait until accuracy improves';
@@ -261,34 +261,54 @@ export default class LocationField extends Component {
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
-            <View>
-                <ListItem style={{ borderBottomWidth: 0, paddingVertical: 5 }}>
-                    <View style={{ flex: 1 }}>
-                        <View>
-                            <Item error={theme.changeTextInputColorOnError ? attributes.error : null} style={{paddingVertical:10}}>
-                                {attributes['required'] && <StarIcon required={attributes['required']} />}
-                                <Text style={styles.placeHolder}>
-                                    {attributes.label}
-                                </Text>
-                                    {this.renderPostionUrl(attributes)}
-                                    <Icon
-                                        name="sync"
-                                        style={{ fontSize: 24, color: '#828282' }}
-                                        onPress={() => {
-                                            this.setState({ isPickingLocation: true, url: null }, () => {
-                                                this.promptForEnableLocationIfNeeded();
-                                            });
-                                        }}
-                                    />
-                                {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null}
-                            </Item>
-                        </View>
-                    </View>
-                </ListItem>
-                <View style={{ paddingHorizontal: 15 }}>
-                    <ErrorComponent {...{ attributes, theme }} />
-                </View>
+          <View>
+            <View
+              style={{
+                borderBottomWidth: 0,
+                paddingHorizontal: 15,
+                height: 50
+              }}
+            >
+              <View style={{ flex: 1 }}>
+                  <View
+                    style={{
+                        borderBottomColor: attributes["error"]
+                        ? theme.errorMsgColor
+                        : theme.inputBorderColor,
+                      borderBottomWidth: theme.borderWidth,
+                      flexDirection: "row",
+                      height: 50,
+                      alignItems:'center',
+                      paddingStart: 5
+                    }}
+                  >
+                    {attributes["required"] && (
+                      <StarIcon required={attributes["required"]} />
+                    )}
+                    <Text style={styles.placeHolder}>{attributes.label}</Text>
+                    {this.renderPostionUrl(attributes)}
+                    <Icon
+                      name="sync"
+                      size={16}
+                      color={"#828282"}
+                      style={{ marginRight: 10 }}
+                      onPress={() => {
+                        this.setState(
+                          { isPickingLocation: true, url: null },
+                          () => {
+                            this.promptForEnableLocationIfNeeded();
+                          }
+                        );
+                      }}
+                    />
+                    {/* {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null} */}
+                  </View>
+              </View>
             </View>
+            <View style={{ paddingHorizontal: 15 }}>
+              <ErrorComponent {...{ attributes, theme }} />
+            </View>
+          </View>
         );
     }
 }
