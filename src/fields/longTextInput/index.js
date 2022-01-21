@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Platform, Animated, Easing } from "react-native";
+import { Platform, Animated } from "react-native";
 import { View, Input } from "native-base";
 import { getKeyboardType } from "./../../utils/helper";
 import { isEmpty } from "./../../utils/validators";
@@ -29,8 +29,8 @@ export default class TextInputField extends Component {
   componentDidUpdate() {
     Animated.timing(this._animatedIsFocused, {
       toValue: this.state.isFocused || !isEmpty(this.getInputValue()) ? 1 : 0,
-      duration: 500,
-      easing: Easing.ease
+      duration: 300,
+      useNativeDriver: false
     }).start();
   }
 

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { TouchableOpacity, Animated, Modal, Platform, Easing } from "react-native";
+import { TouchableOpacity, Animated, Modal, Platform } from "react-native";
 import { View, Text } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { RNCamera } from "react-native-camera";
@@ -35,8 +35,8 @@ export default class BarcodeField extends Component {
   componentDidUpdate() {
     Animated.timing(this._animatedIsFocused, {
       toValue: this.state.isFocused || !isEmpty(this.getInputValue()) ? 1 : 0,
-      duration: 500,
-      easing: Easing.ease
+      duration: 300,
+      useNativeDriver: false
     }).start();
   }
 
