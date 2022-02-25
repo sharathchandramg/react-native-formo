@@ -1,16 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import {
-    Platform,
-    DatePickerIOS,
-    DatePickerAndroid,
-    TouchableOpacity,
-    TimePickerAndroid,
-    Modal,
-    TouchableHighlight,
-} from 'react-native';
+import { TouchableOpacity } from 'react-native';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { View, Text, ArrowForwardIcon } from 'native-base';
-import StarIcon from "../../components/starIcon";
+
+import StarIcon from '../../components/starIcon';
 const moment = require('moment');
 
 export default class DateField extends Component {
@@ -25,9 +19,6 @@ export default class DateField extends Component {
     constructor(props) {
         super(props);
         this.onDateChange = this.onDateChange.bind(this);
-        this.showTimePicker = this.showTimePicker.bind(this);
-        this.showDatePicker = this.showDatePicker.bind(this);
-        this.showDateTimePicker = this.showDateTimePicker.bind(this);
 
         this.state = {
             modalVisible: false,
@@ -35,8 +26,10 @@ export default class DateField extends Component {
     }
 
     onDateChange(date) {
-        const epoch = moment(date).utc().valueOf();
-        this.props.updateValue(this.props.attributes.name,  epoch);
+        const epoch = moment(date)
+            .utc()
+            .valueOf();
+        this.props.updateValue(this.props.attributes.name, epoch);
     }
 
     setModalVisible(visible) {
@@ -60,337 +53,115 @@ export default class DateField extends Component {
         }
     };
 
-    showDateTimePicker = async stateKey => {
-        const { attributes } = this.props;
-        const currentDate = attributes.value
-            ? new Date(attributes.value)
-            : new Date();
-        try {
-            const { action, year, month, day } = await DatePickerAndroid.open({
-                date: currentDate,
-                minDate:
-                    attributes.minDate &&
-                    this.dateFormatter(attributes.minDate),
-                maxDate:
-                    attributes.maxDate &&
-                    this.dateFormatter(attributes.maxDate),
-            });
-            if (action !== DatePickerAndroid.dismissedAction) {
-                const date = new Date(year, month, day);
-                try {
-                    const {
-                        action,
-                        minute,
-                        hour,
-                    } = await TimePickerAndroid.open({
-                        hour: currentDate.getHours(),
-                        minute: currentDate.getMinutes(),
-                    });
-                    if (action === TimePickerAndroid.timeSetAction) {
-                        date.setHours(hour);
-                        date.setMinutes(minute);
-                        this.onDateChange(date);
-                    } else {
-                        const currentHour = currentDate.getHours();
-                        const currentMinutes = currentDate.getMinutes();
-                        date.setHours(currentHour);
-                        date.setMinutes(currentMinutes);
-                        this.onDateChange(date);
-                    }
-                } catch ({ code, message }) {
-                    console.warn(`Error in example '${stateKey}': `, message);
-                }
-            }
-        } catch ({ code, message }) {
-            console.warn(`Error in example '${stateKey}': `, message);
-        }
-    };
-
-    showTimePicker = async stateKey => {
-        const { attributes } = this.props;
-        const currentDate = attributes.value
-            ? new Date(attributes.value)
-            : new Date();
-        try {
-            const { action, minute, hour } = await TimePickerAndroid.open({
-                hour: currentDate.getHours(),
-                minute: currentDate.getMinutes(),
-            });
-            if (action === TimePickerAndroid.timeSetAction) {
-                const date = currentDate;
-                date.setHours(hour);
-                date.setMinutes(minute);
-                this.onDateChange(date);
-            }
-        } catch ({ code, message }) {
-            console.warn(`Error in example '${stateKey}': `, message);
-        }
-    };
-
-    showDatePicker = async stateKey => {
-        const { attributes } = this.props;
-        const currentDate = attributes.value
-            ? new Date(attributes.value)
-            : new Date();
-        try {
-            const { action, year, month, day } = await DatePickerAndroid.open({
-                date: currentDate,
-                minDate:
-                    attributes.minDate &&
-                    this.dateFormatter(attributes.minDate),
-                maxDate:
-                    attributes.maxDate &&
-                    this.dateFormatter(attributes.maxDate),
-            });
-            if (action !== DatePickerAndroid.dismissedAction) {
-                const currentHour = currentDate.getHours();
-                const currentMinutes = currentDate.getMinutes();
-                const date = new Date(year, month, day);
-                if (currentHour) {
-                    date.setHours(currentHour);
-                }
-                if (currentMinutes) {
-                    date.setMinutes(currentMinutes);
-                }
-                this.onDateChange(date);
-            }
-        } catch ({ code, message }) {
-            console.warn(`Error in example '${stateKey}': `, message);
-        }
-    };
-
-    renderIOSDatePicker = () => {
-        const { theme, attributes, ErrorComponent } = this.props;
-        const value = (attributes.value && moment(attributes.value)) || null;
-        let dateValue = 'Select';
-        switch (attributes.mode) {
-            case 'datetime':
-                dateValue = value && moment(value).format('Do MMM YYYY HH:mm');
-                break;
-            case 'date':
-                dateValue = value && moment(value).format('Do MMM YYYY');
-                break;
-            case 'time':
-                dateValue = value && moment(value).format('hh:mm a');
-                break;
-            default:
-                dateValue = value && moment(value).format('Do MMM YYYY HH:mm');
-                break;
-        }
-
-        return (
-          <View
-            style={{
-                borderBottomColor: attributes["error"]
-                ? theme.errorMsgColor
-                : theme.inputBorderColor,
-              borderBottomWidth: theme.borderWidth,
-              flex: 2,
-              flexDirection: "row",
-              alignItems:'center',
-              paddingStart: 5,
-            }}
-          >
-            {attributes["required"] && (
-              <StarIcon required={attributes["required"]} />
-            )}
-            <Text
-              style={{
-                flex: 1,
-                color: theme.inputColorPlaceholder,
-                paddingStart: 5,
-                fontSize: 18,
-              }}
-              onPress={() => this.setModalVisible(true)}
-            >
-              {attributes.label}
-            </Text>
-            <TouchableOpacity
-              hitSlop={{ top: 10, bottom: 10, right: 50, left: 50 }}
-              style={{
-                marginHorizontal: 5,
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-              }}
-              onPress={() => this.setModalVisible(true)}
-            >
-              <Text style={{ paddingEnd: 10 }}>{dateValue}</Text>
-              <ArrowForwardIcon
-                size={"6"}
-                color={theme.inputColorPlaceholder}
-              />
-            </TouchableOpacity>
-          </View>
-        );
-    };
-
-    renderAndroidDatePicker = () => {
+    renderDatePicker = () => {
         const { theme, attributes } = this.props;
-        let handleOnPress = '';
         const value = (attributes.value && moment(attributes.value)) || null;
         let dateValue = 'Select';
 
         switch (attributes.mode) {
             case 'datetime':
-                dateValue = value && moment(value).format('Do MMM YYYY HH:mm');
-                handleOnPress = this.showDateTimePicker;
+                dateValue = value && moment(value).format('Do MMM YYYY hh:mm');
                 break;
             case 'date':
                 dateValue = value && moment(value).format('Do MMM YYYY');
-                handleOnPress = this.showDatePicker;
                 break;
             case 'time':
                 dateValue = value && moment(value).format('hh:mm a');
-                handleOnPress = this.showTimePicker;
                 break;
             default:
                 dateValue = value && moment(value).format('Do MMM YYYY HH:mm');
-                handleOnPress = this.showDateTimePicker;
                 break;
         }
 
         return (
-          <View
-            style={{
-                borderBottomColor: attributes["error"]
-                ? theme.errorMsgColor
-                : theme.inputBorderColor,
-              borderBottomWidth: theme.borderWidth,
-              flex: 2,
-              flexDirection: "row",
-              alignItems:'center',
-              paddingStart: 5,
-            }}
-          >
-            {attributes["required"] && (
-              <StarIcon required={attributes["required"]} />
-            )}
-            <Text
-              style={{
-                flex: 1,
-                color: theme.inputColorPlaceholder,
-                paddingStart: 5,
-                fontSize: 18,
-              }}
-              onPress={() => handleOnPress()}
+            <View
+                style={{
+                    borderBottomColor: attributes['error']
+                        ? theme.errorMsgColor
+                        : theme.inputBorderColor,
+                    borderBottomWidth: theme.borderWidth,
+                    flex: 2,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingStart: 5,
+                }}
             >
-              {attributes.label}
-            </Text>
-            <TouchableOpacity
-              hitSlop={{ top: 10, bottom: 10, right: 50, left: 50 }}
-              style={{
-                marginHorizontal: 5,
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-              }}
-              onPress={() => handleOnPress()}
-            >
-              <Text style={{ paddingEnd: 10 }}>{dateValue}</Text>
-              <ArrowForwardIcon
-                size={"6"}
-                color={theme.inputColorPlaceholder}
-              />
-            </TouchableOpacity>
-          </View>
-        );
-    };
-
-    renderModal = () => {
-        const { attributes } = this.props;
-        const value =
-            (attributes.value && new Date(attributes.value)) || new Date();
-        return (
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={this.state.modalVisible}
-                onRequestClose={() => this.setModalVisible(false)}
-                style={{ backgroundColor: '#00000052' }}
-            >
-                <View
+                {attributes['required'] && (
+                    <StarIcon required={attributes['required']} />
+                )}
+                <Text
                     style={{
                         flex: 1,
-                        flexDirection: 'column',
-                        justifyContent: 'flex-end',
-                        backgroundColor: '#00000052',
+                        color: theme.inputColorPlaceholder,
+                        paddingStart: 5,
+                        fontSize: 18,
                     }}
+                    onPress={() => this.setModalVisible(true)}
                 >
-                    <TouchableOpacity
-                        activeOpacity={1}
-                        onPressOut={() => this.setModalVisible(false)}
-                        style={{
-                            height: '100%',
-                            width: '100%',
-                            flexDirection: 'column-reverse',
-                            alignItems: 'flex-end',
-                        }}
-                    >
-                        <View
-                            style={{ backgroundColor: '#828282', width: '100%' }}
-                        >
-                            <View style={{ flexDirection: 'row' }}>
-                                <TouchableHighlight
-                                    onPress={() => this.setModalVisible(false)}
-                                    style={{
-                                        flex: 1,
-                                        flexDirection: 'row',
-                                        justifyContent: 'flex-end',
-                                        marginTop: 10,
-                                        marginRight: 20,
-                                    }}
-                                >
-                                    <View>
-                                        <Text style={{ fontSize: 20,color:'rgb(0,151,235)' }}>
-                                            {'Done'}
-                                        </Text>
-                                    </View>
-                                </TouchableHighlight>
-                            </View>
-                            <DatePickerIOS
-                                date={value}
-                                mode={attributes.mode}
-                                maximumDate={
-                                    attributes.maxDate &&
-                                    this.dateFormatter(attributes.maxDate)
-                                }
-                                minimumDate={
-                                    attributes.minDate &&
-                                    this.dateFormatter(attributes.minDate)
-                                }
-                                timeZoneOffsetInMinutes={
-                                    this.props.timeZoneOffsetInMinutes * 60 ||
-                                    new Date().getTimezoneOffset() * 60
-                                }
-                                onDateChange={this.onDateChange}
-                            />
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            </Modal>
+                    {attributes.label}
+                </Text>
+                <TouchableOpacity
+                    hitSlop={{ top: 10, bottom: 10, right: 50, left: 50 }}
+                    style={{
+                        marginHorizontal: 5,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'row',
+                    }}
+                    onPress={() => this.setModalVisible(true)}
+                >
+                    <Text style={{ paddingEnd: 10 }}>{dateValue}</Text>
+                    <ArrowForwardIcon
+                        size={'6'}
+                        color={theme.inputColorPlaceholder}
+                    />
+                </TouchableOpacity>
+            </View>
+        );
+    };
+
+    renderDatePickerModal = attributes => {
+        const currentDate = attributes.value
+            ? new Date(attributes.value)
+            : new Date();
+        return (
+            <DateTimePickerModal
+                isVisible={this.state.modalVisible}
+                date={currentDate}
+                mode={attributes.mode}
+                minimumDate={
+                    attributes.minDate && this.dateFormatter(attributes.minDate)
+                }
+                maximumDate={
+                    attributes.maxDate && this.dateFormatter(attributes.maxDate)
+                }
+                is24Hour={false}
+                onConfirm={selectedDate => {
+                    this.onDateChange(selectedDate);
+                    this.setModalVisible(false);
+                }}
+                onCancel={() => this.setModalVisible(false)}
+            />
         );
     };
 
     render() {
         const { theme, attributes, ErrorComponent } = this.props;
         return (
-          <View>
-            <View
-              style={{
-                height: 50,
-                paddingHorizontal: 15,
-              }}
-            >
-              {Platform.OS === "ios"
-                ? this.renderIOSDatePicker()
-                : this.renderAndroidDatePicker()}
-              {this.renderModal()}
+            <View>
+                <View
+                    style={{
+                        height: 50,
+                        paddingHorizontal: 15,
+                    }}
+                >
+                    {this.renderDatePicker()}
+                </View>
+                {this.renderDatePickerModal(attributes)}
+                <View style={{ paddingHorizontal: 15 }}>
+                    <ErrorComponent {...{ attributes, theme }} />
+                </View>
             </View>
-            <View style={{ paddingHorizontal: 15 }}>
-              <ErrorComponent {...{ attributes, theme }} />
-            </View>
-          </View>
         );
     }
 }
