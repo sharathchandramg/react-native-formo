@@ -27,7 +27,14 @@ const FilterComponent = props => {
         setFilterCategory,
         activeCategory,
         filterData,
+        categoryToValue
     } = props;
+
+    isCheckBoxSelected=(item)=>{
+        const filterObj = _.find(categoryToValue,{category:activeCategory.name});
+        const values = !isEmpty(filterObj) && !isEmpty(filterObj['value'])?filterObj['value']:[];
+        return values.includes(item.value);
+    }
 
     renderCategoryDataItem = ({ item, index }) => {
         if (!isEmpty(item) && !isEmpty(activeCategory)) {
@@ -48,8 +55,9 @@ const FilterComponent = props => {
                 >
                     <Checkbox
                         onPress={() => filterFunction(item)}
-                        isChecked={item.selected}
+                        isChecked={isCheckBoxSelected(item)}
                         colorScheme={'rgb(0,151,235)'}
+                        accessibilityLabel={attributes.objectType ? item['label'] : item}
                     />
                         <Text
                             style={[

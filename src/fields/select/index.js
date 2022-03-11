@@ -278,6 +278,7 @@ export default class SelectField extends Component {
                       onPress={() => this.toggleSelect(item)}
                       isChecked={isSelected}
                       colorScheme={"rgb(0,151,235)"}
+                      accessibilityLabel={attributes.objectType ? item[attributes.labelKey] : item}
                     />
                   )}
                   <View>

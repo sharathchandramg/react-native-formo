@@ -41,7 +41,8 @@ export default class LookupField extends Component {
             categoryToValue: [],
             loading: false,
             barcodeSearchText:'',
-            barcodeModalVisible: false
+            barcodeModalVisible: false,
+            selectedFilter: []
         };
     }
 
@@ -210,6 +211,7 @@ export default class LookupField extends Component {
             searchModalVisible: false,
             barcodeModalVisible: false,
             modalVisible: true,
+            selectedFilter: filter
         });
     };
 
@@ -386,6 +388,7 @@ export default class LookupField extends Component {
                     filterArr: filterArr,
                     filterData: filterData,
                     categoryToValue: categoryToValue,
+                    selectedFilter: categoryToValue
                 },
                 () => this.applyFilterFunction()
             );
@@ -397,6 +400,7 @@ export default class LookupField extends Component {
                     categoryToValue: categoryToValue,
                     searchText: '',
                     barcodeSearchText:'',
+                    selectedFilter: categoryToValue
                 },
                 () => {
                     const offset = 0;
@@ -570,6 +574,7 @@ export default class LookupField extends Component {
                 filterModalVisible: false,
                 searchModalVisible: false,
                 barcodeModalVisible: false,
+                categoryToValue: []
             });
         } else {
             const { attributes } = this.props;
@@ -850,6 +855,7 @@ export default class LookupField extends Component {
                     setFilterCategory={this.setFilterCategory}
                     filterFunction={this.toggleFilterSelect}
                     resetFilter={this.resetFilter}
+                    categoryToValue={this.state.categoryToValue}
                 />
             );
         }
@@ -929,6 +935,7 @@ export default class LookupField extends Component {
                     filterEnable={this.isFilterEnable(attributes)}
                     barcodeEnable={this.isBarcodeEnable(attributes)}
                     filter={this.state.categoryToValue}
+                    selectedFilter={this.state.selectedFilter}
                     handleReset={this.handleReset}
                     activeCategory={this.state.activeCategory}
                     handlePullToRefresh={this.handlePullToRefresh}
