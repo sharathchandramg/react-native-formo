@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Modal, TouchableOpacity } from "react-native";
+import { Modal, ScrollView, TouchableOpacity } from "react-native";
 import {
   View,
   Text,
@@ -246,7 +246,7 @@ export default class SelectField extends Component {
             <LinearGradientHeader />
           </View>
 
-        <View>
+        <ScrollView>
           {!isEmpty(attributes["options"]) &&
             attributes.options.map((item, index) => {
               let isSelected = false;
@@ -288,7 +288,7 @@ export default class SelectField extends Component {
                 </TouchableOpacity>
               );
             })}
-        </View>
+        </ScrollView>
 
         {attributes && attributes["multiple"] ? (
           <View style={styles.footerWrapper}>
