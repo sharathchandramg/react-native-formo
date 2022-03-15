@@ -80,8 +80,8 @@ const FilterComponent = props => {
             <FlatList
                 data={filterData}
                 extraData={props}
-                keyExtractor={(item, index) => index.toString()}
-                listKey={(item, index) => 'D' + index.toString()}
+                keyExtractor={(item, index) => attributes.objectType ? item['label'] : item}
+                listKey={(item, index) =>  attributes.objectType ? item['label'] : item}
                 renderItem={renderCategoryDataItem}
                 style={{ width: '100%' }}
             />
