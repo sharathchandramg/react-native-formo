@@ -263,59 +263,38 @@ export default class LookupField extends Component {
 
     mapCatagoryToValue = (category, item) => {
         let categoryToValue = this.state.categoryToValue;
-        if (typeof item['selected'] !== 'undefined' && item['selected']) {
-            let activeCategoryObj = {
-                category: category['name'],
-                value: [item['value']],
-                categoryLabel: category['label'],
-                type: category['type'],
-            };
             let index = _.findIndex(categoryToValue, {
-                category: category['name'],
-            });
-            if (index !== -1) {
-                let foundObj = categoryToValue[index];
-                let options = foundObj['value'];
-                let updatedOptions = [...options];
-                if (options.length) {
-                    options.map(option => {
-                        if (!_.isEqual(option, item['value'])) {
-                            updatedOptions.push(item['value']);
-                        }
-                    });
-                } else {
-                    updatedOptions.push(item['value']);
-                }
-                foundObj['value'] = _.uniq([...updatedOptions]);
-                categoryToValue[index] = foundObj;
-            } else {
-                categoryToValue.push(activeCategoryObj);
-            }
-            return categoryToValue;
-        } else {
-            if (categoryToValue.length) {
+                         category: category['name'],
+                     });
+            if (categoryToValue.length && index !== -1) {
                 const index = _.findIndex(categoryToValue, {
                     category: category['name'],
                 });
-
                 if (index !== -1) {
                     const foundObj = categoryToValue[index];
                     let options = foundObj['value'];
-                    if (options.length) {
+                    if(options.includes(item['value'])){
                         options = _.filter(
                             options,
                             option => option !== item['value']
                         );
-                    }
-                    if (options.length) {
-                        foundObj['value'] = options;
                     } else {
-                        categoryToValue[index];
+                        options.push(item['value']);
                     }
+                    foundObj['value'] = options;
+                    categoryToValue[index] = foundObj;
+                } else {
+                    categoryToValue.splice(index, 1);
                 }
-                categoryToValue.splice(index, 1);
+            } else {
+                let activeCategoryObj = {
+                  category: category["name"],
+                  value: [item["value"]],
+                  categoryLabel: category["label"],
+                  type: category["type"],
+                };
+                categoryToValue.push(activeCategoryObj);
             }
-        }
         return categoryToValue;
     };
 
