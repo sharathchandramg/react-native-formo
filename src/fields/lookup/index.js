@@ -406,7 +406,7 @@ export default class LookupField extends Component {
                 },
                 () => {
                     const offset = 0;
-                    this.handleOnGetQuery(offset, item.categoryLabel==="Search");
+                    this.handleOnGetQuery(offset, true);
                 }
             );
         }
