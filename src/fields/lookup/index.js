@@ -106,7 +106,7 @@ export default class LookupField extends Component {
         }
     };
 
-    handleOnGetQuery = offset => {
+    handleOnGetQuery = (offset, searchClose = false) => {
         const { onGetQuery, attributes } = this.props;
         if (
             !isEmpty(attributes) &&
@@ -114,7 +114,7 @@ export default class LookupField extends Component {
             attributes['data_source']['type'] === 'remote'
         ) {
             if (typeof onGetQuery === 'function') {
-                onGetQuery(attributes, offset);
+                onGetQuery(attributes, offset, searchClose);
             }
         } else {
             attributes['options'] = this.state.options;
@@ -376,8 +376,14 @@ export default class LookupField extends Component {
                 return row;
             });
         } else {
-            filterArr = _.map(filterArr, row => (row['selected'] = false));
-            filterData = _.map(filterData, row => (row['selected'] = false));
+            filterArr = _.map(filterArr, row => {
+                if (row) row['selected'] = false;
+                return row;
+            });
+            filterData = _.map(filterData, row => {
+                if (row) row['selected'] = false;
+                return row;
+            });
         }
 
         if (categoryToValue.length) {
@@ -400,7 +406,7 @@ export default class LookupField extends Component {
                 },
                 () => {
                     const offset = 0;
-                    this.handleOnGetQuery(offset);
+                    this.handleOnGetQuery(offset, true);
                 }
             );
         }
