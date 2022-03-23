@@ -106,7 +106,7 @@ export default class LookupField extends Component {
         }
     };
 
-    handleOnGetQuery = (offset, searchClose) => {
+    handleOnGetQuery = (offset, searchClose = false) => {
         const { onGetQuery, attributes } = this.props;
         if (
             !isEmpty(attributes) &&
