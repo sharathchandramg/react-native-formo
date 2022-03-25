@@ -166,6 +166,7 @@ export default class LookupField extends Component {
                         ? true
                         : false,
                 categoryToValue: categoryToValue,
+                selectedFilter: categoryToValue,
             });
         }
     };
