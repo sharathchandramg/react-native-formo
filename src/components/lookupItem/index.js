@@ -10,6 +10,9 @@ const Item = props => {
                 <CheckBox
                     onPress={() => props.toggleSelect(props.item)}
                     checked={props.isSelected}
+                    accessibilityLabel={props.attributes.objectType
+                        ? props.item[props.attributes.labelKey]
+                        : props.item}
                 />
             </View>
         );

@@ -324,6 +324,7 @@ export default class CollaboratorField extends Component {
                             onPress={() => this.toggleSelect(item)}
                             isChecked={isSelected}
                             colorScheme={"rgb(0,151,235)"}
+                            accessibilityLabel={this.displayLabelKey(item)}
                           />
                         )}
                         <View>

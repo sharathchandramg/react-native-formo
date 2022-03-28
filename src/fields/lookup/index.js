@@ -41,7 +41,8 @@ export default class LookupField extends Component {
             categoryToValue: [],
             loading: false,
             barcodeSearchText:'',
-            barcodeModalVisible: false
+            barcodeModalVisible: false,
+            selectedFilter: []
         };
     }
 
@@ -165,6 +166,7 @@ export default class LookupField extends Component {
                         ? true
                         : false,
                 categoryToValue: categoryToValue,
+                selectedFilter: categoryToValue,
             });
         }
     };
@@ -210,6 +212,7 @@ export default class LookupField extends Component {
             searchModalVisible: false,
             barcodeModalVisible: false,
             modalVisible: true,
+            selectedFilter: filter
         });
     };
 
@@ -261,59 +264,38 @@ export default class LookupField extends Component {
 
     mapCatagoryToValue = (category, item) => {
         let categoryToValue = this.state.categoryToValue;
-        if (typeof item['selected'] !== 'undefined' && item['selected']) {
-            let activeCategoryObj = {
-                category: category['name'],
-                value: [item['value']],
-                categoryLabel: category['label'],
-                type: category['type'],
-            };
             let index = _.findIndex(categoryToValue, {
-                category: category['name'],
-            });
-            if (index !== -1) {
-                let foundObj = categoryToValue[index];
-                let options = foundObj['value'];
-                let updatedOptions = [...options];
-                if (options.length) {
-                    options.map(option => {
-                        if (!_.isEqual(option, item['value'])) {
-                            updatedOptions.push(item['value']);
-                        }
-                    });
-                } else {
-                    updatedOptions.push(item['value']);
-                }
-                foundObj['value'] = _.uniq([...updatedOptions]);
-                categoryToValue[index] = foundObj;
-            } else {
-                categoryToValue.push(activeCategoryObj);
-            }
-            return categoryToValue;
-        } else {
-            if (categoryToValue.length) {
+                         category: category['name'],
+                     });
+            if (categoryToValue.length && index !== -1) {
                 const index = _.findIndex(categoryToValue, {
                     category: category['name'],
                 });
-
                 if (index !== -1) {
                     const foundObj = categoryToValue[index];
                     let options = foundObj['value'];
-                    if (options.length) {
+                    if(options.includes(item['value'])){
                         options = _.filter(
                             options,
                             option => option !== item['value']
                         );
-                    }
-                    if (options.length) {
-                        foundObj['value'] = options;
                     } else {
-                        categoryToValue[index];
+                        options.push(item['value']);
                     }
+                    foundObj['value'] = options;
+                    categoryToValue[index] = foundObj;
+                } else {
+                    categoryToValue.splice(index, 1);
                 }
-                categoryToValue.splice(index, 1);
+            } else {
+                let activeCategoryObj = {
+                  category: category["name"],
+                  value: [item["value"]],
+                  categoryLabel: category["label"],
+                  type: category["type"],
+                };
+                categoryToValue.push(activeCategoryObj);
             }
-        }
         return categoryToValue;
     };
 
@@ -392,6 +374,7 @@ export default class LookupField extends Component {
                     filterArr: filterArr,
                     filterData: filterData,
                     categoryToValue: categoryToValue,
+                    selectedFilter: categoryToValue
                 },
                 () => this.applyFilterFunction()
             );
@@ -403,6 +386,7 @@ export default class LookupField extends Component {
                     categoryToValue: categoryToValue,
                     searchText: '',
                     barcodeSearchText:'',
+                    selectedFilter: categoryToValue
                 },
                 () => {
                     const offset = 0;
@@ -576,6 +560,7 @@ export default class LookupField extends Component {
                 filterModalVisible: false,
                 searchModalVisible: false,
                 barcodeModalVisible: false,
+                categoryToValue: []
             });
         } else {
             const { attributes } = this.props;
@@ -856,6 +841,7 @@ export default class LookupField extends Component {
                     setFilterCategory={this.setFilterCategory}
                     filterFunction={this.toggleFilterSelect}
                     resetFilter={this.resetFilter}
+                    categoryToValue={this.state.categoryToValue}
                 />
             );
         }
@@ -935,6 +921,7 @@ export default class LookupField extends Component {
                     filterEnable={this.isFilterEnable(attributes)}
                     barcodeEnable={this.isBarcodeEnable(attributes)}
                     filter={this.state.categoryToValue}
+                    selectedFilter={this.state.selectedFilter}
                     handleReset={this.handleReset}
                     activeCategory={this.state.activeCategory}
                     handlePullToRefresh={this.handlePullToRefresh}

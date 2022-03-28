@@ -34,6 +34,7 @@ const LookupComponent = (props) => {
     hideInlineCreation,
     onAddLookup,
     onClickInlineCreationButton,
+    selectedFilter
   } = props;
 
   getLabel = (item) => {
@@ -149,9 +150,9 @@ const LookupComponent = (props) => {
             width: "100%"
           }}
         >
-          {filter && filter.length > 0 ? (
+          {selectedFilter && selectedFilter.length > 0 ? (
             <View style={styles.filterContainer}>
-              {renderFilterSelected(filter)}
+              {renderFilterSelected(selectedFilter)}
             </View>
           ) : null}
           {!isNull(attributes["options"]) && attributes["options"].length ? (
