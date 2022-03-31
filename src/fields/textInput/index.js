@@ -25,7 +25,7 @@ export default class TextInputField extends Component {
 
     componentWillMount() {
         this._animatedIsFocused = new Animated.Value(
-          this.props.stage === "create" ? 0 : 1
+          this.props.isCreateForm ? 0 : 1
         );
     }
 

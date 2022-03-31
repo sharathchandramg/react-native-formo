@@ -49,24 +49,34 @@ export default class LocationField extends Component {
      */
     componentDidUpdate() {
         try {
-            if (this.state.isFirstTime) {
-                /**
-                 * If form data does not exists, then fetch locaiton
-                 * else check the location data, if location exists render location
-                 * else fetch the location
-                 */
-                if (!isEmpty(this.props.formData)) {
-                    const { value } = this.props.attributes;
-                    if (isEmpty(value)) {
-                        this.setState({ isPickingLocation: true, isFirstTime: false });
-                        this.promptForEnableLocationIfNeeded();
-                    } else {
-                        this.setState({ isPickingLocation: false, isFirstTime: false });
-                    }
+            if (
+              this.state.isFirstTime &&
+              this.props.attributes &&
+              !this.props.attributes["is_lookup_field"]
+            ) {
+              /**
+               * If form data does not exists, then fetch locaiton
+               * else check the location data, if location exists render location
+               * else fetch the location
+               */
+              if (!isEmpty(this.props.formData)) {
+                const { value } = this.props.attributes;
+                if (isEmpty(value)) {
+                  this.setState({
+                    isPickingLocation: true,
+                    isFirstTime: false,
+                  });
+                  this.promptForEnableLocationIfNeeded();
                 } else {
-                    this.setState({ isPickingLocation: true, isFirstTime: false });
-                    this.promptForEnableLocationIfNeeded();
+                  this.setState({
+                    isPickingLocation: false,
+                    isFirstTime: false,
+                  });
                 }
+              } else {
+                this.setState({ isPickingLocation: true, isFirstTime: false });
+                this.promptForEnableLocationIfNeeded();
+              }
             }
         } catch (error) {
             console.warn(error);
