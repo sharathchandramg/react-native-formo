@@ -1,3 +1,4 @@
+
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Platform, Animated } from "react-native";
@@ -24,14 +25,14 @@ export default class TextInputField extends Component {
 
     componentWillMount() {
         this._animatedIsFocused = new Animated.Value(
-            isEmpty(this.getInputValue()) ? 0 : 1
+          this.props.stage === "create" ? 0 : 1
         );
     }
 
     componentDidUpdate() {
         Animated.timing(this._animatedIsFocused, {
             toValue:
-                this.state.isFocused || !isEmpty(this.getInputValue()) ? 1 : 0,
+                this.state.isFocused || this.getInputValue() ? 1 : 0,
             duration: 300,
             useNativeDriver: false
         }).start();
@@ -40,23 +41,15 @@ export default class TextInputField extends Component {
     handleFocus = () => this.setState({ isFocused: true });
     handleBlur = () => this.setState({ isFocused: false });
 
-    handleChange(text) {
+    handleChange = (text) => {
         this.props.updateValue(this.props.attributes.name, text);
     }
 
     getInputValue = () => {
-        const { attributes } = this.props;
-        if (
-          typeof attributes.type !== "undefined" &&
-          attributes.type === "calculated"
-        ) {
-          return this.getCalculatedValue();
-        }
-
-        if (!isEmpty(attributes["value"])) {
-          return attributes["value"].toString();
-        }
-        return "";
+      return !isEmpty(this.props.attributes) &&
+        !isEmpty(this.props.attributes["value"])
+        ? true
+        : false;
     };
 
     getCalculatedValue = attributes => {
