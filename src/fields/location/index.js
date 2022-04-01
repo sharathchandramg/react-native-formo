@@ -49,24 +49,34 @@ export default class LocationField extends Component {
      */
     componentDidUpdate() {
         try {
-            if (this.state.isFirstTime) {
-                /**
-                 * If form data does not exists, then fetch locaiton
-                 * else check the location data, if location exists render location
-                 * else fetch the location
-                 */
-                if (!isEmpty(this.props.formData)) {
-                    const { value } = this.props.attributes;
-                    if (isEmpty(value)) {
-                        this.setState({ isPickingLocation: true, isFirstTime: false });
-                        this.promptForEnableLocationIfNeeded();
-                    } else {
-                        this.setState({ isPickingLocation: false, isFirstTime: false });
-                    }
+            if (
+              this.state.isFirstTime &&
+              this.props.attributes &&
+              !this.props.attributes["is_lookup_field"]
+            ) {
+              /**
+               * If form data does not exists, then fetch locaiton
+               * else check the location data, if location exists render location
+               * else fetch the location
+               */
+              if (!isEmpty(this.props.formData)) {
+                const { value } = this.props.attributes;
+                if (isEmpty(value)) {
+                  this.setState({
+                    isPickingLocation: true,
+                    isFirstTime: false,
+                  });
+                  this.promptForEnableLocationIfNeeded();
                 } else {
-                    this.setState({ isPickingLocation: true, isFirstTime: false });
-                    this.promptForEnableLocationIfNeeded();
+                  this.setState({
+                    isPickingLocation: false,
+                    isFirstTime: false,
+                  });
                 }
+              } else {
+                this.setState({ isPickingLocation: true, isFirstTime: false });
+                this.promptForEnableLocationIfNeeded();
+              }
             }
         } catch (error) {
             console.warn(error);
@@ -266,43 +276,46 @@ export default class LocationField extends Component {
               style={{
                 borderBottomWidth: 0,
                 paddingHorizontal: 15,
-                height: 50
+                height: 50,
               }}
             >
               <View style={{ flex: 1 }}>
-                  <View
-                    style={{
-                        borderBottomColor: attributes["error"]
-                        ? theme.errorMsgColor
-                        : theme.inputBorderColor,
-                      borderBottomWidth: theme.borderWidth,
-                      flexDirection: "row",
-                      height: 50,
-                      alignItems:'center',
-                      paddingStart: 5
-                    }}
-                  >
-                    {attributes["required"] && (
-                      <StarIcon required={attributes["required"]} />
+                <View
+                  style={{
+                    borderBottomColor: attributes["error"]
+                      ? theme.errorMsgColor
+                      : theme.inputBorderColor,
+                    borderBottomWidth: theme.borderWidth,
+                    flexDirection: "row",
+                    height: 50,
+                    alignItems: "center",
+                    paddingStart: 5,
+                  }}
+                >
+                  {attributes["required"] && (
+                    <StarIcon required={attributes["required"]} />
+                  )}
+                  <Text style={styles.placeHolder}>{attributes.label}</Text>
+                  {this.renderPostionUrl(attributes)}
+                  {this.props.attributes &&
+                    !this.props.attributes["is_lookup_field"] && (
+                      <Icon
+                        name="sync"
+                        size={16}
+                        color={"#828282"}
+                        style={{ marginRight: 10 }}
+                        onPress={() => {
+                          this.setState(
+                            { isPickingLocation: true, url: null },
+                            () => {
+                              this.promptForEnableLocationIfNeeded();
+                            }
+                          );
+                        }}
+                      />
                     )}
-                    <Text style={styles.placeHolder}>{attributes.label}</Text>
-                    {this.renderPostionUrl(attributes)}
-                    <Icon
-                      name="sync"
-                      size={16}
-                      color={"#828282"}
-                      style={{ marginRight: 10 }}
-                      onPress={() => {
-                        this.setState(
-                          { isPickingLocation: true, url: null },
-                          () => {
-                            this.promptForEnableLocationIfNeeded();
-                          }
-                        );
-                      }}
-                    />
-                    {/* {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null} */}
-                  </View>
+                  {/* {theme.textInputErrorIcon && attributes.error ? <Icon name={theme.textInputErrorIcon} /> : null} */}
+                </View>
               </View>
             </View>
             <View style={{ paddingHorizontal: 15 }}>

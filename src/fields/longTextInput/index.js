@@ -22,13 +22,13 @@ export default class TextInputField extends Component {
 
   componentWillMount() {
     this._animatedIsFocused = new Animated.Value(
-      isEmpty(this.getInputValue()) ? 0 : 1
+      this.props.isCreateForm ? 0 : 1
     );
   }
 
   componentDidUpdate() {
     Animated.timing(this._animatedIsFocused, {
-      toValue: this.state.isFocused || !isEmpty(this.getInputValue()) ? 1 : 0,
+      toValue: this.state.isFocused || this.getInputValue() ? 1 : 0,
       duration: 300,
       useNativeDriver: false
     }).start();
@@ -42,11 +42,10 @@ export default class TextInputField extends Component {
   }
 
   getInputValue = () => {
-    const { attributes } = this.props;
-    if (!isEmpty(attributes["value"])) {
-      return attributes["value"].toString();
-    }
-    return "";
+    return !isEmpty(this.props.attributes) &&
+        !isEmpty(this.props.attributes["value"])
+        ? true
+        : false;
   };
 
   renderInputField = (attributes, theme) => {
