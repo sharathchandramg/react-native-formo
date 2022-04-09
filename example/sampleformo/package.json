@@ -12,7 +12,7 @@
   "dependencies": {
     "lodash": "4.17.19",
     "mathjs": "7.1.0",
-    "moment": "2.27.0",
+    "moment": "2.29.2",
     "native-base": "2.13.13",
     "react": "16.9.0",
     "react-native": "0.61.0",
