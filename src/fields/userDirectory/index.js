@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import { Modal, TouchableOpacity } from 'react-native';
+import { Modal, TouchableOpacity, ScrollView } from 'react-native';
 import _ from 'lodash';
 import { isEmpty } from '../../utils/validators';
 import {
@@ -442,17 +442,21 @@ export default class UserDirectoryField extends Component {
                         handleTextChange={this.handleTextChange}
                         searchText={this.state.searchText}
                     />
-                    <View>{this.renderOptionList()}</View>
+                    <ScrollView style={{ flex: 1 }}>
+                        <View>{this.renderOptionList()}</View>
+                    </ScrollView>
                 </View>
             );
         } else {
             return (
-                <View style={styles.modalContent}>
-                    {this.renderHeader()}
-                    {this.renderSearchText()}
-                    <View>{this.renderOptionList()}</View>
-                    {this.renderFooter()}
-                </View>
+              <View style={styles.modalContent}>
+                {this.renderHeader()}
+                {this.renderSearchText()}
+                <ScrollView style={{ flex: 1 }}>
+                  <View>{this.renderOptionList()}</View>
+                </ScrollView>
+                {this.renderFooter()}
+              </View>
             );
         }
     };
