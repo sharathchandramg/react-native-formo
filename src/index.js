@@ -26,6 +26,7 @@ import ChecklistField from "./fields/checklist";
 import UserDirectoryField from "./fields/userDirectory";
 import DocumentField from './fields/document';
 import BarcodeField from './fields/barcode';
+import CascadingDropdownField from './fields/cascadingDropdown';
 
 import {
   autoValidate,
@@ -730,6 +731,18 @@ export default class Form0 extends Component {
                 {...this.props}
               />
             );
+
+            case "cascading_dropdown":
+              return (
+                <CascadingDropdownField
+                  ref={(c) => {
+                    this[field.name] = c;
+                  }}
+                  {...commonProps}
+                  {...this.props}
+                  state={this.state}
+                />
+              );
 
           default:
             break;
