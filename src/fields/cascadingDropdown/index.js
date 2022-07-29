@@ -27,25 +27,30 @@ export default class CascadingDropdownField extends Component {
 
   getOptions = () => {
     const { attributes, state } = this.props;
-    const options = !isEmpty(attributes.options) ? attributes.options : [];
-
-    if (!isEmpty(attributes.ref_field_name) && !isEmpty(options)) {
+    const options = !isEmpty(attributes) && !isEmpty(attributes.options) ? attributes.options : [];
+    if (!isEmpty(attributes) && !isEmpty(attributes.ref_field_name) && !isEmpty(options)) {
       const refField = state[attributes.ref_field_name];
-      return !isEmpty(refField) && !isEmpty(refField.value)
-        ? options.filter((item) => item.ref_id === refField.value)
+      return !isEmpty(refField) && !isEmpty(refField.value) && !isEmpty(refField.value.id)
+        ? options.filter((item) => item.ref_id.includes(refField.value.id))
         : [];
     }
     return options;
+  };
+
+  getValueIndex = (attributes) => {
+    const options = !isEmpty(this.getOptions()) ? this.getOptions() : [];
+    const value = !isEmpty(attributes.value) ? attributes.value : {};
+    return options.findIndex((x) => x.id === value["id"]);
   };
 
   getSelectedValue = (attributes) => {
     const index = this.getValueIndex(attributes);
     const options = !isEmpty(this.getOptions()) ? this.getOptions() : [];
     const field = options[index];
-    return !isEmpty(field) ? field : null;
+    return !isEmpty(field) && !isEmpty(field.label) ? field.label : "";
   };
 
-  renderInput = (isValueValid, defaultValue) => {
+  renderInput = () => {
     const { theme, attributes } = this.props;
     return (
       <View>
@@ -78,7 +83,6 @@ export default class CascadingDropdownField extends Component {
           <SearchableDropdown
             onItemSelect={(item) => this.handleChange(item)}
             items={this.getOptions()}
-            onTextChange={(text) => alert(text)}
             attributes={attributes}
             selectedValue={this.getSelectedValue(attributes)}
           />
@@ -87,24 +91,12 @@ export default class CascadingDropdownField extends Component {
     );
   };
 
-
-  getValueIndex = (attributes) => {
-    const options = !isEmpty(this.getOptions()) ? this.getOptions() : [];
-    const value = !isEmpty(attributes.value) ? attributes.value : {};
-    return options.findIndex((x) => x.id === value["id"]);
-  };
-
   render() {
     const { theme, attributes, ErrorComponent } = this.props;
-    const value = attributes["value"] || "";
-    const defaultValue = attributes["defaultValue"] || "-Select-";
-
-    const isValueValid = this.getValueIndex(attributes) > -1;
-    const pickerValue = value || defaultValue;
 
     return (
       <View style={{ paddingHorizontal: 15, marginBottom: 10 }}>
-        {this.renderInput(isValueValid, defaultValue)}
+        {this.renderInput()}
         <View>
           <ErrorComponent {...{ attributes, theme }} />
         </View>

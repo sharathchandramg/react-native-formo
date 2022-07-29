@@ -351,6 +351,8 @@ export default class Form0 extends Component {
       return updateValue;
     } else if (field.type === "longtext") {
       return !isEmpty(field.value) ? field.value.trim() : field.value;
+    } else if (field.type === "cascading-dropdown") {
+      return !isEmpty(field.value) && !isEmpty(field.value.label) ? field.value.label : "";
     } else return field.value;
   };
 
@@ -732,7 +734,7 @@ export default class Form0 extends Component {
               />
             );
 
-            case "cascading_dropdown":
+            case "cascading-dropdown":
               return (
                 <CascadingDropdownField
                   ref={(c) => {

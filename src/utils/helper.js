@@ -49,6 +49,9 @@ export function getDefaultValue(field) {
     case "calculated":
       return field.defaultValue || "";
 
+    case "cascading-dropdown":
+      return null
+
     case "status_picker":
     case "picker": {
       if (field.options.indexOf(field.defaultValue) !== -1) {
@@ -179,6 +182,9 @@ export function getResetValue(field) {
       }
       return field.options[0];
     }
+
+    case "cascading-dropdown":
+      return null
 
     case "checklist": {
       if (Array.isArray(field.defaultValue)) {
@@ -337,6 +343,13 @@ export function autoValidate(field) {
           errorMsg = `${field.label} is required`;
         }
         break;
+
+      case "cascading-dropdown":
+          if (isEmpty(field["value"])) {
+            error = true;
+            errorMsg = `${field.label} is required`;
+          }
+          break;
 
       case "sub-form":
         if (

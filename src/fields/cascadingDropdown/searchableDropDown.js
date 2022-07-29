@@ -9,17 +9,14 @@ import {
 } from "react-native";
 import { isEmpty } from "../../utils/validators";
 
-const defaultItemValue = {
-  name: "",
-  id: 0,
-};
-
 export default class SearchableDropDown extends Component {
   constructor(props) {
     super(props);
     this.state = {
       listItems: [],
+      item: "",
       focus: false,
+      searchedText: "",
     };
   }
 
@@ -29,68 +26,63 @@ export default class SearchableDropDown extends Component {
     });
   };
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.selectedValue !== this.props.selectedValue) {
+      this.setState({ item: this.props.selectedValue });
+    }
+  }
+
   renderItems = ({ item, index }) => {
     return (
       <TouchableOpacity
         onPress={() => {
-          this.setState({ focus: false });
+          this.setState({ focus: false, searchedText: "" });
           this.props.onItemSelect(item);
         }}
         style={{
-          padding: 10,
-          marginTop: 2,
-          backgroundColor: "#ddd",
-          borderColor: "#bbb",
-          borderWidth: 1,
-          borderRadius: 5,
           flex: 1,
-          flexDirection: "row",
         }}
       >
         <View
-          style={{ flex: 1, flexDirection: "row", alignItems: "flex-start" }}
+          style={{
+            padding: 10,
+            marginTop: 2,
+            backgroundColor: "#ddd",
+            borderColor: "#bbb",
+            borderWidth: 1,
+            borderRadius: 5,
+          }}
         >
-          <Text>{item.name}</Text>
+          <Text>{item.label}</Text>
         </View>
       </TouchableOpacity>
     );
   };
 
   renderListType = () => {
-    if (this.state.focus) {
-      return (
-        <FlatList
-          data={this.state.listItems}
-          keyExtractor={(item, index) => index.toString()}
-          extraData={this.props}
-          renderItem={this.renderItems}
-          style={{ maxHeight: 140 }}
-        />
-      );
-    }
+    return (
+      <FlatList
+        data={this.state.listItems}
+        keyExtractor={(item, index) => index.toString()}
+        extraData={this.props}
+        renderItem={this.renderItems}
+        style={{ maxHeight: 140 }}
+      />
+    );
   };
 
   searchedItems = (searchedText) => {
-    let setSort = this.props.setSort;
-    if (!setSort && typeof setSort !== "function") {
-      setSort = (item, searchedText) => {
-        return item.name.toLowerCase().indexOf(searchedText.toLowerCase()) > -1;
-      };
-    }
-    var ac = this.props.items.filter((item) => {
+    const setSort = (item, searchedText) => {
+      return item.label.toLowerCase().indexOf(searchedText.toLowerCase()) > -1;
+    };
+    const ac = this.props.items.filter((item) => {
       return setSort(item, searchedText);
     });
-    let item = {
-      id: -1,
-      name: searchedText,
-    };
-    this.setState({ listItems: ac });
-    const onTextChange = this.props.onTextChange || this.props.onChangeText;
-    if (onTextChange && typeof onTextChange === "function") {
-      setTimeout(() => {
-        onTextChange(searchedText);
-      }, 0);
-    }
+    this.setState({
+      listItems: ac,
+      item: searchedText,
+      searchedText,
+    });
   };
 
   renderTextInput = () => {
@@ -102,19 +94,15 @@ export default class SearchableDropDown extends Component {
         }}
         underlineColorAndroid={"transparent"}
         onFocus={() => {
-          this.props.onFocus && this.props.onFocus();
           this.setState({
             focus: true,
             listItems: this.props.items,
           });
         }}
         onBlur={(e) => {
-          if (this.props.onBlur) {
-            this.props.onBlur(e);
-          }
-          this.setState({ focus: false });
+          this.setState({ focus: false, searchedText: "" });
         }}
-        value={this.props.selectedValue ? this.props.selectedValue.name : ""}
+        value={this.state.item}
         style={{
           minHeight: 40,
           borderColor: "#41E1FD",
@@ -122,7 +110,7 @@ export default class SearchableDropDown extends Component {
           borderRadius: 4,
           paddingLeft: 10,
         }}
-        placeholder={"placeholder"}
+        placeholder={"-Select-"}
       />
     );
   };
@@ -131,7 +119,7 @@ export default class SearchableDropDown extends Component {
     return (
       <View style={{ paddingTop: 5 }}>
         {this.renderTextInput()}
-        {this.renderListType()}
+        {this.state.focus && this.renderListType()}
       </View>
     );
   };
