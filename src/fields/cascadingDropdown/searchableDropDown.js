@@ -16,7 +16,6 @@ export default class SearchableDropDown extends Component {
       listItems: [],
       item: "",
       focus: false,
-      searchedText: "",
     };
   }
 
@@ -36,32 +35,31 @@ export default class SearchableDropDown extends Component {
     return (
       <TouchableOpacity
         onPress={() => {
-          this.setState({ focus: false, searchedText: "" });
-          this.props.onItemSelect(item);
+          this.setState({ focus: false });
+          Keyboard.dismiss();
+          setTimeout(() => {
+            this.props.onItemSelect(item);
+          }, 0);
         }}
         style={{
-          flex: 1,
+          padding: 10,
+          marginTop: 2,
+          backgroundColor: "#ddd",
+          borderColor: "#bbb",
+          borderWidth: 1,
+          borderRadius: 5,
         }}
       >
-        <View
-          style={{
-            padding: 10,
-            marginTop: 2,
-            backgroundColor: "#ddd",
-            borderColor: "#bbb",
-            borderWidth: 1,
-            borderRadius: 5,
-          }}
-        >
-          <Text>{item.label}</Text>
-        </View>
+        <Text style={{ color: "#222" }}>{item.label}</Text>
       </TouchableOpacity>
     );
   };
 
-  renderListType = () => {
+  renderList = () => {
     return (
       <FlatList
+        nestedScrollEnabled={true}
+        keyboardShouldPersistTaps={"always"}
         data={this.state.listItems}
         keyExtractor={(item, index) => index.toString()}
         extraData={this.props}
@@ -81,7 +79,6 @@ export default class SearchableDropDown extends Component {
     this.setState({
       listItems: ac,
       item: searchedText,
-      searchedText,
     });
   };
 
@@ -100,7 +97,7 @@ export default class SearchableDropDown extends Component {
           });
         }}
         onBlur={(e) => {
-          this.setState({ focus: false, searchedText: "" });
+          this.setState({ focus: false, item: this.props.selectedValue });
         }}
         value={this.state.item}
         style={{
@@ -117,9 +114,9 @@ export default class SearchableDropDown extends Component {
 
   render = () => {
     return (
-      <View style={{ paddingTop: 5 }}>
+      <View keyboardShouldPersist="always" style={{ paddingTop: 5 }}>
         {this.renderTextInput()}
-        {this.state.focus && this.renderListType()}
+        {this.state.focus && this.renderList()}
       </View>
     );
   };

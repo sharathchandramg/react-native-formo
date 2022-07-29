@@ -27,10 +27,19 @@ export default class CascadingDropdownField extends Component {
 
   getOptions = () => {
     const { attributes, state } = this.props;
-    const options = !isEmpty(attributes) && !isEmpty(attributes.options) ? attributes.options : [];
-    if (!isEmpty(attributes) && !isEmpty(attributes.ref_field_name) && !isEmpty(options)) {
+    const options =
+      !isEmpty(attributes) && !isEmpty(attributes.options)
+        ? attributes.options
+        : [];
+    if (
+      !isEmpty(attributes) &&
+      !isEmpty(attributes.ref_field_name) &&
+      !isEmpty(options)
+    ) {
       const refField = state[attributes.ref_field_name];
-      return !isEmpty(refField) && !isEmpty(refField.value) && !isEmpty(refField.value.id)
+      return !isEmpty(refField) &&
+        !isEmpty(refField.value) &&
+        !isEmpty(refField.value.id)
         ? options.filter((item) => item.ref_id.includes(refField.value.id))
         : [];
     }
@@ -83,7 +92,6 @@ export default class CascadingDropdownField extends Component {
           <SearchableDropdown
             onItemSelect={(item) => this.handleChange(item)}
             items={this.getOptions()}
-            attributes={attributes}
             selectedValue={this.getSelectedValue(attributes)}
           />
         </View>
