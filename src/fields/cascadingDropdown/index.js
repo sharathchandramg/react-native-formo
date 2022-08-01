@@ -6,6 +6,8 @@ import StarIcon from "../../components/starIcon";
 import { isEmpty } from "../../utils/validators";
 import SearchableDropdown from "./searchableDropDown";
 
+import styles from "./styles";
+
 export default class CascadingDropdownField extends Component {
   static propTypes = {
     attributes: PropTypes.object,
@@ -22,7 +24,16 @@ export default class CascadingDropdownField extends Component {
   }
 
   handleChange = (value) => {
-    this.props.updateValue(this.props.attributes.name, value);
+    this.props.updateValue(attributes.name, value);
+    Object.keys(state).forEach((ele) => {
+      if (
+        state[ele] &&
+        state[ele]["type"] === "cascading-dropdown" &&
+        state[ele]["ref_field_name"] === attributes.name
+      ) {
+        this.props.updateValue(ele, null);
+      }
+    });
   };
 
   getOptions = () => {
@@ -63,26 +74,18 @@ export default class CascadingDropdownField extends Component {
     const { theme, attributes } = this.props;
     return (
       <View>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingVertical: 5,
-            width: "100%",
-          }}
-        >
-          <View style={{ flexDirection: "row", paddingStart: 5 }}>
+        <View style={styles.labelWrapper}>
+          <View style={styles.labelContainer}>
             {attributes["required"] && (
               <StarIcon required={attributes["required"]} />
             )}
             <Text
-              style={{
-                color: theme.inputColorPlaceholder,
-                paddingStart: 5,
-                fontSize: 16,
-              }}
+              style={[
+                styles.label,
+                {
+                  color: theme.inputColorPlaceholder,
+                },
+              ]}
             >
               {attributes.label}
             </Text>
@@ -103,7 +106,7 @@ export default class CascadingDropdownField extends Component {
     const { theme, attributes, ErrorComponent } = this.props;
 
     return (
-      <View style={{ paddingHorizontal: 15, marginBottom: 10 }}>
+      <View style={styles.cascadingRoot}>
         {this.renderInput()}
         <View>
           <ErrorComponent {...{ attributes, theme }} />

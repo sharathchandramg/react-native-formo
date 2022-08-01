@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   Keyboard,
 } from "react-native";
-import { isEmpty } from "../../utils/validators";
+
+import styles from "./styles";
 
 export default class SearchableDropDown extends Component {
   constructor(props) {
@@ -41,14 +42,7 @@ export default class SearchableDropDown extends Component {
             this.props.onItemSelect(item);
           }, 0);
         }}
-        style={{
-          padding: 10,
-          marginTop: 2,
-          backgroundColor: "#ddd",
-          borderColor: "#bbb",
-          borderWidth: 1,
-          borderRadius: 5,
-        }}
+        style={styles.itemWrapper}
       >
         <Text style={{ color: "#222" }}>{item.label}</Text>
       </TouchableOpacity>
@@ -100,13 +94,7 @@ export default class SearchableDropDown extends Component {
           this.setState({ focus: false, item: this.props.selectedValue });
         }}
         value={this.state.item}
-        style={{
-          minHeight: 40,
-          borderColor: "#41E1FD",
-          borderWidth: 2,
-          borderRadius: 4,
-          paddingLeft: 10,
-        }}
+        style={styles.input}
         placeholder={"-Select-"}
       />
     );

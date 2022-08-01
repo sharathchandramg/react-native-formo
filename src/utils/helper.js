@@ -280,7 +280,9 @@ export function autoValidate(field) {
           !isEmpty(additionalConfig) &&
           !isEmpty(additionalConfig["max_length"])
         ) {
-          if (field.value.trim().length > Number(additionalConfig["max_length"])) {
+          if (
+            field.value.trim().length > Number(additionalConfig["max_length"])
+          ) {
             error = true;
             errorMsg = `Maximum characters allowed is ${additionalConfig["max_length"]}`;
           }
@@ -345,11 +347,19 @@ export function autoValidate(field) {
         break;
 
       case "cascading-dropdown":
-          if (isEmpty(field["value"])) {
-            error = true;
-            errorMsg = `${field.label} is required`;
-          }
-          break;
+        if (isEmpty(field["value"])) {
+          error = true;
+          errorMsg = `${field.label} is required`;
+        } else if (
+          field["options"].length > 0 &&
+          !isEmpty(field["value"]) &&
+          !isEmpty(field["value"]["id"]) &&
+          isEmpty(_.find(field["options"], { id: field["value"]["id"] }))
+        ) {
+          error = true;
+          errorMsg = `Option is not available`;
+        }
+        break;
 
       case "sub-form":
         if (
