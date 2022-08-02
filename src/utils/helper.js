@@ -50,7 +50,7 @@ export function getDefaultValue(field) {
       return field.defaultValue || "";
 
     case "cascading-dropdown":
-      return null
+      return ""
 
     case "status_picker":
     case "picker": {
@@ -184,7 +184,7 @@ export function getResetValue(field) {
     }
 
     case "cascading-dropdown":
-      return null
+      return ""
 
     case "checklist": {
       if (Array.isArray(field.defaultValue)) {

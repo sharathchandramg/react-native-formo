@@ -24,6 +24,7 @@ export default class CascadingDropdownField extends Component {
   }
 
   handleChange = (value) => {
+    const { attributes, state } = this.props;
     this.props.updateValue(attributes.name, value);
     Object.keys(state).forEach((ele) => {
       if (
@@ -57,17 +58,20 @@ export default class CascadingDropdownField extends Component {
     return options;
   };
 
-  getValueIndex = (attributes) => {
+  getOption = (attributes) => {
     const options = !isEmpty(this.getOptions()) ? this.getOptions() : [];
-    const value = !isEmpty(attributes.value) ? attributes.value : {};
-    return options.findIndex((x) => x.id === value["id"]);
+    const value =
+      !isEmpty(attributes) &&
+      !isEmpty(attributes.value) &&
+      !isEmpty(attributes.value["id"])
+        ? attributes.value.id
+        : null;
+    return !isEmpty(value) ? _.find(options, { id: value }) : null;
   };
 
   getSelectedValue = (attributes) => {
-    const index = this.getValueIndex(attributes);
-    const options = !isEmpty(this.getOptions()) ? this.getOptions() : [];
-    const field = options[index];
-    return !isEmpty(field) && !isEmpty(field.label) ? field.label : "";
+    const option = this.getOption(attributes);
+    return !isEmpty(option) && !isEmpty(option.label) ? option.label : "";
   };
 
   renderInput = () => {
