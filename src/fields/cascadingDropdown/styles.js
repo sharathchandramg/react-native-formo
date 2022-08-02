@@ -30,8 +30,6 @@ const styles = StyleSheet.create({
   },
   itemWrapper: {
     padding: 10,
-    marginTop: 2,
-    backgroundColor: "#ddd",
     borderColor: "#bbb",
     borderWidth: 1,
     borderRadius: 5,
