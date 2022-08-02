@@ -351,8 +351,6 @@ export default class Form0 extends Component {
       return updateValue;
     } else if (field.type === "longtext") {
       return !isEmpty(field.value) ? field.value.trim() : field.value;
-    } else if (field.type === "cascading-dropdown") {
-      return !isEmpty(field.value) && !isEmpty(field.value.label) ? field.value.label : null;
     } else return field.value;
   };
 

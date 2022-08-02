@@ -20,11 +20,11 @@ export default class SearchableDropDown extends Component {
     };
   }
 
-  componentDidMount = () => {
+  componentDidMount() {
     this.setState({
       listItems: this.props.items,
     });
-  };
+  }
 
   componentDidUpdate(prevProps) {
     if (prevProps.selectedValue !== this.props.selectedValue) {
@@ -39,7 +39,7 @@ export default class SearchableDropDown extends Component {
           this.setState({ focus: false });
           Keyboard.dismiss();
           setTimeout(() => {
-            this.props.onItemSelect(item);
+            this.props.onItemSelect(item.label);
           }, 0);
         }}
         style={styles.itemWrapper}

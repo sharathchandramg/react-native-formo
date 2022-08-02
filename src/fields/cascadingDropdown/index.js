@@ -16,13 +16,6 @@ export default class CascadingDropdownField extends Component {
     ErrorComponent: PropTypes.func,
   };
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedItems: [],
-    };
-  }
-
   handleChange = (value) => {
     const { attributes, state } = this.props;
     this.props.updateValue(attributes.name, value);
@@ -49,29 +42,24 @@ export default class CascadingDropdownField extends Component {
       !isEmpty(options)
     ) {
       const refField = state[attributes.ref_field_name];
+      const refSelectedOption =
+        !isEmpty(refField) && !isEmpty(refField.value)
+          ? _.find(refField.options, { label: refField.value })
+          : null;
       return !isEmpty(refField) &&
         !isEmpty(refField.value) &&
-        !isEmpty(refField.value.id)
-        ? options.filter((item) => item.ref_id.includes(refField.value.id))
+        !isEmpty(refSelectedOption) &&
+        !isEmpty(refSelectedOption.id)
+        ? options.filter((item) => item.ref_id.includes(refSelectedOption.id))
         : [];
     }
     return options;
   };
 
-  getOption = (attributes) => {
-    const options = !isEmpty(this.getOptions()) ? this.getOptions() : [];
-    const value =
-      !isEmpty(attributes) &&
-      !isEmpty(attributes.value) &&
-      !isEmpty(attributes.value["id"])
-        ? attributes.value.id
-        : null;
-    return !isEmpty(value) ? _.find(options, { id: value }) : null;
-  };
-
   getSelectedValue = (attributes) => {
-    const option = this.getOption(attributes);
-    return !isEmpty(option) && !isEmpty(option.label) ? option.label : "";
+    return !isEmpty(attributes) && !isEmpty(attributes.value)
+      ? attributes.value
+      : "";
   };
 
   renderInput = () => {
