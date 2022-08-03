@@ -347,17 +347,14 @@ export function autoValidate(field) {
         break;
 
       case "cascading-dropdown":
-        if (isEmpty(field["value"])) {
-          error = true;
-          errorMsg = `${field.label} is required`;
-        } else if (
-          field["options"].length > 0 &&
-          !isEmpty(field["value"]) &&
-          !isEmpty(field["value"]["id"]) &&
-          isEmpty(_.find(field["options"], { id: field["value"]["id"] }))
+        if (
+          isEmpty(field["value"]) ||
+          (field["options"].length > 0 &&
+            !isEmpty(field["value"]) &&
+            isEmpty(_.find(field["options"], { label: field["value"] })))
         ) {
           error = true;
-          errorMsg = `Option is not available`;
+          errorMsg = `${field.label} is required`;
         }
         break;
 
