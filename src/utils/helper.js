@@ -243,7 +243,7 @@ export function getInitialState(fields) {
   return state;
 }
 
-export function autoValidate(field) {
+export function autoValidate(field, data={}) {
   let error = false;
   let errorMsg = "";
   if (field.required) {
@@ -347,15 +347,50 @@ export function autoValidate(field) {
         break;
 
       case "cascading-dropdown":
-        if (
-          isEmpty(field["value"]) ||
-          (field["options"].length > 0 &&
-            !isEmpty(field["value"]) &&
-            isEmpty(_.find(field["options"], { label: field["value"] })))
-        ) {
+        if (isEmpty(field["value"])) {
           error = true;
           errorMsg = `${field.label} is required`;
+          field["options"].length > 0 &&
+            !isEmpty(field["value"]) &&
+            isEmpty(_.find(field["options"], { label: field["value"] }));
+        } else if (!isEmpty(field["value"])) {
+          if (
+            field.ref_field_name &&
+            data &&
+            data[field.ref_field_name] &&
+            data[field.ref_field_name]["value"]
+          ) {
+            const refField = data[field.ref_field_name];
+            const refValue = refField["value"];
+            const refFieldOption =
+              refField.options && refField.options.length > 0 && refValue
+                ? _.find(refField.options, { label: refValue })
+                : null;
+            const valueOption =
+              field.options.length > 0 && field["value"]
+                ? _.find(field.options, { label: field["value"] })
+                : null;
+            const isValidOption =
+              refFieldOption &&
+              refFieldOption.id &&
+              valueOption &&
+              valueOption.ref_id.length > 0
+                ? valueOption.ref_id.includes(refFieldOption.id)
+                : false;
+            if (!isValidOption) {
+              error = true;
+              errorMsg = `${field.label} value is not a valid option`;
+            }
+          } else if (
+            field["options"].length > 0 &&
+            !isEmpty(field["value"]) &&
+            isEmpty(_.find(field["options"], { label: field["value"] }))
+          ) {
+            error = true;
+            errorMsg = `${field.label} is required`;
+          }
         }
+
         break;
 
       case "sub-form":
