@@ -42,7 +42,6 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     backgroundColor: "white",
     shadowOffset: { width: 0, height: 0 },
-    paddingStart: 5,
   },
   listWrapper: {
     borderWidth: 1,

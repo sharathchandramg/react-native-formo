@@ -38,9 +38,7 @@ export default class SearchableDropDown extends Component {
         onPress={() => {
           this.setState({ focus: false });
           Keyboard.dismiss();
-          setTimeout(() => {
-            this.props.onItemSelect(item.label);
-          }, 0);
+          this.props.onItemSelect(item.label);
         }}
         style={styles.itemWrapper}
       >
