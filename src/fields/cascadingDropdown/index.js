@@ -59,8 +59,7 @@ export default class CascadingDropdownField extends Component {
   getOption = (attributes) => {
     const options = !isEmpty(this.getOptions()) ? this.getOptions() : [];
     const value =
-      !isEmpty(attributes) &&
-      !isEmpty(attributes.value) 
+      !isEmpty(attributes) && !isEmpty(attributes.value)
         ? attributes.value
         : null;
     return !isEmpty(value) ? _.find(options, { label: value }) : null;
