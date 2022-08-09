@@ -28,7 +28,7 @@
     "jest": "26.2.2",
     "metro-react-native-babel-preset": "0.61.0",
     "react": "16.9.0",
-    "react-native": "0.61.0",
+    "react-native": "0.62.3",
     "react-test-renderer": "16.9.0"
   },
   "peerDependencies": {
