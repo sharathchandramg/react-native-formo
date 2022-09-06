@@ -124,6 +124,7 @@ export default class LocationField extends Component {
                             (position, err) => {
                                 if (err) {
                                     this.locationPickupFailure(err);
+                                    this.props.notifyLocationError(err);
                                 } else {
                                     this.locationPickupSuccess(position);
                                 }
@@ -151,6 +152,7 @@ export default class LocationField extends Component {
                             navigation.goBack(null);
                         } else {
                             this.locationPickupFailure(err);
+                            this.props.notifyLocationError(err);
                         }
                     } else {
                         this.locationPickupSuccess(position);
