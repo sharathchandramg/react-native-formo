@@ -232,7 +232,7 @@ export function getResetValue(field) {
 export function getInitialState(fields) {
   const state = {};
   _.forEach(fields, (field) => {
-    const fieldObj = field;
+    const fieldObj = Object.assign({},field);
     fieldObj.error = false;
     fieldObj.errorMsg = "";
     if (field && field.type) {
