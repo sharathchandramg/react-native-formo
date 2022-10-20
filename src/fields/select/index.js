@@ -246,7 +246,7 @@ export default class SelectField extends Component {
             <LinearGradientHeader />
           </View>
 
-        <ScrollView>
+        <ScrollView style={{ marginBottom: 50 }}>
           {!isEmpty(attributes["options"]) &&
             attributes.options.map((item, index) => {
               let isSelected = false;
