@@ -51,7 +51,6 @@ export default class PickerField extends Component {
         : typeof attributes.value !== "undefined" && attributes.value !== null
         ? attributes.value
         : "";
-
     return (
       <Modal
         animationType="slide"
