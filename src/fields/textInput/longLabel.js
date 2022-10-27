@@ -27,7 +27,7 @@ const LongLabel = (props) => {
   }
 
   return (
-    <Pressable onPress={() => onLoadMoreToggle()}>
+    <Pressable onPress={() => onLoadMoreToggle()} style={{ paddingTop: 5 }}>
       <Text
         onTextLayout={onTextLayout}
         style={{
@@ -55,7 +55,7 @@ const LongLabel = (props) => {
         )}{" "}
         {props.text}
       </Text>
-      {hasMore && (
+      {/* {hasMore && (
         <View>
           <Text
             style={{
@@ -67,7 +67,7 @@ const LongLabel = (props) => {
             {readMoreText}
           </Text>
         </View>
-      )}
+      )} */}
     </Pressable>
   );
 };

@@ -140,21 +140,56 @@ export default class PickerField extends Component {
             paddingVertical: 10,
           }}
         >
-          <View style={{ flexDirection: "row", paddingStart: 5 }}>
+          <View
+            style={{
+              flex: 6,
+              flexDirection: "row",
+              alignItems: "center",
+              paddingStart: 5,
+            }}
+          >
             {attributes["required"] && (
               <StarIcon required={attributes["required"]} />
             )}
-            <Text
-              style={{
-                color: theme.inputColorPlaceholder,
-                paddingStart: 5,
-                fontSize: 16,
-              }}
-            >
-              {attributes.label}
-            </Text>
+            <Pressable onPress={() => this.onLoadMoreToggle()}>
+              <Text
+                onTextLayout={this.onTextLayout}
+                style={{
+                  opacity: 0,
+                  position: "absolute",
+                  color: theme.inputColorPlaceholder,
+                  paddingStart: 5,
+                  fontSize: 16,
+                }}
+              >
+                {attributes.label}
+              </Text>
+              <Text
+                style={{
+                  color: theme.inputColorPlaceholder,
+                  paddingStart: 5,
+                  fontSize: 16,
+                }}
+                numberOfLines={
+                  !this.state.hasMore
+                    ? 2
+                    : this.state.showMore
+                    ? this.state.numOfLines
+                    : 2
+                }
+              >
+                {attributes.label}
+              </Text>
+            </Pressable>
           </View>
-          <Text style={{ color: theme.inputColorPlaceholder, fontSize: 16 }}>
+          <Text
+            style={{
+              color: theme.inputColorPlaceholder,
+              fontSize: 16,
+              flex: 4,
+              textAlign: "center",
+            }}
+          >
             {isValueValid ? attributes.value : defaultValue}
           </Text>
         </TouchableOpacity>
