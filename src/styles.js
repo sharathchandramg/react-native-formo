@@ -9,6 +9,6 @@ module.exports = {
         flexDirection: 'row',
         alignItems: 'center',
         flex: 1,
-        height: 50,
+        minHeight: 50,
     },
 };
