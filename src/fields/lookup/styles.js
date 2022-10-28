@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     },
 
     inputLabelWrapper:{
-        height:56,
+        minHeight:56,
         width:'92%',
         alignItems:'center',
         justifyContent:'center',
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     },
 
     inputLabel:{
-        height:50,
+        minHeight:50,
         width:'99%',
         flexDirection:'row',
         alignItems:'center',
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     },
 
     labelTextWrapper:{
-        height:50,
+        minHeight:50,
         flex:1,
         alignItems:'center',
         justifyContent:'center',
