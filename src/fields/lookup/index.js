@@ -856,7 +856,7 @@ export default class LookupField extends Component {
                 { paddingLeft: attributes["required"] ? 13 : 0 },
               ]}
             >
-              <Text style={styles.inputText}>{this.getLabel()}</Text>
+              <Text style={styles.inputText}>{this.getLabel()}{" "}</Text>
 
               {this.renderlookupIcon()}
             </View>

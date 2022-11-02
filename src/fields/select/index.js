@@ -328,7 +328,7 @@ export default class SelectField extends Component {
                 { paddingLeft: attributes["required"] ? 13 : 5 },
               ]}
             >
-              <Text style={styles.inputText}>{this.getLabel()}</Text>
+              <Text style={styles.inputText}>{this.getLabel()}{" "}</Text>
               {this.renderIcon()}
             </View>
           </TouchableOpacity>
