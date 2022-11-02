@@ -6,12 +6,12 @@ import {
   Text,
   Checkbox,
   ArrowForwardIcon,
-  ArrowBackIcon
+  ArrowBackIcon,
 } from "native-base";
 
 import StarIcon from "../../components/starIcon";
 import { isEmpty } from "../../utils/validators";
-import LinearGradientHeader from './../../components/headers/linearGradientHeader';
+import LinearGradientHeader from "./../../components/headers/linearGradientHeader";
 import styles from "./styles";
 
 const _ = require("lodash");
@@ -21,7 +21,7 @@ export default class SelectField extends Component {
     attributes: PropTypes.object,
     updateValue: PropTypes.func,
     theme: PropTypes.object,
-    ErrorComponent: PropTypes.func
+    ErrorComponent: PropTypes.func,
   };
 
   constructor(props) {
@@ -32,7 +32,7 @@ export default class SelectField extends Component {
       activeCategory: null,
       filterData: [],
       newSelected: null,
-      options: []
+      options: [],
     };
   }
 
@@ -67,7 +67,7 @@ export default class SelectField extends Component {
     }
   }
 
-  handleOnGetQuery = offset => {
+  handleOnGetQuery = (offset) => {
     const { onGetQuery, attributes } = this.props;
     if (
       !isEmpty(attributes) &&
@@ -83,7 +83,7 @@ export default class SelectField extends Component {
     }
   };
 
-  setLocalOptions = options => {
+  setLocalOptions = (options) => {
     if (!isEmpty(options)) {
       this.setState({ options: options });
     }
@@ -105,7 +105,7 @@ export default class SelectField extends Component {
     return data;
   };
 
-  setFilterCategory = item => {
+  setFilterCategory = (item) => {
     const categoryData = this.statusOptionsFormatter(
       item["options"],
       item["type"]
@@ -113,18 +113,19 @@ export default class SelectField extends Component {
     this.setState({
       activeCategoryData: categoryData,
       activeCategory: item,
-      filterData: categoryData
+      filterData: categoryData,
     });
   };
 
-  isFilterEnable = attributes => {
+  isFilterEnable = (attributes) => {
     if (!isEmpty(attributes) && !isEmpty(attributes["additional"])) {
       const { filterEnable } = attributes["additional"];
       const filterCategory = attributes["filterCategory"];
 
       if (
         !isEmpty(filterCategory) &&
-        typeof filterEnable !== "undefined" && filterEnable
+        typeof filterEnable !== "undefined" &&
+        filterEnable
       ) {
         return true;
       }
@@ -132,7 +133,7 @@ export default class SelectField extends Component {
     return false;
   };
 
-  isSearchEnable = attributes => {
+  isSearchEnable = (attributes) => {
     if (!isEmpty(attributes) && !isEmpty(attributes["additional"])) {
       const { searchEnable } = attributes["additional"];
       if (typeof searchEnable !== "undefined" && searchEnable) {
@@ -156,12 +157,12 @@ export default class SelectField extends Component {
       const attributes = this.props.attributes;
       if (!isEmpty(attributes) && !isEmpty(attributes["value"])) {
         this.setState({
-          newSelected: attributes["value"]
+          newSelected: attributes["value"],
         });
       }
     }
     this.setState({
-      modalVisible: !this.state.modalVisible
+      modalVisible: !this.state.modalVisible,
     });
   }
 
@@ -172,7 +173,7 @@ export default class SelectField extends Component {
       newSelected = Array.isArray(newSelected) ? newSelected : [];
       const index = attributes.objectType
         ? newSelected.findIndex(
-            option =>
+            (option) =>
               option[attributes.primaryKey] === value[attributes.primaryKey]
           )
         : newSelected.indexOf(value);
@@ -185,7 +186,7 @@ export default class SelectField extends Component {
     this.setState(
       {
         modalVisible: attributes.multiple ? this.state.modalVisible : false,
-        newSelected: newSelected
+        newSelected: newSelected,
       },
       () => this.props.updateValue(this.props.attributes.name, newSelected)
     );
@@ -196,7 +197,7 @@ export default class SelectField extends Component {
     let label = "None";
     if (!isEmpty(attributes["value"])) {
       if (attributes.multiple) {
-        const labelKeyArr = attributes["value"].map(obj => {
+        const labelKeyArr = attributes["value"].map((obj) => {
           const labelKey = attributes.objectType
             ? obj[attributes.labelKey]
             : obj;
@@ -216,11 +217,8 @@ export default class SelectField extends Component {
 
   renderIcon = () => {
     return (
-      <TouchableOpacity
-        style={styles.iconWrapper}
-        onPress={() => this.toggleModalVisible()}
-      >
-        <ArrowForwardIcon size={"6"} color={'#41E1FD'}/>
+      <TouchableOpacity onPress={() => this.toggleModalVisible()}>
+        <ArrowForwardIcon size={"6"} color={"#41E1FD"} />
       </TouchableOpacity>
     );
   };
@@ -230,21 +228,21 @@ export default class SelectField extends Component {
     return (
       <View style={styles.modalContent}>
         <View style={styles.headerWrapper}>
-            <View style={styles.header}>
-              <TouchableOpacity
-                style={styles.headerLeft}
-                onPress={() => this.toggleModalVisible()}
-              >
-                <ArrowBackIcon size={"6"} color={"rgb(0,151,235)"} />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.headerCenter}>
-                <Text style={theme.headerText}>
-                  {attributes.label || "Select"}
-                </Text>
-              </TouchableOpacity>
-            </View>
-            <LinearGradientHeader />
+          <View style={styles.header}>
+            <TouchableOpacity
+              style={styles.headerLeft}
+              onPress={() => this.toggleModalVisible()}
+            >
+              <ArrowBackIcon size={"6"} color={"rgb(0,151,235)"} />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.headerCenter}>
+              <Text style={theme.headerText}>
+                {attributes.label || "Select"}
+              </Text>
+            </TouchableOpacity>
           </View>
+          <LinearGradientHeader />
+        </View>
 
         <ScrollView style={{ marginBottom: 50 }}>
           {!isEmpty(attributes["options"]) &&
@@ -254,7 +252,7 @@ export default class SelectField extends Component {
                 isSelected = attributes.objectType
                   ? attributes.value &&
                     attributes.value.findIndex(
-                      option =>
+                      (option) =>
                         option[attributes.primaryKey] ===
                         item[attributes.primaryKey]
                     ) !== -1
@@ -278,7 +276,9 @@ export default class SelectField extends Component {
                       onPress={() => this.toggleSelect(item)}
                       isChecked={isSelected}
                       colorScheme={"rgb(0,151,235)"}
-                      accessibilityLabel={attributes.objectType ? item[attributes.labelKey] : item}
+                      accessibilityLabel={
+                        attributes.objectType ? item[attributes.labelKey] : item
+                      }
                     />
                   )}
                   <View>
@@ -293,12 +293,12 @@ export default class SelectField extends Component {
 
         {attributes && attributes["multiple"] ? (
           <View style={styles.footerWrapper}>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => this.handleAddPressed()}
-              >
-                <Text style={styles.buttonText}>{"Add"} </Text>
-              </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => this.handleAddPressed()}
+            >
+              <Text style={styles.buttonText}>{"Add"} </Text>
+            </TouchableOpacity>
           </View>
         ) : null}
       </View>
@@ -309,36 +309,28 @@ export default class SelectField extends Component {
     const { theme, attributes, ErrorComponent } = this.props;
     return (
       <View style={styles.container}>
-        <View style={[styles.inputLabelWrapper, { width: '95%' }]}>
+        <View style={[styles.inputLabelWrapper, { width: "95%" }]}>
           <TouchableOpacity
-            style={[styles.inputLabel]}
+            style={styles.inputLabel}
             error={theme.changeTextInputColorOnError ? attributes.error : null}
             onPress={() => this.toggleModalVisible()}
           >
-            {attributes["required"] && (
-              <StarIcon required={attributes["required"]} />
-            )}
-            <View style={[styles.labelTextWrapper, { flexDirection: "row" }]}>
-              <Text
-                style={[styles.labelText]}
-                numberOfLines={2}
-                adjustsFontSizeToFit={true}
-                minimumFontScale={0.8}
-              >
-                {attributes.label}
-              </Text>
+            <View style={styles.labelTextWrapper}>
+              {attributes["required"] && (
+                <StarIcon required={attributes["required"]} />
+              )}
+
+              <Text style={[styles.labelText]}>{attributes.label}</Text>
             </View>
-            <View style={styles.valueWrapper}>
-              <Text
-                style={styles.inputText}
-                numberOfLines={2}
-                adjustsFontSizeToFit={true}
-                minimumFontScale={0.8}
-              >
-                {this.getLabel()}{" "}
-              </Text>
+            <View
+              style={[
+                styles.valueWrapper,
+                { paddingLeft: attributes["required"] ? 13 : 5 },
+              ]}
+            >
+              <Text style={styles.inputText}>{this.getLabel()}</Text>
+              {this.renderIcon()}
             </View>
-            {this.renderIcon()}
           </TouchableOpacity>
         </View>
 
