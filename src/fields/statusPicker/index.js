@@ -127,7 +127,7 @@ export default class StatusPickerField extends Component {
               ? theme.errorMsgColor
               : theme.inputBorderColor,
             borderBottomWidth: theme.borderWidth,
-            marginBottom: 10
+            marginBottom: 10,
           },
         }}
       >
@@ -160,6 +160,7 @@ export default class StatusPickerField extends Component {
               paddingStart: 18,
               paddingTop: 5,
             }}
+            numberOfLines={1}
           >
             {isValueValid ? attributes.value : defaultValue}
           </Text>

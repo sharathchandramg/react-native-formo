@@ -123,7 +123,7 @@ export default class PickerField extends Component {
               ? theme.errorMsgColor
               : theme.inputBorderColor,
             borderBottomWidth: theme.borderWidth,
-            marginBottom: 10
+            marginBottom: 10,
           },
         }}
       >
@@ -135,7 +135,7 @@ export default class PickerField extends Component {
             paddingVertical: 5,
           }}
         >
-          <View style={{ flexDirection: "row",paddingStart: 5, }}>
+          <View style={{ flexDirection: "row", paddingStart: 5 }}>
             {attributes["required"] && (
               <StarIcon required={attributes["required"]} />
             )}
@@ -143,13 +143,21 @@ export default class PickerField extends Component {
               style={{
                 color: theme.inputColorPlaceholder,
                 paddingStart: 5,
-                fontSize: 16
+                fontSize: 16,
               }}
             >
               {attributes.label}
             </Text>
           </View>
-          <Text style={{ color: theme.inputColorPlaceholder, fontSize: 16,paddingStart: 18,paddingTop:5 }}>
+          <Text
+            style={{
+              color: theme.inputColorPlaceholder,
+              fontSize: 16,
+              paddingStart: 18,
+              paddingTop: 5,
+            }}
+            numberOfLines={1}
+          >
             {isValueValid ? attributes.value : defaultValue}
           </Text>
         </TouchableOpacity>
