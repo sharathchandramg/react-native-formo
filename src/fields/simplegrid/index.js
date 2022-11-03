@@ -222,7 +222,10 @@ export default class SimpleGrideView extends Component {
 
   renderChecklistIcon = () => {
     return (
-      <TouchableOpacity onPress={() => this.toggleModal()}>
+      <TouchableOpacity
+        onPress={() => this.toggleModal()}
+        style={{ width: "7%" }}
+      >
         <ArrowForwardIcon size={"6"} color={"#41E1FD"} />
       </TouchableOpacity>
     );
@@ -414,9 +417,11 @@ export default class SimpleGrideView extends Component {
                 { paddingLeft: attributes["required"] ? 13 : 5 },
               ]}
             >
-              <Text style={styles.inputText}>
-                {this.getLabel(attributes.value)}{" "}
-              </Text>
+              <View style={{ width: "93%" }}>
+                <Text style={styles.inputText}>
+                  {this.getLabel(attributes.value)}
+                </Text>
+              </View>
               {this.renderChecklistIcon()}
             </View>
           </TouchableOpacity>

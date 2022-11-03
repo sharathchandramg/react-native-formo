@@ -156,7 +156,10 @@ export default class ChecklistField extends Component {
 
   renderIcon = () => {
     return (
-      <TouchableOpacity onPress={() => this.toggleModalVisible()}>
+      <TouchableOpacity
+        onPress={() => this.toggleModalVisible()}
+        style={{ width: "7%" }}
+      >
         <ArrowForwardIcon size={"6"} color={"#41E1FD"} />
       </TouchableOpacity>
     );
@@ -298,7 +301,11 @@ export default class ChecklistField extends Component {
                 { paddingLeft: attributes["required"] ? 13 : 5 },
               ]}
             >
-              <Text style={styles.inputText}>{this.getLabel()}{" "}</Text>
+              <View style={{ width: "93%" }}>
+                <Text style={styles.inputText} numberOfLines={1}>
+                  {this.getLabel()}
+                </Text>
+              </View>
               {this.renderIcon()}
             </View>
           </TouchableOpacity>

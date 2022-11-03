@@ -80,10 +80,10 @@ export default class TextInputField extends Component {
         style={{
           height: 60,
           marginTop:
-          (this.state.isFocused || !isEmpty(attributes["value"])) &&
-          this.state.numOfLines > 1
-            ? this.state.numOfLines * 14
-            : 0,
+            (this.state.isFocused || !isEmpty(attributes["value"])) &&
+            this.state.numOfLines > 1
+              ? this.state.numOfLines * 14
+              : 0,
           borderTopWidth: 0,
           borderRightWidth: 0,
           borderLeftWidth: 0,
@@ -239,8 +239,10 @@ export default class TextInputField extends Component {
               }
             >
               {attributes["required"] && (
-                <StarIcon required={attributes["required"]} />
-              )}{" "}
+                <>
+                  <StarIcon required={attributes["required"]} />{" "}
+                </>
+              )}
               {attributes.label}
             </Animated.Text>
             {typeof attributes.type !== "undefined" &&

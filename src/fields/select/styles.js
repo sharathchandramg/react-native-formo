@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     borderColor: "#41E1FD",
     borderWidth: 2,
     borderRadius: 4,
+    paddingVertical:5
   },
   inputLabel: {
     width: "100%",
@@ -28,14 +29,7 @@ const styles = StyleSheet.create({
   },
   valueWrapper: {
     flexDirection: "row",
-    paddingTop: 10,
-  },
-  iconWrapper: {
-    height: 50,
-    flexDirection: "row",
-    width: "7%",
-    alignItems: "center",
-    justifyContent: "flex-start",
+    paddingTop: 5,
   },
   labelText: {
     fontSize: 16,
@@ -49,10 +43,8 @@ const styles = StyleSheet.create({
   },
   inputText: {
     fontSize: 18,
-    lineHeight: 20,
     color: "#575757",
     fontFamily: "roboto",
-    alignSelf: "center",
     fontWeight: "100",
   },
   button: {

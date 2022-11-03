@@ -176,8 +176,10 @@ export default class TextInputField extends Component {
               }
             >
               {attributes["required"] && (
-                <StarIcon required={attributes["required"]} />
-              )}{" "}
+                <>
+                  <StarIcon required={attributes["required"]} />{" "}
+                </>
+              )}
               {attributes.label}
             </Animated.Text>
             {this.renderInputField(attributes, theme)}

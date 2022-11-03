@@ -127,6 +127,7 @@ export default class StatusPickerField extends Component {
               ? theme.errorMsgColor
               : theme.inputBorderColor,
             borderBottomWidth: theme.borderWidth,
+            marginBottom: 10
           },
         }}
       >
@@ -135,7 +136,7 @@ export default class StatusPickerField extends Component {
           style={{
             flex: 1,
             flexDirection: "column",
-            paddingVertical: 10,
+            paddingVertical: 5,
           }}
         >
           <View style={{ flexDirection: "row", paddingStart: 5 }}>

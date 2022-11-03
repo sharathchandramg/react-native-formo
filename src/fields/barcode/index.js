@@ -149,8 +149,10 @@ export default class BarcodeField extends Component {
             >
               <Animated.Text style={this.getLabelStyles()} numberOfLines={1}>
                 {attributes["required"] && (
-                  <StarIcon required={attributes["required"]} />
-                )}{" "}
+                  <>
+                    <StarIcon required={attributes["required"]} />{" "}
+                  </>
+                )}
                 {attributes.label}
               </Animated.Text>
               <TouchableOpacity

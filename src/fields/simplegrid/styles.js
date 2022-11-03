@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     borderColor: "#41E1FD",
     borderWidth: 2,
     borderRadius: 4,
+    paddingVertical:5
   },
   inputLabel: {
     width: "100%",
@@ -28,7 +29,7 @@ const styles = StyleSheet.create({
   },
   valueWrapper: {
     flexDirection: "row",
-    paddingTop: 10,
+    paddingTop: 5,
   },
   labelText: {
     fontSize: 16,
@@ -39,11 +40,9 @@ const styles = StyleSheet.create({
     paddingStart: 5,
   },
   inputText: {
-    fontSize: 16,
-    lineHeight: 20,
+    fontSize: 18,
     color: "#575757",
     fontFamily: "roboto",
-    alignSelf: "center",
     fontWeight: "100",
   },
 });
