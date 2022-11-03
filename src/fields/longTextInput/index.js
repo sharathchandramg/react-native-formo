@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Platform, Animated } from "react-native";
+import { Platform, Animated, Pressable, Text } from "react-native";
 import { View, Input } from "native-base";
 import { getKeyboardType } from "./../../utils/helper";
 import { isEmpty } from "./../../utils/validators";
 import StarIcon from "../../components/starIcon";
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import Icon from "react-native-vector-icons/FontAwesome5";
 
 export default class TextInputField extends Component {
   static propTypes = {
@@ -17,7 +17,8 @@ export default class TextInputField extends Component {
 
   state = {
     isFocused: false,
-    height: 0
+    height: 0,
+    numOfLines: 1,
   };
 
   componentWillMount() {
@@ -30,7 +31,7 @@ export default class TextInputField extends Component {
     Animated.timing(this._animatedIsFocused, {
       toValue: this.state.isFocused || this.getInputValue() ? 1 : 0,
       duration: 300,
-      useNativeDriver: false
+      useNativeDriver: false,
     }).start();
   }
 
@@ -43,9 +44,9 @@ export default class TextInputField extends Component {
 
   getInputValue = () => {
     return !isEmpty(this.props.attributes) &&
-        !isEmpty(this.props.attributes["value"])
-        ? true
-        : false;
+      !isEmpty(this.props.attributes["value"])
+      ? true
+      : false;
   };
 
   renderInputField = (attributes, theme) => {
@@ -85,6 +86,11 @@ export default class TextInputField extends Component {
               textAlignVertical: "top",
             },
           }),
+          marginTop:
+            (this.state.isFocused || !isEmpty(attributes["value"])) &&
+            this.state.numOfLines > 1
+              ? this.state.numOfLines * 12
+              : 0,
         }}
         ref={(c) => {
           this.textInput = c;
@@ -129,6 +135,10 @@ export default class TextInputField extends Component {
     };
   };
 
+  onTextLayout = (e) => {
+    this.setState({ numOfLines: e.nativeEvent.lines.length });
+  };
+
   render() {
     const { theme, attributes, ErrorComponent } = this.props;
     return (
@@ -141,25 +151,47 @@ export default class TextInputField extends Component {
             paddingHorizontal: 15,
           }}
         >
-            <View  style={{ flex: 1, position: "relative" }}>
-              <Animated.Text style={this.getLabelStyles()} numberOfLines={1}>
-                {attributes["required"] && (
-                  <StarIcon required={attributes["required"]} />
-                )}{" "}
+          <View style={{ flex: 1, position: "relative" }}>
+            <Pressable onPress={() => {}} style={{ paddingTop: 5 }}>
+              <Text
+                onTextLayout={this.onTextLayout}
+                style={{
+                  opacity: 0,
+                  position: "absolute",
+                  fontSize: 16,
+                  paddingStart: 5,
+                  color: theme.inputColorPlaceholder,
+                  lineHeight: 18,
+                }}
+              >
                 {attributes.label}
-              </Animated.Text>
-              {this.renderInputField(attributes, theme)}
-              {theme.textInputErrorIcon && attributes.error ? (
-                <View style={{ position: "absolute", right: 0, bottom: 10 }}>
-                  <Icon
-                    name={"times-circle"}
-                    size={20}
-                    color={theme.errorMsgColor}
-                    solid
-                  />
-                </View>
-              ) : null}
-            </View>
+              </Text>
+            </Pressable>
+            <Animated.Text
+              style={this.getLabelStyles()}
+              numberOfLines={
+                this.state.isFocused || !isEmpty(attributes["value"])
+                  ? undefined
+                  : 1
+              }
+            >
+              {attributes["required"] && (
+                <StarIcon required={attributes["required"]} />
+              )}{" "}
+              {attributes.label}
+            </Animated.Text>
+            {this.renderInputField(attributes, theme)}
+            {theme.textInputErrorIcon && attributes.error ? (
+              <View style={{ position: "absolute", right: 0, bottom: 10 }}>
+                <Icon
+                  name={"times-circle"}
+                  size={20}
+                  color={theme.errorMsgColor}
+                  solid
+                />
+              </View>
+            ) : null}
+          </View>
         </View>
         <View style={{ paddingHorizontal: 15 }}>
           <ErrorComponent {...{ attributes, theme }} />
