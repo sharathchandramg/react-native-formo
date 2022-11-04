@@ -146,7 +146,7 @@ export default class StatusPickerField extends Component {
             <Text
               style={{
                 color: theme.inputColorPlaceholder,
-                paddingStart: 5,
+                paddingStart: attributes["required"] ? 5 : 0,
                 fontSize: 16,
               }}
             >
@@ -157,7 +157,7 @@ export default class StatusPickerField extends Component {
             style={{
               color: theme.inputColorPlaceholder,
               fontSize: 16,
-              paddingStart: 18,
+              paddingStart: attributes["required"] ? 18 : 6,
               paddingTop: 5,
             }}
             numberOfLines={1}

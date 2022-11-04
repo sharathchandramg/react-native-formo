@@ -332,7 +332,9 @@ export default class SelectField extends Component {
               ]}
             >
               <View style={{ width: "93%" }}>
-                <Text style={styles.inputText}>{this.getLabel()}</Text>
+                <Text style={styles.inputText} numberOfLines={1}>
+                  {this.getLabel()}
+                </Text>
               </View>
               {this.renderIcon()}
             </View>

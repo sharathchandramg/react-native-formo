@@ -464,7 +464,7 @@ export default class UserDirectoryField extends Component {
                 { paddingLeft: attributes["required"] ? 13 : 5 },
               ]}
             >
-              <View style={{ width: "93%" }}>
+              <View style={{ width: "93%" }} numberOfLines={1}>
                 <Text style={styles.inputText}>{this.getLabel()}</Text>
               </View>
               {this.renderIcon()}

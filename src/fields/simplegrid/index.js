@@ -418,7 +418,7 @@ export default class SimpleGrideView extends Component {
               ]}
             >
               <View style={{ width: "93%" }}>
-                <Text style={styles.inputText}>
+                <Text style={styles.inputText} numberOfLines={1}>
                   {this.getLabel(attributes.value)}
                 </Text>
               </View>
