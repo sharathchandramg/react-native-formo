@@ -856,7 +856,7 @@ export default class LookupField extends Component {
             <View
               style={[
                 styles.valueWrapper,
-                { paddingLeft: attributes["required"] ? 13 : 0 },
+                { paddingLeft: attributes["required"] ? 13 : 5 },
               ]}
             >
               <View style={{ width: "93%" }}>
@@ -885,6 +885,7 @@ export default class LookupField extends Component {
               <LookupComponent
                 modalVisible={this.state.modalVisible}
                 theme={theme}
+                label={attributes.label}
                 attributes={attributes}
                 toggleSelect={this.toggleSelect}
                 onEndReached={this.onEndReached}
