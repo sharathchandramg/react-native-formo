@@ -197,6 +197,7 @@ export default class TextInputField extends Component {
         outputRange: [25, Platform.OS === "ios" ? 0 : 5],
       }),
       color: theme.inputColorPlaceholder,
+      width: '100%'
     };
   };
 

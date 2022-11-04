@@ -132,6 +132,7 @@ export default class TextInputField extends Component {
         outputRange: [25, -15],
       }),
       color: theme.inputColorPlaceholder,
+      width: '100%'
     };
   };
 
