@@ -7,12 +7,12 @@ import {
   ArrowBackIcon,
   ArrowForwardIcon,
   SearchIcon,
-  Checkbox
+  Checkbox,
 } from "native-base";
 
 import { isEmpty } from "../../utils/validators";
 import StarIcon from "../../components/starIcon";
-import LinearGradientHeader from './../../components/headers/linearGradientHeader';
+import LinearGradientHeader from "./../../components/headers/linearGradientHeader";
 import SearchHeader from "../../components/headers/searchHeader";
 import styles from "./styles";
 
@@ -157,10 +157,10 @@ export default class ChecklistField extends Component {
   renderIcon = () => {
     return (
       <TouchableOpacity
-        style={styles.iconWrapper}
         onPress={() => this.toggleModalVisible()}
+        style={{ width: "7%" }}
       >
-        <ArrowForwardIcon size={"6"} color={'#41E1FD'}/>
+        <ArrowForwardIcon size={"6"} color={"#41E1FD"} />
       </TouchableOpacity>
     );
   };
@@ -221,7 +221,9 @@ export default class ChecklistField extends Component {
                   onPress={() => this.toggleSelect(item)}
                   isChecked={isSelected}
                   colorScheme={"rgb(0,151,235)"}
-                  accessibilityLabel={attributes.objectType ? item[attributes.labelKey] : item}
+                  accessibilityLabel={
+                    attributes.objectType ? item[attributes.labelKey] : item
+                  }
                 />
                 <View>
                   <Text style={{ paddingHorizontal: 5 }}>
@@ -280,36 +282,32 @@ export default class ChecklistField extends Component {
     const { theme, attributes, ErrorComponent } = this.props;
     return (
       <View style={styles.container}>
-        <View style={[styles.inputLabelWrapper, { width: '95%' }]}>
+        <View style={[styles.inputLabelWrapper, { width: "95%" }]}>
           <TouchableOpacity
-            style={[styles.inputLabel]}
+            style={styles.inputLabel}
             error={theme.changeTextInputColorOnError ? attributes.error : null}
             onPress={() => this.toggleModalVisible()}
           >
-            {attributes["required"] && (
-              <StarIcon required={attributes["required"]} />
-            )}
-            <View style={[styles.labelTextWrapper, { flexDirection: "row" }]}>
-              <Text
-                style={[styles.labelText]}
-                numberOfLines={2}
-                adjustsFontSizeToFit={true}
-                minimumFontScale={0.8}
-              >
-                {attributes.label}
-              </Text>
+            <View style={styles.labelTextWrapper}>
+              {attributes["required"] && (
+                <StarIcon required={attributes["required"]} />
+              )}
+
+              <Text style={styles.labelText}>{attributes.label}</Text>
             </View>
-            <View style={styles.valueWrapper}>
-              <Text
-                style={styles.inputText}
-                numberOfLines={2}
-                adjustsFontSizeToFit={true}
-                minimumFontScale={0.8}
-              >
-                {this.getLabel()}
-              </Text>
+            <View
+              style={[
+                styles.valueWrapper,
+                { paddingLeft: attributes["required"] ? 13 : 5 },
+              ]}
+            >
+              <View style={{ width: "93%" }}>
+                <Text style={styles.inputText} numberOfLines={1}>
+                  {this.getLabel()}
+                </Text>
+              </View>
+              {this.renderIcon()}
             </View>
-            {this.renderIcon()}
           </TouchableOpacity>
         </View>
 
