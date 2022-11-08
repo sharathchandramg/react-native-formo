@@ -110,7 +110,7 @@ export default class SearchableDropDown extends Component {
 
   render = () => {
     return (
-      <View keyboardShouldPersist="always" style={{ paddingTop: 5 }}>
+      <View keyboardShouldPersist="always">
         {this.renderTextInput()}
         {this.state.focus && this.renderList()}
       </View>

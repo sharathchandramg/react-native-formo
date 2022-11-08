@@ -122,10 +122,7 @@ export default class TextInputField extends Component {
     return {
       position: "absolute",
       left: 0,
-      fontSize: this._animatedIsFocused.interpolate({
-        inputRange: [0, 1],
-        outputRange: [18, 16],
-      }),
+      fontSize: 16,
       paddingStart: 5,
       top: this._animatedIsFocused.interpolate({
         inputRange: [0, 1],
@@ -147,8 +144,7 @@ export default class TextInputField extends Component {
         <View
           style={{
             borderBottomWidth: 0,
-            paddingBottom: 5,
-            paddingTop: 15,
+            paddingTop: 20,
             paddingHorizontal: 15,
           }}
         >

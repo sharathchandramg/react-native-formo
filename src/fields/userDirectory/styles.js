@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     minHeight: 40,
     alignItems: "flex-start",
     justifyContent: "center",
-    marginVertical: 10,
+    marginTop: 10,
     marginHorizontal: 5,
   },
   inputLabelWrapper: {

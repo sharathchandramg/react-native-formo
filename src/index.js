@@ -24,9 +24,9 @@ import CollaboratorField from "./fields/collaborator";
 import AssigneeField from "./fields/assignee";
 import ChecklistField from "./fields/checklist";
 import UserDirectoryField from "./fields/userDirectory";
-import DocumentField from './fields/document';
-import BarcodeField from './fields/barcode';
-import CascadingDropdownField from './fields/cascadingDropdown';
+import DocumentField from "./fields/document";
+import BarcodeField from "./fields/barcode";
+import CascadingDropdownField from "./fields/cascadingDropdown";
 
 import {
   autoValidate,
@@ -34,7 +34,7 @@ import {
   getDefaultValue,
   getResetValue,
   customValidateData,
-  customFieldCalculations
+  customFieldCalculations,
 } from "./utils/helper";
 import { isEmpty } from "./utils/validators";
 
@@ -44,23 +44,23 @@ const DefaultErrorComponent = (props) => {
   if (attributes.error) {
     return (
       <Text
-      style={{
-        color: theme.errorMsgColor,
-        paddingStart: [
-          'select',
-          'user_directory',
-          'checklist',
-          'lookup',
-          'simple-grid',
-          'customDataView',
-          'product-catalog-sale'
-        ].includes(attributes['type'])
-          ? 0
-          : 5,
-      }}
-    >
-      {attributes.errorMsg}
-    </Text>
+        style={{
+          color: theme.errorMsgColor,
+          paddingStart: [
+            "select",
+            "user_directory",
+            "checklist",
+            "lookup",
+            "simple-grid",
+            "customDataView",
+            "product-catalog-sale",
+          ].includes(attributes["type"])
+            ? 0
+            : 5,
+        }}
+      >
+        {attributes.errorMsg}
+      </Text>
     );
   }
   return null;
@@ -450,7 +450,7 @@ export default class Form0 extends Component {
 
   /**
    * Close lookup modal
-   * on barcode search, if only one options is there then 
+   * on barcode search, if only one options is there then
    * automatically select that option and close the lookup modal
    */
   closeLookupModal = () => {
@@ -732,17 +732,17 @@ export default class Form0 extends Component {
               />
             );
 
-            case "cascading-dropdown":
-              return (
-                <CascadingDropdownField
-                  ref={(c) => {
-                    this[field.name] = c;
-                  }}
-                  {...commonProps}
-                  {...this.props}
-                  state={this.state}
-                />
-              );
+          case "cascading-dropdown":
+            return (
+              <CascadingDropdownField
+                ref={(c) => {
+                  this[field.name] = c;
+                }}
+                {...commonProps}
+                {...this.props}
+                state={this.state}
+              />
+            );
 
           default:
             break;
@@ -756,7 +756,7 @@ export default class Form0 extends Component {
   render() {
     return (
       <ScrollView keyboardShouldPersistTaps={"handled"}>
-        <View>{this.generateFields()}</View>
+        <View style={{ marginBottom: 10 }}>{this.generateFields()}</View>
       </ScrollView>
     );
   }

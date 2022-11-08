@@ -116,14 +116,13 @@ export default class PickerField extends Component {
     return (
       <View
         style={{
-          ...styles.pickerMainIOS,
+          ...styles.pickerStyle,
           ...{
             backgroundColor: theme.pickerBgColor,
             borderBottomColor: attributes["error"]
               ? theme.errorMsgColor
               : theme.inputBorderColor,
             borderBottomWidth: theme.borderWidth,
-            marginBottom: 10,
           },
         }}
       >
@@ -152,7 +151,7 @@ export default class PickerField extends Component {
           <Text
             style={{
               color: theme.inputColorPlaceholder,
-              fontSize: 16,
+              fontSize: 18,
               paddingStart: attributes["required"] ? 18 : 6,
               paddingTop: 5,
             }}
@@ -171,7 +170,7 @@ export default class PickerField extends Component {
     return (
       <View
         style={{
-          ...styles.pickerMainAndroid,
+          ...styles.pickerStyle,
           ...{
             backgroundColor: theme.pickerBgColor,
             borderBottomColor: attributes["error"]
@@ -235,7 +234,7 @@ export default class PickerField extends Component {
       this.state.value !== null ? this.state.value : value || defaultValue;
 
     return (
-      <View style={{ paddingHorizontal: 15 }}>
+      <View style={{ paddingHorizontal: 15, paddingTop: 5 }}>
         {Platform.OS !== "ios"
           ? this.renderAndroidPicker(pickerValue)
           : this.renderIOSPicker(isValueValid, defaultValue)}

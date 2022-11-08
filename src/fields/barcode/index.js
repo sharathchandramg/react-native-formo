@@ -36,7 +36,7 @@ export default class BarcodeField extends Component {
     Animated.timing(this._animatedIsFocused, {
       toValue: this.state.isFocused || !isEmpty(this.getInputValue()) ? 1 : 0,
       duration: 300,
-      useNativeDriver: false
+      useNativeDriver: false,
     }).start();
   }
 
@@ -68,6 +68,7 @@ export default class BarcodeField extends Component {
             style={{
               color: theme.inputColorPlaceholder,
               width: "90%",
+              paddingStart: 5,
             }}
             numberOfLines={1}
           >
@@ -111,10 +112,7 @@ export default class BarcodeField extends Component {
     return {
       position: "absolute",
       left: 0,
-      fontSize: this._animatedIsFocused.interpolate({
-        inputRange: [0, 1],
-        outputRange: [18, 16],
-      }),
+      fontSize: 16,
       paddingStart: 5,
       top: this._animatedIsFocused.interpolate({
         inputRange: [0, 1],
@@ -132,8 +130,9 @@ export default class BarcodeField extends Component {
         <View>
           <View
             style={{
-              paddingVertical: 10,
-              paddingHorizontal: 15,
+              paddingTop: !isEmpty(this.getInputValue()) ? 10 : 5,
+              marginHorizontal: 15,
+              paddingStart: 5,
             }}
           >
             <View
