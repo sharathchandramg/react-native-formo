@@ -1,11 +1,11 @@
-import { StyleSheet, Dimensions } from "react-native";
+import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   container: {
     minHeight: 40,
     alignItems: "flex-start",
     justifyContent: "center",
-    marginVertical: 10,
+    marginTop: 10,
     marginHorizontal: 5,
   },
   inputLabelWrapper: {

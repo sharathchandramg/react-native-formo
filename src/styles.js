@@ -1,13 +1,6 @@
 module.exports = {
-    pickerMainIOS: {
+    pickerStyle: {
         marginVertical: 0,
-        flex: 1,
-        minHeight: 50,
-    },
-    pickerMainAndroid: {
-        marginVertical: 0,
-        // flexDirection: 'row',
-        // alignItems: 'center',
         flex: 1,
         minHeight: 50,
     },

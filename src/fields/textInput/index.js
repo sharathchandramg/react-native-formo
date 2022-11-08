@@ -21,6 +21,7 @@ export default class TextInputField extends Component {
   state = {
     isFocused: false,
     numOfLines: 1,
+    lineSpace: Platform.OS !== "ios" ? 12 : 15,
   };
 
   componentWillMount() {
@@ -82,7 +83,7 @@ export default class TextInputField extends Component {
           marginTop:
             (this.state.isFocused || !isEmpty(attributes["value"])) &&
             this.state.numOfLines > 1
-              ? this.state.numOfLines * 14
+              ? this.state.numOfLines * this.state.lineSpace
               : 0,
           borderTopWidth: 0,
           borderRightWidth: 0,
@@ -144,7 +145,7 @@ export default class TextInputField extends Component {
           marginTop:
             (this.state.isFocused || !isEmpty(attributes["value"])) &&
             this.state.numOfLines > 1
-              ? this.state.numOfLines * 14
+              ? this.state.numOfLines * this.state.lineSpace
               : 0,
           borderTopWidth: 0,
           borderRightWidth: 0,
@@ -187,17 +188,14 @@ export default class TextInputField extends Component {
     return {
       position: "absolute",
       left: 0,
-      fontSize: this._animatedIsFocused.interpolate({
-        inputRange: [0, 1],
-        outputRange: [18, 16],
-      }),
+      fontSize: 16,
       paddingStart: 5,
       top: this._animatedIsFocused.interpolate({
         inputRange: [0, 1],
-        outputRange: [25, Platform.OS === "ios" ? 0 : 5],
+        outputRange: [25, 0],
       }),
       color: theme.inputColorPlaceholder,
-      width: '100%'
+      width: "100%",
     };
   };
 
@@ -213,10 +211,11 @@ export default class TextInputField extends Component {
           style={{
             borderBottomWidth: 0,
             paddingHorizontal: 15,
+            paddingTop: 5,
           }}
         >
           <View style={{ flex: 1, position: "relative" }}>
-            <Pressable onPress={() => {}} style={{ paddingTop: 5 }}>
+            <Pressable onPress={() => {}}>
               <Text
                 onTextLayout={this.onTextLayout}
                 style={{
