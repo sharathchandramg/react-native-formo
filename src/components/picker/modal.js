@@ -8,6 +8,7 @@ import {
   View,
   Text,
   Platform,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { Input, SearchIcon } from "native-base";
 
@@ -78,65 +79,70 @@ export default class PickerModal extends React.PureComponent {
           onDismiss={() => this.props.closeModal()}
           style={{ backgroundColor: "white" }}
         >
-          <View style={styles.modalContainer}>
-            <View
-              style={[
-                styles.modalView,
-                Platform.OS === "ios" &&
-                  this.state.dataSource.length !== 0 && { maxHeight: "90%" },
-              ]}
-            >
-              {this.state.datas.length > 20 && (
-                <View
-                  style={[
-                    styles.header,
-                    {
-                      position: "relative",
-                      padding: 10,
-                      flexDirection: "row",
-                      alignItems: "center",
-                    },
-                  ]}
-                >
-                  <View style={{ width: "100%" }}>
-                    <Input
-                      placeholder="Search"
-                      onChangeText={(text) => this.searchFilter(text)}
-                      style={{ paddingRight: 25, fontSize: 16 }}
-                    />
-                  </View>
-                  <View style={{ position: "absolute", right: 15 }}>
-                    <SearchIcon size={"5"} color={"rgb(0,151,235)"} />
-                  </View>
-                </View>
-              )}
-              {this.state.dataSource.length === 0 ? (
-                <View
-                  style={{
-                    backgroundColor: "#fff",
-                    width: "100%",
-                    height: 60,
-                    alignItems: "center",
-                    padding: 20,
-                  }}
-                >
-                  <Text
-                    style={{ textAlign: "center", color: "red", fontSize: 16 }}
+          <TouchableWithoutFeedback onPress={() => this.props.closeModal()}>
+            <View style={styles.modalContainer}>
+              <View
+                style={[
+                  styles.modalView,
+                  Platform.OS === "ios" &&
+                    this.state.dataSource.length !== 0 && { maxHeight: "90%" },
+                ]}
+              >
+                {this.state.datas.length > 20 && (
+                  <View
+                    style={[
+                      styles.header,
+                      {
+                        position: "relative",
+                        padding: 10,
+                        flexDirection: "row",
+                        alignItems: "center",
+                      },
+                    ]}
                   >
-                    No results found
-                  </Text>
-                </View>
-              ) : (
-                <FlatList
-                  style={{ backgroundColor: "#fff" }}
-                  extraData={this.state}
-                  data={this.state.dataSource}
-                  renderItem={this.renderItem}
-                  keyExtractor={(item, index) => index.toString()}
-                ></FlatList>
-              )}
+                    <View style={{ width: "100%" }}>
+                      <Input
+                        placeholder="Search"
+                        onChangeText={(text) => this.searchFilter(text)}
+                        style={{ paddingRight: 25, fontSize: 16 }}
+                      />
+                    </View>
+                    <View style={{ position: "absolute", right: 15 }}>
+                      <SearchIcon size={"5"} color={"rgb(0,151,235)"} />
+                    </View>
+                  </View>
+                )}
+                {this.state.dataSource.length === 0 ? (
+                  <View
+                    style={{
+                      backgroundColor: "#fff",
+                      width: "100%",
+                      height: 60,
+                      alignItems: "center",
+                      padding: 20,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        fontSize: 16,
+                      }}
+                    >
+                      No results found
+                    </Text>
+                  </View>
+                ) : (
+                  <FlatList
+                    style={{ backgroundColor: "#fff" }}
+                    extraData={this.state}
+                    data={this.state.dataSource}
+                    renderItem={this.renderItem}
+                    keyExtractor={(item, index) => index.toString()}
+                  ></FlatList>
+                )}
+              </View>
             </View>
-          </View>
+          </TouchableWithoutFeedback>
         </Modal>
       </KeyboardAvoidingView>
     );
