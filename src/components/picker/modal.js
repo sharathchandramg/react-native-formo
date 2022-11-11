@@ -42,7 +42,12 @@ export default class PickerModal extends React.PureComponent {
 
   renderItem = ({ item }) => {
     return (
-      <TouchableOpacity onPress={() => this.props.handleChange(item)}>
+      <TouchableOpacity
+        onPress={() => {
+          this.props.handleChange(item);
+          this.props.closeModal();
+        }}
+      >
         <View style={{ width: width * 0.8, backgroundColor: "white" }}>
           <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
             <Text

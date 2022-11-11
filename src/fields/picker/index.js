@@ -20,16 +20,13 @@ export default class PickerField extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: null,
       openModal: false,
       selectedItem: "",
     };
   }
 
   handleChange = (value) => {
-    this.setState({ value: value });
     this.props.updateValue(this.props.attributes.name, value);
-    this.closeModal();
   };
 
   closeModal = () => {
@@ -122,8 +119,7 @@ export default class PickerField extends Component {
     const { theme, attributes, ErrorComponent } = this.props;
     const value = attributes["value"] || "";
     const defaultValue = attributes["defaultValue"] || "-Select-";
-    const pickerValue =
-      this.state.value !== null ? this.state.value : value || defaultValue;
+    const pickerValue = value || defaultValue;
 
     return (
       <View style={{ paddingHorizontal: 15, paddingTop: 5 }}>

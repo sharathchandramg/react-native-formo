@@ -1,18 +1,13 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import {
-  Platform,
-  TouchableOpacity,
-  TouchableHighlight,
-  Modal,
-} from "react-native";
+import { TouchableOpacity } from "react-native";
 import { View, Text } from "native-base";
-import { Picker } from "@react-native-picker/picker";
+import PickerModal from "./../../components/picker/modal";
+import Icon from "react-native-vector-icons/FontAwesome";
+import { isEmpty } from "../../utils/validators";
 
 import styles from "./../../styles";
 import StarIcon from "../../components/starIcon";
-
-const Item = Picker.Item;
 
 export default class StatusPickerField extends Component {
   static propTypes = {
@@ -25,152 +20,23 @@ export default class StatusPickerField extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalVisible: false,
-      value: null,
+      openModal: false,
+      selectedItem: "",
     };
   }
 
-  handleChange(value) {
-    this.setState({ value: value });
+  handleChange = (value) => {
     this.props.updateValue(this.props.attributes.name, value);
-  }
-
-  setModalVisible = (visible) => {
-    this.setState({ modalVisible: visible });
   };
 
-  renderModal = () => {
-    const { theme, attributes } = this.props;
-    const pickerValue =
-      this.state.value !== null
-        ? this.state.value
-        : typeof attributes.value !== "undefined" && attributes.value !== null
-        ? attributes.value
-        : "";
-    return (
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={this.state.modalVisible}
-        onRequestClose={() => this.setModalVisible(false)}
-        style={{ backgroundColor: "#00000052" }}
-      >
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "column",
-            justifyContent: "flex-end",
-            backgroundColor: "#00000052",
-          }}
-        >
-          <TouchableOpacity
-            activeOpacity={1}
-            style={{
-              height: "100%",
-              width: "100%",
-              flexDirection: "column-reverse",
-              alignItems: "flex-end",
-            }}
-          >
-            <View
-              style={{
-                backgroundColor: "#fff",
-                width: "100%",
-              }}
-            >
-              <View style={{ flexDirection: "row" }}>
-                <TouchableHighlight
-                  onPress={() => this.setModalVisible(false)}
-                  style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    justifyContent: "flex-end",
-                    marginTop: 10,
-                    marginRight: 20,
-                  }}
-                  underlayColor={"#fff"}
-                >
-                  <View>
-                    <Text style={{ fontSize: 20, color: "rgb(0,151,235)" }}>
-                      {"Done"}
-                    </Text>
-                  </View>
-                </TouchableHighlight>
-              </View>
-              <Picker
-                style={{ padding: 2 }}
-                textStyle={{ color: theme.pickerColorSelected }}
-                mode={attributes.mode}
-                selectedValue={pickerValue}
-                onValueChange={(value) => this.handleChange(value)}
-              >
-                {attributes.options.map((item, index) => (
-                  <Item key={index} label={item} value={item} />
-                ))}
-              </Picker>
-            </View>
-          </TouchableOpacity>
-        </View>
-      </Modal>
-    );
+  closeModal = () => {
+    this.setState({ openModal: false });
   };
 
-  renderIOSPicker = (isValueValid, defaultValue) => {
+  renderPicker = (pickerValue) => {
     const { theme, attributes } = this.props;
-    return (
-      <View
-        style={{
-          ...styles.pickerStyle,
-          ...{
-            backgroundColor: theme.pickerBgColor,
-            borderBottomColor: attributes["error"]
-              ? theme.errorMsgColor
-              : theme.inputBorderColor,
-            borderBottomWidth: theme.borderWidth,
-          },
-        }}
-      >
-        <TouchableOpacity
-          onPress={() => this.setModalVisible(true)}
-          style={{
-            flex: 1,
-            flexDirection: "column",
-            paddingVertical: 5,
-          }}
-        >
-          <View style={{ flexDirection: "row", paddingStart: 5 }}>
-            {attributes["required"] && (
-              <StarIcon required={attributes["required"]} />
-            )}
-            <Text
-              style={{
-                color: theme.inputColorPlaceholder,
-                paddingStart: attributes["required"] ? 5 : 0,
-                fontSize: 16,
-              }}
-            >
-              {attributes.label}
-            </Text>
-          </View>
-          <Text
-            style={{
-              color: theme.inputColorPlaceholder,
-              fontSize: 18,
-              paddingStart: attributes["required"] ? 18 : 6,
-              paddingTop: 5,
-            }}
-            numberOfLines={1}
-          >
-            {isValueValid ? attributes.value : defaultValue}
-          </Text>
-        </TouchableOpacity>
-        {this.renderModal()}
-      </View>
-    );
-  };
-
-  renderAndroidPicker = (pickerValue) => {
-    const { theme, attributes } = this.props;
+    const options =
+      attributes && !isEmpty(attributes.options) ? attributes.options : [];
     return (
       <View
         style={{
@@ -205,25 +71,46 @@ export default class StatusPickerField extends Component {
             {attributes.label}
           </Text>
         </View>
-        <View style={{ flex: 5 }}>
-          <Picker
-            style={{ padding: 2 }}
-            textStyle={{ color: theme.pickerColorSelected }}
-            iosHeader="Select one"
-            mode={attributes.mode}
-            selectedValue={pickerValue}
-            onValueChange={(value) => this.handleChange(value)}
-          >
-            {attributes.options.map((item, index) => (
-              <Item
-                key={index}
-                label={item}
-                value={item}
-                style={{ fontSize: 16 }}
-              />
-            ))}
-          </Picker>
+        <View>
+          <TouchableOpacity onPress={() => this.setState({ openModal: true })}>
+            <View
+              style={{
+                width: "95%",
+                flexDirection: "row",
+                paddingStart: 10,
+                justifyContent: "space-between",
+                paddingVertical: 10,
+              }}
+            >
+              <View>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color: theme.pickerColorSelected,
+                  }}
+                >
+                  {pickerValue}
+                </Text>
+              </View>
+              <View>
+                <Icon
+                  name="caret-down"
+                  size={18}
+                  type={"regular"}
+                  color={"#828282"}
+                />
+              </View>
+            </View>
+          </TouchableOpacity>
         </View>
+        {this.state.openModal && (
+          <PickerModal
+            list={options}
+            closeModal={this.closeModal}
+            handleChange={this.handleChange}
+            theme={theme}
+          />
+        )}
       </View>
     );
   };
@@ -232,16 +119,11 @@ export default class StatusPickerField extends Component {
     const { theme, attributes, ErrorComponent } = this.props;
     const value = attributes["value"] || "";
     const defaultValue = attributes["defaultValue"] || "-Select-";
-
-    const isValueValid = attributes.options.indexOf(attributes.value) > -1;
-    const pickerValue =
-      this.state.value !== null ? this.state.value : value || defaultValue;
+    const pickerValue = value || defaultValue;
 
     return (
       <View style={{ paddingHorizontal: 15, paddingTop: 5 }}>
-        {Platform.OS !== "ios"
-          ? this.renderAndroidPicker(pickerValue)
-          : this.renderIOSPicker(isValueValid, defaultValue)}
+        {this.renderPicker(pickerValue)}
         <View>
           <ErrorComponent {...{ attributes, theme }} />
         </View>
