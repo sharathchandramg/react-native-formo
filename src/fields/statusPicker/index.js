@@ -88,6 +88,7 @@ export default class StatusPickerField extends Component {
                     fontSize: 18,
                     color: theme.pickerColorSelected,
                   }}
+                  numberOfLines={1}
                 >
                   {pickerValue}
                 </Text>

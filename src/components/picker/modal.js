@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   View,
   Text,
-  Platform,
   TouchableWithoutFeedback,
 } from "react-native";
 import { Input, SearchIcon } from "native-base";
@@ -84,8 +83,7 @@ export default class PickerModal extends React.PureComponent {
               <View
                 style={[
                   styles.modalView,
-                  Platform.OS === "ios" &&
-                    this.state.dataSource.length !== 0 && { maxHeight: "90%" },
+                  this.state.dataSource.length !== 0 && { maxHeight: "90%" },
                 ]}
               >
                 {this.state.datas.length > 20 && (
@@ -94,7 +92,7 @@ export default class PickerModal extends React.PureComponent {
                       styles.header,
                       {
                         position: "relative",
-                        padding: 10,
+                        padding: 15,
                         flexDirection: "row",
                         alignItems: "center",
                       },
@@ -107,7 +105,7 @@ export default class PickerModal extends React.PureComponent {
                         style={{ paddingRight: 25, fontSize: 16 }}
                       />
                     </View>
-                    <View style={{ position: "absolute", right: 15 }}>
+                    <View style={{ position: "absolute", right: 20 }}>
                       <SearchIcon size={"5"} color={"rgb(0,151,235)"} />
                     </View>
                   </View>
