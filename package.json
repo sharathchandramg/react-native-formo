@@ -55,6 +55,7 @@
     "react-native-linear-gradient": ">=2.5.6",
     "react-native-action-button": ">=2.8.5",
     "@react-native-community/datetimepicker": ">=5.1.0",
-    "react-native-modal-datetime-picker": ">=13.0.1"
+    "react-native-modal-datetime-picker": ">=13.0.1",
+    "json-templater": ">=1.2.0"
   }
 }
