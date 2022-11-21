@@ -1,8 +1,8 @@
 import _ from "lodash";
 import { isEmail, isEmpty, validateMobileNumber, isNull } from "./validators";
 import { PermissionsAndroid } from "react-native";
-import Geolocation from 'react-native-geolocation-service';
-import { compileExpression } from 'filtrex';
+import Geolocation from "react-native-geolocation-service";
+import { compileExpression } from "filtrex";
 const moment = require("moment");
 
 export function getKeyboardType(textType) {
@@ -50,7 +50,7 @@ export function getDefaultValue(field) {
       return field.defaultValue || "";
 
     case "cascading-dropdown":
-      return ""
+      return "";
 
     case "status_picker":
     case "picker": {
@@ -184,7 +184,7 @@ export function getResetValue(field) {
     }
 
     case "cascading-dropdown":
-      return ""
+      return "";
 
     case "checklist": {
       if (Array.isArray(field.defaultValue)) {
@@ -232,7 +232,7 @@ export function getResetValue(field) {
 export function getInitialState(fields) {
   const state = {};
   _.forEach(fields, (field) => {
-    const fieldObj = Object.assign({},field);
+    const fieldObj = Object.assign({}, field);
     fieldObj.error = false;
     fieldObj.errorMsg = "";
     if (field && field.type) {
@@ -243,7 +243,7 @@ export function getInitialState(fields) {
   return state;
 }
 
-export function autoValidate(field, data={}) {
+export function autoValidate(field, data = {}) {
   let error = false;
   let errorMsg = "";
   if (field.required) {
@@ -437,24 +437,36 @@ export function autoValidate(field, data={}) {
 export function customValidateData(field) {
   let error = false;
   let errorMsg = "";
-    switch (field.type) {
-      case "number":
-        const additionalConfig = field['additional_config'];
-        if(isEmpty(field.value) && field.required){
-          error = true;
-          errorMsg = `${field.label} is required`;
-        }else if (!isEmpty(field.value)&&!isNumeric(field.value)) {
-          error = true;
-          errorMsg = `${field.label} should be a number`;
-        }else if(!isEmpty(field.value) && isNumeric(field.value) && additionalConfig && !isEmpty(additionalConfig['max']) && field.value>additionalConfig['max']){
-          error = true;
-          errorMsg = `Max allowed value is ${additionalConfig['max']}`;
-        }else if(!isEmpty(field.value) && isNumeric(field.value) && additionalConfig && !isEmpty(additionalConfig['min']) && field.value<additionalConfig['min']){
-          error = true;
-          errorMsg = `Min allowed value is ${additionalConfig['min']}`;
-        }
-        break;
-    }
+  switch (field.type) {
+    case "number":
+      const additionalConfig = field["additional_config"];
+      if (isEmpty(field.value) && field.required) {
+        error = true;
+        errorMsg = `${field.label} is required`;
+      } else if (!isEmpty(field.value) && !isNumeric(field.value)) {
+        error = true;
+        errorMsg = `${field.label} should be a number`;
+      } else if (
+        !isEmpty(field.value) &&
+        isNumeric(field.value) &&
+        additionalConfig &&
+        !isEmpty(additionalConfig["max"]) &&
+        field.value > additionalConfig["max"]
+      ) {
+        error = true;
+        errorMsg = `Max allowed value is ${additionalConfig["max"]}`;
+      } else if (
+        !isEmpty(field.value) &&
+        isNumeric(field.value) &&
+        additionalConfig &&
+        !isEmpty(additionalConfig["min"]) &&
+        field.value < additionalConfig["min"]
+      ) {
+        error = true;
+        errorMsg = `Min allowed value is ${additionalConfig["min"]}`;
+      }
+      break;
+  }
   return { error, errorMsg };
 }
 
@@ -553,8 +565,8 @@ export async function requestLocationPermission() {
  * Compile the expression, if result is false then return the default value
  * else return the compiled expression value
  */
-const calculateConditionalMatch = (expressions, values,defaultValue) => {
-  for(const expr of expressions){
+const calculateConditionalMatch = (expressions, values, defaultValue) => {
+  for (const expr of expressions) {
     const fn = compileExpression(expr);
     const result = fn(values);
     if (result !== "false") {
@@ -562,16 +574,16 @@ const calculateConditionalMatch = (expressions, values,defaultValue) => {
     }
   }
   return !isEmpty(values) ? defaultValue : null;
-}
+};
 
-const calculateExpr = (type, expressions, values,defaultValue) => {
+const calculateExpr = (type, expressions, values, defaultValue) => {
   switch (type) {
-    case 'conditional_match':
-      return calculateConditionalMatch(expressions, values,defaultValue);
+    case "conditional_match":
+      return calculateConditionalMatch(expressions, values, defaultValue);
     default:
-      return null
+      return null;
   }
-}
+};
 
 /**
  * Check field has expr_field key, else return empty array
@@ -579,34 +591,78 @@ const calculateExpr = (type, expressions, values,defaultValue) => {
  * otherwise calculate the values
  */
 export const customFieldCalculations = (field, fieldValue, allFields) => {
-  const exprFieldNames = !isEmpty(field) && !isEmpty(field['expr_field']) ? field['expr_field'] : [];
+  const exprFieldNames =
+    !isEmpty(field) && !isEmpty(field["expr_field"]) ? field["expr_field"] : [];
   const res = [];
 
   for (let i = 0; i < exprFieldNames.length; i++) {
     const exprField = allFields[exprFieldNames[i]];
-    const additionalConfig = !isEmpty(exprField) && !isEmpty(exprField['additional_config']) ? exprField['additional_config'] : null;
+    const additionalConfig =
+      !isEmpty(exprField) && !isEmpty(exprField["additional_config"])
+        ? exprField["additional_config"]
+        : null;
     if (isEmpty(additionalConfig)) return res;
 
-    const acExpr = !isEmpty(additionalConfig) && !isEmpty(additionalConfig['expr']) ? additionalConfig['expr'] : null;
+    const acExpr =
+      !isEmpty(additionalConfig) && !isEmpty(additionalConfig["expr"])
+        ? additionalConfig["expr"]
+        : null;
     if (isEmpty(acExpr)) return res;
 
-    const acExprDF = !isEmpty(acExpr) && !isEmpty(acExpr['dependant_fields']) ? acExpr['dependant_fields'] : [];
-    const acExprStmt = !isEmpty(acExpr) && !isEmpty(acExpr['stmt']) ? acExpr['stmt'] : [];
-    const acExprType = !isEmpty(acExpr) && !isEmpty(acExpr['expr_type']) ? acExpr['expr_type'] : '';
-    const defaultValue = !isEmpty(acExpr) && !isEmpty(acExpr['defaultValue']) ? acExpr['defaultValue'] : null;
+    const acExprDF =
+      !isEmpty(acExpr) && !isEmpty(acExpr["dependant_fields"])
+        ? acExpr["dependant_fields"]
+        : [];
+    const acExprStmt =
+      !isEmpty(acExpr) && !isEmpty(acExpr["stmt"]) ? acExpr["stmt"] : [];
+    const acExprType =
+      !isEmpty(acExpr) && !isEmpty(acExpr["expr_type"])
+        ? acExpr["expr_type"]
+        : "";
+    const defaultValue =
+      !isEmpty(acExpr) && !isEmpty(acExpr["defaultValue"])
+        ? acExpr["defaultValue"]
+        : null;
     if (isEmpty(acExprDF) || isEmpty(acExprStmt)) return res;
 
     let dfValues = {};
 
-    for(const fieldName of acExprDF){
+    for (const fieldName of acExprDF) {
       const dfObj = allFields[fieldName];
-      const dfObjValue = !isEmpty(dfObj) && !isEmpty(dfObj['value']) ? dfObj['value'] : null;
-      const value = field['name'] === fieldName ? fieldValue : !isEmpty(dfObjValue) ? dfObjValue : null;
+      const dfObjValue =
+        !isEmpty(dfObj) && !isEmpty(dfObj["value"]) ? dfObj["value"] : null;
+      const value =
+        field["name"] === fieldName
+          ? fieldValue
+          : !isEmpty(dfObjValue)
+          ? dfObjValue
+          : null;
       if (!isEmpty(value)) dfValues[fieldName] = value;
     }
 
-    const updatedValue = calculateExpr(acExprType, acExprStmt, dfValues,defaultValue);
+    const updatedValue = calculateExpr(
+      acExprType,
+      acExprStmt,
+      dfValues,
+      defaultValue
+    );
     res.push({ ...exprField, value: updatedValue });
   }
   return res;
+};
+
+export function getCalculatedFields(fields) {
+  const calcFields = [];
+  _.forEach(fields, (field) => {
+    if (
+      field.type &&
+      field.type === "number" &&
+      field.additional_config &&
+      field.additional_config.calc &&
+      field.additional_config.calc.expr
+    ) {
+      calcFields.push(field);
+    }
+  });
+  return calcFields;
 }

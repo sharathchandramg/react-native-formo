@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import _ from "lodash";
 import { View, Keyboard, Text, ScrollView } from "react-native";
 import baseTheme from "./theme";
+import jsonStringTemplater from "json-templater/string";
+import { evaluate } from "mathjs";
 
 import TextInputField from "./fields/textInput";
 import LongTextInputField from "./fields/longTextInput";
@@ -35,6 +37,7 @@ import {
   getResetValue,
   customValidateData,
   customFieldCalculations,
+  getCalculatedFields,
 } from "./utils/helper";
 import { isEmpty } from "./utils/validators";
 
@@ -83,11 +86,13 @@ export default class Form0 extends Component {
 
     //This gets all the field defintions an an arrary and store in state
     const initialState = getInitialState(props.fields);
+    const calcFields = getCalculatedFields(initialState);
 
     this.state = {
       ...initialState,
       errorStatus: false,
       closeModal: false,
+      calcFields,
     };
 
     this.getValues = this.getValues.bind(this);
@@ -224,6 +229,17 @@ export default class Form0 extends Component {
     return locationFields;
   };
 
+  getFormatedValues = () => {
+    const values = {};
+    Object.keys(this.state).forEach((fieldName) => {
+      const field = this.state[fieldName];
+      if (field) {
+        values[field.name] = this.getFieldReturnValue(field);
+      }
+    });
+    return values;
+  };
+
   handleOnValueChange = (valueObj, value) => {
     valueObj.value = value;
     //autovalidate the fields
@@ -269,6 +285,36 @@ export default class Form0 extends Component {
       this.setState({ ...newField }, () => this.props.onValueChange());
     } else {
       this.setState({ ...newField });
+    }
+
+    if (
+      ["number", "customDataView", "product-catalog-sale"].includes(
+        valueObj.type
+      ) &&
+      !isEmpty(this.state.calcFields)
+    ) {
+      this.state.calcFields.forEach((ele) => {
+        if (
+          ele.additional_config &&
+          ele.additional_config.calc &&
+          ele.additional_config.calc.expr
+        ) {
+          const query = ele.additional_config.calc.expr;
+          const data = this.getFormatedValues();
+          const calculationExpression = jsonStringTemplater(query, data);
+          try {
+            const value = evaluate(calculationExpression, data);
+            const updatevalue = value ? Number(Number(value).toFixed(2)) : null;
+            if (!isEmpty(updatevalue) && !isNaN(updatevalue)) {
+              const updatedField = {};
+              const obj = this.state[ele.name];
+              obj.value = updatevalue;
+              updatedField[obj.name] = obj;
+              this.setState({ ...updatedField });
+            }
+          } catch (err) {}
+        }
+      });
     }
   };
 
