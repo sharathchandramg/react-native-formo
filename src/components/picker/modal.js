@@ -12,7 +12,6 @@ import {
 import { Input, SearchIcon } from "native-base";
 
 import styles from "./styles";
-const width = Dimensions.get("window").width;
 
 export default class PickerModal extends React.PureComponent {
   state = {
@@ -48,15 +47,15 @@ export default class PickerModal extends React.PureComponent {
           this.props.closeModal();
         }}
       >
-        <View style={{ width: width * 0.8, backgroundColor: "white" }}>
-          <View style={{ flexDirection: "row", alignItems: "center", flex: 1 }}>
+        <View style={styles.itemWrapper1}>
+          <View style={styles.itemWrapper2}>
             <Text
-              style={{
-                color: this.props.theme.pickerColorSelected,
-                paddingHorizontal: 10,
-                paddingVertical: 15,
-                fontSize: 16,
-              }}
+              style={[
+                styles.itemText,
+                {
+                  color: this.props.theme.pickerColorSelected,
+                },
+              ]}
               numberOfLines={1}
             >
               {item}
@@ -87,47 +86,22 @@ export default class PickerModal extends React.PureComponent {
                 ]}
               >
                 {this.state.datas.length > 20 && (
-                  <View
-                    style={[
-                      styles.header,
-                      {
-                        position: "relative",
-                        padding: 15,
-                        flexDirection: "row",
-                        alignItems: "center",
-                      },
-                    ]}
-                  >
+                  <View style={styles.header}>
                     <View style={{ width: "100%" }}>
                       <Input
                         placeholder="Search"
                         onChangeText={(text) => this.searchFilter(text)}
-                        style={{ paddingRight: 25, fontSize: 16 }}
+                        style={styles.inputText}
                       />
                     </View>
-                    <View style={{ position: "absolute", right: 20 }}>
+                    <View style={styles.searchIconWrapper}>
                       <SearchIcon size={"5"} color={"rgb(0,151,235)"} />
                     </View>
                   </View>
                 )}
                 {this.state.dataSource.length === 0 ? (
-                  <View
-                    style={{
-                      backgroundColor: "#fff",
-                      width: "100%",
-                      height: 60,
-                      alignItems: "center",
-                      padding: 20,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        textAlign: "center",
-                        fontSize: 16,
-                      }}
-                    >
-                      No results found
-                    </Text>
+                  <View style={styles.noResultsWrapper}>
+                    <Text style={styles.noResultsText}>No results found</Text>
                   </View>
                 ) : (
                   <FlatList
