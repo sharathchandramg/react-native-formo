@@ -21,7 +21,6 @@ export default class StatusPickerField extends Component {
     super(props);
     this.state = {
       openModal: false,
-      selectedItem: "",
     };
   }
 
