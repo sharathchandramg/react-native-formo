@@ -136,6 +136,7 @@ export default class PickerModal extends React.PureComponent {
                     data={this.state.dataSource}
                     renderItem={this.renderItem}
                     keyExtractor={(item, index) => index.toString()}
+                    keyboardShouldPersistTaps="always"
                   ></FlatList>
                 )}
               </View>
