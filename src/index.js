@@ -405,7 +405,7 @@ export default class Form0 extends Component {
     const values = {};
     let isValidFields = true;
     Object.keys(this.state).forEach((fieldName) => {
-      const field = this.state[fieldName];
+      const field = fieldName !== 'calcFields' && this.state[fieldName];
       if (field) {
         if (field.error !== undefined && field.error) {
           isValidFields = false;
