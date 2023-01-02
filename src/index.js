@@ -90,7 +90,6 @@ export default class Form0 extends Component {
 
     this.state = {
       ...initialState,
-      errorStatus: false,
       closeModal: false,
       calcFields,
     };
@@ -405,12 +404,14 @@ export default class Form0 extends Component {
     const values = {};
     let isValidFields = true;
     Object.keys(this.state).forEach((fieldName) => {
-      const field = fieldName !== 'calcFields' && this.state[fieldName];
-      if (field) {
-        if (field.error !== undefined && field.error) {
-          isValidFields = false;
+      if (!["closeModal", "calcFields"].includes(fieldName)) {
+        const field = this.state[fieldName];
+        if (field) {
+          if (field.error !== undefined && field.error) {
+            isValidFields = false;
+          }
+          values[field.name] = this.getFieldReturnValue(field);
         }
-        values[field.name] = this.getFieldReturnValue(field);
       }
     });
     if (isValidFields) {
