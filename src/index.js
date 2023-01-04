@@ -416,7 +416,14 @@ export default class Form0 extends Component {
     });
     if (isValidFields) {
       console.log(values);
-      return values;
+      const updatedValues = Object.keys(values).reduce((accumulator, key) => {
+        if (key !== "undefined") {
+          accumulator[key] = values[key];
+        }
+
+        return accumulator;
+      }, {});
+      return updatedValues;
     } else {
       return null;
     }
