@@ -390,7 +390,7 @@ export default class DocumentField extends Component {
                 });
                 this.uploadMultipleFiles(config, results);
             } else {
-                const res = await DocumentPicker.pick({
+                const res = await DocumentPicker.pickSingle({
                     type: config['documentTypes'],
                     copyTo: 'documentDirectory',
                 });
