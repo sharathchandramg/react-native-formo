@@ -250,10 +250,12 @@ export default class UserDirectoryField extends Component {
     return label;
   };
 
-  renderIcon = () => {
+  renderIcon = (attributes) => {
     return (
       <TouchableOpacity
-        onPress={() => this.toggleModalVisible()}
+        onPress={() => {
+          if (attributes.editable) this.toggleModalVisible();
+        }}
         style={{ width: "7%" }}
       >
         <ArrowForwardIcon size={"6"} color={"#41E1FD"} />
@@ -446,11 +448,18 @@ export default class UserDirectoryField extends Component {
     const { theme, attributes, ErrorComponent } = this.props;
     return (
       <View style={styles.container}>
-        <View style={[styles.inputLabelWrapper, { width: "95%" }]}>
+        <View
+          style={[
+            styles.inputLabelWrapper,
+            { width: "95%", opacity: attributes.editable ? 1 : 0.5 },
+          ]}
+        >
           <TouchableOpacity
-            style={[styles.inputLabel]}
+            style={styles.inputLabel}
             error={theme.changeTextInputColorOnError ? attributes.error : null}
-            onPress={() => this.toggleModalVisible()}
+            onPress={() => {
+              if (attributes.editable) this.toggleModalVisible();
+            }}
           >
             <View style={styles.labelTextWrapper}>
               {attributes["required"] && (
@@ -467,7 +476,7 @@ export default class UserDirectoryField extends Component {
               <View style={{ width: "93%" }} numberOfLines={1}>
                 <Text style={styles.inputText}>{this.getLabel()}</Text>
               </View>
-              {this.renderIcon()}
+              {this.renderIcon(attributes)}
             </View>
           </TouchableOpacity>
         </View>
