@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Platform, Alert, TouchableOpacity, Linking } from 'react-native';
 import { View, Text } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { promptForEnableLocationIfNeeded } from "react-native-android-location-enabler";
+import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 
 import {
     getGeoLocation,
@@ -66,7 +66,7 @@ export default class LocationField extends Component {
                     isPickingLocation: true,
                     isFirstTime: false,
                   });
-                  this.promptForEnableLocation();
+                  this.promptForEnableLocationIfNeeded();
                 } else {
                   this.setState({
                     isPickingLocation: false,
@@ -75,7 +75,7 @@ export default class LocationField extends Component {
                 }
               } else {
                 this.setState({ isPickingLocation: true, isFirstTime: false });
-                this.promptForEnableLocation();
+                this.promptForEnableLocationIfNeeded();
               }
             }
         } catch (error) {
@@ -83,9 +83,9 @@ export default class LocationField extends Component {
         }
     }
 
-    promptForEnableLocation = () => {
+    promptForEnableLocationIfNeeded = () => {
         if (Platform.OS === 'android') {
-            promptForEnableLocationIfNeeded({
+            RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
                 interval: 10000,
                 fastInterval: 5000,
             })
@@ -310,7 +310,7 @@ export default class LocationField extends Component {
                           this.setState(
                             { isPickingLocation: true, url: null },
                             () => {
-                              this.promptForEnableLocation();
+                              this.promptForEnableLocationIfNeeded();
                             }
                           );
                         }}
