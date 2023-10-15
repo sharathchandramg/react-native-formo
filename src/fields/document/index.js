@@ -384,9 +384,10 @@ export default class DocumentField extends Component {
             const config = this.getDocumentConfiguration();
 
             if (config['multiple']) {
-                const results = await DocumentPicker.pickMultiple({
+                const results = await DocumentPicker.pick({
                     type: config['documentTypes'],
                     copyTo: 'documentDirectory',
+                    allowMultiSelection: true
                 });
                 this.uploadMultipleFiles(config, results);
             } else {
