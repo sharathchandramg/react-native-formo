@@ -36,6 +36,13 @@ export default class StatusPickerField extends Component {
     const { theme, attributes } = this.props;
     const options =
       attributes && !isEmpty(attributes.options) ? attributes.options : [];
+    let valueStyle = {
+      fontSize: 18,
+      color: theme.pickerColorSelected,
+    };
+    if (attributes.show_first_value) {
+      valueStyle = { ...valueStyle, backgroundColor: "yellow" };
+    }
     return (
       <View
         style={{
@@ -82,13 +89,7 @@ export default class StatusPickerField extends Component {
               }}
             >
               <View>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    color: theme.pickerColorSelected,
-                  }}
-                  numberOfLines={1}
-                >
+                <Text style={valueStyle} numberOfLines={1}>
                   {pickerValue}
                 </Text>
               </View>
