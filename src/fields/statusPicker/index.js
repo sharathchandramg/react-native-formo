@@ -40,7 +40,7 @@ export default class StatusPickerField extends Component {
       fontSize: 18,
       color: theme.pickerColorSelected,
     };
-    if (attributes.show_first_value) {
+    if (attributes.show_first_option) {
       valueStyle = { ...valueStyle, backgroundColor: "yellow" };
     }
     return (

@@ -462,7 +462,7 @@ export default class Form0 extends Component {
       // Remaing thing is error Handling Here
     } else if (
       field.type === "status_picker" &&
-      field.show_first_value &&
+      field.show_first_option &&
       field.options[1] &&
       field.options.indexOf(value) < 0
     ) {
