@@ -1,6 +1,6 @@
 {
   "name": "react-native-form0",
-  "version": "0.0.181",
+  "version": "0.0.182",
   "description": "Build model based simple forms for React Native",
   "main": "src/index.js",
   "scripts": {
@@ -47,7 +47,7 @@
     "react-timer-mixin": ">=0.13.4",
     "recyclerlistview": ">=4.2.0",
     "shortid": ">=2.2.16",
-    "filtrex": ">=3.0.0",
+    "filtrex": ">=2.0.0",
     "react-native-document-picker": ">=9.0.1",
     "react-native-signature-capture": ">=0.4.12",
     "react-native-camera": ">=4.2.1",

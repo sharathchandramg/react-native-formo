@@ -451,7 +451,7 @@ export default class Form0 extends Component {
 
   // Helper function for setValues
   getFieldValue(fieldObj, value) {
-    const field = fieldObj;
+    const field = _.cloneDeep(fieldObj);
     if (field.type === "group") {
       const subFields = {};
       Object.keys(value).forEach((fieldName) => {
@@ -460,6 +460,13 @@ export default class Form0 extends Component {
       this[field.name].group.setValues(subFields);
       field.value = this[field.name].group.getValues();
       // Remaing thing is error Handling Here
+    } else if (
+      field.type === "status_picker" &&
+      field.show_first_option &&
+      field.options[1] &&
+      field.options.indexOf(value) < 0
+    ) {
+      field.value = field.options[1];
     } else {
       field.value = value;
       //Validate and check for errors
