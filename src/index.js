@@ -29,6 +29,7 @@ import UserDirectoryField from "./fields/userDirectory";
 import DocumentField from "./fields/document";
 import BarcodeField from "./fields/barcode";
 import CascadingDropdownField from "./fields/cascadingDropdown";
+import OTPField from "./fields/otp";
 
 import {
   autoValidate,
@@ -804,6 +805,18 @@ export default class Form0 extends Component {
                 state={this.state}
               />
             );
+
+            case "otp":
+              return (
+                <OTPField
+                  ref={(c) => {
+                    this[field.name] = c;
+                  }}
+                  {...commonProps}
+                  {...this.props}
+                  state={this.state}
+                />
+              );
 
           default:
             break;
