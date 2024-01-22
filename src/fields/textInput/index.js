@@ -92,7 +92,7 @@ export default class TextInputField extends Component {
             ? theme.errorMsgColor
             : theme.inputBorderColor,
           borderBottomWidth: theme.borderWidth,
-          fontSize: 18,
+          fontSize: 25,
           ...Platform.select({
             ios: {
               lineHeight: 30,
