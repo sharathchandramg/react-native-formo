@@ -14,6 +14,7 @@ export function getKeyboardType(textType) {
     case "phone":
     case "currency":
     case "auto-incr-number":
+    case "otp":
       return "numeric";
 
     default:
@@ -173,6 +174,7 @@ export function getResetValue(field) {
     case "auto-incr-number":
     case "longtext":
     case "barcode":
+    case "otp":
       return null;
 
     case "picker":
@@ -235,6 +237,8 @@ export function getInitialState(fields) {
     const fieldObj = Object.assign({}, field);
     fieldObj.error = false;
     fieldObj.errorMsg = "";
+    fieldObj.success = false;
+    fieldObj.successMsg = "";
     if (field && field.type) {
       fieldObj.value = getDefaultValue(field);
       state[field.name] = fieldObj;
@@ -246,6 +250,8 @@ export function getInitialState(fields) {
 export function autoValidate(field, data = {}) {
   let error = false;
   let errorMsg = "";
+  let success = false;
+  let successMsg = "";
   if (field.required) {
     switch (field.type) {
       case "email":
@@ -430,13 +436,31 @@ export function autoValidate(field, data = {}) {
         break;
       default:
     }
+  } else {
+    switch (field.type) {
+      case "email":
+        if (!isEmpty(field.value) && !isEmail(field.value)) {
+          error = true;
+          errorMsg = "Please enter a valid email";
+        }
+        break;
+      case "phone":
+        if (!isEmpty(field.value) && !validateMobileNumber(field.value)) {
+          error = true;
+          errorMsg = `${field.label} should be valid mobile number`;
+        }
+        break;
+      default:
+    }
   }
-  return { error, errorMsg };
+  return { error, errorMsg, success, successMsg };
 }
 
 export function customValidateData(field) {
   let error = false;
   let errorMsg = "";
+  let success = false;
+  let successMsg = "";
   switch (field.type) {
     case "number":
       const additionalConfig = field["additional_config"];
@@ -466,8 +490,51 @@ export function customValidateData(field) {
         errorMsg = `Min allowed value is ${additionalConfig["min"]}`;
       }
       break;
+    case "otp":
+      if (isEmpty(field.value)) {
+        error = true;
+        errorMsg = `${field.label} is required`;
+        success = false;
+        successMsg = "";
+      } else if (!isEmpty(field.value) && field.value.length !== 4) {
+        error = true;
+        errorMsg = "OTP not matched";
+        success = false;
+        successMsg = "";
+      } else if (
+        !isEmpty(field.value) &&
+        field.value.length === 4 &&
+        (isEmpty(field.res) ||
+          (!isEmpty(field.res) && isEmpty(field.res.otp_code)))
+      ) {
+        error = true;
+        errorMsg = "OTP not matched";
+        success = false;
+        successMsg = "";
+      } else if (
+        !isEmpty(field.value) &&
+        !isEmpty(field.res) &&
+        !isEmpty(field.res.otp_code) &&
+        field.value != field.res.otp_code
+      ) {
+        error = true;
+        errorMsg = "OTP not matched";
+        success = false;
+        successMsg = "";
+      } else if (
+        !isEmpty(field.value) &&
+        !isEmpty(field.res) &&
+        !isEmpty(field.res.otp_code) &&
+        field.value == field.res.otp_code
+      ) {
+        success = true;
+        successMsg = "OTP matched";
+        error = false;
+        errorMsg = "";
+      }
+      break;
   }
-  return { error, errorMsg };
+  return { error, errorMsg, success, successMsg };
 }
 
 export function isNumeric(value) {

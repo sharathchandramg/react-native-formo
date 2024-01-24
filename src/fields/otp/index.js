@@ -1,8 +1,13 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Platform, Animated, Pressable, Text } from "react-native";
+import {
+  Platform,
+  Animated,
+  Pressable,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { View, Input } from "native-base";
-import Icon from "react-native-vector-icons/FontAwesome5";
 
 import { getKeyboardType } from "./../../utils/helper";
 import { isEmpty } from "./../../utils/validators";
@@ -15,12 +20,17 @@ export default class OTPField extends Component {
     onSummitTextInput: PropTypes.func,
     ErrorComponent: PropTypes.func,
     updateValue: PropTypes.func,
+    getOtp: PropTypes.func,
+    SuccessComponent: PropTypes.func,
   };
-
+  intervalId;
   state = {
     isFocused: false,
     numOfLines: 1,
     lineSpace: Platform.OS !== "ios" ? 12 : 15,
+    disableBtn: false,
+    btnText: "Send",
+    btnCounter: 20,
   };
 
   componentWillMount() {
@@ -39,6 +49,23 @@ export default class OTPField extends Component {
 
   handleFocus = () => this.setState({ isFocused: true });
   handleBlur = () => this.setState({ isFocused: false });
+
+  initTimer = () => {
+    this.intervalId = setInterval(this.timer, 1000);
+  };
+
+  timer = () => {
+    if (this.state.btnCounter === 0) {
+      clearInterval(this.intervalId);
+      this.setState({
+        disableBtn: false,
+      });
+    } else {
+      this.setState({
+        btnCounter: this.state.btnCounter - 1,
+      });
+    }
+  };
 
   handleChange = (text) => {
     this.props.updateValue(this.props.attributes.name, text);
@@ -74,47 +101,56 @@ export default class OTPField extends Component {
     }
 
     return (
-      <Input
-        style={{
-          height: 60,
-          marginTop:
-            (this.state.isFocused || !isEmpty(attributes["value"])) &&
-            this.state.numOfLines > 1
-              ? this.state.numOfLines * this.state.lineSpace
-              : 0,
-          borderTopWidth: 0,
-          borderRightWidth: 0,
-          borderLeftWidth: 0,
-          borderBottomColor: attributes["error"]
-            ? theme.errorMsgColor
-            : theme.inputBorderColor,
-          borderBottomWidth: theme.borderWidth,
-          fontSize: 18,
-          ...Platform.select({
-            ios: {
-              lineHeight: 30,
-            },
-            android: {
-              textAlignVertical: "bottom",
-            },
-          }),
-        }}
-        ref={(c) => {
-          this.textInput = c;
-        }}
-        keyboardType={keyboardType}
-        underlineColorAndroid="transparent"
-        secureTextEntry={
-          attributes.secureTextEntry || attributes.type === "password"
-        }
-        blurOnSubmit={false}
-        editable={attributes.editable}
-        onChangeText={(text) => this.handleChange(text)}
-        value={value}
-        onFocus={this.handleFocus}
-        onBlur={this.handleBlur}
-        {...inputProps}
-      />
+      <View style={{ width: "80%" }}>
+        <Input
+          style={{
+            height: 60,
+            marginTop:
+              (this.state.isFocused || !isEmpty(attributes["value"])) &&
+              this.state.numOfLines > 1
+                ? this.state.numOfLines * this.state.lineSpace
+                : 0,
+            // borderWidth:0,
+            borderTopWidth: 0,
+            borderRightWidth: 0,
+            borderLeftWidth: 0,
+            borderBottomColor: attributes["error"]
+              ? theme.errorMsgColor
+              : theme.inputBorderColor,
+            borderBottomWidth: theme.borderWidth,
+            fontSize: 18,
+            color: attributes["error"]
+              ? theme.errorMsgColor
+              : attributes["success"]
+              ? theme.backgroundColor
+              : theme.textInputIconColor,
+            ...Platform.select({
+              ios: {
+                lineHeight: 30,
+              },
+              android: {
+                textAlignVertical: "bottom",
+              },
+            }),
+          }}
+          ref={(c) => {
+            this.textInput = c;
+          }}
+          maxLength={4}
+          keyboardType={keyboardType}
+          underlineColorAndroid="transparent"
+          secureTextEntry={
+            attributes.secureTextEntry || attributes.type === "password"
+          }
+          blurOnSubmit={false}
+          editable={attributes.editable}
+          onChangeText={(text) => this.handleChange(text)}
+          value={value}
+          onFocus={this.handleFocus}
+          onBlur={this.handleBlur}
+          {...inputProps}
+        />
+      </View>
     );
   };
 
@@ -153,7 +189,7 @@ export default class OTPField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent } = this.props;
+    const { theme, attributes, ErrorComponent, SuccessComponent } = this.props;
     return (
       <View>
         <View
@@ -163,6 +199,11 @@ export default class OTPField extends Component {
             paddingTop: 5,
           }}
         >
+          {/* <View style={[{
+    borderColor: "#41E1FD",
+    borderWidth: 2,
+    borderRadius: 4
+  }]}> */}
           <View style={{ flex: 1, position: "relative" }}>
             <Pressable onPress={() => {}}>
               <Text
@@ -194,21 +235,58 @@ export default class OTPField extends Component {
               )}
               {this.getLabel(attributes)}
             </Animated.Text>
-            {this.renderInputField(attributes, theme)}
-            {theme.textInputErrorIcon && attributes.error ? (
-              <View style={{ position: "absolute", right: 0, bottom: 10 }}>
-                <Icon
-                  name={"times-circle"}
-                  size={20}
-                  color={theme.errorMsgColor}
-                  solid
-                />
+            <View style={{ flexDirection: "row" }}>
+              {this.renderInputField(attributes, theme)}
+              <View style={{ width: "20%" }}>
+                <TouchableOpacity
+                  style={[
+                    {
+                      height: 60,
+                      // width:40,
+                      margin: 0,
+                      alignSelf: "stretch",
+                      justifyContent: "center",
+                    },
+                    {
+                      backgroundColor: this.state.disableBtn
+                        ? "#7D98B3"
+                        : "#41E1FD",
+                    },
+                  ]}
+                  disabled={this.state.disableBtn}
+                  onPress={() => {
+                    this.setState({
+                      disableBtn: true,
+                      btnText: "Re Send",
+                      btnCounter: 20,
+                    });
+                    this.initTimer();
+                    this.props.getOtp(attributes, "919036138128", "PHONE");
+                  }}
+                >
+                  <Text
+                    style={[
+                      {
+                        fontSize: 16,
+                        color: "white",
+                        alignSelf: "center",
+                      },
+                      { paddingHorizontal: 5 },
+                    ]}
+                  >
+                    {this.state.btnText}
+                  </Text>
+                </TouchableOpacity>
               </View>
-            ) : null}
+            </View>
           </View>
+          {/* </View> */}
         </View>
         <View style={{ paddingHorizontal: 15 }}>
           <ErrorComponent {...{ attributes, theme }} />
+        </View>
+        <View style={{ paddingHorizontal: 15 }}>
+          <SuccessComponent {...{ attributes, theme }} />
         </View>
       </View>
     );
