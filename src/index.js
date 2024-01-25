@@ -396,6 +396,24 @@ export default class Form0 extends Component {
     }
   }
 
+  getOtpByRefData = (field, cb) => {
+    const validatedRes = customValidateData(field);
+    Object.assign(field, validatedRes);
+    const newField = {};
+    newField[field.name] = field;
+    this.setState({ ...newField });
+    if (!validatedRes.error && !validatedRes.success) {
+      const refFieldData =
+        field["ref_value_type"] === "PHONE"
+          ? field["ref_value"].length === 10
+            ? `91${field["ref_value"]}`
+            : field["ref_value"]
+          : field["ref_value"];
+      this.props.getOtp(field, refFieldData, field["ref_value_type"]);
+      cb();
+    }
+  };
+
   getFieldReturnValue = (field) => {
     if (
       field.type &&
@@ -858,6 +876,7 @@ export default class Form0 extends Component {
                 {...commonProps}
                 {...this.props}
                 state={this.state}
+                getOtpByRefData={this.getOtpByRefData}
               />
             );
 

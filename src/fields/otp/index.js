@@ -22,6 +22,7 @@ export default class OTPField extends Component {
     updateValue: PropTypes.func,
     getOtp: PropTypes.func,
     SuccessComponent: PropTypes.func,
+    getOtpByRefData: PropTypes.func,
   };
   intervalId;
   state = {
@@ -30,7 +31,7 @@ export default class OTPField extends Component {
     lineSpace: Platform.OS !== "ios" ? 12 : 15,
     disableBtn: false,
     btnText: "Send",
-    btnCounter: 20,
+    btnCounter: 60,
   };
 
   componentWillMount() {
@@ -110,14 +111,14 @@ export default class OTPField extends Component {
               this.state.numOfLines > 1
                 ? this.state.numOfLines * this.state.lineSpace
                 : 0,
-            // borderWidth:0,
-            borderTopWidth: 0,
-            borderRightWidth: 0,
-            borderLeftWidth: 0,
-            borderBottomColor: attributes["error"]
-              ? theme.errorMsgColor
-              : theme.inputBorderColor,
-            borderBottomWidth: theme.borderWidth,
+            borderWidth: 0,
+            // borderTopWidth: 0,
+            // borderRightWidth: 0,
+            // borderLeftWidth: 0,
+            // borderBottomColor: attributes["error"]
+            //   ? theme.errorMsgColor
+            //   : theme.inputBorderColor,
+            // borderBottomWidth: theme.borderWidth,
             fontSize: 18,
             color: attributes["error"]
               ? theme.errorMsgColor
@@ -188,6 +189,31 @@ export default class OTPField extends Component {
       : attributes.label;
   };
 
+  callInitTimer = () => {
+    this.setState({
+      disableBtn: true,
+      btnText: "Resend",
+      btnCounter: 60,
+    });
+    this.initTimer();
+  };
+
+  handleChangeGetotp = (attributes) => {
+    const refValue = this.getRefFieldValue(attributes);
+    this.props.getOtpByRefData(
+      {
+        ...attributes,
+        ref_value: !isEmpty(refValue) ? refValue : null,
+        ref_value_type: !isEmpty(refValue)
+          ? refValue.includes("@")
+            ? "EMAIL"
+            : "PHONE"
+          : null,
+      },
+      this.callInitTimer
+    );
+  };
+
   render() {
     const { theme, attributes, ErrorComponent, SuccessComponent } = this.props;
     return (
@@ -199,88 +225,85 @@ export default class OTPField extends Component {
             paddingTop: 5,
           }}
         >
-          {/* <View style={[{
-    borderColor: "#41E1FD",
-    borderWidth: 2,
-    borderRadius: 4
-  }]}> */}
-          <View style={{ flex: 1, position: "relative" }}>
-            <Pressable onPress={() => {}}>
-              <Text
-                onTextLayout={this.onTextLayout}
-                style={{
-                  opacity: 0,
-                  position: "absolute",
-                  fontSize: 16,
-                  paddingStart: 5,
-                  color: theme.inputColorPlaceholder,
-                  lineHeight: 18,
-                }}
-              >
-                {this.getLabel(attributes)}
-              </Text>
-            </Pressable>
-            <Animated.Text
-              style={this.getLabelStyles()}
-              numberOfLines={
-                this.state.isFocused || !isEmpty(attributes["value"])
-                  ? undefined
-                  : 1
-              }
-            >
-              {attributes["required"] && (
-                <>
-                  <StarIcon required={attributes["required"]} />{" "}
-                </>
-              )}
-              {this.getLabel(attributes)}
-            </Animated.Text>
-            <View style={{ flexDirection: "row" }}>
-              {this.renderInputField(attributes, theme)}
-              <View style={{ width: "20%" }}>
-                <TouchableOpacity
-                  style={[
-                    {
-                      height: 60,
-                      // width:40,
-                      margin: 0,
-                      alignSelf: "stretch",
-                      justifyContent: "center",
-                    },
-                    {
-                      backgroundColor: this.state.disableBtn
-                        ? "#7D98B3"
-                        : "#41E1FD",
-                    },
-                  ]}
-                  disabled={this.state.disableBtn}
-                  onPress={() => {
-                    this.setState({
-                      disableBtn: true,
-                      btnText: "Re Send",
-                      btnCounter: 20,
-                    });
-                    this.initTimer();
-                    this.props.getOtp(attributes, "919036138128", "PHONE");
+          <View
+            style={[
+              {
+                borderColor: "#41E1FD",
+                borderWidth: 2,
+                borderRadius: 4,
+              },
+            ]}
+          >
+            <View style={{ flex: 1, position: "relative" }}>
+              <Pressable onPress={() => {}}>
+                <Text
+                  onTextLayout={this.onTextLayout}
+                  style={{
+                    opacity: 0,
+                    position: "absolute",
+                    fontSize: 16,
+                    paddingStart: 5,
+                    color: theme.inputColorPlaceholder,
+                    lineHeight: 18,
                   }}
                 >
-                  <Text
+                  {this.getLabel(attributes)}
+                </Text>
+              </Pressable>
+              <Animated.Text
+                style={this.getLabelStyles()}
+                numberOfLines={
+                  this.state.isFocused || !isEmpty(attributes["value"])
+                    ? undefined
+                    : 1
+                }
+              >
+                {attributes["required"] && (
+                  <>
+                    <StarIcon required={attributes["required"]} />{" "}
+                  </>
+                )}
+                {this.getLabel(attributes)}
+              </Animated.Text>
+              <View style={{ flexDirection: "row" }}>
+                {this.renderInputField(attributes, theme)}
+                <View style={{ width: "20%" }}>
+                  <TouchableOpacity
                     style={[
                       {
-                        fontSize: 16,
-                        color: "white",
-                        alignSelf: "center",
+                        height: 60,
+                        // width:40,
+                        margin: 0,
+                        alignSelf: "stretch",
+                        justifyContent: "center",
                       },
-                      { paddingHorizontal: 5 },
+                      {
+                        backgroundColor: this.state.disableBtn
+                          ? "#7D98B3"
+                          : "#41E1FD",
+                      },
                     ]}
+                    disabled={this.state.disableBtn}
+                    onPress={() => this.handleChangeGetotp(attributes)}
                   >
-                    {this.state.btnText}
-                  </Text>
-                </TouchableOpacity>
+                    <Text
+                      style={[
+                        {
+                          fontSize: 16,
+                          color: "white",
+                          alignSelf: "center",
+                          fontWeight: "700",
+                        },
+                        { paddingHorizontal: 5 },
+                      ]}
+                    >
+                      {this.state.btnText}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
           </View>
-          {/* </View> */}
         </View>
         <View style={{ paddingHorizontal: 15 }}>
           <ErrorComponent {...{ attributes, theme }} />

@@ -491,14 +491,33 @@ export function customValidateData(field) {
       }
       break;
     case "otp":
-      if (isEmpty(field.value)) {
+      if (isEmpty(field.value) && field.required) {
         error = true;
         errorMsg = `${field.label} is required`;
         success = false;
         successMsg = "";
+      } else if (isEmpty(field["ref_value"])) {
+        error = true;
+        errorMsg = `Reference data is required`;
+        success = false;
+        successMsg = "";
+      } else if (!isEmpty(field["ref_value"]) && isEmpty(field.res)) {
+        const validateRefValue =
+          field["ref_value_type"] === "PHONE"
+            ? !validateMobileNumber(field["ref_value"])
+            : !isEmail(field["ref_value"]);
+        if (validateRefValue) {
+          error = true;
+          errorMsg =
+            field["ref_value_type"] === "PHONE"
+              ? `${field["ref_value"]} is not a valid mobile number`
+              : `${field["ref_value"]} is not a valid email`;
+          success = false;
+          successMsg = "";
+        }
       } else if (!isEmpty(field.value) && field.value.length !== 4) {
         error = true;
-        errorMsg = "OTP not matched";
+        errorMsg = "Incorrect OTP. Retry.";
         success = false;
         successMsg = "";
       } else if (
@@ -508,7 +527,7 @@ export function customValidateData(field) {
           (!isEmpty(field.res) && isEmpty(field.res.otp_code)))
       ) {
         error = true;
-        errorMsg = "OTP not matched";
+        errorMsg = "Incorrect OTP. Retry.";
         success = false;
         successMsg = "";
       } else if (
@@ -518,7 +537,7 @@ export function customValidateData(field) {
         field.value != field.res.otp_code
       ) {
         error = true;
-        errorMsg = "OTP not matched";
+        errorMsg = "Incorrect OTP. Retry.";
         success = false;
         successMsg = "";
       } else if (
@@ -528,7 +547,7 @@ export function customValidateData(field) {
         field.value == field.res.otp_code
       ) {
         success = true;
-        successMsg = "OTP matched";
+        successMsg = "Correct OTP";
         error = false;
         errorMsg = "";
       }
