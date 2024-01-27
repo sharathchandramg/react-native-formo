@@ -456,7 +456,7 @@ export function autoValidate(field, data = {}) {
   return { error, errorMsg, success, successMsg };
 }
 
-export function customValidateData(field) {
+export function customValidateData(field, from = "") {
   let error = false;
   let errorMsg = "";
   let success = false;
@@ -491,14 +491,19 @@ export function customValidateData(field) {
       }
       break;
     case "otp":
-      if (isEmpty(field.value) && field.required) {
+      if (isEmpty(field.value) && field.required && from !== "otp") {
         error = true;
         errorMsg = `${field.label} is required`;
         success = false;
         successMsg = "";
-      } else if (isEmpty(field["ref_value"])) {
+      } else if (isEmpty(field["ref_value"]) && from === "otp") {
         error = true;
         errorMsg = `Reference data is required`;
+        success = false;
+        successMsg = "";
+      } else if (isEmpty(field["ref_value"]) && field.required) {
+        error = true;
+        errorMsg = `Get OTP`;
         success = false;
         successMsg = "";
       } else if (!isEmpty(field["ref_value"]) && isEmpty(field.res)) {

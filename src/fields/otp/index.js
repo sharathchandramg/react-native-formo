@@ -112,13 +112,6 @@ export default class OTPField extends Component {
                 ? this.state.numOfLines * this.state.lineSpace
                 : 0,
             borderWidth: 0,
-            // borderTopWidth: 0,
-            // borderRightWidth: 0,
-            // borderLeftWidth: 0,
-            // borderBottomColor: attributes["error"]
-            //   ? theme.errorMsgColor
-            //   : theme.inputBorderColor,
-            // borderBottomWidth: theme.borderWidth,
             fontSize: 18,
             color: attributes["error"]
               ? theme.errorMsgColor

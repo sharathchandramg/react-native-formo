@@ -181,7 +181,7 @@ export default class Form0 extends Component {
           field.error = validate.error;
           field.errorMsg = validate.errorMsg;
         }
-        if (field.type === "number") {
+        if (field.type === "number" || field.type === "otp") {
           let validate = customValidateData(field);
           field.error = validate.error;
           field.errorMsg = validate.errorMsg;
@@ -397,7 +397,7 @@ export default class Form0 extends Component {
   }
 
   getOtpByRefData = (field, cb) => {
-    const validatedRes = customValidateData(field);
+    const validatedRes = customValidateData(field, "otp");
     Object.assign(field, validatedRes);
     const newField = {};
     newField[field.name] = field;
