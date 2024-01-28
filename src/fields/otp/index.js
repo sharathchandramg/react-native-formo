@@ -12,6 +12,7 @@ import { View, Input } from "native-base";
 import { getKeyboardType } from "./../../utils/helper";
 import { isEmpty } from "./../../utils/validators";
 import StarIcon from "../../components/starIcon";
+import styles from "./styles";
 
 export default class OTPField extends Component {
   static propTypes = {
@@ -81,52 +82,31 @@ export default class OTPField extends Component {
 
   renderInputField = (attributes, theme) => {
     const inputProps = attributes.props;
-    let keyboardType = getKeyboardType(attributes.type);
-
-    if (attributes.type === "number") {
-      const additionalConfig = attributes.additional_config;
-      if (additionalConfig && additionalConfig.allow_negative)
-        keyboardType =
-          Platform.OS === "ios" ? "numbers-and-punctuation" : "numeric";
-    }
+    const keyboardType = getKeyboardType(attributes.type);
 
     let value = "";
-    if (attributes["type"] === "number") {
-      if (!isEmpty(attributes["value"])) {
-        value = attributes["value"].toString();
-      }
-    } else {
-      if (!isEmpty(attributes["value"])) {
-        value = attributes["value"].toString();
-      }
+    if (!isEmpty(attributes["value"])) {
+      value = attributes["value"].toString();
     }
 
     return (
-      <View style={{ width: "80%" }}>
+      <View style={styles.inputWrapper}>
         <Input
-          style={{
-            height: 60,
-            marginTop:
-              (this.state.isFocused || !isEmpty(attributes["value"])) &&
-              this.state.numOfLines > 1
-                ? this.state.numOfLines * this.state.lineSpace
-                : 0,
-            borderWidth: 0,
-            fontSize: 18,
-            color: attributes["error"]
-              ? theme.errorMsgColor
-              : attributes["success"]
-              ? theme.backgroundColor
-              : theme.textInputIconColor,
-            ...Platform.select({
-              ios: {
-                lineHeight: 30,
-              },
-              android: {
-                textAlignVertical: "bottom",
-              },
-            }),
-          }}
+          style={[
+            styles.input,
+            {
+              marginTop:
+                (this.state.isFocused || !isEmpty(attributes["value"])) &&
+                this.state.numOfLines > 1
+                  ? this.state.numOfLines * this.state.lineSpace
+                  : 0,
+              color: attributes["error"]
+                ? theme.errorMsgColor
+                : attributes["success"]
+                ? theme.backgroundColor
+                : theme.textInputIconColor,
+            },
+          ]}
           ref={(c) => {
             this.textInput = c;
           }}
@@ -151,16 +131,12 @@ export default class OTPField extends Component {
   getLabelStyles = () => {
     const { theme } = this.props;
     return {
-      position: "absolute",
-      left: 0,
-      fontSize: 16,
-      paddingStart: 5,
+      ...styles.animatedLabel,
       top: this._animatedIsFocused.interpolate({
         inputRange: [0, 1],
         outputRange: [25, 0],
       }),
       color: theme.inputColorPlaceholder,
-      width: "100%",
     };
   };
 
@@ -211,34 +187,16 @@ export default class OTPField extends Component {
     const { theme, attributes, ErrorComponent, SuccessComponent } = this.props;
     return (
       <View>
-        <View
-          style={{
-            borderBottomWidth: 0,
-            paddingHorizontal: 15,
-            paddingTop: 5,
-          }}
-        >
-          <View
-            style={[
-              {
-                borderColor: "#41E1FD",
-                borderWidth: 2,
-                borderRadius: 4,
-              },
-            ]}
-          >
-            <View style={{ flex: 1, position: "relative" }}>
+        <View style={styles.container}>
+          <View style={styles.inputBorder}>
+            <View style={styles.contentWrapper}>
               <Pressable onPress={() => {}}>
                 <Text
                   onTextLayout={this.onTextLayout}
-                  style={{
-                    opacity: 0,
-                    position: "absolute",
-                    fontSize: 16,
-                    paddingStart: 5,
-                    color: theme.inputColorPlaceholder,
-                    lineHeight: 18,
-                  }}
+                  style={[
+                    styles.labelText,
+                    { color: theme.inputColorPlaceholder },
+                  ]}
                 >
                   {this.getLabel(attributes)}
                 </Text>
@@ -258,18 +216,12 @@ export default class OTPField extends Component {
                 )}
                 {this.getLabel(attributes)}
               </Animated.Text>
-              <View style={{ flexDirection: "row" }}>
+              <View style={styles.inputBtnWrapper}>
                 {this.renderInputField(attributes, theme)}
-                <View style={{ width: "20%" }}>
+                <View style={styles.btnWrapper}>
                   <TouchableOpacity
                     style={[
-                      {
-                        height: 60,
-                        // width:40,
-                        margin: 0,
-                        alignSelf: "stretch",
-                        justifyContent: "center",
-                      },
+                      styles.btn,
                       {
                         backgroundColor: this.state.disableBtn
                           ? "#7D98B3"
@@ -279,30 +231,21 @@ export default class OTPField extends Component {
                     disabled={this.state.disableBtn}
                     onPress={() => this.handleChangeGetotp(attributes)}
                   >
-                    <Text
-                      style={[
-                        {
-                          fontSize: 16,
-                          color: "white",
-                          alignSelf: "center",
-                          fontWeight: "700",
-                        },
-                        { paddingHorizontal: 5 },
-                      ]}
-                    >
-                      {this.state.btnText}
-                    </Text>
+                    <Text style={styles.btnText}>{this.state.btnText}</Text>
                   </TouchableOpacity>
                 </View>
               </View>
             </View>
           </View>
         </View>
-        <View style={{ paddingHorizontal: 15 }}>
-          <ErrorComponent {...{ attributes, theme }} />
-        </View>
-        <View style={{ paddingHorizontal: 15 }}>
-          <SuccessComponent {...{ attributes, theme }} />
+        <View style={styles.errorSuccessWrapper}>
+          {attributes.error && attributes.errorMsg ? (
+            <ErrorComponent {...{ attributes, theme }} />
+          ) : attributes.success && attributes.successMsg ? (
+            <SuccessComponent {...{ attributes, theme }} />
+          ) : (
+            <View />
+          )}
         </View>
       </View>
     );
