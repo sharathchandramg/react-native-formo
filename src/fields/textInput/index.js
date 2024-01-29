@@ -157,7 +157,7 @@ export default class TextInputField extends Component {
           fontSize: 18,
           ...Platform.select({
             ios: {
-              lineHeight: 30,
+              lineHeight: 50,
             },
             android: {
               textAlignVertical: "bottom",
