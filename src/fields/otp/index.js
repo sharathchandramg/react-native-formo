@@ -31,7 +31,7 @@ export default class OTPField extends Component {
     numOfLines: 1,
     lineSpace: Platform.OS !== "ios" ? 12 : 15,
     disableBtn: false,
-    btnText: "Send",
+    btnText: "Send OTP",
     btnCounter: 60,
   };
 
@@ -154,7 +154,7 @@ export default class OTPField extends Component {
   getLabel = (attributes) => {
     const refFieldValue = this.getRefFieldValue(attributes);
     return refFieldValue
-      ? `${attributes.label}(${refFieldValue})`
+      ? `${attributes.label}- ${refFieldValue}`
       : attributes.label;
   };
 
