@@ -402,7 +402,7 @@ export default class Form0 extends Component {
     const newField = {};
     newField[field.name] = field;
     this.setState({ ...newField });
-    if (!validatedRes.error && !validatedRes.success) {
+    if (!validatedRes.invalidRef) {
       const refFieldData =
         field["ref_value_type"] === "PHONE"
           ? field["ref_value"].length === 10

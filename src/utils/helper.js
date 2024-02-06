@@ -461,6 +461,7 @@ export function customValidateData(field, from = "") {
   let errorMsg = "";
   let success = false;
   let successMsg = "";
+  let invalidRef = false;
   switch (field.type) {
     case "number":
       const additionalConfig = field["additional_config"];
@@ -501,12 +502,14 @@ export function customValidateData(field, from = "") {
         errorMsg = `Reference data is required`;
         success = false;
         successMsg = "";
+        invalidRef = true;
       } else if (isEmpty(field["ref_value"]) && field.required) {
         error = true;
         errorMsg = `Get OTP`;
         success = false;
         successMsg = "";
-      } else if (!isEmpty(field["ref_value"]) && isEmpty(field.res)) {
+        invalidRef = true;
+      } else if (!isEmpty(field["ref_value"])) {
         const validateRefValue =
           field["ref_value_type"] === "PHONE"
             ? !validateMobileNumber(field["ref_value"])
@@ -519,46 +522,51 @@ export function customValidateData(field, from = "") {
               : `${field["ref_value"]} is not a valid email`;
           success = false;
           successMsg = "";
+          invalidRef = true;
+        } else if (!isEmpty(field.value) && field.value.length !== 4) {
+          error = true;
+          errorMsg = "Incorrect OTP. Retry.";
+          success = false;
+          successMsg = "";
+          invalidRef = false;
+        } else if (
+          !isEmpty(field.value) &&
+          field.value.length === 4 &&
+          (isEmpty(field.res) ||
+            (!isEmpty(field.res) && isEmpty(field.res.otp_code)))
+        ) {
+          error = true;
+          errorMsg = "Incorrect OTP. Retry.";
+          success = false;
+          successMsg = "";
+          invalidRef = false;
+        } else if (
+          !isEmpty(field.value) &&
+          !isEmpty(field.res) &&
+          !isEmpty(field.res.otp_code) &&
+          field.value != field.res.otp_code
+        ) {
+          error = true;
+          errorMsg = "Incorrect OTP. Retry.";
+          success = false;
+          successMsg = "";
+          invalidRef = false;
+        } else if (
+          !isEmpty(field.value) &&
+          !isEmpty(field.res) &&
+          !isEmpty(field.res.otp_code) &&
+          field.value == field.res.otp_code
+        ) {
+          success = true;
+          successMsg = "Correct OTP";
+          error = false;
+          errorMsg = "";
+          invalidRef = false;
         }
-      } else if (!isEmpty(field.value) && field.value.length !== 4) {
-        error = true;
-        errorMsg = "Incorrect OTP. Retry.";
-        success = false;
-        successMsg = "";
-      } else if (
-        !isEmpty(field.value) &&
-        field.value.length === 4 &&
-        (isEmpty(field.res) ||
-          (!isEmpty(field.res) && isEmpty(field.res.otp_code)))
-      ) {
-        error = true;
-        errorMsg = "Incorrect OTP. Retry.";
-        success = false;
-        successMsg = "";
-      } else if (
-        !isEmpty(field.value) &&
-        !isEmpty(field.res) &&
-        !isEmpty(field.res.otp_code) &&
-        field.value != field.res.otp_code
-      ) {
-        error = true;
-        errorMsg = "Incorrect OTP. Retry.";
-        success = false;
-        successMsg = "";
-      } else if (
-        !isEmpty(field.value) &&
-        !isEmpty(field.res) &&
-        !isEmpty(field.res.otp_code) &&
-        field.value == field.res.otp_code
-      ) {
-        success = true;
-        successMsg = "Correct OTP";
-        error = false;
-        errorMsg = "";
       }
       break;
   }
-  return { error, errorMsg, success, successMsg };
+  return { error, errorMsg, success, successMsg, invalidRef };
 }
 
 export function isNumeric(value) {
