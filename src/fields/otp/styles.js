@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   btnWrapper: {
-    width: "30%",
+    width: "25%",
   },
   btn: {
     height: 60,
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   inputWrapper:{
-    width: "70%" 
+    width: "75%" 
   },
   input: {
     height: 60,
