@@ -29,6 +29,7 @@ import UserDirectoryField from "./fields/userDirectory";
 import DocumentField from "./fields/document";
 import BarcodeField from "./fields/barcode";
 import CascadingDropdownField from "./fields/cascadingDropdown";
+import OTPField from "./fields/otp";
 
 import {
   autoValidate,
@@ -63,6 +64,34 @@ const DefaultErrorComponent = (props) => {
         }}
       >
         {attributes.errorMsg}
+      </Text>
+    );
+  }
+  return null;
+};
+
+const DefaultSuccessComponent = (props) => {
+  const attributes = props.attributes;
+  const theme = props.theme;
+  if (attributes.success) {
+    return (
+      <Text
+        style={{
+          color: theme.backgroundColor,
+          paddingStart: [
+            "select",
+            "user_directory",
+            "checklist",
+            "lookup",
+            "simple-grid",
+            "customDataView",
+            "product-catalog-sale",
+          ].includes(attributes["type"])
+            ? 0
+            : 5,
+        }}
+      >
+        {attributes.successMsg}
       </Text>
     );
   }
@@ -152,7 +181,7 @@ export default class Form0 extends Component {
           field.error = validate.error;
           field.errorMsg = validate.errorMsg;
         }
-        if (field.type === "number") {
+        if (field.type === "number" || field.type === "otp") {
           let validate = customValidateData(field);
           field.error = validate.error;
           field.errorMsg = validate.errorMsg;
@@ -251,6 +280,10 @@ export default class Form0 extends Component {
       typeof this.props.customValidation === "function"
     ) {
       Object.assign(valueObj, this.props.customValidation(valueObj));
+    }
+
+    if (valueObj.type === "otp" && value.length === 4) {
+      Object.assign(valueObj, customValidateData(valueObj));
     }
 
     if (
@@ -363,6 +396,24 @@ export default class Form0 extends Component {
     }
   }
 
+  getOtpByRefData = (field, cb) => {
+    const validatedRes = customValidateData(field, "otp");
+    Object.assign(field, validatedRes);
+    const newField = {};
+    newField[field.name] = field;
+    this.setState({ ...newField });
+    if (!validatedRes.invalidRef) {
+      const refFieldData =
+        field["ref_value_type"] === "PHONE"
+          ? field["ref_value"].length === 10
+            ? `91${field["ref_value"]}`
+            : field["ref_value"]
+          : field["ref_value"];
+      this.props.getOtp(field, refFieldData, field["ref_value_type"]);
+      cb();
+    }
+  };
+
   getFieldReturnValue = (field) => {
     if (
       field.type &&
@@ -396,6 +447,14 @@ export default class Form0 extends Component {
       return updateValue;
     } else if (field.type === "longtext") {
       return !isEmpty(field.value) ? field.value.trim() : field.value;
+    } else if (field.type === "otp") {
+      // check  value and res.otp_code, if both are true then send value or send empty
+      return !isEmpty(field.value) &&
+        !isEmpty(field.res) &&
+        !isEmpty(field.res.otp_code) &&
+        field.value == field.res.otp_code
+        ? Number(field.value)
+        : null;
     } else return field.value;
   };
 
@@ -440,6 +499,8 @@ export default class Form0 extends Component {
             : getResetValue(field);
         field.error = false;
         field.errorMsg = "";
+        field.success = false;
+        field.successMsg = "";
         if (field.type === "group") {
           this[field.name].group.resetForm();
         }
@@ -520,7 +581,7 @@ export default class Form0 extends Component {
 
   generateFields() {
     const theme = Object.assign(baseTheme, this.props.theme);
-    const { customComponents, errorComponent } = this.props;
+    const { customComponents, errorComponent, successComponent } = this.props;
 
     let formKeys = Object.keys(this.state);
     const renderFields = formKeys.map((fieldName, index) => {
@@ -537,6 +598,7 @@ export default class Form0 extends Component {
           onAddNewFields: this.onAddNewFields,
           getValue: this.getValue,
           ErrorComponent: errorComponent || DefaultErrorComponent,
+          SuccessComponent: successComponent || DefaultSuccessComponent,
           navigation: this.props["navigation"] || null,
         };
 
@@ -802,6 +864,19 @@ export default class Form0 extends Component {
                 {...commonProps}
                 {...this.props}
                 state={this.state}
+              />
+            );
+
+          case "otp":
+            return (
+              <OTPField
+                ref={(c) => {
+                  this[field.name] = c;
+                }}
+                {...commonProps}
+                {...this.props}
+                state={this.state}
+                getOtpByRefData={this.getOtpByRefData}
               />
             );
 
