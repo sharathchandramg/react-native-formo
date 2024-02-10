@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontWeight: "700",
     paddingHorizontal: 5,
+    textAlign:'center'
   },
   errorSuccessWrapper: {
     paddingHorizontal: 15,
