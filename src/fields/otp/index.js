@@ -141,7 +141,7 @@ export default class OTPField extends Component {
   };
 
   onTextLayout = (e) => {
-    this.setState({ numOfLines: e.nativeEvent.lines.length });
+    this.setState({ numOfLines: 1});
   };
 
   getRefFieldValue = (attributes) => {
@@ -203,11 +203,7 @@ export default class OTPField extends Component {
               </Pressable>
               <Animated.Text
                 style={this.getLabelStyles()}
-                numberOfLines={
-                  this.state.isFocused || !isEmpty(attributes["value"])
-                    ? undefined
-                    : 1
-                }
+                numberOfLines={1}
               >
                 {attributes["required"] && (
                   <>
