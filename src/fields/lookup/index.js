@@ -474,7 +474,7 @@ export default class LookupField extends Component {
       barcodeModalVisible: !this.state.barcodeModalVisible,
       searchModalVisible: false,
       filterModalVisible: false,
-      modalVisible: true,
+      modalVisible: !this.state.barcodeModalVisible ? false : true,
       searchText: "",
       barcodeSearchText: "",
       categoryToValue: [],
@@ -538,6 +538,7 @@ export default class LookupField extends Component {
           flashMode={RNCamera.Constants.FlashMode.on}
           onBarCodeRead={this.onBarCodeRead}
           ref={(cam) => (this.camera = cam)}
+          captureAudio={false}
         />
       </View>
     );
@@ -872,7 +873,7 @@ export default class LookupField extends Component {
         <View style={{ paddingHorizontal: 15 }}>
           <ErrorComponent {...{ attributes, theme }} />
         </View>
-        {
+        {this.state.modalVisible && (
           <Modal
             visible={this.state.modalVisible}
             animationType="none"
@@ -923,10 +924,10 @@ export default class LookupField extends Component {
               />
             )}
           </Modal>
-        }
+        )}
         {this.state.barcodeModalVisible && (
           <Modal
-            isVisible={this.state.barcodeModalVisible}
+            visible={this.state.barcodeModalVisible}
             animationType={"fade"}
             transparent={true}
             onRequestClose={() => this.toggleBarcodeModalVisible()}
