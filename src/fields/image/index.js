@@ -585,7 +585,7 @@ export default class ImageField extends Component {
 
               {this.state.openImageModal && (
                 <Modal
-                  isVisible={this.state.openImageModal}
+                  visible={this.state.openImageModal}
                   animationType={"fade"}
                   transparent={true}
                   onRequestClose={() => this.closeImageModalView()}

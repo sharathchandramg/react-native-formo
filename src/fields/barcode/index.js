@@ -102,6 +102,7 @@ export default class BarcodeField extends Component {
           flashMode={RNCamera.Constants.FlashMode.on}
           onBarCodeRead={this.onBarCodeRead}
           ref={(cam) => (this.camera = cam)}
+          captureAudio={false}
         />
       </View>
     );
@@ -167,7 +168,7 @@ export default class BarcodeField extends Component {
           </View>
           {this.state.openModal && (
             <Modal
-              isVisible={this.state.openModal}
+              visible={this.state.openModal}
               animationType={"fade"}
               transparent={true}
               onRequestClose={() => this.setState({ openModal: false })}
