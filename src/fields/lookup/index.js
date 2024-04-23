@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { TouchableOpacity, Modal } from "react-native";
+import { TouchableOpacity, Modal, Platform } from "react-native";
 import _ from "lodash";
 import { View, Text, ArrowForwardIcon } from "native-base";
 import { RNCamera } from "react-native-camera";
@@ -474,7 +474,12 @@ export default class LookupField extends Component {
       barcodeModalVisible: !this.state.barcodeModalVisible,
       searchModalVisible: false,
       filterModalVisible: false,
-      modalVisible: !this.state.barcodeModalVisible ? false : true,
+      modalVisible:
+        Platform.OS === "ios"
+          ? !this.state.barcodeModalVisible
+            ? false
+            : true
+          : true,
       searchText: "",
       barcodeSearchText: "",
       categoryToValue: [],
