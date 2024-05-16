@@ -17,7 +17,10 @@ export default class RatingField extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      noOfIcons: 5,
+      icon: "star",
+    };
   }
 
   handleChange = (value) => {
@@ -52,29 +55,42 @@ export default class RatingField extends Component {
   };
 
   renderIcon = () => {
+    const { attributes } = this.props;
+    const value = attributes["value"] || 0;
+    const noOfIcons =
+      attributes?.additional_config?.no_of_icons || this.state.noOfIcons;
+    const icon = attributes?.additional_config?.icon || this.state.icon;
     return (
       <View>
         <View
           style={{
-            width: "95%",
+            width: "100%",
             flexDirection: "row",
             paddingStart: 10,
-            // justifyContent: "space-between",
+            justifyContent: "space-between",
             paddingVertical: 10,
+            // borderColor: "#41E1FD",
+            // borderWidth: 2,
+            // borderRadius: 4,
           }}
         >
-          <Icon name="star" size={25} color={"#828282"} />
-          <Icon name="star" size={25} color={"rgb(255, 212, 59)"} solid />
-          <Icon name="thumbs-up" size={25} color={"#828282"} />
-          <Icon name="thumbs-up" size={25} color={"rgb(255, 212, 59)"} solid />
-          <Icon name="flag" size={25} color={"#828282"} />
-          <Icon name="flag" size={25} color={"rgb(255, 212, 59)"} solid />
-          <Icon name="circle" size={25} color={"#828282"} />
-          <Icon name="circle" size={25} color={"rgb(255, 212, 59)"} solid />
-          <Icon name="heart" size={25} color={"#828282"} />
-          <Icon name="heart" size={25} color={"rgb(255, 212, 59)"} solid />
-          <Icon name="smile" size={25} color={"#828282"} />
-          <Icon name="smile" size={25} color={"rgb(255, 212, 59)"} solid />
+          {Array.from(Array(noOfIcons).keys()).map((item) => {
+            return (
+              <View>
+                <Icon
+                  name={icon}
+                  size={25}
+                  color={
+                    value > 0 && item + 1 <= value
+                      ? "rgb(255, 212, 59)"
+                      : "#828282"
+                  }
+                  solid={value > 0 && item + 1 <= value ? true : false}
+                  onPress={() => this.handleChange(item + 1)}
+                />
+              </View>
+            );
+          })}
         </View>
       </View>
     );
@@ -82,7 +98,6 @@ export default class RatingField extends Component {
 
   render() {
     const { theme, attributes, ErrorComponent } = this.props;
-    const value = attributes["value"] || "";
 
     return (
       <View style={{ paddingHorizontal: 15, paddingTop: 5 }}>
@@ -91,10 +106,10 @@ export default class RatingField extends Component {
             ...styles.pickerStyle,
             ...{
               backgroundColor: theme.pickerBgColor,
-              borderBottomColor: attributes["error"]
-                ? theme.errorMsgColor
-                : theme.inputBorderColor,
-              borderBottomWidth: theme.borderWidth,
+              // borderBottomColor: attributes["error"]
+              //   ? theme.errorMsgColor
+              //   : theme.inputBorderColor,
+              // borderBottomWidth: theme.borderWidth,
             },
           }}
         >
