@@ -35,6 +35,7 @@ export function getDefaultValue(field) {
     case "auto-incr-number":
     case "longtext":
     case "barcode":
+    case "rating":
       return field.defaultValue || "";
     case "signature":
       return [];
@@ -175,6 +176,7 @@ export function getResetValue(field) {
     case "longtext":
     case "barcode":
     case "otp":
+    case "rating":
       return null;
 
     case "picker":
@@ -271,6 +273,7 @@ export function autoValidate(field, data = {}) {
       case "document":
       case "password":
       case "barcode":
+      case "rating":
         if (isEmpty(field.value)) {
           error = true;
           errorMsg = `${field.label} is required`;

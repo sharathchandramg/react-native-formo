@@ -30,6 +30,7 @@ import DocumentField from "./fields/document";
 import BarcodeField from "./fields/barcode";
 import CascadingDropdownField from "./fields/cascadingDropdown";
 import OTPField from "./fields/otp";
+import RatingField from "./fields/rating";
 
 import {
   autoValidate,
@@ -877,6 +878,18 @@ export default class Form0 extends Component {
                 {...this.props}
                 state={this.state}
                 getOtpByRefData={this.getOtpByRefData}
+              />
+            );
+
+          case "rating":
+            return (
+              <RatingField
+                ref={(c) => {
+                  this[field.name] = c;
+                }}
+                {...commonProps}
+                onSummitTextInput={this.onSummitTextInput}
+                {...this.props}
               />
             );
 
