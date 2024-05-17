@@ -63,20 +63,22 @@ export default class RatingField extends Component {
     return (
       <View>
         <View
-          style={{
-            width: "100%",
-            flexDirection: "row",
-            paddingStart: 10,
-            justifyContent: "space-between",
-            paddingVertical: 10,
-            // borderColor: "#41E1FD",
-            // borderWidth: 2,
-            // borderRadius: 4,
-          }}
+          style={[
+            {
+              width: "100%",
+              flexDirection: "row",
+              paddingStart: 10,
+              paddingVertical: 10,
+              // borderColor: "#41E1FD",
+              // borderWidth: 2,
+              // borderRadius: 4,
+            },
+            noOfIcons > 5 && { justifyContent: "space-between" },
+          ]}
         >
           {Array.from(Array(noOfIcons).keys()).map((item) => {
             return (
-              <View>
+              <View style={[noOfIcons <= 5 && { paddingRight: 10 }]}>
                 <Icon
                   name={icon}
                   size={25}
