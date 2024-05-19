@@ -17,10 +17,7 @@ export default class RatingField extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      noOfIcons: 5,
-      icon: "star",
-    };
+    this.state = {};
   }
 
   handleChange = (value) => {
@@ -54,12 +51,22 @@ export default class RatingField extends Component {
     );
   };
 
+  getIcon = (attributes) => {
+    const icon = attributes?.additional_config?.icon;
+    switch (icon) {
+      case "smile":
+      case "face-smile":
+        return "smile";
+      default:
+        return icon;
+    }
+  };
+
   renderIcon = () => {
     const { attributes } = this.props;
     const value = attributes["value"] || 0;
-    const noOfIcons =
-      attributes?.additional_config?.no_of_icons || this.state.noOfIcons;
-    const icon = attributes?.additional_config?.icon || this.state.icon;
+    const noOfIcons = attributes?.additional_config?.no_of_icons;
+    const icon = this.getIcon(attributes);
     return (
       <View>
         <View
