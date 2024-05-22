@@ -75,10 +75,7 @@ export default class RatingField extends Component {
               width: "100%",
               flexDirection: "row",
               paddingStart: 10,
-              paddingVertical: 10,
-              // borderColor: "#41E1FD",
-              // borderWidth: 2,
-              // borderRadius: 4,
+              paddingVertical: 10
             },
             noOfIcons > 5 && { justifyContent: "space-between" },
           ]}
@@ -114,11 +111,7 @@ export default class RatingField extends Component {
           style={{
             ...styles.pickerStyle,
             ...{
-              backgroundColor: theme.pickerBgColor,
-              // borderBottomColor: attributes["error"]
-              //   ? theme.errorMsgColor
-              //   : theme.inputBorderColor,
-              // borderBottomWidth: theme.borderWidth,
+              backgroundColor: theme.pickerBgColor
             },
           }}
         >
