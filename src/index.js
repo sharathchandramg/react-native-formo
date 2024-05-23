@@ -888,7 +888,6 @@ export default class Form0 extends Component {
                   this[field.name] = c;
                 }}
                 {...commonProps}
-                onSummitTextInput={this.onSummitTextInput}
                 {...this.props}
               />
             );
