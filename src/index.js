@@ -338,13 +338,14 @@ export default class Form0 extends Component {
           try {
             const value = evaluate(calculationExpression, data);
             const updatevalue = value ? Number(Number(value).toFixed(2)) : null;
-            if (!isEmpty(updatevalue) && !isNaN(updatevalue)) {
-              const updatedField = {};
-              const obj = this.state[ele.name];
-              obj.value = updatevalue;
-              updatedField[obj.name] = obj;
-              this.setState({ ...updatedField });
-            }
+            // if (!isEmpty(updatevalue) && !isNaN(updatevalue)) {
+            const updatedField = {};
+            const obj = this.state[ele.name];
+            obj.value =
+              !isEmpty(updatevalue) && !isNaN(updatevalue) ? updatevalue : null;
+            updatedField[obj.name] = obj;
+            this.setState({ ...updatedField });
+            // }
           } catch (err) {}
         }
       });
