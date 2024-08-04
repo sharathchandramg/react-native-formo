@@ -336,8 +336,12 @@ export default class Form0 extends Component {
           const data = this.getFormatedValues();
           const calculationExpression = jsonStringTemplater(query, data);
           try {
-            const value = evaluate(calculationExpression, data);
-            const updatevalue = value ? Number(Number(value).toFixed(2)) : null;
+            const evalValue = evaluate(calculationExpression, data);
+            const updatevalue = evalValue
+              ? Number(Number(evalValue).toFixed(2))
+              : evalValue === 0
+              ? 0
+              : null;
             // if (!isEmpty(updatevalue) && !isNaN(updatevalue)) {
             const updatedField = {};
             const obj = this.state[ele.name];
