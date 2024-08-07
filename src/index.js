@@ -572,14 +572,23 @@ export default class Form0 extends Component {
         }
       });
 
-      /**
-       * Calculated number fields need to be calculated based on expr
-       * This is if calculated field is in the form,
-       * it will not update value until any dependent field changes
-       * but this value is calculating in backend after submit, so user is not able to see preview value after submit form,
-       * because of this we are calculating this value
-       */
-      const values = this.getFormatedValues();
+      const values = {};
+      const namesInNewFields = new Set(Object.keys(newFields));
+      const stateFields = Object.keys(this.state)
+        .filter((key) => !namesInNewFields.has(key))
+        .reduce((acc, key) => {
+          acc[key] = this.state[key];
+          return acc;
+        }, {});
+
+      const updatedFields = { ...newFields, ...stateFields };
+
+      Object.keys(updatedFields).forEach((fieldName) => {
+        const field = updatedFields[fieldName];
+        if (field) {
+          values[field.name] = this.getFieldReturnValue(field);
+        }
+      });
 
       const calcFields =
         this.state.calcFields && this.state.calcFields.length > 0
@@ -605,14 +614,11 @@ export default class Form0 extends Component {
               : evaluateValue === 0
               ? 0
               : null;
-
             newFields[stateObj.name] = this.getFieldValue(
               stateObj,
               !isNaN(updatevalue) ? updatevalue : null
             );
-          } catch (err) {
-            console.log(err);
-          }
+          } catch (err) {}
         }
       });
 
