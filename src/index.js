@@ -337,7 +337,7 @@ export default class Form0 extends Component {
           const calculationExpression = jsonStringTemplater(query, data);
           try {
             const evalValue = evaluate(calculationExpression, data);
-            const updatevalue = evalValue
+            const updatevalue = !isNaN(evalValue)
               ? Number(Number(evalValue).toFixed(2))
               : evalValue === 0
               ? 0
@@ -345,8 +345,7 @@ export default class Form0 extends Component {
             // if (!isEmpty(updatevalue) && !isNaN(updatevalue)) {
             const updatedField = {};
             const obj = this.state[ele.name];
-            obj.value =
-              !isEmpty(updatevalue) && !isNaN(updatevalue) ? updatevalue : null;
+            obj.value = !isNaN(updatevalue) ? updatevalue : null;
             updatedField[obj.name] = obj;
             this.setState({ ...updatedField });
             // }
@@ -572,6 +571,51 @@ export default class Form0 extends Component {
           newFields[field.name] = this.getFieldValue(field, args[0][fieldName]);
         }
       });
+
+      /**
+       * Calculated number fields need to be calculated based on expr
+       * This is if calculated field is in the form,
+       * it will not update value until any dependent field changes
+       * but this value is calculating in backend after submit, so user is not able to see preview value after submit form,
+       * because of this we are calculating this value
+       */
+      const values = this.getFormatedValues();
+
+      const calcFields =
+        this.state.calcFields && this.state.calcFields.length > 0
+          ? this.state.calcFields
+          : [];
+
+      calcFields.forEach((field) => {
+        const stateObj = this.state[field.name];
+        if (
+          stateObj &&
+          stateObj.additional_config &&
+          stateObj.additional_config.calc &&
+          stateObj.additional_config.calc.expr
+        ) {
+          const calcExpr = jsonStringTemplater(
+            stateObj.additional_config.calc.expr,
+            values
+          );
+          try {
+            const evaluateValue = evaluate(calcExpr, values);
+            const updatevalue = !isNaN(evaluateValue)
+              ? Number(Number(evaluateValue).toFixed(2))
+              : evaluateValue === 0
+              ? 0
+              : null;
+
+            newFields[stateObj.name] = this.getFieldValue(
+              stateObj,
+              !isNaN(updatevalue) ? updatevalue : null
+            );
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      });
+
       this.setState({ ...newFields });
     }
   }
