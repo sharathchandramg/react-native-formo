@@ -554,9 +554,10 @@ export default class Form0 extends Component {
   }
 
   setValues(...args) {
-    if (args && args.length && args[0]) {
+    const data = args && args.length && args[0] ? args[0] : {};
+    if (data) {
       const newFields = {};
-      Object.keys(args[0]).forEach((fieldName) => {
+      Object.keys(data).forEach((fieldName) => {
         /**
          * In update form, if any field value changes
          * image is greyed out, to avoid we are using deep clone object
@@ -568,7 +569,7 @@ export default class Form0 extends Component {
             ? _.cloneDeep(this.state[fieldName])
             : this.state[fieldName];
         if (field) {
-          newFields[field.name] = this.getFieldValue(field, args[0][fieldName]);
+          newFields[field.name] = this.getFieldValue(field, data[fieldName]);
         }
       });
 
