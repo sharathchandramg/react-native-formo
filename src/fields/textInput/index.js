@@ -154,6 +154,7 @@ export default class TextInputField extends Component {
             ? theme.errorMsgColor
             : theme.inputBorderColor,
           borderBottomWidth: theme.borderWidth,
+          color: !attributes.editable ? theme.inputColorPlaceholder : "inherit",
           fontSize: 18,
           ...Platform.select({
             ios: {

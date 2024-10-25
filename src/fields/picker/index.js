@@ -71,7 +71,11 @@ export default class PickerField extends Component {
           </Text>
         </View>
         <View>
-          <TouchableOpacity onPress={() => this.setState({ openModal: true })}>
+          <TouchableOpacity
+            onPress={() => {
+              if (attributes.editable) this.setState({ openModal: true });
+            }}
+          >
             <View
               style={{
                 width: "95%",
@@ -85,7 +89,9 @@ export default class PickerField extends Component {
                 <Text
                   style={{
                     fontSize: 18,
-                    color: theme.pickerColorSelected,
+                    color: !attributes.editable
+                      ? theme.inputColorPlaceholder
+                      : theme.pickerColorSelected,
                   }}
                   numberOfLines={1}
                 >
@@ -97,7 +103,11 @@ export default class PickerField extends Component {
                   name="caret-down"
                   size={18}
                   type={"regular"}
-                  color={"#828282"}
+                  color={
+                    !attributes.editable
+                      ? theme.inputColorPlaceholder
+                      : "#828282"
+                  }
                 />
               </View>
             </View>
