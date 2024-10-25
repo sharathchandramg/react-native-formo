@@ -86,7 +86,6 @@ export default class DateField extends Component {
           flexDirection: "row",
           alignItems: "center",
           paddingStart: 5,
-          backgroundColor: !attributes.editable ? "#efefef4d" : "inherit",
         }}
       >
         {attributes["required"] && (
@@ -117,7 +116,16 @@ export default class DateField extends Component {
             if (attributes.editable) this.setModalVisible(true);
           }}
         >
-          <Text style={{ paddingEnd: 10 }}>{dateValue}</Text>
+          <Text
+            style={{
+              paddingEnd: 10,
+              color: !attributes.editable
+                ? theme.inputColorPlaceholder
+                : "inherit",
+            }}
+          >
+            {dateValue}
+          </Text>
           <ArrowForwardIcon size={"6"} color={theme.inputColorPlaceholder} />
         </TouchableOpacity>
       </View>
