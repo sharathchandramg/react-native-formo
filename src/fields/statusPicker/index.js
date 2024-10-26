@@ -38,7 +38,9 @@ export default class StatusPickerField extends Component {
       attributes && !isEmpty(attributes.options) ? attributes.options : [];
     let valueStyle = {
       fontSize: 18,
-      color: theme.pickerColorSelected,
+      color: !attributes.editable
+        ? theme.inputColorPlaceholder
+        : theme.pickerColorSelected,
     };
     if (attributes.show_first_option) {
       valueStyle = { ...valueStyle, backgroundColor: "yellow" };
@@ -78,7 +80,11 @@ export default class StatusPickerField extends Component {
           </Text>
         </View>
         <View>
-          <TouchableOpacity onPress={() => this.setState({ openModal: true })}>
+          <TouchableOpacity
+            onPress={() => {
+              if (attributes.editable) this.setState({ openModal: true });
+            }}
+          >
             <View
               style={{
                 width: "95%",
@@ -98,7 +104,11 @@ export default class StatusPickerField extends Component {
                   name="caret-down"
                   size={18}
                   type={"regular"}
-                  color={"#828282"}
+                  color={
+                    !attributes.editable
+                      ? theme.inputColorPlaceholder
+                      : "#828282"
+                  }
                 />
               </View>
             </View>

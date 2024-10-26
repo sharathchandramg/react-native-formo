@@ -468,30 +468,55 @@ export function customValidateData(field, from = "") {
   switch (field.type) {
     case "number":
       const additionalConfig = field["additional_config"];
-      if (isEmpty(field.value) && field.required) {
+      const numValue = field.value;
+      if (isEmpty(numValue) && field.required) {
         error = true;
         errorMsg = `${field.label} is required`;
-      } else if (!isEmpty(field.value) && !isNumeric(field.value)) {
+      } else if (
+        !isEmpty(numValue) &&
+        (!isNumeric(numValue) || /[eE]/.test(numValue))
+      ) {
         error = true;
         errorMsg = `${field.label} should be a number`;
+        if (/[eE]/.test(numValue)) {
+          errorMsg = "Number is required";
+        }
       } else if (
-        !isEmpty(field.value) &&
-        isNumeric(field.value) &&
-        additionalConfig &&
-        !isEmpty(additionalConfig["max"]) &&
-        field.value > additionalConfig["max"]
+        !isEmpty(numValue) &&
+        isNumeric(numValue) &&
+        additionalConfig
       ) {
-        error = true;
-        errorMsg = `Max allowed value is ${additionalConfig["max"]}`;
-      } else if (
-        !isEmpty(field.value) &&
-        isNumeric(field.value) &&
-        additionalConfig &&
-        !isEmpty(additionalConfig["min"]) &&
-        field.value < additionalConfig["min"]
-      ) {
-        error = true;
-        errorMsg = `Min allowed value is ${additionalConfig["min"]}`;
+        const { min, max, allow_decimal, allow_negative } = additionalConfig;
+        if (!isEmpty(max) && numValue > max) {
+          error = true;
+          errorMsg = `Max allowed value is ${max}`;
+        } else if (!isEmpty(min) && numValue < min) {
+          error = true;
+          errorMsg = `Min allowed value is ${min}`;
+        } else {
+          const allowDecimal = allow_decimal ?? false;
+          const allowNegative = allow_negative ?? false;
+
+          const regex = allowDecimal
+            ? allowNegative
+              ? /^-?\d*\.?\d*$/
+              : /^\d*\.?\d*$/
+            : allowNegative
+            ? /^-?\d*$/
+            : /^\d*$/;
+
+          if (!regex.test(numValue)) {
+            error = true;
+            errorMsg =
+              allowDecimal && allowNegative
+                ? "Number is required"
+                : allowDecimal
+                ? "Negative value are not allowed"
+                : allowNegative
+                ? "Decimal value are not allowed"
+                : "Decimal and negative values are not allowed";
+          }
+        }
       }
       break;
     case "otp":
