@@ -121,7 +121,7 @@ export default class DateField extends Component {
               paddingEnd: 10,
               color: !attributes.editable
                 ? theme.inputColorPlaceholder
-                : "inherit",
+                : theme.pickerColorSelected,
             }}
           >
             {dateValue}
