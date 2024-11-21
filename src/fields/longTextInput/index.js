@@ -1,6 +1,12 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Platform, Animated, Pressable, Text } from "react-native";
+import {
+  Platform,
+  Animated,
+  Pressable,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { View, Input } from "native-base";
 import { getKeyboardType } from "./../../utils/helper";
 import { isEmpty } from "./../../utils/validators";
@@ -129,7 +135,7 @@ export default class TextInputField extends Component {
         outputRange: [25, -15],
       }),
       color: theme.inputColorPlaceholder,
-      width: '100%'
+      width: "100%",
     };
   };
 
@@ -161,24 +167,42 @@ export default class TextInputField extends Component {
                   lineHeight: 18,
                 }}
               >
-                {attributes.label}
+                {!isEmpty(attributes["value"])
+                  ? `${attributes.label}(view more)`
+                  : `${attributes.label}`}
               </Text>
             </Pressable>
-            <Animated.Text
-              style={this.getLabelStyles()}
-              numberOfLines={
-                this.state.isFocused || !isEmpty(attributes["value"])
-                  ? undefined
-                  : 1
+
+            <TouchableOpacity
+              onPress={() =>
+                this.props.openLongTxtModal(
+                  !isEmpty(attributes["value"])
+                    ? attributes["value"].toString()
+                    : ""
+                )
               }
             >
-              {attributes["required"] && (
-                <>
-                  <StarIcon required={attributes["required"]} />{" "}
-                </>
-              )}
-              {attributes.label}
-            </Animated.Text>
+              <Animated.Text
+                style={this.getLabelStyles()}
+                numberOfLines={
+                  this.state.isFocused || !isEmpty(attributes["value"])
+                    ? undefined
+                    : 1
+                }
+              >
+                {attributes["required"] && (
+                  <>
+                    <StarIcon required={attributes["required"]} />{" "}
+                  </>
+                )}
+                {attributes.label}
+                {!isEmpty(attributes["value"]) && (
+                  <Text style={{ color: "#48BBEC", fontSize: 14 }}>
+                    (view more)
+                  </Text>
+                )}
+              </Animated.Text>
+            </TouchableOpacity>
             {this.renderInputField(attributes, theme)}
             {theme.textInputErrorIcon && attributes.error ? (
               <View style={{ position: "absolute", right: 0, bottom: 10 }}>
