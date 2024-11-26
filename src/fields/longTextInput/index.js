@@ -174,13 +174,13 @@ export default class TextInputField extends Component {
             </Pressable>
 
             <TouchableOpacity
-              onPress={() =>
-                this.props.openLongTxtModal(
-                  !isEmpty(attributes["value"])
-                    ? attributes["value"].toString()
-                    : ""
-                )
-              }
+              onPress={() => {
+                if (!isEmpty(attributes["value"])) {
+                  this.props.openLongTxtModal(
+                    attributes["value"].toString() || ""
+                  );
+                }
+              }}
             >
               <Animated.Text
                 style={this.getLabelStyles()}
