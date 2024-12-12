@@ -43,10 +43,13 @@ const styles = StyleSheet.create({
     borderTopEndRadius: 4,
     borderColor: "#D9D5DC",
   },
+  listWrapperNoData: {
+    borderBottomStartRadius: 4,
+    borderBottomEndRadius: 4,
+  },
   itemWrapper: {
     padding: 10,
-    borderColor: "#D9D5DC",
-    borderBottomWidth: 0.5,
+    borderColor: "#D9D5DC"
   },
   itemLabel: { color: "#ADADAD", fontSize: 16 },
 });
