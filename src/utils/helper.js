@@ -793,3 +793,11 @@ export function getCalculatedFields(fields) {
   });
   return calcFields;
 }
+
+export const isFieldCalculated = (field) => {
+  return !isEmpty(field["additional_config"]) &&
+    !isEmpty(field["additional_config"]["calc"]) &&
+    !isEmpty(field["additional_config"]["calc"]["expr"])
+    ? true
+    : false;
+};
