@@ -40,7 +40,13 @@ export default class SearchableDropDown extends Component {
           Keyboard.dismiss();
           this.props.onItemSelect(item.label);
         }}
-        style={styles.itemWrapper}
+        style={[
+          styles.itemWrapper,
+          {
+            borderBottomWidth:
+              index === this.state.listItems.length - 1 ? 0 : 0.5,
+          },
+        ]}
       >
         <Text style={styles.itemLabel}>{item.label}</Text>
       </TouchableOpacity>
@@ -50,21 +56,28 @@ export default class SearchableDropDown extends Component {
   renderList = () => {
     return (
       <View
-        style={
+        style={[
+          styles.listWrapper,
           this.state.listItems && this.state.listItems.length > 0
-            ? styles.listWrapper
-            : {}
-        }
+            ? {}
+            : styles.listWrapperNoData,
+        ]}
       >
-        <FlatList
-          nestedScrollEnabled={true}
-          keyboardShouldPersistTaps={"always"}
-          data={this.state.listItems}
-          keyExtractor={(item, index) => index.toString()}
-          extraData={this.props}
-          renderItem={this.renderItems}
-          style={{ maxHeight: 140 }}
-        />
+        {this.state.listItems && this.state.listItems.length > 0 ? (
+          <FlatList
+            nestedScrollEnabled={true}
+            keyboardShouldPersistTaps={"always"}
+            data={this.state.listItems}
+            keyExtractor={(item, index) => index.toString()}
+            extraData={this.props}
+            renderItem={this.renderItems}
+            style={{ maxHeight: 140 }}
+          />
+        ) : (
+          <View style={styles.itemWrapper}>
+            <Text style={styles.itemLabel}>No Data Found</Text>
+          </View>
+        )}
       </View>
     );
   };

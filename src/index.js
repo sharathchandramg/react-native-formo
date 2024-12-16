@@ -40,6 +40,7 @@ import {
   customValidateData,
   customFieldCalculations,
   getCalculatedFields,
+  isFieldCalculated,
 } from "./utils/helper";
 import { isEmpty } from "./utils/validators";
 
@@ -182,7 +183,7 @@ export default class Form0 extends Component {
           field.error = validate.error;
           field.errorMsg = validate.errorMsg;
         }
-        if (field.type === "number" || field.type === "otp") {
+        if ((field.type === "number" && !isFieldCalculated(field)) || field.type === "otp") {
           let validate = customValidateData(field);
           field.error = validate.error;
           field.errorMsg = validate.errorMsg;
