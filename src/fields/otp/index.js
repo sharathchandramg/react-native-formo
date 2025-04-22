@@ -35,7 +35,7 @@ export default class OTPField extends Component {
     btnCounter: 60,
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this._animatedIsFocused = new Animated.Value(
       this.props.isCreateForm ? 0 : 1
     );

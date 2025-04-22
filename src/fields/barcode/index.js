@@ -26,7 +26,7 @@ export default class BarcodeField extends Component {
     };
   }
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this._animatedIsFocused = new Animated.Value(
       isEmpty(this.getInputValue()) ? 0 : 1
     );
