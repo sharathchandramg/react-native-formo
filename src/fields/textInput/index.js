@@ -24,7 +24,7 @@ export default class TextInputField extends Component {
     lineSpace: Platform.OS !== "ios" ? 12 : 15,
   };
 
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     this._animatedIsFocused = new Animated.Value(
       this.props.isCreateForm ? 0 : 1
     );
