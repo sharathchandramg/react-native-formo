@@ -238,17 +238,21 @@ export default class ImageField extends Component {
     _openCamera = () => {
         const config = this.getImageConfiguration();
         ImagePicker.openCamera(config)
-            .then(images => {
-                if (config['multiple'] && images.length > config['maxFiles']) {
-                    this.renderAlert(images, config['maxFiles']);
+        .then(images => {
+            if (config.multiple) {
+                if (Array.isArray(images) && images.length > config.maxFiles) {
+                    this.renderAlert(images, config.maxFiles);
                 } else {
-                    this._getImageFromStorage(images,true);
+                    this._getImageFromStorage(images, true);
                 }
-            })
-            .catch(e => {
-                if (Platform.OS !== 'ios') this.bottomSheet.close();
-                console.log(e);
-            });
+            } else {
+                this._getImageFromStorage(images, true);
+            }
+        })
+        .catch(e => {
+            if (Platform.OS !== 'ios') this.bottomSheet.close();
+            console.log('Image picker error:', e);
+        });
     };
 
     _openPicker = () => {
