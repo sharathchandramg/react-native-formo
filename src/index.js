@@ -623,6 +623,22 @@ export default class Form0 extends Component {
         }
       });
 
+      Object.keys(updatedFields).forEach((fieldName) => {
+        const field = updatedFields[fieldName];
+        if (field && field['expr_field'] && field['expr_field'].length > 0) {
+          const res = customFieldCalculations(
+            field,
+            field.value,
+            updatedFields
+          );
+          if (res && res.length > 0) {
+            res.forEach((item) => {
+              newFields[item.name] = item;
+            });
+          }
+        }
+      });
+
       this.setState({ ...newFields });
     }
   }

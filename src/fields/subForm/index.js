@@ -4,7 +4,7 @@ import {Modal,TouchableOpacity } from "react-native";
 import {
     View,
     Text,
-    Icon,
+    ArrowForwardIcon,
     ArrowBackIcon
 } from "native-base";
 import shortid from 'shortid';
@@ -52,33 +52,9 @@ export default class SubForm extends Component {
         return (
             <TouchableOpacity style={styles.valueContainer}
                 onPress={()=>this.setState({subFormData:{},mode:'create'},()=>this.toggleModalVisible())}>
-                <Icon name="add" color ={'#828282'} style={styles.iconStyle}/>
+                <ArrowForwardIcon size={"6"} color={'#41E1FD'}/>
             </TouchableOpacity>
         );
-    }
-
-    constructDisplayField = (item)=>{
-        let filtered = Object.keys(item)
-            .filter(key => key !=='_id')
-            .reduce((acc, key) => {
-                acc.push(item[key]);
-                return acc;
-            },[]);
-        
-            let arr = [];
-            filtered.forEach(function(item) {
-                if(typeof item ==='object'){
-                    let fArr = Object.values(item).filter(value => value)
-                    arr.push(fArr);
-                }
-                if(typeof item ==='string'){
-                    arr.push(item)
-                }
-            });
-        if(arr.length >0)  
-            return arr.toString()
-        else 
-            return         
     }
 
     renderAddedSubForm =(attributes)=>{
