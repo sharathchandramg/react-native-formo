@@ -1,13 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Modal, ScrollView, TouchableOpacity } from "react-native";
-import {
-  View,
-  Text,
-  Checkbox,
-  ArrowForwardIcon,
-  ArrowBackIcon,
-} from "native-base";
+import { View, Checkbox, ArrowForwardIcon, ArrowBackIcon } from "native-base";
 
 import StarIcon from "../../components/starIcon";
 import { isEmpty } from "../../utils/validators";
@@ -227,7 +221,7 @@ export default class SelectField extends Component {
   };
 
   renderComponent = () => {
-    const { theme, attributes } = this.props;
+    const { theme, attributes, AppNBText } = this.props;
     return (
       <View style={styles.modalContent}>
         <View style={styles.headerWrapper}>
@@ -239,9 +233,9 @@ export default class SelectField extends Component {
               <ArrowBackIcon size={"6"} color={"rgb(0,151,235)"} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.headerCenter}>
-              <Text style={theme.headerText}>
+              <AppNBText size={18} style={theme.headerText}>
                 {attributes.label || "Select"}
-              </Text>
+              </AppNBText>
             </TouchableOpacity>
           </View>
           <LinearGradientHeader />
@@ -285,9 +279,9 @@ export default class SelectField extends Component {
                     />
                   )}
                   <View>
-                    <Text style={{ paddingHorizontal: 5 }}>
+                    <AppNBText size={16} style={{ paddingHorizontal: 5 }}>
                       {attributes.objectType ? item[attributes.labelKey] : item}
-                    </Text>
+                    </AppNBText>
                   </View>
                 </TouchableOpacity>
               );
@@ -300,7 +294,9 @@ export default class SelectField extends Component {
               style={styles.button}
               onPress={() => this.handleAddPressed()}
             >
-              <Text style={styles.buttonText}>{"Add"} </Text>
+              <AppNBText size={18} style={styles.buttonText}>
+                {"Add"}{" "}
+              </AppNBText>
             </TouchableOpacity>
           </View>
         ) : null}
@@ -309,7 +305,7 @@ export default class SelectField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent } = this.props;
+    const { theme, attributes, ErrorComponent, AppNBText } = this.props;
     return (
       <View style={styles.container}>
         <View style={[styles.inputLabelWrapper, { width: "95%" }]}>
@@ -323,7 +319,9 @@ export default class SelectField extends Component {
                 <StarIcon required={attributes["required"]} />
               )}
 
-              <Text style={[styles.labelText]}>{attributes.label}</Text>
+              <AppNBText size={16} style={[styles.labelText]}>
+                {attributes.label}
+              </AppNBText>
             </View>
             <View
               style={[
@@ -332,9 +330,9 @@ export default class SelectField extends Component {
               ]}
             >
               <View style={{ width: "93%" }}>
-                <Text style={styles.inputText} numberOfLines={1}>
+                <AppNBText size={18} style={styles.inputText} numberOfLines={1}>
                   {this.getLabel()}
-                </Text>
+                </AppNBText>
               </View>
               {this.renderIcon()}
             </View>

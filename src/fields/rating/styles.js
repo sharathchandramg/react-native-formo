@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   labelText: {
     paddingStart: 5,
-    fontSize: 16,
+    // fontSize: 16,
   },
 });
 

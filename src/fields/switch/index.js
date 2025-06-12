@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { View, Text, Switch, Icon} from "native-base";
+import { View, Switch, Icon} from "native-base";
+
 import StarIcon from "../../components/starIcon"
 
 export default class SwitchField extends Component {
@@ -18,7 +19,7 @@ export default class SwitchField extends Component {
     }
 
     render() {
-        const { attributes, theme, ErrorComponent } = this.props;
+        const { attributes, theme, ErrorComponent, AppNBText } = this.props;
             return (
               <View>
                 <View
@@ -45,14 +46,15 @@ export default class SwitchField extends Component {
                         <StarIcon required={attributes["required"]} />
                       )}
                       <View style={{ flex: 1 }}>
-                        <Text
+                        <AppNBText
+                        size={16}
                           style={{
-                            fontSize: 16,
+                            // fontSize: 16,
                             color: theme.inputColorPlaceholder
                           }}
                         >
                           {attributes.label}
-                        </Text>
+                        </AppNBText>
                       </View>
                       <Switch
                         onTrackColor={"blue"}

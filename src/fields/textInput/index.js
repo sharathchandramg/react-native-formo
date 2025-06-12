@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { Platform, Animated, Pressable, Text } from "react-native";
+import { Platform, Animated, Pressable } from "react-native";
 import math from "mathjs";
-import { View, Input } from "native-base";
+import { View } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
 import { getKeyboardType } from "./../../utils/helper";
@@ -74,10 +74,12 @@ export default class TextInputField extends Component {
   };
 
   renderCalculatedField = (attributes, theme) => {
+    const { AppNBInput } = this.props;
     const inputProps = attributes.props;
     const keyboardType = getKeyboardType(attributes.type);
     return (
-      <Input
+      <AppNBInput
+        size={18}
         style={{
           height: 60,
           marginTop:
@@ -92,7 +94,7 @@ export default class TextInputField extends Component {
             ? theme.errorMsgColor
             : theme.inputBorderColor,
           borderBottomWidth: theme.borderWidth,
-          fontSize: 18,
+          // fontSize: 18,
           ...Platform.select({
             ios: {
               lineHeight: 30,
@@ -117,6 +119,7 @@ export default class TextInputField extends Component {
   };
 
   renderInputField = (attributes, theme) => {
+    const { AppNBInput } = this.props;
     const inputProps = attributes.props;
     let keyboardType = getKeyboardType(attributes.type);
 
@@ -139,7 +142,8 @@ export default class TextInputField extends Component {
     }
 
     return (
-      <Input
+      <AppNBInput
+        size={18}
         style={{
           height: 60,
           marginTop:
@@ -155,7 +159,7 @@ export default class TextInputField extends Component {
             : theme.inputBorderColor,
           borderBottomWidth: theme.borderWidth,
           color: !attributes.editable ? theme.inputColorPlaceholder : "inherit",
-          fontSize: 18,
+          // fontSize: 18,
           ...Platform.select({
             ios: {
               lineHeight: 30,
@@ -205,7 +209,7 @@ export default class TextInputField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent } = this.props;
+    const { theme, attributes, ErrorComponent, AppRNText } = this.props;
     return (
       <View>
         <View
@@ -217,19 +221,20 @@ export default class TextInputField extends Component {
         >
           <View style={{ flex: 1, position: "relative" }}>
             <Pressable onPress={() => {}}>
-              <Text
+              <AppRNText
+                size={16}
                 onTextLayout={this.onTextLayout}
                 style={{
                   opacity: 0,
                   position: "absolute",
-                  fontSize: 16,
+                  // fontSize: 16,
                   paddingStart: 5,
                   color: theme.inputColorPlaceholder,
                   lineHeight: 18,
                 }}
               >
                 {attributes.label}
-              </Text>
+              </AppRNText>
             </Pressable>
             <Animated.Text
               style={this.getLabelStyles()}

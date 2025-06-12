@@ -1,17 +1,12 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import {
-  Platform,
-  Animated,
-  Pressable,
-  Text,
-  TouchableOpacity,
-} from "react-native";
-import { View, Input } from "native-base";
+import { Platform, Animated, Pressable, TouchableOpacity } from "react-native";
+import { View } from "native-base";
+import Icon from "react-native-vector-icons/FontAwesome5";
+
 import { getKeyboardType } from "./../../utils/helper";
 import { isEmpty } from "./../../utils/validators";
 import StarIcon from "../../components/starIcon";
-import Icon from "react-native-vector-icons/FontAwesome5";
 
 export default class TextInputField extends Component {
   static propTypes = {
@@ -56,6 +51,7 @@ export default class TextInputField extends Component {
   };
 
   renderInputField = (attributes, theme) => {
+    const { AppNBInput } = this.props;
     const inputProps = attributes.props;
     const additionalConfig = attributes["additional_config"];
     let keyboardType = getKeyboardType(attributes.type);
@@ -73,13 +69,14 @@ export default class TextInputField extends Component {
     }
 
     return (
-      <Input
+      <AppNBInput
+        size={18}
         style={{
           borderTopWidth: 0,
           borderRightWidth: 0,
           borderLeftWidth: 0,
           borderBottomColor: theme.inputColorPlaceholder,
-          fontSize: 18,
+          // fontSize: 18,
           ...Platform.select({
             ios: {
               minHeight: 50,
@@ -144,7 +141,7 @@ export default class TextInputField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent } = this.props;
+    const { theme, attributes, ErrorComponent, AppRNText } = this.props;
     return (
       <View>
         <View
@@ -156,12 +153,13 @@ export default class TextInputField extends Component {
         >
           <View style={{ flex: 1, position: "relative" }}>
             <Pressable onPress={() => {}} style={{ paddingTop: 5 }}>
-              <Text
+              <AppRNText
+                size={16}
                 onTextLayout={this.onTextLayout}
                 style={{
                   opacity: 0,
                   position: "absolute",
-                  fontSize: 16,
+                  // fontSize: 16,
                   paddingStart: 5,
                   color: theme.inputColorPlaceholder,
                   lineHeight: 18,
@@ -170,7 +168,7 @@ export default class TextInputField extends Component {
                 {!isEmpty(attributes["value"])
                   ? `${attributes.label}(view more)`
                   : `${attributes.label}`}
-              </Text>
+              </AppRNText>
             </Pressable>
 
             <TouchableOpacity
@@ -197,9 +195,15 @@ export default class TextInputField extends Component {
                 )}
                 {attributes.label}
                 {!isEmpty(attributes["value"]) && (
-                  <Text style={{ color: "#48BBEC", fontSize: 14 }}>
+                  <AppRNText
+                    size={14}
+                    style={{
+                      color: "#48BBEC",
+                      //  fontSize: 14
+                    }}
+                  >
                     (view more)
-                  </Text>
+                  </AppRNText>
                 )}
               </Animated.Text>
             </TouchableOpacity>

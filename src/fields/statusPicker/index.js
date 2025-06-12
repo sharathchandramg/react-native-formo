@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { TouchableOpacity } from "react-native";
-import { View, Text } from "native-base";
-import PickerModal from "./../../components/picker/modal";
+import { View } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { isEmpty } from "../../utils/validators";
 
+import PickerModal from "./../../components/picker/modal";
+import { isEmpty } from "../../utils/validators";
 import styles from "./../../styles";
 import StarIcon from "../../components/starIcon";
 
@@ -33,11 +33,11 @@ export default class StatusPickerField extends Component {
   };
 
   renderPicker = (pickerValue) => {
-    const { theme, attributes } = this.props;
+    const { theme, attributes, AppNBText } = this.props;
     const options =
       attributes && !isEmpty(attributes.options) ? attributes.options : [];
     let valueStyle = {
-      fontSize: 18,
+      // fontSize: 18,
       color: !attributes.editable
         ? theme.inputColorPlaceholder
         : theme.pickerColorSelected,
@@ -69,15 +69,16 @@ export default class StatusPickerField extends Component {
           {attributes["required"] && (
             <StarIcon required={attributes["required"]} />
           )}
-          <Text
+          <AppNBText
+            size={16}
             style={{
               color: theme.inputColorPlaceholder,
               paddingStart: 5,
-              fontSize: 16,
+              // fontSize: 16,
             }}
           >
             {attributes.label}
-          </Text>
+          </AppNBText>
         </View>
         <View>
           <TouchableOpacity
@@ -95,9 +96,9 @@ export default class StatusPickerField extends Component {
               }}
             >
               <View>
-                <Text style={valueStyle} numberOfLines={1}>
+                <AppNBText size={18} style={valueStyle} numberOfLines={1}>
                   {pickerValue}
-                </Text>
+                </AppNBText>
               </View>
               <View>
                 <Icon

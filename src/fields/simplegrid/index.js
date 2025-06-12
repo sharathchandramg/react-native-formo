@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { TouchableOpacity, Modal } from "react-native";
-import { View, Text, ArrowForwardIcon } from "native-base";
+import { View, ArrowForwardIcon } from "native-base";
 import _ from "lodash";
+
 import styles from "./styles";
 import { EditComponent, GridComponent } from "../../components/grid";
 import { isEmpty } from "../../utils/validators";
@@ -395,7 +396,7 @@ export default class SimpleGrideView extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent } = this.props;
+    const { theme, attributes, ErrorComponent, AppNBText } = this.props;
     return (
       <View style={styles.container}>
         <View style={[styles.inputLabelWrapper, { width: "95%" }]}>
@@ -409,7 +410,7 @@ export default class SimpleGrideView extends Component {
                 <StarIcon required={attributes["required"]} />
               )}
 
-              <Text style={styles.labelText}>{attributes.label}</Text>
+              <AppNBText size={16} style={styles.labelText}>{attributes.label}</AppNBText>
             </View>
             <View
               style={[
@@ -418,9 +419,9 @@ export default class SimpleGrideView extends Component {
               ]}
             >
               <View style={{ width: "93%" }}>
-                <Text style={styles.inputText} numberOfLines={1}>
+                <AppNBText size={18} style={styles.inputText} numberOfLines={1}>
                   {this.getLabel(attributes.value)}
-                </Text>
+                </AppNBText>
               </View>
               {this.renderChecklistIcon()}
             </View>

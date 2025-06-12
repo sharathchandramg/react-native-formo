@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     },
 
     subformText:{
-        fontSize: 14,
+        // fontSize: 14,
         lineHeight:16,
         height:16,
         width:'95%',
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     },
 
     labelText:{
-        fontSize: 16,
+        // fontSize: 16,
         lineHeight:20,
         height:20,
         width:'50%',
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     rightLabel:{flexDirection:'column',width:'100%',minHeight:50,alignItems:'center',justifyContent:'center'},
     subForm:{flexDirection:'column',width:'75%',alignItems:'center',justifyContent:'center'},
     buttonText: {
-        fontSize: 18,
+        // fontSize: 18,
         color: 'white',
         alignSelf: 'center'
     },

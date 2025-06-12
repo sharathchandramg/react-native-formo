@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { TouchableOpacity, Modal, Platform } from "react-native";
 import _ from "lodash";
-import { View, Text, ArrowForwardIcon } from "native-base";
+import { View, ArrowForwardIcon } from "native-base";
 import { RNCamera } from "react-native-camera";
 
 import { isEmpty } from "../../utils/validators";
@@ -844,7 +844,7 @@ export default class LookupField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent, lookupSearchReq } = this.props;
+    const { theme, attributes, ErrorComponent, lookupSearchReq, AppNBText } = this.props;
     return (
       <View style={styles.container}>
         <View style={[styles.inputLabelWrapper, { width: "95%" }]}>
@@ -857,7 +857,7 @@ export default class LookupField extends Component {
               {attributes["required"] && (
                 <StarIcon required={attributes["required"]} />
               )}
-              <Text style={styles.labelText}>{attributes.label}</Text>
+              <AppNBText size={16} style={styles.labelText}>{attributes.label}</AppNBText>
             </View>
             <View
               style={[
@@ -866,9 +866,9 @@ export default class LookupField extends Component {
               ]}
             >
               <View style={{ width: "93%" }}>
-                <Text style={styles.inputText} numberOfLines={1}>
+                <AppNBText size={18} style={styles.inputText} numberOfLines={1}>
                   {this.getLabel()}
-                </Text>
+                </AppNBText>
               </View>
               {this.renderlookupIcon()}
             </View>
