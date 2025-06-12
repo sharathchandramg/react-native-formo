@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import { Modal, TouchableOpacity } from "react-native";
 import {
   View,
-  Text,
   ArrowBackIcon,
   ArrowForwardIcon,
   SearchIcon,
@@ -166,7 +165,7 @@ export default class ChecklistField extends Component {
   };
 
   renderHeader = () => {
-    const { theme, attributes } = this.props;
+    const { theme, attributes, AppNBText } = this.props;
     return (
       <View style={styles.headerWrapper}>
         <View style={styles.header}>
@@ -177,7 +176,9 @@ export default class ChecklistField extends Component {
             <ArrowBackIcon size={"6"} color={"rgb(0,151,235)"} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.headerCenter}>
-            <Text style={theme.headerText}>{attributes.label || "Select"}</Text>
+            <AppNBText size={18} style={theme.headerText}>
+              {attributes.label || "Select"}
+            </AppNBText>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.headerCenterIconView}
@@ -192,7 +193,7 @@ export default class ChecklistField extends Component {
   };
 
   renderContent = () => {
-    const { attributes } = this.props;
+    const { attributes, AppNBText } = this.props;
     return (
       <View>
         {!isEmpty(this.state.options) &&
@@ -226,9 +227,9 @@ export default class ChecklistField extends Component {
                   }
                 />
                 <View>
-                  <Text style={{ paddingHorizontal: 5 }}>
+                  <AppNBText size={16} style={{ paddingHorizontal: 5 }}>
                     {attributes.objectType ? item[attributes.labelKey] : item}
-                  </Text>
+                  </AppNBText>
                 </View>
               </TouchableOpacity>
             );
@@ -238,7 +239,7 @@ export default class ChecklistField extends Component {
   };
 
   renderFooter = () => {
-    const { attributes } = this.props;
+    const { attributes, AppNBText } = this.props;
     if (attributes) {
       return (
         <View style={styles.footerWrapper}>
@@ -246,7 +247,9 @@ export default class ChecklistField extends Component {
             style={styles.button}
             onPress={() => this.handleAddPressed()}
           >
-            <Text style={styles.buttonText}>{"Add"} </Text>
+            <AppNBText size={18} style={styles.buttonText}>
+              {"Add"}{" "}
+            </AppNBText>
           </TouchableOpacity>
         </View>
       );
@@ -279,7 +282,7 @@ export default class ChecklistField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent } = this.props;
+    const { theme, attributes, ErrorComponent, AppNBText } = this.props;
     return (
       <View style={styles.container}>
         <View style={[styles.inputLabelWrapper, { width: "95%" }]}>
@@ -293,7 +296,9 @@ export default class ChecklistField extends Component {
                 <StarIcon required={attributes["required"]} />
               )}
 
-              <Text style={styles.labelText}>{attributes.label}</Text>
+              <AppNBText size={16} style={styles.labelText}>
+                {attributes.label}
+              </AppNBText>
             </View>
             <View
               style={[
@@ -302,9 +307,9 @@ export default class ChecklistField extends Component {
               ]}
             >
               <View style={{ width: "93%" }}>
-                <Text style={styles.inputText} numberOfLines={1}>
+                <AppNBText size={18} style={styles.inputText} numberOfLines={1}>
                   {this.getLabel()}
-                </Text>
+                </AppNBText>
               </View>
               {this.renderIcon()}
             </View>

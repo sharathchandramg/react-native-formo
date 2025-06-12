@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
   },
   labelText: {
-    fontSize: 16,
+    // fontSize: 16,
     lineHeight: 20,
     color: "#ADADAD",
     fontFamily: "roboto",
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   inputText: {
-    fontSize: 18,
+    // fontSize: 18,
     color: "#575757",
     fontFamily: "roboto",
     fontWeight: "100",
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonText: {
-    fontSize: 18,
+    // fontSize: 18,
     color: "white",
     alignSelf: "center",
   },

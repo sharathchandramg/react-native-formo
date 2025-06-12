@@ -1,7 +1,8 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { View, Text } from "native-base";
+import { View } from "native-base";
 import _ from "lodash";
+
 import StarIcon from "../../components/starIcon";
 import { isEmpty } from "../../utils/validators";
 import SearchableDropdown from "./searchableDropDown";
@@ -79,7 +80,8 @@ export default class CascadingDropdownField extends Component {
             {attributes["required"] && (
               <StarIcon required={attributes["required"]} />
             )}
-            <Text
+            <AppNBText
+              size={18}
               style={[
                 styles.label,
                 {
@@ -88,7 +90,7 @@ export default class CascadingDropdownField extends Component {
               ]}
             >
               {attributes.label}
-            </Text>
+            </AppNBText>
           </View>
         </View>
         <View>

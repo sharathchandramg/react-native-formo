@@ -318,7 +318,7 @@ export default class UserDirectoryField extends Component {
               )}
               <View>
                 <AppNBText
-                size={14}
+                  size={14}
                   style={{
                     paddingHorizontal: 5,
                   }}
@@ -335,7 +335,9 @@ export default class UserDirectoryField extends Component {
       list
     ) : (
       <View style={styles.noDataWrapper}>
-        <AppNBText size={14} style={styles.nodataText}>No records found</AppNBText>
+        <AppNBText size={14} style={styles.nodataText}>
+          No records found
+        </AppNBText>
       </View>
     );
   };
@@ -352,7 +354,9 @@ export default class UserDirectoryField extends Component {
             <ArrowBackIcon size={"6"} color={"rgb(0,151,235)"} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.headerCenter}>
-            <AppNBText size={18} style={theme.headerText}>{attributes.label || "Select"}</AppNBText>
+            <AppNBText size={18} style={theme.headerText}>
+              {attributes.label || "Select"}
+            </AppNBText>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.headerCenterIconView}
@@ -375,7 +379,9 @@ export default class UserDirectoryField extends Component {
             style={styles.button}
             onPress={() => this.handleAddPressed()}
           >
-            <AppNBText size={18} style={styles.buttonText}>{"Add"} </AppNBText>
+            <AppNBText size={18} style={styles.buttonText}>
+              {"Add"}
+            </AppNBText>
           </TouchableOpacity>
         </View>
       );
@@ -393,8 +399,9 @@ export default class UserDirectoryField extends Component {
             onPress={() => this.handleReset()}
           >
             <AppNBText
-            size={12}
-              adjustsFontSizeToFit
+              size={12}
+              adjustsFontSizeToFit={true}
+              minimumFontScale={0.95}
               numberOfLines={1}
               style={styles.selectedText}
             >
@@ -467,7 +474,9 @@ export default class UserDirectoryField extends Component {
               {attributes["required"] && (
                 <StarIcon required={attributes["required"]} />
               )}
-              <AppNBText size={16} style={[styles.labelText]}>{attributes.label}</AppNBText>
+              <AppNBText size={16} style={[styles.labelText]}>
+                {attributes.label}
+              </AppNBText>
             </View>
             <View
               style={[
@@ -476,7 +485,9 @@ export default class UserDirectoryField extends Component {
               ]}
             >
               <View style={{ width: "93%" }} numberOfLines={1}>
-                <AppNBText size={18} style={styles.inputText}>{this.getLabel()}</AppNBText>
+                <AppNBText size={18} style={styles.inputText}>
+                  {this.getLabel()}
+                </AppNBText>
               </View>
               {this.renderIcon(attributes)}
             </View>

@@ -674,6 +674,7 @@ export default class Form0 extends Component {
           SuccessComponent: successComponent || DefaultSuccessComponent,
           navigation: this.props["navigation"] || null,
           AppRNText: this.props.inputComponents.AppText,
+          AppRNTextInput: this.props.inputComponents.AppTextInput,
           AppNBText: this.props.inputComponents.AppNBText,
           AppNBInput: this.props.inputComponents.AppNBInput,
         };

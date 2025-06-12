@@ -1,12 +1,5 @@
 import React, { Component } from "react";
-import {
-  Text,
-  FlatList,
-  TextInput,
-  View,
-  TouchableOpacity,
-  Keyboard,
-} from "react-native";
+import { Text, FlatList, View, TouchableOpacity, Keyboard } from "react-native";
 
 import styles from "./styles";
 
@@ -96,9 +89,11 @@ export default class SearchableDropDown extends Component {
   };
 
   renderTextInput = () => {
+    const { AppRNTextInput } = this.props;
     return (
       <View style={styles.inputWrapper}>
-        <TextInput
+        <AppRNTextInput
+          size={16}
           ref={(e) => (this.input = e)}
           onChangeText={(text) => {
             this.searchedItems(text);

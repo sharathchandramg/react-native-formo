@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { TouchableOpacity, Animated, Modal, Platform } from "react-native";
-import { View, Text } from "native-base";
+import { View } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { RNCamera } from "react-native-camera";
 import _ from "lodash";
@@ -50,7 +50,7 @@ export default class BarcodeField extends Component {
   };
 
   renderAddImageIcon = () => {
-    const { theme } = this.props;
+    const { theme, AppNBText } = this.props;
     return (
       <TouchableOpacity
         style={[
@@ -64,7 +64,8 @@ export default class BarcodeField extends Component {
         onPress={() => this.setState({ openModal: true })}
       >
         {!isEmpty(this.getInputValue()) && (
-          <Text
+          <AppNBText
+            size={16}
             style={{
               color: theme.inputColorPlaceholder,
               width: "90%",
@@ -73,7 +74,7 @@ export default class BarcodeField extends Component {
             numberOfLines={1}
           >
             {this.getInputValue()}
-          </Text>
+          </AppNBText>
         )}
         <Icon
           name="qrcode"

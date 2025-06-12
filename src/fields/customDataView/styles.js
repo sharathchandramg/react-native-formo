@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   labelText: {
-    fontSize: 16,
+    // fontSize: 16,
     lineHeight: 20,
     minHeight: 20,
     color: "#ADADAD",
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
     color: "#41E1FD",
   },
   inputText: {
-    fontSize: 18,
+    // fontSize: 18,
     lineHeight: 20,
     minHeight: 20,
     color: "#575757",

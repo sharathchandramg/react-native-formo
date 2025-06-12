@@ -70,9 +70,10 @@ const LookupComponent = (props) => {
           onPress={() => handleReset(item)}
         >
           <Text
-            adjustsFontSizeToFit
+            adjustsFontSizeToFit={true}
             numberOfLines={1}
             style={styles.selectedText}
+            minimumFontScale={0.95}
           >
             {label}
           </Text>
