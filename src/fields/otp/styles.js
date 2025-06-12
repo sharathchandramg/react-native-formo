@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   animatedLabel: {
     position: "absolute",
     left: 0,
-    fontSize: 16,
+    // fontSize: 16,
     paddingStart: 5,
     width: "100%",
   },

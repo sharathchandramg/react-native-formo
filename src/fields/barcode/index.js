@@ -114,7 +114,7 @@ export default class BarcodeField extends Component {
     return {
       position: "absolute",
       left: 0,
-      fontSize: 16,
+      // fontSize: 16,
       paddingStart: 5,
       top: this._animatedIsFocused.interpolate({
         inputRange: [0, 1],
@@ -125,7 +125,7 @@ export default class BarcodeField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent, AppNBText, AppRNText } =
+    const { theme, attributes, ErrorComponent, AppNBText, AppRNText, AppAnimatedText } =
       this.props;
 
     return (
@@ -149,7 +149,7 @@ export default class BarcodeField extends Component {
                 paddingVertical: 10,
               }}
             >
-              <Animated.Text style={this.getLabelStyles()} numberOfLines={1}>
+              <AppAnimatedText size={16} style={this.getLabelStyles()} numberOfLines={1}>
                 {attributes["required"] && (
                   <>
                     <StarIcon
@@ -159,7 +159,7 @@ export default class BarcodeField extends Component {
                   </>
                 )}
                 {attributes.label}
-              </Animated.Text>
+              </AppAnimatedText>
               <TouchableOpacity
                 style={{
                   flexDirection: "row",

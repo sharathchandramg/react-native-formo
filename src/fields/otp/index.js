@@ -187,6 +187,7 @@ export default class OTPField extends Component {
       SuccessComponent,
       AppRNText,
       AppNBText,
+      AppAnimatedText
     } = this.props;
     return (
       <View>
@@ -205,7 +206,11 @@ export default class OTPField extends Component {
                   {this.getLabel(attributes)}
                 </AppRNText>
               </Pressable>
-              <Animated.Text style={this.getLabelStyles()} numberOfLines={1}>
+              <AppAnimatedText
+                size={16}
+                style={this.getLabelStyles()}
+                numberOfLines={1}
+              >
                 {attributes["required"] && (
                   <>
                     <StarIcon
@@ -215,7 +220,7 @@ export default class OTPField extends Component {
                   </>
                 )}
                 {this.getLabel(attributes)}
-              </Animated.Text>
+              </AppAnimatedText>
               <View style={styles.inputBtnWrapper}>
                 {this.renderInputField(attributes, theme)}
                 <View style={styles.btnWrapper}>

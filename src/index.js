@@ -680,6 +680,7 @@ export default class Form0 extends Component {
           AppRNTextInput: this.props.inputComponents.AppTextInput,
           AppNBText: this.props.inputComponents.AppNBText,
           AppNBInput: this.props.inputComponents.AppNBInput,
+          AppAnimatedText: this.props.inputComponents.AppAnimatedText
         };
 
         switch (field.type) {

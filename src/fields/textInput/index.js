@@ -193,7 +193,7 @@ export default class TextInputField extends Component {
     return {
       position: "absolute",
       left: 0,
-      fontSize: 16,
+      // fontSize: 16,
       paddingStart: 5,
       top: this._animatedIsFocused.interpolate({
         inputRange: [0, 1],
@@ -209,7 +209,7 @@ export default class TextInputField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent, AppRNText, AppNBText } =
+    const { theme, attributes, ErrorComponent, AppRNText, AppNBText, AppAnimatedText } =
       this.props;
     return (
       <View>
@@ -237,7 +237,8 @@ export default class TextInputField extends Component {
                 {attributes.label}
               </AppRNText>
             </Pressable>
-            <Animated.Text
+            <AppAnimatedText
+              size={16}
               style={this.getLabelStyles()}
               numberOfLines={
                 this.state.isFocused || !isEmpty(attributes["value"])
@@ -254,7 +255,7 @@ export default class TextInputField extends Component {
                 </>
               )}
               {attributes.label}
-            </Animated.Text>
+            </AppAnimatedText>
             {typeof attributes.type !== "undefined" &&
             attributes.type === "calculated"
               ? this.renderCalculatedField(attributes, theme)
