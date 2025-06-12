@@ -67,7 +67,7 @@ export default class StatusPickerField extends Component {
           }}
         >
           {attributes["required"] && (
-            <StarIcon required={attributes["required"]} />
+            <StarIcon required={attributes["required"]} AppNBText={AppNBText} />
           )}
           <AppNBText
             size={16}

@@ -287,7 +287,10 @@ export default class LocationField extends Component {
               }}
             >
               {attributes["required"] && (
-                <StarIcon required={attributes["required"]} />
+                <StarIcon
+                  required={attributes["required"]}
+                  AppNBText={AppNBText}
+                />
               )}
               <AppNBText size={16} style={styles.placeHolder}>
                 {attributes.label}

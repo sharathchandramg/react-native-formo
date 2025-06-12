@@ -56,7 +56,10 @@ export default class CustomDataComponent extends Component {
             onPress={() => this.handleOnclick()}
           >
             {attributes["required"] && (
-              <StarIcon required={attributes["required"]} />
+              <StarIcon
+                required={attributes["required"]}
+                AppNBText={AppNBText}
+              />
             )}
             <View style={[styles.labelTextWrapper, { flexDirection: "row" }]}>
               <AppNBText

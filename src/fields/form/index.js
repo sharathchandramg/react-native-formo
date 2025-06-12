@@ -50,7 +50,10 @@ export default class FormField extends Component {
         <View>
           <View style={{ flexDirection: "row", flex: 1 }}>
             {attributes["required"] && (
-              <StarIcon required={attributes["required"]} />
+              <StarIcon
+                required={attributes["required"]}
+                AppNBText={AppNBText}
+              />
             )}
             <AppNBText
               size={17}

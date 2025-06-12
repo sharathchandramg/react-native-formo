@@ -407,10 +407,15 @@ export default class SimpleGrideView extends Component {
           >
             <View style={styles.labelTextWrapper}>
               {attributes["required"] && (
-                <StarIcon required={attributes["required"]} />
+                <StarIcon
+                  required={attributes["required"]}
+                  AppNBText={AppNBText}
+                />
               )}
 
-              <AppNBText size={16} style={styles.labelText}>{attributes.label}</AppNBText>
+              <AppNBText size={16} style={styles.labelText}>
+                {attributes.label}
+              </AppNBText>
             </View>
             <View
               style={[

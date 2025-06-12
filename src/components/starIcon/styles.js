@@ -1,7 +1,7 @@
 import { StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
     iconStyle:{
-        fontSize:12, 
+        // fontSize:12, 
         // marginLeft:2,
         color: "#ed2f2f",
         // lineHeight:15,

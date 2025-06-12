@@ -180,8 +180,14 @@ export default class OTPField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent, SuccessComponent, AppRNText } =
-      this.props;
+    const {
+      theme,
+      attributes,
+      ErrorComponent,
+      SuccessComponent,
+      AppRNText,
+      AppNBText,
+    } = this.props;
     return (
       <View>
         <View style={styles.container}>
@@ -202,7 +208,10 @@ export default class OTPField extends Component {
               <Animated.Text style={this.getLabelStyles()} numberOfLines={1}>
                 {attributes["required"] && (
                   <>
-                    <StarIcon required={attributes["required"]} />{" "}
+                    <StarIcon
+                      required={attributes["required"]}
+                      AppNBText={AppNBText}
+                    />
                   </>
                 )}
                 {this.getLabel(attributes)}

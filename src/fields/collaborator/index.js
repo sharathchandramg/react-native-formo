@@ -447,7 +447,10 @@ export default class CollaboratorField extends Component {
             onPress={() => this.toggleModalVisible()}
           >
             {attributes["required"] && (
-              <StarIcon required={attributes["required"]} />
+              <StarIcon
+                required={attributes["required"]}
+                AppNBText={AppNBText}
+              />
             )}
             <View style={[styles.labelTextWrapper, { flexDirection: "row" }]}>
               <AppNBText

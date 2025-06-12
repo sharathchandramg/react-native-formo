@@ -125,7 +125,7 @@ export default class BarcodeField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent } = this.props;
+    const { theme, attributes, ErrorComponent, AppNBText } = this.props;
 
     return (
       <View>
@@ -151,7 +151,10 @@ export default class BarcodeField extends Component {
               <Animated.Text style={this.getLabelStyles()} numberOfLines={1}>
                 {attributes["required"] && (
                   <>
-                    <StarIcon required={attributes["required"]} />{" "}
+                    <StarIcon
+                      required={attributes["required"]}
+                      AppNBText={AppNBText}
+                    />
                   </>
                 )}
                 {attributes.label}

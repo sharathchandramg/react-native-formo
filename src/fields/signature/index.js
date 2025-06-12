@@ -338,7 +338,10 @@ export default class SignatureField extends Component {
               }}
             >
               {attributes["required"] && (
-                <StarIcon required={attributes["required"]} />
+                <StarIcon
+                  required={attributes["required"]}
+                  AppNBText={AppNBText}
+                />
               )}
               <AppNBText
                 size={16}

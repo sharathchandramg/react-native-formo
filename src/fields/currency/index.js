@@ -219,7 +219,7 @@ export default class CurrencyField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent } = this.props;
+    const { theme, attributes, ErrorComponent, AppNBText } = this.props;
     return (
       <View>
         <View
@@ -231,7 +231,7 @@ export default class CurrencyField extends Component {
           }}
         >
           {attributes["required"] && (
-            <StarIcon required={attributes["required"]} />
+            <StarIcon required={attributes["required"]} AppNBText={AppNBText} />
           )}
           <View style={{ flex: 5, flexDirection: "row" }}>
             {attributes.showCurrencyOptions && (

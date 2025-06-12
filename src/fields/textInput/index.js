@@ -209,7 +209,8 @@ export default class TextInputField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent, AppRNText } = this.props;
+    const { theme, attributes, ErrorComponent, AppRNText, AppNBText } =
+      this.props;
     return (
       <View>
         <View
@@ -246,7 +247,10 @@ export default class TextInputField extends Component {
             >
               {attributes["required"] && (
                 <>
-                  <StarIcon required={attributes["required"]} />{" "}
+                  <StarIcon
+                    required={attributes["required"]}
+                    AppNBText={AppNBText}
+                  />
                 </>
               )}
               {attributes.label}

@@ -293,7 +293,10 @@ export default class ChecklistField extends Component {
           >
             <View style={styles.labelTextWrapper}>
               {attributes["required"] && (
-                <StarIcon required={attributes["required"]} />
+                <StarIcon
+                  required={attributes["required"]}
+                  AppNBText={AppNBText}
+                />
               )}
 
               <AppNBText size={16} style={styles.labelText}>

@@ -1,13 +1,17 @@
-import React from 'react';
-import {Text,View} from 'native-base';
-import styles from './styles';
+import React from "react";
+import styles from "./styles";
 
-const StarIcon = (props)=>{
-    const required = props['required'];
-    if(typeof required !=='undefined' && required){
-        return <Text style={styles.iconStyle}>{'*'}</Text>
-    }
-    return null;
-}
+const StarIcon = (props) => {
+  const { AppNBText } = props;
+  const required = props["required"];
+  if (typeof required !== "undefined" && required) {
+    return (
+      <AppNBText size={12} style={styles.iconStyle}>
+        {"*"}
+      </AppNBText>
+    );
+  }
+  return null;
+};
 
 export default StarIcon;

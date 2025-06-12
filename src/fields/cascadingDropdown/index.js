@@ -72,13 +72,16 @@ export default class CascadingDropdownField extends Component {
   };
 
   renderInput = () => {
-    const { theme, attributes } = this.props;
+    const { theme, attributes, AppNBText } = this.props;
     return (
       <View>
         <View style={styles.labelWrapper}>
           <View style={styles.labelContainer}>
             {attributes["required"] && (
-              <StarIcon required={attributes["required"]} />
+              <StarIcon
+                required={attributes["required"]}
+                AppNBText={AppNBText}
+              />
             )}
             <AppNBText
               size={18}

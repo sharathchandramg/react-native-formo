@@ -844,7 +844,8 @@ export default class LookupField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent, lookupSearchReq, AppNBText } = this.props;
+    const { theme, attributes, ErrorComponent, lookupSearchReq, AppNBText } =
+      this.props;
     return (
       <View style={styles.container}>
         <View style={[styles.inputLabelWrapper, { width: "95%" }]}>
@@ -855,9 +856,14 @@ export default class LookupField extends Component {
           >
             <View style={styles.labelTextWrapper}>
               {attributes["required"] && (
-                <StarIcon required={attributes["required"]} />
+                <StarIcon
+                  required={attributes["required"]}
+                  AppNBText={AppNBText}
+                />
               )}
-              <AppNBText size={16} style={styles.labelText}>{attributes.label}</AppNBText>
+              <AppNBText size={16} style={styles.labelText}>
+                {attributes.label}
+              </AppNBText>
             </View>
             <View
               style={[

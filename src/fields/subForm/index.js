@@ -92,7 +92,9 @@ export default class SubForm extends Component {
           values = lookupField.map((e) => item[e.name]);
         }
         leftLabel = values.map((val) => (
-          <AppNBText size={14} style={styles.subformText}>{val}</AppNBText>
+          <AppNBText size={14} style={styles.subformText}>
+            {val}
+          </AppNBText>
         ));
         let fdata = data[index];
         let rVal = [];
@@ -111,14 +113,20 @@ export default class SubForm extends Component {
             case "phone":
               if (!isNaN(item)) {
                 return (
-                  <AppNBText size={14} style={styles.subformText}>{item.toString()}</AppNBText>
+                  <AppNBText size={14} style={styles.subformText}>
+                    {item.toString()}
+                  </AppNBText>
                 );
               }
               break;
             case "object":
               if (!Array.isArray(item) && item === null) {
                 let val = Object.values(item).toString();
-                return <AppNBText size={14} style={styles.subformText}>{val}</AppNBText>;
+                return (
+                  <AppNBText size={14} style={styles.subformText}>
+                    {val}
+                  </AppNBText>
+                );
               }
               break;
             default:
@@ -148,7 +156,9 @@ export default class SubForm extends Component {
           values = lookupField.map((e) => item[e.name]);
         }
         leftLabel = values.map((val) => (
-          <AppNBText size={14} style={styles.subformText}>{val}</AppNBText>
+          <AppNBText size={14} style={styles.subformText}>
+            {val}
+          </AppNBText>
         ));
         return (
           <TouchableOpacity
@@ -174,14 +184,20 @@ export default class SubForm extends Component {
           case "phone":
             if (!isNaN(item)) {
               leftLabel = (
-                <AppNBText size={14} style={styles.subformText}>{item.toString()}</AppNBText>
+                <AppNBText size={14} style={styles.subformText}>
+                  {item.toString()}
+                </AppNBText>
               );
             }
             break;
           case "object":
             if (!Array.isArray(item) && item === null) {
               let val = Object.values(item).toString();
-              leftLabel = <AppNBText size={14} style={styles.subformText}>{val}</AppNBText>;
+              leftLabel = (
+                <AppNBText size={14} style={styles.subformText}>
+                  {val}
+                </AppNBText>
+              );
             }
             break;
           default:
@@ -260,7 +276,7 @@ export default class SubForm extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent,AppNBText } = this.props;
+    const { theme, attributes, ErrorComponent, AppNBText } = this.props;
     return (
       <View style={styles.container}>
         <View
@@ -269,9 +285,14 @@ export default class SubForm extends Component {
         >
           <View style={[styles.inputLabel]}>
             {attributes["required"] && (
-              <StarIcon required={attributes["required"]} />
+              <StarIcon
+                required={attributes["required"]}
+                AppNBText={AppNBText}
+              />
             )}
-            <AppNBText size={16} style={[styles.labelText]}>{attributes.label}</AppNBText>
+            <AppNBText size={16} style={[styles.labelText]}>
+              {attributes.label}
+            </AppNBText>
             {this.renderlookupIcon()}
           </View>
           {typeof attributes.value !== "undefined" &&

@@ -23,7 +23,7 @@ export default class RatingField extends Component {
     return (
       <View style={styles.labelWrapper}>
         {attributes["required"] && (
-          <StarIcon required={attributes["required"]} />
+          <StarIcon required={attributes["required"]} AppNBText={AppNBText} />
         )}
         <AppNBText
           size={16}
