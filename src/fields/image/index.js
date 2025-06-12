@@ -503,7 +503,8 @@ export default class ImageField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent, AppNBText } = this.props;
+    const { theme, attributes, ErrorComponent, AppNBText, AppRNText } =
+      this.props;
     return (
       <View>
         <View>
@@ -597,7 +598,7 @@ export default class ImageField extends Component {
           ) : null}
         </View>
         <View style={{ paddingHorizontal: 15 }}>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
       </View>
     );

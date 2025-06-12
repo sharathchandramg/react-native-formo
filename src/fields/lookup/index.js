@@ -800,7 +800,7 @@ export default class LookupField extends Component {
   };
 
   renderComponent = () => {
-    const { theme, attributes } = this.props;
+    const { theme, attributes, AppRNText, AppNBText, AppNBInput } = this.props;
     const search = this.state.searchModalVisible;
     const filter = this.state.filterModalVisible;
 
@@ -815,6 +815,8 @@ export default class LookupField extends Component {
           searchText={this.state.searchText}
           toggleSelect={this.toggleSelect}
           handleTextChange={this.handleTextChange}
+          AppRNText={AppRNText}
+          AppNBInput={AppNBInput}
         />
       );
     }
@@ -833,6 +835,8 @@ export default class LookupField extends Component {
           filterFunction={this.toggleFilterSelect}
           resetFilter={this.resetFilter}
           categoryToValue={this.state.categoryToValue}
+          AppNBText={AppNBText}
+          AppNBInput={AppNBInput}
         />
       );
     }
@@ -844,8 +848,14 @@ export default class LookupField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent, lookupSearchReq, AppNBText } =
-      this.props;
+    const {
+      theme,
+      attributes,
+      ErrorComponent,
+      lookupSearchReq,
+      AppNBText,
+      AppRNText,
+    } = this.props;
     return (
       <View style={styles.container}>
         <View style={[styles.inputLabelWrapper, { width: "95%" }]}>
@@ -882,7 +892,7 @@ export default class LookupField extends Component {
         </View>
 
         <View style={{ paddingHorizontal: 15 }}>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
         {this.state.modalVisible && (
           <Modal
@@ -932,6 +942,8 @@ export default class LookupField extends Component {
                 }
                 onAddLookup={this.props.onAddLookup}
                 onClickInlineCreationButton={this.onClickInlineCreationButton}
+                AppNBText={AppNBText}
+                AppRNText={AppRNText}
               />
             )}
           </Modal>

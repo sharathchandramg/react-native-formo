@@ -72,7 +72,7 @@ export default class CascadingDropdownField extends Component {
   };
 
   renderInput = () => {
-    const { theme, attributes, AppNBText } = this.props;
+    const { theme, attributes, AppNBText, AppRNText } = this.props;
     return (
       <View>
         <View style={styles.labelWrapper}>
@@ -101,6 +101,7 @@ export default class CascadingDropdownField extends Component {
             onItemSelect={(item) => this.handleChange(item)}
             items={this.getOptions()}
             selectedValue={this.getSelectedValue(attributes)}
+            AppRNText={AppRNText}
           />
         </View>
       </View>
@@ -108,13 +109,13 @@ export default class CascadingDropdownField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent } = this.props;
+    const { theme, attributes, ErrorComponent, AppRNText } = this.props;
 
     return (
       <View style={styles.cascadingRoot}>
         {this.renderInput()}
         <View>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
       </View>
     );

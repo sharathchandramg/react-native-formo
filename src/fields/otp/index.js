@@ -242,9 +242,9 @@ export default class OTPField extends Component {
         </View>
         <View style={styles.errorSuccessWrapper}>
           {attributes.error && attributes.errorMsg ? (
-            <ErrorComponent {...{ attributes, theme }} />
+            <ErrorComponent {...{ attributes, theme, AppRNText }} />
           ) : attributes.success && attributes.successMsg ? (
-            <SuccessComponent {...{ attributes, theme }} />
+            <SuccessComponent {...{ attributes, theme, AppRNText }} />
           ) : (
             <View />
           )}

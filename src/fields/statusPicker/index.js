@@ -33,7 +33,7 @@ export default class StatusPickerField extends Component {
   };
 
   renderPicker = (pickerValue) => {
-    const { theme, attributes, AppNBText } = this.props;
+    const { theme, attributes, AppNBText, AppRNText, AppNBInput } = this.props;
     const options =
       attributes && !isEmpty(attributes.options) ? attributes.options : [];
     let valueStyle = {
@@ -121,6 +121,8 @@ export default class StatusPickerField extends Component {
             closeModal={this.closeModal}
             handleChange={this.handleChange}
             theme={theme}
+            AppRNText={AppRNText}
+            AppNBInput={AppNBInput}
           />
         )}
       </View>
@@ -128,7 +130,7 @@ export default class StatusPickerField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent } = this.props;
+    const { theme, attributes, ErrorComponent, AppRNText } = this.props;
     const value = attributes["value"] || "";
     const defaultValue = attributes["defaultValue"] || "-Select-";
     const pickerValue = value || defaultValue;
@@ -137,7 +139,7 @@ export default class StatusPickerField extends Component {
       <View style={{ paddingHorizontal: 15, paddingTop: 5 }}>
         {this.renderPicker(pickerValue)}
         <View>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
       </View>
     );

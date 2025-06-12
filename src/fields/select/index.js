@@ -305,7 +305,8 @@ export default class SelectField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent, AppNBText } = this.props;
+    const { theme, attributes, ErrorComponent, AppNBText, AppRNText } =
+      this.props;
     return (
       <View style={styles.container}>
         <View style={[styles.inputLabelWrapper, { width: "95%" }]}>
@@ -353,7 +354,7 @@ export default class SelectField extends Component {
           </Modal>
         )}
         <View style={{ paddingHorizontal: 15 }}>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
       </View>
     );

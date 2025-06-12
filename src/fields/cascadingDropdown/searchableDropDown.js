@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Text, FlatList, View, TouchableOpacity, Keyboard } from "react-native";
+import { FlatList, View, TouchableOpacity, Keyboard } from "react-native";
 
 import styles from "./styles";
 
@@ -26,6 +26,7 @@ export default class SearchableDropDown extends Component {
   }
 
   renderItems = ({ item, index }) => {
+    const { AppRNText } = this.props;
     return (
       <TouchableOpacity
         onPress={() => {
@@ -41,12 +42,15 @@ export default class SearchableDropDown extends Component {
           },
         ]}
       >
-        <Text style={styles.itemLabel}>{item.label}</Text>
+        <AppRNText size={16} style={styles.itemLabel}>
+          {item.label}
+        </AppRNText>
       </TouchableOpacity>
     );
   };
 
   renderList = () => {
+    const { AppRNText } = this.props;
     return (
       <View
         style={[
@@ -68,7 +72,9 @@ export default class SearchableDropDown extends Component {
           />
         ) : (
           <View style={styles.itemWrapper}>
-            <Text style={styles.itemLabel}>No Data Found</Text>
+            <AppRNText size={16} style={styles.itemLabel}>
+              No Data Found
+            </AppRNText>
           </View>
         )}
       </View>

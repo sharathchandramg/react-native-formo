@@ -225,7 +225,7 @@ export default class TextInputField extends Component {
           </View>
         </View>
         <View style={{ paddingHorizontal: 15 }}>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
       </View>
     );

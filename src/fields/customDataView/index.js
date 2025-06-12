@@ -46,7 +46,8 @@ export default class CustomDataComponent extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent, AppNBText } = this.props;
+    const { theme, attributes, ErrorComponent, AppNBText, AppRNText } =
+      this.props;
     return (
       <View style={styles.container}>
         <View style={[styles.inputLabelWrapper, { width: "95%" }]}>
@@ -87,7 +88,7 @@ export default class CustomDataComponent extends Component {
           </TouchableOpacity>
         </View>
         <View style={{ paddingHorizontal: 15 }}>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
       </View>
     );

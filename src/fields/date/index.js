@@ -162,7 +162,7 @@ export default class DateField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent } = this.props;
+    const { theme, attributes, ErrorComponent, AppRNText } = this.props;
     return (
       <View>
         <View
@@ -175,7 +175,7 @@ export default class DateField extends Component {
         </View>
         {this.renderDatePickerModal(attributes)}
         <View style={{ paddingHorizontal: 15 }}>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
       </View>
     );

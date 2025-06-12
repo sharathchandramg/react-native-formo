@@ -18,7 +18,8 @@ export default class SwitchField extends Component {
   }
 
   render() {
-    const { attributes, theme, ErrorComponent, AppNBText } = this.props;
+    const { attributes, theme, ErrorComponent, AppNBText, AppRNText } =
+      this.props;
     return (
       <View>
         <View
@@ -68,7 +69,7 @@ export default class SwitchField extends Component {
           </View>
         </View>
         <View style={{ paddingHorizontal: 15 }}>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
       </View>
     );

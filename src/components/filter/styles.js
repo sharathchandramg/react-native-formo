@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
         // marginHorizontal: 15
     },
     filterText: {
-        fontSize: 12,
+        // fontSize: 12,
         lineHeight: 14,
         fontWeight: '300',
         fontFamily: 'roboto',
@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     inputText: {
-        fontSize: 14,
+        // fontSize: 14,
         fontFamily: 'roboto',
         color:'grey',
         flex: 1,

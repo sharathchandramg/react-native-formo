@@ -276,7 +276,8 @@ export default class SubForm extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent, AppNBText } = this.props;
+    const { theme, attributes, ErrorComponent, AppNBText, AppRNText } =
+      this.props;
     return (
       <View style={styles.container}>
         <View
@@ -310,7 +311,7 @@ export default class SubForm extends Component {
           {this.renderComponent()}
         </Modal>
         <View style={{ paddingHorizontal: 5 }}>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
       </View>
     );

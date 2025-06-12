@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
 
   textBoxIos:{
     fontFamily: 'roboto',
-    fontSize:14,
+    // fontSize:14,
     paddingHorizontal:5,
     textAlign:'center',
     fontWeight: '400',
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
 
   textBox:{
     fontFamily: 'roboto',
-    fontSize:14,
+    // fontSize:14,
     fontWeight: '400',
     lineHeight:16,
     height:16,
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
 },
 buttonText:{
   fontFamily: 'roboto',
-  fontSize:16,
+  // fontSize:16,
   fontWeight: 'bold',
   color: 'white',
   lineHeight: 24,
@@ -183,7 +183,7 @@ aggregateTextWrapper:{
 },
 summaryText:{
   fontFamily: 'roboto',
-  fontSize:14,
+  // fontSize:14,
   fontWeight: '300',
   color: '#989898',
   lineHeight: 24,
@@ -191,7 +191,7 @@ summaryText:{
 
 },
 topLabel:{
-  fontSize:18,
+  // fontSize:18,
   color: 'rgb(0,151,235)',
   alignSelf:'flex-start',
   minWidth:'18%',

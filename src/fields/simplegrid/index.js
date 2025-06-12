@@ -378,7 +378,7 @@ export default class SimpleGrideView extends Component {
   };
 
   renderComponent = () => {
-    const { theme, attributes } = this.props;
+    const { theme, attributes, AppRNText, AppNBText, AppNBInput } = this.props;
     const editModal = this.state.editModal;
     const rowData = this.state.rowData;
     if (editModal) {
@@ -390,13 +390,17 @@ export default class SimpleGrideView extends Component {
           onChangeText={this.onChangeText}
           handleOnSaveClick={this.handleOnSaveClick}
           toggleModalVisible={this.toggleEditModal}
+          AppRNText={AppRNText}
+          AppNBText={AppNBText}
+          AppNBInput={AppNBInput}
         />
       );
     }
   };
 
   render() {
-    const { theme, attributes, ErrorComponent, AppNBText } = this.props;
+    const { theme, attributes, ErrorComponent, AppNBText, AppRNText } =
+      this.props;
     return (
       <View style={styles.container}>
         <View style={[styles.inputLabelWrapper, { width: "95%" }]}>
@@ -433,7 +437,7 @@ export default class SimpleGrideView extends Component {
           </TouchableOpacity>
         </View>
         <View style={{ paddingHorizontal: 15 }}>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
         {
           <Modal
@@ -459,6 +463,8 @@ export default class SimpleGrideView extends Component {
                 tableHeader={this.getTableHeader(this.state.data)}
                 rowTitle={this.getRowTitle(this.state.data)}
                 tableData={this.getTableData(this.state.data)}
+                AppNBText={AppNBText}
+                AppRNText={AppRNText}
               />
             )}
           </Modal>

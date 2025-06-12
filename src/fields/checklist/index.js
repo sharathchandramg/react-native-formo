@@ -258,6 +258,7 @@ export default class ChecklistField extends Component {
   };
 
   renderComponent = () => {
+    const { AppNBInput } = this.props;
     if (this.state.searchModalVisible) {
       return (
         <View style={styles.modalContent}>
@@ -266,6 +267,7 @@ export default class ChecklistField extends Component {
             handleOnSearchQuery={this.handleTextChange}
             handleTextChange={this.handleTextChange}
             searchText={this.state.searchText}
+            AppNBInput={AppNBInput}
           />
           {this.renderContent()}
         </View>
@@ -282,7 +284,8 @@ export default class ChecklistField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent, AppNBText } = this.props;
+    const { theme, attributes, ErrorComponent, AppNBText, AppRNText } =
+      this.props;
     return (
       <View style={styles.container}>
         <View style={[styles.inputLabelWrapper, { width: "95%" }]}>
@@ -330,7 +333,7 @@ export default class ChecklistField extends Component {
           </Modal>
         )}
         <View style={{ paddingHorizontal: 15 }}>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
       </View>
     );

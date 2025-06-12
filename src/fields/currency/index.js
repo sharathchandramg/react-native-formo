@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   TouchableHighlight,
 } from "react-native";
-import { View, Input } from "native-base";
+import { View } from "native-base";
 import { Picker } from "@react-native-picker/picker";
 
 import { getKeyboardType } from "./../../utils/helper";
@@ -52,7 +52,8 @@ export default class CurrencyField extends Component {
     const inputProps = attributes.props;
     const keyboardType = getKeyboardType(attributes.type);
     return (
-      <Input
+      <AppNBInput
+        size={16}
         style={{
           height:
             inputProps &&
@@ -219,7 +220,8 @@ export default class CurrencyField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent, AppNBText } = this.props;
+    const { theme, attributes, ErrorComponent, AppNBText, AppRNText } =
+      this.props;
     return (
       <View>
         <View
@@ -253,7 +255,7 @@ export default class CurrencyField extends Component {
           </View>
         </View>
         <View style={{ marginHorizontal: 15 }}>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
       </View>
     );

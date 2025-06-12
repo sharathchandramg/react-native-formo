@@ -49,9 +49,12 @@ const styles = StyleSheet.create({
   },
   itemWrapper: {
     padding: 10,
-    borderColor: "#D9D5DC"
+    borderColor: "#D9D5DC",
   },
-  itemLabel: { color: "#ADADAD", fontSize: 16 },
+  itemLabel: {
+    color: "#ADADAD",
+    //  fontSize: 16
+  },
 });
 
 export default styles;

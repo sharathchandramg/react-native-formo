@@ -425,7 +425,8 @@ export default class DocumentField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent, AppNBText } = this.props;
+    const { theme, attributes, ErrorComponent, AppNBText, AppRNText } =
+      this.props;
     return (
       <View>
         <View>
@@ -478,7 +479,7 @@ export default class DocumentField extends Component {
           {this.isFilesExists() ? this.renderAllDocuments(attributes) : null}
         </View>
         <View style={{ paddingHorizontal: 15 }}>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
       </View>
     );

@@ -425,6 +425,7 @@ export default class UserDirectoryField extends Component {
   };
 
   renderComponent = () => {
+    const { AppNBInput } = this.props;
     if (this.state.searchModalVisible) {
       return (
         <View style={styles.modalContent}>
@@ -433,6 +434,7 @@ export default class UserDirectoryField extends Component {
             handleOnSearchQuery={this.handleOnSearchQuery}
             handleTextChange={this.handleTextChange}
             searchText={this.state.searchText}
+            AppNBInput={AppNBInput}
           />
           <ScrollView style={{ flex: 1 }}>
             <View>{this.renderOptionList()}</View>
@@ -454,7 +456,8 @@ export default class UserDirectoryField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent, AppNBText } = this.props;
+    const { theme, attributes, ErrorComponent, AppNBText, AppRNText } =
+      this.props;
     return (
       <View style={styles.container}>
         <View
@@ -507,7 +510,7 @@ export default class UserDirectoryField extends Component {
         </Modal>
 
         <View style={{ paddingHorizontal: 15 }}>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
       </View>
     );

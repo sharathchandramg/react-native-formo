@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10,
         alignItems: 'center',
-        fontSize: 12,
+        // fontSize: 12,
     },
 
     removeFilterIcon: {
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
         color: '#989898',
         fontFamily: 'roboto',
         width: '100%',
-        fontSize: 14,
+        // fontSize: 14,
         padding: 5,
         fontWeight: '700',
         alignSelf: 'center',

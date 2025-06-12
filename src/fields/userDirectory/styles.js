@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     height: 40,
     alignSelf: "stretch",
     color: "rgb(0,151,235)",
-    fontSize: 18,
+    // fontSize: 18,
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,

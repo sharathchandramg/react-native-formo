@@ -412,6 +412,7 @@ export default class CollaboratorField extends Component {
   };
 
   renderComponent = () => {
+    const { AppNBInput } = this.props;
     if (this.state.searchModalVisible) {
       return (
         <View style={styles.modalContent}>
@@ -420,6 +421,7 @@ export default class CollaboratorField extends Component {
             handleOnSearchQuery={this.handleOnSearchQuery}
             handleTextChange={this.handleTextChange}
             searchText={this.state.searchText}
+            AppNBInput={AppNBInput}
           />
           <View>{this.renderOptionList()}</View>
         </View>
@@ -437,7 +439,8 @@ export default class CollaboratorField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent, AppNBText } = this.props;
+    const { theme, attributes, ErrorComponent, AppNBText, AppRNText } =
+      this.props;
     return (
       <View style={styles.container}>
         <View style={[styles.inputLabelWrapper, { width: "95%" }]}>
@@ -488,7 +491,7 @@ export default class CollaboratorField extends Component {
         </Modal>
 
         <View style={{ paddingHorizontal: 15 }}>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
       </View>
     );

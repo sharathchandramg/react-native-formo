@@ -87,7 +87,7 @@ export default class RatingField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent } = this.props;
+    const { theme, attributes, ErrorComponent, AppRNText } = this.props;
 
     return (
       <View style={styles.container}>
@@ -100,7 +100,7 @@ export default class RatingField extends Component {
           {this.renderIcon()}
         </View>
         <View>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
       </View>
     );
