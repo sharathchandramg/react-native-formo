@@ -72,7 +72,7 @@ export default class CascadingDropdownField extends Component {
   };
 
   renderInput = () => {
-    const { theme, attributes, AppNBText, AppRNText } = this.props;
+    const { theme, attributes, AppNBText, AppRNText, AppRNTextInput } = this.props;
     return (
       <View>
         <View style={styles.labelWrapper}>
@@ -102,6 +102,7 @@ export default class CascadingDropdownField extends Component {
             items={this.getOptions()}
             selectedValue={this.getSelectedValue(attributes)}
             AppRNText={AppRNText}
+            AppRNTextInput={AppRNTextInput}
           />
         </View>
       </View>
