@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { TouchableOpacity, Animated, Modal, Platform } from "react-native";
-import { View, Text } from "native-base";
+import { View } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { RNCamera } from "react-native-camera";
 import _ from "lodash";
@@ -50,7 +50,7 @@ export default class BarcodeField extends Component {
   };
 
   renderAddImageIcon = () => {
-    const { theme } = this.props;
+    const { theme, AppNBText } = this.props;
     return (
       <TouchableOpacity
         style={[
@@ -64,7 +64,8 @@ export default class BarcodeField extends Component {
         onPress={() => this.setState({ openModal: true })}
       >
         {!isEmpty(this.getInputValue()) && (
-          <Text
+          <AppNBText
+            size={16}
             style={{
               color: theme.inputColorPlaceholder,
               width: "90%",
@@ -73,7 +74,7 @@ export default class BarcodeField extends Component {
             numberOfLines={1}
           >
             {this.getInputValue()}
-          </Text>
+          </AppNBText>
         )}
         <Icon
           name="qrcode"
@@ -113,7 +114,7 @@ export default class BarcodeField extends Component {
     return {
       position: "absolute",
       left: 0,
-      fontSize: 16,
+      // fontSize: 16,
       paddingStart: 5,
       top: this._animatedIsFocused.interpolate({
         inputRange: [0, 1],
@@ -124,7 +125,8 @@ export default class BarcodeField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent } = this.props;
+    const { theme, attributes, ErrorComponent, AppNBText, AppRNText, AppAnimatedText } =
+      this.props;
 
     return (
       <View>
@@ -147,14 +149,17 @@ export default class BarcodeField extends Component {
                 paddingVertical: 10,
               }}
             >
-              <Animated.Text style={this.getLabelStyles()} numberOfLines={1}>
+              <AppAnimatedText size={16} style={this.getLabelStyles()} numberOfLines={1}>
                 {attributes["required"] && (
                   <>
-                    <StarIcon required={attributes["required"]} />{" "}
+                    <StarIcon
+                      required={attributes["required"]}
+                      AppNBText={AppNBText}
+                    />
                   </>
                 )}
                 {attributes.label}
-              </Animated.Text>
+              </AppAnimatedText>
               <TouchableOpacity
                 style={{
                   flexDirection: "row",
@@ -179,7 +184,7 @@ export default class BarcodeField extends Component {
           )}
         </View>
         <View style={{ paddingHorizontal: 15 }}>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
       </View>
     );

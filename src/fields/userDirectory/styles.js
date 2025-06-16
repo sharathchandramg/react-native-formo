@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
   },
   labelText: {
-    fontSize: 16,
+    // fontSize: 16,
     lineHeight: 20,
     color: "#ADADAD",
     fontFamily: "roboto",
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   inputText: {
-    fontSize: 18,
+    // fontSize: 18,
     color: "#575757",
     fontFamily: "roboto",
     fontWeight: "100",
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonText: {
-    fontSize: 18,
+    // fontSize: 18,
     color: "white",
     alignSelf: "center",
   },
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     alignItems: "center",
-    fontSize: 12,
+    // fontSize: 12,
     width: "70%",
   },
 
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     color: "#989898",
     fontFamily: "roboto",
     width: "100%",
-    fontSize: 14,
+    // fontSize: 14,
     padding: 5,
     fontWeight: "700",
     alignSelf: "center",
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     height: 40,
     alignSelf: "stretch",
     color: "rgb(0,151,235)",
-    fontSize: 18,
+    // fontSize: 18,
     borderTopWidth: 0,
     borderLeftWidth: 0,
     borderRightWidth: 0,

@@ -2,9 +2,10 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { TouchableOpacity } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { View, Text, ArrowForwardIcon } from "native-base";
+import { View, ArrowForwardIcon } from "native-base";
 
 import StarIcon from "../../components/starIcon";
+
 const moment = require("moment");
 
 export default class DateField extends Component {
@@ -52,7 +53,7 @@ export default class DateField extends Component {
   };
 
   renderDatePicker = () => {
-    const { theme, attributes } = this.props;
+    const { theme, attributes, AppNBText } = this.props;
     const value = (attributes.value && moment(attributes.value)) || null;
     let dateValue = "Select";
 
@@ -89,21 +90,22 @@ export default class DateField extends Component {
         }}
       >
         {attributes["required"] && (
-          <StarIcon required={attributes["required"]} />
+          <StarIcon required={attributes["required"]} AppNBText={AppNBText} />
         )}
-        <Text
+        <AppNBText
+          size={16}
           style={{
             flex: 1,
             color: theme.inputColorPlaceholder,
             paddingStart: 5,
-            fontSize: 16,
+            // fontSize: 16,
           }}
           onPress={() => {
             if (attributes.editable) this.setModalVisible(true);
           }}
         >
           {attributes.label}
-        </Text>
+        </AppNBText>
         <TouchableOpacity
           hitSlop={{ top: 10, bottom: 10, right: 50, left: 50 }}
           style={{
@@ -116,7 +118,8 @@ export default class DateField extends Component {
             if (attributes.editable) this.setModalVisible(true);
           }}
         >
-          <Text
+          <AppNBText
+            size={16}
             style={{
               paddingEnd: 10,
               color: !attributes.editable
@@ -125,7 +128,7 @@ export default class DateField extends Component {
             }}
           >
             {dateValue}
-          </Text>
+          </AppNBText>
           <ArrowForwardIcon size={"6"} color={theme.inputColorPlaceholder} />
         </TouchableOpacity>
       </View>
@@ -159,7 +162,7 @@ export default class DateField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent } = this.props;
+    const { theme, attributes, ErrorComponent, AppRNText } = this.props;
     return (
       <View>
         <View
@@ -172,7 +175,7 @@ export default class DateField extends Component {
         </View>
         {this.renderDatePickerModal(attributes)}
         <View style={{ paddingHorizontal: 15 }}>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
       </View>
     );

@@ -1,7 +1,8 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { View, Text } from "native-base";
+import { View } from "native-base";
 import _ from "lodash";
+
 import StarIcon from "../../components/starIcon";
 import { isEmpty } from "../../utils/validators";
 import SearchableDropdown from "./searchableDropDown";
@@ -71,15 +72,19 @@ export default class CascadingDropdownField extends Component {
   };
 
   renderInput = () => {
-    const { theme, attributes } = this.props;
+    const { theme, attributes, AppNBText, AppRNText, AppRNTextInput } = this.props;
     return (
       <View>
         <View style={styles.labelWrapper}>
           <View style={styles.labelContainer}>
             {attributes["required"] && (
-              <StarIcon required={attributes["required"]} />
+              <StarIcon
+                required={attributes["required"]}
+                AppNBText={AppNBText}
+              />
             )}
-            <Text
+            <AppNBText
+              size={18}
               style={[
                 styles.label,
                 {
@@ -88,7 +93,7 @@ export default class CascadingDropdownField extends Component {
               ]}
             >
               {attributes.label}
-            </Text>
+            </AppNBText>
           </View>
         </View>
         <View>
@@ -96,6 +101,8 @@ export default class CascadingDropdownField extends Component {
             onItemSelect={(item) => this.handleChange(item)}
             items={this.getOptions()}
             selectedValue={this.getSelectedValue(attributes)}
+            AppRNText={AppRNText}
+            AppRNTextInput={AppRNTextInput}
           />
         </View>
       </View>
@@ -103,13 +110,13 @@ export default class CascadingDropdownField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent } = this.props;
+    const { theme, attributes, ErrorComponent, AppRNText } = this.props;
 
     return (
       <View style={styles.cascadingRoot}>
         {this.renderInput()}
         <View>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
       </View>
     );

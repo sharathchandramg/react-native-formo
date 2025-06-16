@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   labelText: {
     opacity: 0,
     position: "absolute",
-    fontSize: 16,
+    // fontSize: 16,
     paddingStart: 5,
     lineHeight: 18,
   },
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   btnText: {
-    fontSize: 16,
+    // fontSize: 16,
     color: "white",
     alignSelf: "center",
     fontWeight: "700",
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   input: {
     height: 60,
     borderWidth: 0,
-    fontSize: 18,
+    // fontSize: 18,
     ...Platform.select({
       ios: {
         lineHeight: 30,
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   animatedLabel: {
     position: "absolute",
     left: 0,
-    fontSize: 16,
+    // fontSize: 16,
     paddingStart: 5,
     width: "100%",
   },

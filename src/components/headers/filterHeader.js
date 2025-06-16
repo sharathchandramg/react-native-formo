@@ -1,12 +1,12 @@
 import React from "react";
-import { View, ArrowBackIcon, Text } from "native-base";
+import { View, ArrowBackIcon } from "native-base";
 import { TouchableOpacity } from "react-native";
 
-import LinearGradientHeader from './linearGradientHeader';
+import LinearGradientHeader from "./linearGradientHeader";
 import styles from "./../../fields/userDirectory/styles";
 
 const FilterHeader = (props) => {
-  const { theme, toggleFilterModalVisible } = props;
+  const { theme, toggleFilterModalVisible, AppNBText } = props;
   return (
     <View style={styles.headerWrapper}>
       <View style={styles.header}>
@@ -19,7 +19,9 @@ const FilterHeader = (props) => {
           </TouchableOpacity>
         </View>
         <View style={styles.headerCenter}>
-          <Text style={theme.headerText}>{"Filter"}</Text>
+          <AppNBText size={18} style={theme.headerText}>
+            {"Filter"}
+          </AppNBText>
         </View>
       </View>
       <LinearGradientHeader />

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { View, Text } from "native-base";
+import { View } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
 import styles from "./styles";
@@ -19,13 +19,14 @@ export default class RatingField extends Component {
   };
 
   renderLabel = () => {
-    const { theme, attributes } = this.props;
+    const { theme, attributes, AppNBText } = this.props;
     return (
       <View style={styles.labelWrapper}>
         {attributes["required"] && (
-          <StarIcon required={attributes["required"]} />
+          <StarIcon required={attributes["required"]} AppNBText={AppNBText} />
         )}
-        <Text
+        <AppNBText
+          size={16}
           style={[
             styles.labelText,
             {
@@ -34,7 +35,7 @@ export default class RatingField extends Component {
           ]}
         >
           {attributes.label}
-        </Text>
+        </AppNBText>
       </View>
     );
   };
@@ -86,7 +87,7 @@ export default class RatingField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent } = this.props;
+    const { theme, attributes, ErrorComponent, AppRNText } = this.props;
 
     return (
       <View style={styles.container}>
@@ -99,7 +100,7 @@ export default class RatingField extends Component {
           {this.renderIcon()}
         </View>
         <View>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
       </View>
     );

@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   },
   label: {
     paddingStart: 4,
-    fontSize: 18,
+    // fontSize: 18,
   },
   inputWrapper: {
     backgroundColor: "white",
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   input: {
     minHeight: 50,
     paddingLeft: 10,
-    fontSize: 16,
+    // fontSize: 16,
     elevation: 4,
     shadowColor: "#000",
     shadowOpacity: 0.2,
@@ -49,9 +49,12 @@ const styles = StyleSheet.create({
   },
   itemWrapper: {
     padding: 10,
-    borderColor: "#D9D5DC"
+    borderColor: "#D9D5DC",
   },
-  itemLabel: { color: "#ADADAD", fontSize: 16 },
+  itemLabel: {
+    color: "#ADADAD",
+    //  fontSize: 16
+  },
 });
 
 export default styles;

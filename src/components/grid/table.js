@@ -1,42 +1,47 @@
-import React from 'react';
-import { View } from 'react-native';
-import styles from './styles';
+import React from "react";
+import { View } from "react-native";
 
-export const Table = props =>{
-	
-	_renderChildren =(props)=> {
-		return React.Children.map(props.children, child =>
-			React.cloneElement(
-				child,
-				props.borderStyle && child.type.displayName !== 'ScrollView' ? { borderStyle: props.borderStyle } : {}
-			)
-		);
-	}
+import styles from "./styles";
 
-	const { borderStyle } = props;
-	const backgroundColor = (borderStyle && borderStyle.backgroundColor) || '';
-	
-	return (
-		<View style={[styles.tableStyle,{
-			backgroundColor,
-		}]}>
-			{_renderChildren(props)}
-		</View>
-	);
-}
+export const Table = (props) => {
+  _renderChildren = (props) => {
+    return React.Children.map(props.children, (child) =>
+      React.cloneElement(
+        child,
+        props.borderStyle && child.type.displayName !== "ScrollView"
+          ? { borderStyle: props.borderStyle }
+          : {}
+      )
+    );
+  };
 
-export const  TableWrapper = props => {
+  const { borderStyle } = props;
+  const backgroundColor = (borderStyle && borderStyle.backgroundColor) || "";
 
-	_renderChildren =(props) =>{
-		return React.Children.map(props.children, child =>
-			React.cloneElement(child, props.borderStyle ? { borderStyle: props.borderStyle } : {})
-		);
-	}
+  return (
+    <View
+      style={[
+        styles.tableStyle,
+        {
+          backgroundColor,
+        },
+      ]}
+    >
+      {_renderChildren(props)}
+    </View>
+  );
+};
 
-const { style } = props;
-	return (
-		<View style={style}>
-			{this._renderChildren(props)}
-		</View>
-	);
-}
+export const TableWrapper = (props) => {
+  _renderChildren = (props) => {
+    return React.Children.map(props.children, (child) =>
+      React.cloneElement(
+        child,
+        props.borderStyle ? { borderStyle: props.borderStyle } : {}
+      )
+    );
+  };
+
+  const { style } = props;
+  return <View style={style}>{this._renderChildren(props)}</View>;
+};

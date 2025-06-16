@@ -26,7 +26,7 @@ export default {
     borderBottomWidth: 0.5,
   },
   headerText: {
-    fontSize: 18,
+    // fontSize: 18,
     color: "rgb(0,151,235)",
     alignSelf: "flex-start",
   },

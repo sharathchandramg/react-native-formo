@@ -1,13 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import {
-  Platform,
-  Animated,
-  Pressable,
-  Text,
-  TouchableOpacity,
-} from "react-native";
-import { View, Input } from "native-base";
+import { Platform, Animated, Pressable, TouchableOpacity } from "react-native";
+import { View } from "native-base";
 
 import { getKeyboardType } from "./../../utils/helper";
 import { isEmpty } from "./../../utils/validators";
@@ -81,6 +75,7 @@ export default class OTPField extends Component {
   };
 
   renderInputField = (attributes, theme) => {
+    const { AppNBInput } = this.props;
     const inputProps = attributes.props;
     const keyboardType = getKeyboardType(attributes.type);
 
@@ -91,7 +86,8 @@ export default class OTPField extends Component {
 
     return (
       <View style={styles.inputWrapper}>
-        <Input
+        <AppNBInput
+          size={18}
           style={[
             styles.input,
             {
@@ -141,7 +137,7 @@ export default class OTPField extends Component {
   };
 
   onTextLayout = (e) => {
-    this.setState({ numOfLines: 1});
+    this.setState({ numOfLines: 1 });
   };
 
   getRefFieldValue = (attributes) => {
@@ -184,14 +180,23 @@ export default class OTPField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent, SuccessComponent } = this.props;
+    const {
+      theme,
+      attributes,
+      ErrorComponent,
+      SuccessComponent,
+      AppRNText,
+      AppNBText,
+      AppAnimatedText
+    } = this.props;
     return (
       <View>
         <View style={styles.container}>
           <View style={styles.inputBorder}>
             <View style={styles.contentWrapper}>
               <Pressable onPress={() => {}}>
-                <Text
+                <AppRNText
+                  size={16}
                   onTextLayout={this.onTextLayout}
                   style={[
                     styles.labelText,
@@ -199,19 +204,23 @@ export default class OTPField extends Component {
                   ]}
                 >
                   {this.getLabel(attributes)}
-                </Text>
+                </AppRNText>
               </Pressable>
-              <Animated.Text
+              <AppAnimatedText
+                size={16}
                 style={this.getLabelStyles()}
                 numberOfLines={1}
               >
                 {attributes["required"] && (
                   <>
-                    <StarIcon required={attributes["required"]} />{" "}
+                    <StarIcon
+                      required={attributes["required"]}
+                      AppNBText={AppNBText}
+                    />
                   </>
                 )}
                 {this.getLabel(attributes)}
-              </Animated.Text>
+              </AppAnimatedText>
               <View style={styles.inputBtnWrapper}>
                 {this.renderInputField(attributes, theme)}
                 <View style={styles.btnWrapper}>
@@ -227,7 +236,9 @@ export default class OTPField extends Component {
                     disabled={this.state.disableBtn}
                     onPress={() => this.handleChangeGetotp(attributes)}
                   >
-                    <Text style={styles.btnText}>{this.state.btnText}</Text>
+                    <AppRNText size={16} style={styles.btnText}>
+                      {this.state.btnText}
+                    </AppRNText>
                   </TouchableOpacity>
                 </View>
               </View>
@@ -236,9 +247,9 @@ export default class OTPField extends Component {
         </View>
         <View style={styles.errorSuccessWrapper}>
           {attributes.error && attributes.errorMsg ? (
-            <ErrorComponent {...{ attributes, theme }} />
+            <ErrorComponent {...{ attributes, theme, AppRNText }} />
           ) : attributes.success && attributes.successMsg ? (
-            <SuccessComponent {...{ attributes, theme }} />
+            <SuccessComponent {...{ attributes, theme, AppRNText }} />
           ) : (
             <View />
           )}

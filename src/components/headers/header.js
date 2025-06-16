@@ -1,12 +1,12 @@
 import React from "react";
-import { View, ArrowBackIcon, Text } from "native-base";
+import { View, ArrowBackIcon } from "native-base";
 import { TouchableOpacity } from "react-native";
-import LinearGradientHeader from './linearGradientHeader';
+import LinearGradientHeader from "./linearGradientHeader";
 
 import styles from "../../fields/userDirectory/styles";
 
 const CustomHeader = (props) => {
-  const { theme, toggleModalVisible, attributes } = props;
+  const { theme, toggleModalVisible, attributes, AppNBText } = props;
   return (
     <View style={styles.headerWrapper}>
       <View style={styles.header}>
@@ -19,7 +19,9 @@ const CustomHeader = (props) => {
           </TouchableOpacity>
         </View>
         <View style={styles.headerCenter}>
-          <Text style={theme.headerText}>{attributes.label || "Select"}</Text>
+          <AppNBText size={18} style={theme.headerText}>
+            {attributes.label || "Select"}
+          </AppNBText>
         </View>
       </View>
       <LinearGradientHeader />

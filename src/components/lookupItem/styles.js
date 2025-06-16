@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     },
 
     labelText: {
-        fontSize: 16,
+        // fontSize: 16,
         lineHeight: 18,
         paddingHorizontal: 5,
         color: '#ADADAD',

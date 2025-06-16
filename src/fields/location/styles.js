@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
         color:'blue',
         fontFamily:'roboto',
         alignSelf:'flex-start',
-        fontSize:16,
+        // fontSize:16,
         lineHeight:16,
         height:16,
     },
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         color:  '#ADADAD',
         // alignSelf:'flex-start',
         paddingHorizontal:5,
-        fontSize:16
+        // fontSize:16
         
     },
     valueContainer:{

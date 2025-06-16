@@ -1,8 +1,9 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { TouchableOpacity, Modal } from "react-native";
-import { View, Text, ArrowForwardIcon } from "native-base";
+import { View, ArrowForwardIcon } from "native-base";
 import _ from "lodash";
+
 import styles from "./styles";
 import { EditComponent, GridComponent } from "../../components/grid";
 import { isEmpty } from "../../utils/validators";
@@ -377,7 +378,7 @@ export default class SimpleGrideView extends Component {
   };
 
   renderComponent = () => {
-    const { theme, attributes } = this.props;
+    const { theme, attributes, AppRNText, AppNBText, AppNBInput } = this.props;
     const editModal = this.state.editModal;
     const rowData = this.state.rowData;
     if (editModal) {
@@ -389,13 +390,17 @@ export default class SimpleGrideView extends Component {
           onChangeText={this.onChangeText}
           handleOnSaveClick={this.handleOnSaveClick}
           toggleModalVisible={this.toggleEditModal}
+          AppRNText={AppRNText}
+          AppNBText={AppNBText}
+          AppNBInput={AppNBInput}
         />
       );
     }
   };
 
   render() {
-    const { theme, attributes, ErrorComponent } = this.props;
+    const { theme, attributes, ErrorComponent, AppNBText, AppRNText } =
+      this.props;
     return (
       <View style={styles.container}>
         <View style={[styles.inputLabelWrapper, { width: "95%" }]}>
@@ -406,10 +411,15 @@ export default class SimpleGrideView extends Component {
           >
             <View style={styles.labelTextWrapper}>
               {attributes["required"] && (
-                <StarIcon required={attributes["required"]} />
+                <StarIcon
+                  required={attributes["required"]}
+                  AppNBText={AppNBText}
+                />
               )}
 
-              <Text style={styles.labelText}>{attributes.label}</Text>
+              <AppNBText size={16} style={styles.labelText}>
+                {attributes.label}
+              </AppNBText>
             </View>
             <View
               style={[
@@ -418,16 +428,16 @@ export default class SimpleGrideView extends Component {
               ]}
             >
               <View style={{ width: "93%" }}>
-                <Text style={styles.inputText} numberOfLines={1}>
+                <AppNBText size={18} style={styles.inputText} numberOfLines={1}>
                   {this.getLabel(attributes.value)}
-                </Text>
+                </AppNBText>
               </View>
               {this.renderChecklistIcon()}
             </View>
           </TouchableOpacity>
         </View>
         <View style={{ paddingHorizontal: 15 }}>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
         {
           <Modal
@@ -453,6 +463,8 @@ export default class SimpleGrideView extends Component {
                 tableHeader={this.getTableHeader(this.state.data)}
                 rowTitle={this.getRowTitle(this.state.data)}
                 tableData={this.getTableData(this.state.data)}
+                AppNBText={AppNBText}
+                AppRNText={AppRNText}
               />
             )}
           </Modal>

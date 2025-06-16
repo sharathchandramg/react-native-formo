@@ -2,10 +2,8 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Modal, TouchableOpacity, ScrollView } from "react-native";
 import _ from "lodash";
-import { isEmpty } from "../../utils/validators";
 import {
   View,
-  Text,
   ArrowBackIcon,
   ArrowForwardIcon,
   SearchIcon,
@@ -14,6 +12,7 @@ import {
 import Icon from "react-native-vector-icons/FontAwesome";
 
 import styles from "./styles";
+import { isEmpty } from "../../utils/validators";
 import LinearGradientHeader from "./../../components/headers/linearGradientHeader";
 import SearchHeader from "../../components/headers/searchHeader";
 import StarIcon from "../../components/starIcon";
@@ -278,7 +277,7 @@ export default class UserDirectoryField extends Component {
   };
 
   renderOptionList = () => {
-    const { attributes } = this.props;
+    const { attributes, AppNBText } = this.props;
     let list = [];
 
     if (!isEmpty(this.state["options"]) && this.state["options"].length) {
@@ -318,13 +317,14 @@ export default class UserDirectoryField extends Component {
                 />
               )}
               <View>
-                <Text
+                <AppNBText
+                  size={14}
                   style={{
                     paddingHorizontal: 5,
                   }}
                 >
                   {this.displayLabelKey(item)}
-                </Text>
+                </AppNBText>
               </View>
             </TouchableOpacity>
           );
@@ -335,13 +335,15 @@ export default class UserDirectoryField extends Component {
       list
     ) : (
       <View style={styles.noDataWrapper}>
-        <Text style={styles.nodataText}>No records found</Text>
+        <AppNBText size={14} style={styles.nodataText}>
+          No records found
+        </AppNBText>
       </View>
     );
   };
 
   renderHeader = () => {
-    const { theme, attributes } = this.props;
+    const { theme, attributes, AppNBText } = this.props;
     return (
       <View style={styles.headerWrapper}>
         <View style={styles.header}>
@@ -352,7 +354,9 @@ export default class UserDirectoryField extends Component {
             <ArrowBackIcon size={"6"} color={"rgb(0,151,235)"} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.headerCenter}>
-            <Text style={theme.headerText}>{attributes.label || "Select"}</Text>
+            <AppNBText size={18} style={theme.headerText}>
+              {attributes.label || "Select"}
+            </AppNBText>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.headerCenterIconView}
@@ -367,7 +371,7 @@ export default class UserDirectoryField extends Component {
   };
 
   renderFooter = () => {
-    const { attributes } = this.props;
+    const { attributes, AppNBText } = this.props;
     if (attributes && attributes["multiple"]) {
       return (
         <View style={styles.footerWrapper}>
@@ -375,7 +379,9 @@ export default class UserDirectoryField extends Component {
             style={styles.button}
             onPress={() => this.handleAddPressed()}
           >
-            <Text style={styles.buttonText}>{"Add"} </Text>
+            <AppNBText size={18} style={styles.buttonText}>
+              {"Add"}
+            </AppNBText>
           </TouchableOpacity>
         </View>
       );
@@ -384,6 +390,7 @@ export default class UserDirectoryField extends Component {
   };
 
   renderSearchText = () => {
+    const { AppNBText } = this.props;
     if (this.state.searchText) {
       return (
         <View style={styles.selectedContainer}>
@@ -391,13 +398,15 @@ export default class UserDirectoryField extends Component {
             style={styles.selectedStatusOuter}
             onPress={() => this.handleReset()}
           >
-            <Text
-              adjustsFontSizeToFit
+            <AppNBText
+              size={12}
+              adjustsFontSizeToFit={true}
+              minimumFontScale={0.95}
               numberOfLines={1}
               style={styles.selectedText}
             >
               {this.state.searchText}
-            </Text>
+            </AppNBText>
             <TouchableOpacity
               style={styles.removeFilterIcon}
               onPress={() => this.handleReset()}
@@ -416,6 +425,7 @@ export default class UserDirectoryField extends Component {
   };
 
   renderComponent = () => {
+    const { AppNBInput } = this.props;
     if (this.state.searchModalVisible) {
       return (
         <View style={styles.modalContent}>
@@ -424,6 +434,7 @@ export default class UserDirectoryField extends Component {
             handleOnSearchQuery={this.handleOnSearchQuery}
             handleTextChange={this.handleTextChange}
             searchText={this.state.searchText}
+            AppNBInput={AppNBInput}
           />
           <ScrollView style={{ flex: 1 }}>
             <View>{this.renderOptionList()}</View>
@@ -445,7 +456,8 @@ export default class UserDirectoryField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent } = this.props;
+    const { theme, attributes, ErrorComponent, AppNBText, AppRNText } =
+      this.props;
     return (
       <View style={styles.container}>
         <View
@@ -463,9 +475,14 @@ export default class UserDirectoryField extends Component {
           >
             <View style={styles.labelTextWrapper}>
               {attributes["required"] && (
-                <StarIcon required={attributes["required"]} />
+                <StarIcon
+                  required={attributes["required"]}
+                  AppNBText={AppNBText}
+                />
               )}
-              <Text style={[styles.labelText]}>{attributes.label}</Text>
+              <AppNBText size={16} style={[styles.labelText]}>
+                {attributes.label}
+              </AppNBText>
             </View>
             <View
               style={[
@@ -474,7 +491,9 @@ export default class UserDirectoryField extends Component {
               ]}
             >
               <View style={{ width: "93%" }} numberOfLines={1}>
-                <Text style={styles.inputText}>{this.getLabel()}</Text>
+                <AppNBText size={18} style={styles.inputText}>
+                  {this.getLabel()}
+                </AppNBText>
               </View>
               {this.renderIcon(attributes)}
             </View>
@@ -491,7 +510,7 @@ export default class UserDirectoryField extends Component {
         </Modal>
 
         <View style={{ paddingHorizontal: 15 }}>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
       </View>
     );

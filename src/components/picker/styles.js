@@ -33,11 +33,11 @@ const styles = StyleSheet.create({
   },
   noResultsText: {
     textAlign: "center",
-    fontSize: 16,
+    // fontSize: 16,
   },
   inputText: {
     paddingRight: 25,
-    fontSize: 16,
+    // fontSize: 16,
   },
   itemWrapper1: {
     width: width * 0.8,
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   itemText: {
     paddingHorizontal: 10,
     paddingVertical: 15,
-    fontSize: 16,
+    // fontSize: 16,
   },
   searchIconWrapper: {
     position: "absolute",

@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     },
 
     labelText: {
-        fontSize: 18,
+        // fontSize: 18,
         lineHeight: 20,
         minHeight: 20,
         color: '#ADADAD',
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     },
 
     inputText: {
-        fontSize: 15,
+        // fontSize: 15,
         lineHeight: 20,
         minHeight: 20,
         color: '#575757',
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10,
         alignItems: 'center',
-        fontSize: 12,
+        // fontSize: 12,
         width: '70%',
     },
 

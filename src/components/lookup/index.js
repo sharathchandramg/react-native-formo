@@ -5,13 +5,12 @@ import {
   FlatList,
   ScrollView,
   RefreshControl,
-  Dimensions
+  Dimensions,
 } from "react-native";
-import { Text } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import _ from "lodash";
-import LinearGradient from 'react-native-linear-gradient';
-import ActionButton from 'react-native-action-button';
+import LinearGradient from "react-native-linear-gradient";
+import ActionButton from "react-native-action-button";
 
 import RecyclerList from "../recyclerList";
 import { isNull } from "../../utils/validators";
@@ -34,7 +33,9 @@ const LookupComponent = (props) => {
     hideInlineCreation,
     onAddLookup,
     onClickInlineCreationButton,
-    selectedFilter
+    selectedFilter,
+    AppNBText,
+    AppRNText,
   } = props;
 
   getLabel = (item) => {
@@ -69,13 +70,15 @@ const LookupComponent = (props) => {
           style={styles.selectedStatusOuter}
           onPress={() => handleReset(item)}
         >
-          <Text
-            adjustsFontSizeToFit
+          <AppNBText
+            size={12}
+            adjustsFontSizeToFit={true}
             numberOfLines={1}
             style={styles.selectedText}
+            minimumFontScale={0.95}
           >
             {label}
-          </Text>
+          </AppNBText>
           <TouchableOpacity
             style={styles.removeFilterIcon}
             onPress={() => handleReset(item)}
@@ -107,33 +110,28 @@ const LookupComponent = (props) => {
     if (onAddLookup && typeof onAddLookup === "function") {
       return (
         <ActionButton
-        buttonColor={"#fff"}
-        offsetY={70}
-        offsetX={20}
-        renderIcon={() => (
+          buttonColor={"#fff"}
+          offsetY={70}
+          offsetX={20}
+          renderIcon={() => (
             <LinearGradient
-                colors={['rgb(0,151,235)', 'rgb(0,151,235)']}
-                style={{
-                    height: 50,
-                    width: 50,
-                    borderRadius: 25,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}
-                start={{ x: 0.0, y: 1.0 }}
-                end={{ x: 1.0, y: 1.0 }}
-                locations={[0.0, 1]}
+              colors={["rgb(0,151,235)", "rgb(0,151,235)"]}
+              style={{
+                height: 50,
+                width: 50,
+                borderRadius: 25,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              start={{ x: 0.0, y: 1.0 }}
+              end={{ x: 1.0, y: 1.0 }}
+              locations={[0.0, 1]}
             >
-                <Icon
-                    name={ 'plus'}
-                    size={16}
-                    color={'#fff'}
-                    light
-                />
+              <Icon name={"plus"} size={16} color={"#fff"} light />
             </LinearGradient>
-        )}
-        onPress={() => onClickInlineCreationButton()}
-    />
+          )}
+          onPress={() => onClickInlineCreationButton()}
+        />
       );
     } else {
       return null;
@@ -147,7 +145,7 @@ const LookupComponent = (props) => {
         <View
           style={{
             height: height * 0.95,
-            width: "100%"
+            width: "100%",
           }}
         >
           {selectedFilter && selectedFilter.length > 0 ? (
@@ -163,6 +161,7 @@ const LookupComponent = (props) => {
               toggleSelect={toggleSelect}
               handlePullToRefresh={handlePullToRefresh}
               loading={loading}
+              AppRNText={AppRNText}
             />
           ) : (
             <ScrollView
@@ -180,11 +179,11 @@ const LookupComponent = (props) => {
               }
             >
               <View style={styles.noDataWrapper}>
-                <Text style={styles.nodataText}>
+                <AppNBText size={14} style={styles.nodataText}>
                   {lookupSearchReq
                     ? `Searching the data for ${searchText1}`
                     : "No matching result found. Pl try again"}
-                </Text>
+                </AppNBText>
               </View>
             </ScrollView>
           )}

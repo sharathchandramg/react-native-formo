@@ -704,34 +704,50 @@ export async function requestLocationPermission() {
   }
 }
 
+const sanitizeValues = (obj) => {
+  const result = {};
+  for (const key in obj) {
+    const val = obj[key];
+
+    if (
+      (typeof val === 'string' || typeof val === 'number') &&
+      !isNaN(val) &&
+      val !== '' &&
+      val !== null
+    ) {
+      result[key] = Number(val);
+    } else {
+      result[key] = val;
+    }
+  }
+  return result;
+};
+
 /**
  * Compile the expression, if result is false then return the default value
  * else return the compiled expression value
  */
 const calculateConditionalMatch = (expressions, values, defaultValue) => {
+  const safeValues = sanitizeValues(values);
   for (const expr of expressions) {
     const fn = compileExpression(expr);
-    const result = fn(values);
+    const result = fn(safeValues);
     if (result !== "false") {
       return result;
     }
   }
-  if (defaultValue.includes('{{') && defaultValue.includes('}}')) {
-    const defaultExpr = defaultValue.replace(/{{|}}/g, '');
-    const fn = compileExpression(defaultExpr);
-    const result = fn(values);
+  if (defaultValue && !isEmpty(values)) {
+    const fn = compileExpression(defaultValue);
+    const result = fn(safeValues);
     return result !== 'false' ? result : null;
   }
-  return !isEmpty(values) ? defaultValue : null;
+  return null;
 };
 
 const calculateExpr = (type, expressions, values, defaultValue) => {
   switch (type) {
     case "conditional_match":
-      const updatedExpressions = expressions.map((s) =>
-        s.replace(/{{|}}/g, '')
-      );
-      return calculateConditionalMatch(updatedExpressions, values, defaultValue);
+      return calculateConditionalMatch(expressions, values, defaultValue);
     default:
       return null;
   }

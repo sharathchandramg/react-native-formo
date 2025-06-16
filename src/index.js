@@ -45,11 +45,11 @@ import {
 import { isEmpty } from "./utils/validators";
 
 const DefaultErrorComponent = (props) => {
-  const attributes = props.attributes;
-  const theme = props.theme;
+  const { attributes, theme, AppRNText } = props;
   if (attributes.error) {
     return (
-      <Text
+      <AppRNText
+        size={14}
         style={{
           color: theme.errorMsgColor,
           paddingStart: [
@@ -66,18 +66,18 @@ const DefaultErrorComponent = (props) => {
         }}
       >
         {attributes.errorMsg}
-      </Text>
+      </AppRNText>
     );
   }
   return null;
 };
 
 const DefaultSuccessComponent = (props) => {
-  const attributes = props.attributes;
-  const theme = props.theme;
+  const { attributes, theme, AppRNText } = props;
   if (attributes.success) {
     return (
-      <Text
+      <AppRNText
+        size={14}
         style={{
           color: theme.backgroundColor,
           paddingStart: [
@@ -94,7 +94,7 @@ const DefaultSuccessComponent = (props) => {
         }}
       >
         {attributes.successMsg}
-      </Text>
+      </AppRNText>
     );
   }
   return null;
@@ -183,7 +183,10 @@ export default class Form0 extends Component {
           field.error = validate.error;
           field.errorMsg = validate.errorMsg;
         }
-        if ((field.type === "number" && !isFieldCalculated(field)) || field.type === "otp") {
+        if (
+          (field.type === "number" && !isFieldCalculated(field)) ||
+          field.type === "otp"
+        ) {
           let validate = customValidateData(field);
           field.error = validate.error;
           field.errorMsg = validate.errorMsg;
@@ -625,7 +628,7 @@ export default class Form0 extends Component {
 
       Object.keys(updatedFields).forEach((fieldName) => {
         const field = updatedFields[fieldName];
-        if (field && field['expr_field'] && field['expr_field'].length > 0) {
+        if (field && field["expr_field"] && field["expr_field"].length > 0) {
           const res = customFieldCalculations(
             field,
             field.value,
@@ -673,6 +676,11 @@ export default class Form0 extends Component {
           ErrorComponent: errorComponent || DefaultErrorComponent,
           SuccessComponent: successComponent || DefaultSuccessComponent,
           navigation: this.props["navigation"] || null,
+          AppRNText: this.props.inputComponents.AppText,
+          AppRNTextInput: this.props.inputComponents.AppTextInput,
+          AppNBText: this.props.inputComponents.AppNBText,
+          AppNBInput: this.props.inputComponents.AppNBInput,
+          AppAnimatedText: this.props.inputComponents.AppAnimatedText
         };
 
         switch (field.type) {

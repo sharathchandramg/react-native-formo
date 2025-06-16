@@ -2,14 +2,12 @@ import React from "react";
 import {
   Modal,
   FlatList,
-  Dimensions,
   KeyboardAvoidingView,
   TouchableOpacity,
   View,
-  Text,
   TouchableWithoutFeedback,
 } from "react-native";
-import { Input, SearchIcon } from "native-base";
+import { SearchIcon } from "native-base";
 
 import styles from "./styles";
 
@@ -40,6 +38,7 @@ export default class PickerModal extends React.PureComponent {
   };
 
   renderItem = ({ item }) => {
+    const { AppRNText } = this.props;
     return (
       <TouchableOpacity
         onPress={() => {
@@ -49,7 +48,8 @@ export default class PickerModal extends React.PureComponent {
       >
         <View style={styles.itemWrapper1}>
           <View style={styles.itemWrapper2}>
-            <Text
+            <AppRNText
+              size={16}
               style={[
                 styles.itemText,
                 {
@@ -59,7 +59,7 @@ export default class PickerModal extends React.PureComponent {
               numberOfLines={1}
             >
               {item}
-            </Text>
+            </AppRNText>
           </View>
         </View>
       </TouchableOpacity>
@@ -67,6 +67,7 @@ export default class PickerModal extends React.PureComponent {
   };
 
   render() {
+    const { AppRNText, AppNBInput } = this.props;
     return (
       <KeyboardAvoidingView behavior="height">
         <Modal
@@ -88,7 +89,8 @@ export default class PickerModal extends React.PureComponent {
                 {this.state.datas.length > 20 && (
                   <View style={styles.header}>
                     <View style={{ width: "100%" }}>
-                      <Input
+                      <AppNBInput
+                        size={16}
                         placeholder="Search"
                         onChangeText={(text) => this.searchFilter(text)}
                         style={styles.inputText}
@@ -101,7 +103,9 @@ export default class PickerModal extends React.PureComponent {
                 )}
                 {this.state.dataSource.length === 0 ? (
                   <View style={styles.noResultsWrapper}>
-                    <Text style={styles.noResultsText}>No results found</Text>
+                    <AppRNText size={16} style={styles.noResultsText}>
+                      No results found
+                    </AppRNText>
                   </View>
                 ) : (
                   <FlatList

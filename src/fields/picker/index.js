@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { TouchableOpacity } from "react-native";
-import { View, Text } from "native-base";
+import { View } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 
 import styles from "./../../styles";
@@ -33,7 +33,7 @@ export default class PickerField extends Component {
   };
 
   renderPicker = (pickerValue) => {
-    const { theme, attributes } = this.props;
+    const { theme, attributes, AppNBText, AppRNText, AppNBInput } = this.props;
     const options =
       attributes && !isEmpty(attributes.options) ? attributes.options : [];
     return (
@@ -58,17 +58,18 @@ export default class PickerField extends Component {
           }}
         >
           {attributes["required"] && (
-            <StarIcon required={attributes["required"]} />
+            <StarIcon required={attributes["required"]} AppNBText={AppNBText} />
           )}
-          <Text
+          <AppNBText
+            size={16}
             style={{
               color: theme.inputColorPlaceholder,
               paddingStart: 5,
-              fontSize: 16,
+              // fontSize: 16,
             }}
           >
             {attributes.label}
-          </Text>
+          </AppNBText>
         </View>
         <View>
           <TouchableOpacity
@@ -86,9 +87,10 @@ export default class PickerField extends Component {
               }}
             >
               <View>
-                <Text
+                <AppNBText
+                  size={18}
                   style={{
-                    fontSize: 18,
+                    // fontSize: 18,
                     color: !attributes.editable
                       ? theme.inputColorPlaceholder
                       : theme.pickerColorSelected,
@@ -96,7 +98,7 @@ export default class PickerField extends Component {
                   numberOfLines={1}
                 >
                   {pickerValue}
-                </Text>
+                </AppNBText>
               </View>
               <View>
                 <Icon
@@ -119,6 +121,8 @@ export default class PickerField extends Component {
             closeModal={this.closeModal}
             handleChange={this.handleChange}
             theme={theme}
+            AppRNText={AppRNText}
+            AppNBInput={AppNBInput}
           />
         )}
       </View>
@@ -126,7 +130,7 @@ export default class PickerField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent } = this.props;
+    const { theme, attributes, ErrorComponent, AppRNText } = this.props;
     const value = attributes["value"] || "";
     const defaultValue = attributes["defaultValue"] || "-Select-";
     const pickerValue = value || defaultValue;
@@ -135,7 +139,7 @@ export default class PickerField extends Component {
       <View style={{ paddingHorizontal: 15, paddingTop: 5 }}>
         {this.renderPicker(pickerValue)}
         <View>
-          <ErrorComponent {...{ attributes, theme }} />
+          <ErrorComponent {...{ attributes, theme, AppRNText }} />
         </View>
       </View>
     );

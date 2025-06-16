@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
   },
   labelText: {
-    fontSize: 16,
+    // fontSize: 16,
     color: "#ADADAD",
     fontFamily: "roboto",
     textAlign: "left",
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     paddingStart: 5,
   },
   inputText: {
-    fontSize: 18,
+    // fontSize: 18,
     color: "#575757",
     fontFamily: "roboto",
     fontWeight: "100",
