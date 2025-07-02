@@ -254,7 +254,7 @@ export default class TextInputField extends Component {
                   />
                 </>
               )}
-              {attributes.label}
+              {" "}{attributes.label}
             </AppAnimatedText>
             {typeof attributes.type !== "undefined" &&
             attributes.type === "calculated"
