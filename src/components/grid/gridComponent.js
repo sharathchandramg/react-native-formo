@@ -37,6 +37,7 @@ const GridComponent = (props) => {
               height={rowHeight}
               backgroundColor={"#48BBEC"}
               rowNumber={0}
+              AppRNText={AppRNText}
             />
           </Table>
           <View style={styles.dataWrapper}>

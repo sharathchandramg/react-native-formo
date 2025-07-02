@@ -204,7 +204,7 @@ export default class TextInputField extends Component {
                     />
                   </>
                 )}
-                {attributes.label}
+                {" "}{attributes.label}
                 {!isEmpty(attributes["value"]) && (
                   <AppRNText
                     size={14}

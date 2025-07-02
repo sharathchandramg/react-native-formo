@@ -13,7 +13,7 @@ export const Row = (props) => {
     backgroundColor,
     rowNumber,
     toggleEditModal,
-	AppRNText
+    AppRNText,
   } = props;
   let width = widthArr ? sum(widthArr) : 0;
 
