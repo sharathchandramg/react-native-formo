@@ -137,6 +137,13 @@ export function getDefaultValue(field) {
           } else if (field.defaultValue === "") {
             return "Select";
           } else return null;
+        case "dayofweek":
+        case "dayofthemonth":
+        case "weekno":
+        case "monthno":
+        case "monthname":
+        case "year":
+          return getDatePartValue(field.mode);
       }
     }
 
@@ -248,19 +255,19 @@ export function getInitialState(fields) {
   });
 
   _.forEach(fields, (field) => {
-      if (
-        field &&
-        field["expr_field"] &&
-        field["expr_field"].length > 0
-      ) {
-        const res = customFieldCalculations(field, state?.[field.name]?.value, state);
-        if (res && res.length > 0) {
-          res.forEach((item) => {
-            state[item.name] = item;
-          });
-        }
+    if (field && field["expr_field"] && field["expr_field"].length > 0) {
+      const res = customFieldCalculations(
+        field,
+        state?.[field.name]?.value,
+        state
+      );
+      if (res && res.length > 0) {
+        res.forEach((item) => {
+          state[item.name] = item;
+        });
       }
-    });
+    }
+  });
 
   return state;
 }
@@ -710,9 +717,9 @@ const sanitizeValues = (obj) => {
     const val = obj[key];
 
     if (
-      (typeof val === 'string' || typeof val === 'number') &&
+      (typeof val === "string" || typeof val === "number") &&
       !isNaN(val) &&
-      val !== '' &&
+      val !== "" &&
       val !== null
     ) {
       result[key] = Number(val);
@@ -739,7 +746,7 @@ const calculateConditionalMatch = (expressions, values, defaultValue) => {
   if (defaultValue && !isEmpty(values)) {
     const fn = compileExpression(defaultValue);
     const result = fn(safeValues);
-    return result !== 'false' ? result : null;
+    return result !== "false" ? result : null;
   }
   return null;
 };
@@ -841,4 +848,24 @@ export const isFieldCalculated = (field) => {
     !isEmpty(field["additional_config"]["calc"]["expr"])
     ? true
     : false;
+};
+
+export const getDatePartValue = (type) => {
+  const date = moment();
+  switch (type) {
+    case "dayofweek":
+      return date.format("dddd");
+    case "dayofthemonth":
+      return date.format("DD");
+    case "weekno":
+      return date.isoWeek().toString();
+    case "monthno":
+      return date.format("MM");
+    case "monthname":
+      return date.format("MMM-YY");
+    case "year":
+      return date.format("YYYY");
+    default:
+      return null;
+  }
 };

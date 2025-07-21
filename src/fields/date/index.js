@@ -5,6 +5,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { View, ArrowForwardIcon } from "native-base";
 
 import StarIcon from "../../components/starIcon";
+import { isEmpty } from "./../../utils/validators";
 
 const moment = require("moment");
 
@@ -56,6 +57,7 @@ export default class DateField extends Component {
     const { theme, attributes, AppNBText } = this.props;
     const value = (attributes.value && moment(attributes.value)) || null;
     let dateValue = "Select";
+    let isFieldDatePart = false;
 
     switch (attributes.mode) {
       case "datetime":
@@ -70,6 +72,15 @@ export default class DateField extends Component {
       case "time":
         const timeFormat = attributes["is_24hour"] ? "HH:mm" : "hh:mm a";
         dateValue = value && moment(value).format(timeFormat);
+        break;
+      case "dayofweek":
+      case "dayofthemonth":
+      case "weekno":
+      case "monthno":
+      case "monthname":
+      case "year":
+        isFieldDatePart = true;
+        dateValue = !isEmpty(attributes.value) ? attributes.value : "";
         break;
       default:
         dateValue = value && moment(value).format("Do MMM YYYY HH:mm");
@@ -101,7 +112,8 @@ export default class DateField extends Component {
             // fontSize: 16,
           }}
           onPress={() => {
-            if (attributes.editable) this.setModalVisible(true);
+            if (attributes.editable && !isFieldDatePart)
+              this.setModalVisible(true);
           }}
         >
           {attributes.label}
@@ -115,7 +127,8 @@ export default class DateField extends Component {
             flexDirection: "row",
           }}
           onPress={() => {
-            if (attributes.editable) this.setModalVisible(true);
+            if (attributes.editable && !isFieldDatePart)
+              this.setModalVisible(true);
           }}
         >
           <AppNBText
@@ -129,7 +142,9 @@ export default class DateField extends Component {
           >
             {dateValue}
           </AppNBText>
-          <ArrowForwardIcon size={"6"} color={theme.inputColorPlaceholder} />
+          {!isFieldDatePart && (
+            <ArrowForwardIcon size={"6"} color={theme.inputColorPlaceholder} />
+          )}
         </TouchableOpacity>
       </View>
     );
