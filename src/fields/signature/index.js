@@ -16,10 +16,34 @@ import styles from "./styles";
 import { isEmpty } from "../../utils/validators";
 import StarIcon from "../../components/starIcon";
 import ZoomImage from "../../components/zoomImage";
-import SignatureCapture from "react-native-signature-capture";
+import SignatureCanvas from "react-native-signature-canvas";
 
 const DEVICE_WIDTH = Dimensions.get("window").width;
+const DEVICE_HEIGHT = Dimensions.get("window").height;
 const moment = require("moment");
+const webStyle = `
+  .m-signature-pad {
+    box-shadow: none;
+    border: none;
+    position: absolute;
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    bottom: 0;
+    height: 100% !important;
+    width: 100% !important;
+  }
+  canvas {
+    height: 100% !important;
+    width: 100% !important;
+  }
+  .m-signature-pad--body {
+    border: none;
+  }
+  .m-signature-pad--footer {
+    display: none;
+  }
+`;
 
 export default class SignatureField extends Component {
   static propTypes = {
@@ -35,8 +59,8 @@ export default class SignatureField extends Component {
     this.isFirstTime = true;
     this.myRef = React.createRef();
     this.state = {
-      openImageModal: false,
-      imgDetails: null,
+      openSignatureModal: false,
+      signatureDetails: null,
       viewMode: "portrait",
       signature: null,
     };
@@ -70,14 +94,14 @@ export default class SignatureField extends Component {
     return true;
   }
 
-  openImageModalView = (value) => {
+  openSignatureModalView = (value) => {
     this.setState({
-      imgDetails: value,
-      openImageModal: true,
+      signatureDetails: value,
+      openSignatureModal: true,
     });
   };
 
-  renderImageItem = ({ item }) => {
+  renderSignatureItem = ({ item }) => {
     return (
       <View
         style={{
@@ -93,7 +117,7 @@ export default class SignatureField extends Component {
             width: parseInt(DEVICE_WIDTH - 20),
             paddingEnd: 5,
           }}
-          onPress={() => this.openImageModalView(item)}
+          onPress={() => this.openSignatureModalView(item)}
         >
           <FastImage
             style={{ flex: 1 }}
@@ -109,16 +133,16 @@ export default class SignatureField extends Component {
     );
   };
 
-  renderImageList = (images) => {
-    if (!isEmpty(images)) {
+  renderSignatureList = (signatures) => {
+    if (!isEmpty(signatures)) {
       return (
         <View style={styles.hScrollView}>
           <FlatList
             horizontal={true}
-            data={images}
+            data={signatures}
             extraData={this.props}
             keyExtractor={(item, index) => index.toString()}
-            renderItem={this.renderImageItem}
+            renderItem={this.renderSignatureItem}
             nestedScrollEnabled={true}
             ref={(ref) => {
               this.flatListRef = ref;
@@ -128,14 +152,6 @@ export default class SignatureField extends Component {
       );
     }
     return null;
-  };
-
-  saveSign = () => {
-    this.myRef.current.saveImage();
-  };
-
-  resetSign = () => {
-    this.myRef.current.resetImage();
   };
 
   getUpdatedPath = (filePath) => {
@@ -148,32 +164,7 @@ export default class SignatureField extends Component {
     return splitPath.join("/");
   };
 
-  _onSaveEvent = (result) => {
-    const { attributes, handleDocumentUpdateAndDownload } = this.props;
-    this.setState({ signature: result, viewMode: "portrait" }, () => {
-      this.closeImageModalView();
-      this.isLocal = true;
-    });
-
-    if (typeof handleDocumentUpdateAndDownload === "function") {
-      const filePath = Platform.OS.match(/ios/i)
-        ? result["pathName"].replace("file://", "", 1)
-        : result["pathName"];
-      handleDocumentUpdateAndDownload(
-        attributes,
-        [
-          {
-            mime_type: "image/png",
-            file_path: this.getUpdatedPath(filePath),
-            base64_data: result["encoded"],
-          },
-        ],
-        "write"
-      );
-    }
-  };
-
-  getImguri = (item, isFromLocal = false) => {
+  getSignatureuri = (item, isFromLocal = false) => {
     if (isFromLocal) {
       return `data:image/png;base64,${item["encoded"]}`;
     } else if (!isEmpty(item["base64Data"]))
@@ -188,7 +179,7 @@ export default class SignatureField extends Component {
     let data = [];
     if (!isEmpty(signatureObj)) {
       data.push({
-        uri: this.getImguri(signatureObj, true),
+        uri: this.getSignatureuri(signatureObj, true),
         priority: FastImage.priority.normal,
         headers: {
           "content-type": "image/png",
@@ -199,7 +190,7 @@ export default class SignatureField extends Component {
       (_.some(value, "url") || _.some(value, "base64Data"))
     ) {
       data.push({
-        uri: this.getImguri(value[0]),
+        uri: this.getSignatureuri(value[0]),
         priority: FastImage.priority.normal,
         headers: {
           "content-type": "image/png",
@@ -210,19 +201,19 @@ export default class SignatureField extends Component {
     return (
       <View style={[styles.topContainer, { borderColor: "#a94442" }]}>
         <Animated.View style={{ flex: 1, flexDirection: "row" }}>
-          {data && data.length ? this.renderImageList(data) : <View />}
+          {data && data.length ? this.renderSignatureList(data) : <View />}
         </Animated.View>
       </View>
     );
   };
 
-  renderAddImageIcon = () => {
+  renderAddSignatureIcon = () => {
     return (
       <TouchableOpacity
         style={styles.valueContainer}
         onPress={() =>
           this.setState({
-            openImageModal: true,
+            openSignatureModal: true,
             viewMode: "portrait",
           })
         }
@@ -238,7 +229,7 @@ export default class SignatureField extends Component {
     );
   };
 
-  checkImageData = () => {
+  checkSignatureData = () => {
     const value = this.props.attributes["value"] || "";
     if (!isEmpty(this.state.signature) || !isEmpty(value)) {
       return true;
@@ -246,21 +237,51 @@ export default class SignatureField extends Component {
     return false;
   };
 
-  closeImageModalView = () => {
+  closeSignatureModalView = () => {
     this.setState({
-      imgDetails: null,
-      openImageModal: false,
+      signatureDetails: null,
+      openSignatureModal: false,
       viewMode: "portrait",
     });
   };
 
+  handleSignatureOK = (signatureDataURL) => {
+    const base64 = signatureDataURL.replace("data:image/png;base64,", "");
+    if (typeof this.props.handleDocumentUpdateAndDownload === "function") {
+      this.props.handleDocumentUpdateAndDownload(
+        this.props.attributes,
+        [
+          {
+            mime_type: "image/png",
+            file_path: `signature_${Date.now()}.png`,
+            base64_data: base64,
+          },
+        ],
+        "write"
+      );
+    }
+    this.setState({
+      signature: { encoded: base64 },
+      openSignatureModal: false,
+    });
+    this.isLocal = true;
+  };
+
+  resetSignature = () => {
+    this.myRef.current.clearSignature();
+  };
+
+  saveSignature = () => {
+    this.myRef.current.readSignature();
+  };
+
   renderModalContent = (item) => {
-    const { AppNBText } = this.props;
+    const { AppNBText, theme } = this.props;
     return (
       <View style={styles.modalContent}>
         <TouchableOpacity
           style={[styles.modalHeader, { backgroundColor: "black" }]}
-          onPress={() => this.closeImageModalView()}
+          onPress={() => this.closeSignatureModalView()}
         >
           <AppNBText
             size={12}
@@ -271,7 +292,7 @@ export default class SignatureField extends Component {
           <View style={styles.imageWrapper}>
             <ZoomImage
               item={item}
-              closeModal={this.closeImageModalView}
+              closeModal={this.closeSignatureModalView}
               backgroundColor="white"
               style={{
                 width: "100%",
@@ -280,30 +301,33 @@ export default class SignatureField extends Component {
             />
           </View>
         ) : (
-          <View style={{ flex: 1, flexDirection: "column" }}>
-            <SignatureCapture
+          <View style={{ flex: 1, flexDirection: "column", height: "100%" }}>
+            <SignatureCanvas
+              ref={this.myRef}
+              onOK={this.handleSignatureOK}
+              // onEnd can be used if you want to auto-save when drawing stops
               style={{
                 flex: 1,
                 borderColor: "#000033",
                 borderWidth: 1,
+                width: DEVICE_WIDTH,
+                height: DEVICE_HEIGHT,
               }}
-              ref={this.myRef}
-              onSaveEvent={this._onSaveEvent}
-              saveImageFileInExtStorage={false}
-              showNativeButtons={false}
-              showTitleLabel={false}
-              viewMode={this.state.viewMode}
+              penColor="#000033"
+              backgroundColor={theme.header.backgroundColor}
+              trimWhitespace={true}
+              webStyle={webStyle}
             />
             <View style={{ flexDirection: "row" }}>
               <TouchableOpacity
                 style={styles.button}
-                onPress={() => this.saveSign()}
+                onPress={this.saveSignature}
               >
                 <AppNBText size={16}>Save</AppNBText>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.button}
-                onPress={() => this.resetSign()}
+                onPress={this.resetSignature}
               >
                 <AppNBText size={16}>Reset</AppNBText>
               </TouchableOpacity>
@@ -320,23 +344,16 @@ export default class SignatureField extends Component {
     return (
       <View>
         <View>
-          <View
-            style={{
-              height: 50,
-              marginHorizontal: 15,
-              paddingStart: 5,
-            }}
-          >
+          <View style={styles.topOuterContainer}>
             <View
-              style={{
-                borderBottomColor: attributes["error"]
-                  ? theme.errorMsgColor
-                  : theme.inputBorderColor,
-                borderBottomWidth: theme.borderWidth,
-                flex: 2,
-                flexDirection: "row",
-                alignItems: "center",
-              }}
+              style={[
+                styles.topInnerContainer,
+                {
+                  borderBottomColor: attributes["error"]
+                    ? theme.errorMsgColor
+                    : theme.inputBorderColor,
+                },
+              ]}
             >
               {attributes["required"] && (
                 <StarIcon
@@ -362,16 +379,16 @@ export default class SignatureField extends Component {
                 }}
                 onPress={() =>
                   this.setState({
-                    openImageModal: true,
+                    openSignatureModal: true,
                     viewMode: "portrait",
                   })
                 }
               >
-                {this.renderAddImageIcon()}
+                {this.renderAddSignatureIcon()}
               </TouchableOpacity>
             </View>
           </View>
-          {this.checkImageData() ? (
+          {this.checkSignatureData() ? (
             <View
               style={{
                 flexDirection: "row",
@@ -383,15 +400,15 @@ export default class SignatureField extends Component {
             </View>
           ) : null}
 
-          {this.state.openImageModal && (
+          {this.state.openSignatureModal && (
             <Modal
-              isVisible={this.state.openImageModal}
+              isVisible={this.state.openSignatureModal}
               animationType={"fade"}
               transparent={true}
               onRequestClose={() => this.closeImageModalView()}
               onPressOut={() => this.closeImageModalView()}
             >
-              {this.renderModalContent(this.state.imgDetails)}
+              {this.renderModalContent(this.state.signatureDetails)}
             </Modal>
           )}
         </View>

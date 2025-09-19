@@ -56,6 +56,7 @@
     "react-native-action-button": ">=2.8.5",
     "@react-native-community/datetimepicker": ">=7.4.2",
     "react-native-modal-datetime-picker": ">=17.1.0",
-    "json-templater": ">=1.2.0"
+    "json-templater": ">=1.2.0",
+    "react-native-signature-canvas": ">=5.0.1"
   }
 }
