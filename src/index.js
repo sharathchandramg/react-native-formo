@@ -483,7 +483,6 @@ export default class Form0 extends Component {
       }
     });
     if (isValidFields) {
-      console.log(values);
       const updatedValues = Object.keys(values).reduce((accumulator, key) => {
         if (key !== "undefined") {
           accumulator[key] = values[key];
@@ -680,7 +679,7 @@ export default class Form0 extends Component {
           AppRNTextInput: this.props.inputComponents.AppTextInput,
           AppNBText: this.props.inputComponents.AppNBText,
           AppNBInput: this.props.inputComponents.AppNBInput,
-          AppAnimatedText: this.props.inputComponents.AppAnimatedText
+          AppAnimatedText: this.props.inputComponents.AppAnimatedText,
         };
 
         switch (field.type) {
@@ -933,6 +932,7 @@ export default class Form0 extends Component {
                 }}
                 {...commonProps}
                 {...this.props}
+                getFormatedValues={this.getFormatedValues}
               />
             );
 

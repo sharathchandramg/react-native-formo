@@ -30,7 +30,6 @@ export default class UserDirectoryField extends Component {
     this.state = {
       modalVisible: false,
       searchModalVisible: false,
-      options: [],
       searchText: "",
       newSelected: null,
     };
@@ -44,24 +43,15 @@ export default class UserDirectoryField extends Component {
     const { attributes } = this.props;
     if (!isEmpty(attributes) && attributes["type"].match(/user_directory/)) {
       this.handleOnGetQuery();
-      this.setLocalOptions(attributes["options"]);
-    } else {
-      this.setLocalOptions(attributes["options"]);
     }
   };
 
   handleOnGetQuery = () => {
-    const { onGetQuery, attributes } = this.props;
+    const { onGetQuery, attributes, getFormatedValues } = this.props;
     if (!isEmpty(attributes) && attributes["type"].match(/user_directory/)) {
       if (typeof onGetQuery === "function") {
-        onGetQuery(attributes);
+        onGetQuery(attributes, getFormatedValues());
       }
-    }
-  };
-
-  setLocalOptions = (options) => {
-    if (!isEmpty(options)) {
-      this.setState({ options: options });
     }
   };
 
@@ -75,23 +65,24 @@ export default class UserDirectoryField extends Component {
   };
 
   toggleSearchModalVisible = () => {
-    const { attributes } = this.props;
-    this.setState({
-      searchModalVisible: !this.state.searchModalVisible,
+    this.setState((prev) => ({
+      searchModalVisible: !prev.searchModalVisible,
       modalVisible: true,
       searchText: "",
-      options: attributes["options"],
-    });
+    }));
   };
 
+  // <-- Re-introduced setInitialData call here (same behaviour as original)
   toggleModalVisible() {
     const attributes = this.props.attributes;
+
+    // If opening modal
     if (!this.state.modalVisible) {
       if (!isEmpty(attributes) && !isEmpty(attributes["value"])) {
         this.setState(
           {
             newSelected: attributes["value"],
-            modalVisible: !this.state.modalVisible,
+            modalVisible: true,
             searchText: "",
           },
           () => this.setInitialData()
@@ -99,16 +90,17 @@ export default class UserDirectoryField extends Component {
       } else {
         this.setState(
           {
-            modalVisible: !this.state.modalVisible,
+            modalVisible: true,
             searchText: "",
           },
           () => this.setInitialData()
         );
       }
     } else {
+      // If closing modal (preserve previous behaviour and still call setInitialData)
       this.setState(
         {
-          modalVisible: !this.state.modalVisible,
+          modalVisible: false,
           searchText: "",
         },
         () => this.setInitialData()
@@ -120,9 +112,9 @@ export default class UserDirectoryField extends Component {
     const attributes = this.props.attributes;
     if (!isEmpty(value) && !isEmpty(attributes)) {
       const pk = attributes.primaryKey;
-      const lk = attributes.labelKey;
       const obType = attributes.objectType;
       let valueObj = { ...value };
+
       if (attributes.multiple) {
         let newSelected = attributes["value"];
         newSelected = Array.isArray(newSelected) ? newSelected : [];
@@ -131,6 +123,7 @@ export default class UserDirectoryField extends Component {
               (option) => option && option[pk] === value[pk]
             )
           : newSelected.indexOf(value);
+
         if (index === -1) {
           newSelected.push(valueObj);
         } else {
@@ -158,71 +151,42 @@ export default class UserDirectoryField extends Component {
   }
 
   handleTextChange = (searchText) => {
-    let options = [];
-    const { attributes } = this.props;
-    if (searchText) {
-      options = _.filter(attributes.options, (item) => {
-        let userAliasSearch = !isEmpty(item["user_alias"])
-          ? item["user_alias"]
-              .toString()
-              .toLowerCase()
-              .search(searchText.trim().toLowerCase()) > -1
-          : false;
-
-        let sItem =
-          item[attributes.labelKey]
-            .toString()
-            .toLowerCase()
-            .search(searchText.trim().toLowerCase()) > -1 || userAliasSearch;
-        if (sItem) {
-          return item;
-        }
-      });
-    } else {
-      options = attributes.options;
-    }
-    this.setState({
-      searchText: searchText,
-      options: options,
-    });
+    this.setState({ searchText });
   };
 
   handleOnSearchQuery = (searchText) => {
-    let options = [];
-    const { attributes } = this.props;
-    if (searchText) {
-      options = _.filter(attributes.options, (item) => {
-        let userAliasSearch = !isEmpty(item["user_alias"])
-          ? item["user_alias"]
-              .toString()
-              .toLowerCase()
-              .search(searchText.trim().toLowerCase()) > -1
-          : false;
-        let sItem =
-          item[attributes.labelKey]
-            .toString()
-            .toLowerCase()
-            .search(searchText.trim().toLowerCase()) > -1 || userAliasSearch;
-        if (sItem) {
-          return item;
-        }
-      });
-    } else {
-      options = this.state.options;
-    }
-
     this.setState({
+      searchText,
       searchModalVisible: false,
-      searchText: searchText,
-      options: options,
     });
   };
 
   handleReset = () => {
-    const { attributes } = this.props;
     this.setState({
       searchText: "",
-      options: attributes["options"],
+    });
+  };
+
+  getFilteredOptions = () => {
+    const { attributes } = this.props;
+    const { searchText } = this.state;
+
+    if (isEmpty(attributes?.options)) return [];
+
+    if (!searchText) return attributes.options;
+
+    return _.filter(attributes.options, (item) => {
+      const labelKey = attributes.labelKey;
+      const userAlias = item["user_alias"]?.toString().toLowerCase() || "";
+
+      const label =
+        attributes.objectType && item[labelKey]
+          ? item[labelKey].toString().toLowerCase()
+          : item.toString().toLowerCase();
+
+      const query = searchText.trim().toLowerCase();
+
+      return label.includes(query) || userAlias.includes(query);
     });
   };
 
@@ -278,68 +242,60 @@ export default class UserDirectoryField extends Component {
 
   renderOptionList = () => {
     const { attributes, AppNBText } = this.props;
-    let list = [];
+    const options = this.getFilteredOptions();
 
-    if (!isEmpty(this.state["options"]) && this.state["options"].length) {
-      list = this.state.options.map((item, index) => {
-        let isSelected = false;
-        if (!isEmpty(item)) {
-          if (attributes.multiple) {
-            isSelected = attributes.objectType
-              ? attributes.value &&
-                attributes.value.findIndex(
-                  (option) =>
-                    option &&
-                    option[attributes.primaryKey] ===
-                      item[attributes.primaryKey]
-                ) !== -1
-              : attributes.value && attributes.value.indexOf(item) !== -1;
-          }
-          return (
-            <TouchableOpacity
-              key={index}
-              onPress={() => this.toggleSelect(item)}
-              style={{
-                height: 50,
-                marginHorizontal: 20,
-                borderBottomWidth: 1,
-                borderBottomColor: "rgb(230, 230, 230)",
-                alignItems: "center",
-                flexDirection: "row",
-              }}
-            >
-              {attributes.multiple && (
-                <Checkbox
-                  onPress={() => this.toggleSelect(item)}
-                  isChecked={isSelected}
-                  colorScheme={"rgb(0,151,235)"}
-                  accessibilityLabel={this.displayLabelKey(item)}
-                />
-              )}
-              <View>
-                <AppNBText
-                  size={14}
-                  style={{
-                    paddingHorizontal: 5,
-                  }}
-                >
-                  {this.displayLabelKey(item)}
-                </AppNBText>
-              </View>
-            </TouchableOpacity>
-          );
-        }
-      });
+    if (isEmpty(options)) {
+      return (
+        <View style={styles.noDataWrapper}>
+          <AppNBText size={14} style={styles.nodataText}>
+            No records found
+          </AppNBText>
+        </View>
+      );
     }
-    return list.length ? (
-      list
-    ) : (
-      <View style={styles.noDataWrapper}>
-        <AppNBText size={14} style={styles.nodataText}>
-          No records found
-        </AppNBText>
-      </View>
-    );
+
+    return options.map((item, index) => {
+      let isSelected = false;
+      if (attributes.multiple) {
+        isSelected = attributes.objectType
+          ? attributes.value &&
+            attributes.value.findIndex(
+              (option) =>
+                option &&
+                option[attributes.primaryKey] === item[attributes.primaryKey]
+            ) !== -1
+          : attributes.value && attributes.value.indexOf(item) !== -1;
+      }
+
+      return (
+        <TouchableOpacity
+          key={index}
+          onPress={() => this.toggleSelect(item)}
+          style={{
+            height: 50,
+            marginHorizontal: 20,
+            borderBottomWidth: 1,
+            borderBottomColor: "rgb(230, 230, 230)",
+            alignItems: "center",
+            flexDirection: "row",
+          }}
+        >
+          {attributes.multiple && (
+            <Checkbox
+              onPress={() => this.toggleSelect(item)}
+              isChecked={isSelected}
+              colorScheme={"rgb(0,151,235)"}
+              accessibilityLabel={this.displayLabelKey(item)}
+            />
+          )}
+          <View>
+            <AppNBText size={14} style={{ paddingHorizontal: 5 }}>
+              {this.displayLabelKey(item)}
+            </AppNBText>
+          </View>
+        </TouchableOpacity>
+      );
+    });
   };
 
   renderHeader = () => {
