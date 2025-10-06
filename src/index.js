@@ -153,6 +153,35 @@ export default class Form0 extends Component {
     if (!_.isEqual(prevProps, this.props)) {
       this.setValues(formData);
     }
+    if (!_.isEqual(prevProps.fields, this.props.fields)) {
+      this.setState((prevState) => {
+        const newState = { ...prevState };
+
+        this.props.fields
+          .filter((field) => field.type === "user_directory")
+          .forEach((field) => {
+            const prevField = prevState[field.name];
+
+            if (prevField) {
+              newState[field.name] = {
+                ...prevField,
+                ...field,
+                value: !isEmpty(field.value)
+                  ? field.value
+                  : !isEmpty(prevField.value)
+                  ? prevField.value
+                  : !isEmpty(field.defaultValue)
+                  ? field.defaultValue
+                  : null,
+              };
+            } else {
+              newState[field.name] = field;
+            }
+          });
+
+        return newState;
+      });
+    }
   }
 
   getValue(fieldName) {
@@ -313,6 +342,23 @@ export default class Form0 extends Component {
           newField[item.name] = item;
         });
       }
+    }
+
+    if (
+      valueObj &&
+      valueObj["ref_field"] &&
+      valueObj["ref_field"]["usr_field"] &&
+      valueObj["ref_field"]["usr_field"].length > 0
+    ) {
+      valueObj["ref_field"]["usr_field"].map((name) => {
+        const userField = _.filter(
+          this.props.fields,
+          (field) => field.name === name
+        );
+        if (userField && userField.length > 0) {
+          this.props.onGetQuery(userField[0], this.getFormatedValues());
+        }
+      });
     }
 
     if (
