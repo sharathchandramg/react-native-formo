@@ -150,7 +150,7 @@ export default class Form0 extends Component {
 
   componentDidUpdate(prevProps) {
     const { formData } = this.props;
-    if (!_.isEqual(prevProps, this.props)) {
+    if (!_.isEqual(prevProps.formData, this.props.formData)) {
       this.setValues(formData);
     }
     if (!_.isEqual(prevProps.fields, this.props.fields)) {
