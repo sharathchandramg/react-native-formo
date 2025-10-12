@@ -687,7 +687,27 @@ export default class Form0 extends Component {
         }
       });
 
-      this.setState({ ...newFields });
+      this.setState({ ...newFields }, () => {
+        Object.keys(updatedFields).forEach((fieldName) => {
+          const field = updatedFields[fieldName];
+          if (
+            field &&
+            field["ref_field"] &&
+            field["ref_field"]["usr_field"] &&
+            field["ref_field"]["usr_field"].length > 0
+          ) {
+            field["ref_field"]["usr_field"].map((name) => {
+              const userField = _.filter(
+                this.props.fields,
+                (field) => field.name === name
+              );
+              if (userField && userField.length > 0) {
+                this.props.onGetQuery(userField[0], this.props.formData);
+              }
+            });
+          }
+        });
+      });
     }
   }
 
