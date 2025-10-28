@@ -31,6 +31,7 @@ export function getDefaultValue(field) {
     case "url":
     case "phone":
     case "location":
+    case "time":
     case "image":
     case "auto-incr-number":
     case "longtext":
@@ -177,6 +178,7 @@ export function getResetValue(field) {
     case "phone":
     case "currency":
     case "location":
+    case "time":
     case "image":
     case "signature":
     case "auto-incr-number":
@@ -291,6 +293,7 @@ export function autoValidate(field, data = {}) {
       case "text":
       case "url":
       case "location":
+      case "time":
       case "image":
       case "signature":
       case "document":

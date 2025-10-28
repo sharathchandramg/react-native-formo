@@ -31,6 +31,7 @@ import BarcodeField from "./fields/barcode";
 import CascadingDropdownField from "./fields/cascadingDropdown";
 import OTPField from "./fields/otp";
 import RatingField from "./fields/rating";
+import TimeField from "./fields/time";
 
 import {
   autoValidate,
@@ -902,6 +903,17 @@ export default class Form0 extends Component {
           case "location":
             return (
               <LocationField
+                ref={(c) => {
+                  this[field.name] = c;
+                }}
+                {...commonProps}
+                {...this.props}
+              />
+            );
+
+          case "time":
+            return (
+              <TimeField
                 ref={(c) => {
                   this[field.name] = c;
                 }}
