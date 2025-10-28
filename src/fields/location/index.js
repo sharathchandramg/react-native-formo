@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { Platform, Alert, TouchableOpacity, Linking } from "react-native";
 import { View } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome5";
-import RNAndroidLocationEnabler from "react-native-android-location-enabler";
+import { promptForEnableLocationIfNeeded } from "react-native-android-location-enabler";
 
 import {
   getGeoLocation,
@@ -66,7 +66,7 @@ export default class LocationField extends Component {
               isPickingLocation: true,
               isFirstTime: false,
             });
-            this.promptForEnableLocationIfNeeded();
+            this.promptForEnableLocation();
           } else {
             this.setState({
               isPickingLocation: false,
@@ -75,7 +75,7 @@ export default class LocationField extends Component {
           }
         } else {
           this.setState({ isPickingLocation: true, isFirstTime: false });
-          this.promptForEnableLocationIfNeeded();
+          this.promptForEnableLocation();
         }
       }
     } catch (error) {
@@ -83,29 +83,25 @@ export default class LocationField extends Component {
     }
   }
 
-  promptForEnableLocationIfNeeded = () => {
+  promptForEnableLocation = async () => {
     if (Platform.OS === "android") {
-      RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({
-        interval: 10000,
-        fastInterval: 5000,
-      })
-        .then((data) => {
+      try {
+        const enableResult = await promptForEnableLocationIfNeeded();
+        this.pickLocation();
+      } catch (error) {
+        const { attributes, navigation } = this.props;
+        if (attributes["required"] && typeof navigation !== "undefined") {
+          Alert.alert(
+            LOCATION_ALERT,
+            "Turn on location services from Settings"
+          );
+          navigation.goBack(null);
+        } else if (!attributes["required"]) {
           this.pickLocation();
-        })
-        .catch((err) => {
-          const { attributes, navigation } = this.props;
-          if (attributes["required"] && typeof navigation !== "undefined") {
-            Alert.alert(
-              LOCATION_ALERT,
-              "Turn on location services from Settings"
-            );
-            navigation.goBack(null);
-          } else if (!attributes["required"]) {
-            this.pickLocation();
-          } else {
-            this.setState({ isPickingLocation: false });
-          }
-        });
+        } else {
+          this.setState({ isPickingLocation: false });
+        }
+      }
     } else {
       this.pickLocation();
     }
@@ -308,7 +304,7 @@ export default class LocationField extends Component {
                       this.setState(
                         { isPickingLocation: true, url: null },
                         () => {
-                          this.promptForEnableLocationIfNeeded();
+                          this.promptForEnableLocation();
                         }
                       );
                     }}
