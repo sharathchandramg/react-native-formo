@@ -121,6 +121,16 @@ export function getDefaultValue(field) {
         case "date":
         case "time":
         case "datetime":
+          if (
+            field.refresh &&
+            field.additional_config &&
+            field.additional_config.refresh_on &&
+            ["local", "server"].includes(field.additional_config.refresh_on)
+          ) {
+            return field.additional_config.refresh_on === "local"
+              ? moment().utc().valueOf()
+              : null;
+          }
           if (field.defaultValue === "today") return moment().utc().valueOf();
           else if (field.defaultValue === "tomorrow")
             return moment().add(1, "day").utc().valueOf();

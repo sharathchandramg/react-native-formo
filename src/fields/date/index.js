@@ -20,21 +20,19 @@ export default class DateField extends Component {
 
   constructor(props) {
     super(props);
-    this.onDateChange = this.onDateChange.bind(this);
-
     this.state = {
       modalVisible: false,
     };
   }
 
-  onDateChange(date) {
+  onDateChange = (date) => {
     const epoch = moment(date).utc().valueOf();
     this.props.updateValue(this.props.attributes.name, epoch);
-  }
+  };
 
-  setModalVisible(visible) {
+  setModalVisible = (visible) => {
     this.setState({ modalVisible: visible });
-  }
+  };
 
   dateFormatter = (date) => {
     switch (date) {
