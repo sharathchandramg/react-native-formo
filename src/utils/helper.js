@@ -122,31 +122,28 @@ export function getDefaultValue(field) {
         case "time":
         case "datetime":
           if (
-            field.refresh &&
             field.additional_config &&
-            field.additional_config.refresh_on &&
-            ["local", "server"].includes(field.additional_config.refresh_on)
+            field.additional_config.data_source &&
+            ["local"].includes(field.additional_config.data_source)
           ) {
-            return field.additional_config.refresh_on === "local"
-              ? moment().utc().valueOf()
-              : null;
+            if (field.defaultValue === "today") return moment().utc().valueOf();
+            else if (field.defaultValue === "tomorrow")
+              return moment().add(1, "day").utc().valueOf();
+            else if (field.defaultValue === "yesterday")
+              return moment().subtract(1, "day").utc().valueOf();
+            else if (
+              typeof field.defaultValue !== "undefined" &&
+              !_.isNaN(field.defaultValue)
+            ) {
+              return moment()
+                .add(parseInt(field.defaultValue), "minutes")
+                .utc()
+                .valueOf();
+            } else if (field.defaultValue === "") {
+              return "Select";
+            } else return null;
           }
-          if (field.defaultValue === "today") return moment().utc().valueOf();
-          else if (field.defaultValue === "tomorrow")
-            return moment().add(1, "day").utc().valueOf();
-          else if (field.defaultValue === "yesterday")
-            return moment().subtract(1, "day").utc().valueOf();
-          else if (
-            typeof field.defaultValue !== "undefined" &&
-            !_.isNaN(field.defaultValue)
-          ) {
-            return moment()
-              .add(parseInt(field.defaultValue), "minutes")
-              .utc()
-              .valueOf();
-          } else if (field.defaultValue === "") {
-            return "Select";
-          } else return null;
+          return null;
         case "dayofweek":
         case "dayofthemonth":
         case "weekno":

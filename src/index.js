@@ -571,8 +571,8 @@ export default class Form0 extends Component {
       field.type === "date" &&
       field.refresh &&
       field.additional_config &&
-      field.additional_config.refresh_on &&
-      field.additional_config.refresh_on === "local"
+      field.additional_config.data_source &&
+      field.additional_config.data_source === "local"
     ) {
       switch (field.mode) {
         case "date":
