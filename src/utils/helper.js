@@ -150,7 +150,14 @@ export function getDefaultValue(field) {
         case "monthno":
         case "monthname":
         case "year":
-          return getDatePartValue(field.mode);
+          if (
+            field.additional_config &&
+            field.additional_config.data_source &&
+            ["local"].includes(field.additional_config.data_source)
+          ) {
+            return getDatePartValue(field.mode);
+          }
+          return null;
       }
     }
 
