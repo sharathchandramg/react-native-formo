@@ -207,7 +207,13 @@ export default class UserDirectoryField extends Component {
           label = ` ${labelKeyArr.length} | ${labelKeyArr.toString()}`;
         }
       } else {
-        label = obType ? value && value[lk] : value;
+        label = obType
+          ? lk && value[lk] && value["user_alias"]
+            ? `${value[lk]}(${value["user_alias"]})`
+            : lk && value[lk]
+            ? value[lk]
+            : "None"
+          : value;
       }
     }
     return label;
@@ -447,7 +453,7 @@ export default class UserDirectoryField extends Component {
               ]}
             >
               <View style={{ width: "93%" }} numberOfLines={1}>
-                <AppNBText size={18} style={styles.inputText}>
+                <AppNBText size={18} style={styles.inputText} numberOfLines={1}>
                   {this.getLabel()}
                 </AppNBText>
               </View>
