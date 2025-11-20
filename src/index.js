@@ -41,8 +41,10 @@ import {
   customFieldCalculations,
   getCalculatedFields,
   isFieldCalculated,
+  getDatePartValue,
 } from "./utils/helper";
 import { isEmpty } from "./utils/validators";
+const moment = require("moment");
 
 const DefaultErrorComponent = (props) => {
   const { attributes, theme, AppRNText } = props;
@@ -124,23 +126,6 @@ export default class Form0 extends Component {
       closeModal: false,
       calcFields,
     };
-
-    this.getValues = this.getValues.bind(this);
-
-    this.generateFields = this.generateFields.bind(this);
-
-    this.resetForm = this.resetForm.bind(this);
-
-    this.onSummitTextInput = this.onSummitTextInput.bind(this);
-
-    this.onValidateFields = this.onValidateFields.bind(this);
-
-    // Invoked every time whenever any fields's value changes
-    this.onValueChange = this.onValueChange.bind(this);
-
-    this.onAddNewFields = this.onAddNewFields.bind(this);
-
-    this.getValue = this.getValue.bind(this);
   }
 
   componentDidMount() {
@@ -184,7 +169,7 @@ export default class Form0 extends Component {
     }
   }
 
-  getValue(fieldName) {
+  getValue = (fieldName) => {
     for (let i = 0; i < Object.values(this.state).length; i++) {
       let fieldObj = Object.values(this.state)[i];
       let fieldVal = fieldObj["value"];
@@ -200,9 +185,9 @@ export default class Form0 extends Component {
         }
       }
     }
-  }
+  };
 
-  onValidateFields() {
+  onValidateFields = () => {
     const newFields = {};
     Object.keys(this.state).forEach((fieldName) => {
       const field = this.state[fieldName];
@@ -224,9 +209,9 @@ export default class Form0 extends Component {
       }
     });
     this.setState({ ...newFields });
-  }
+  };
 
-  onAddNewFields(name, newObj) {
+  onAddNewFields = (name, newObj) => {
     let fieldObj = this.state[name];
     if (fieldObj) {
       if (fieldObj.type === "sub-form") {
@@ -261,7 +246,7 @@ export default class Form0 extends Component {
         this.setState({ ...newField });
       }
     }
-  }
+  };
 
   getLookupSubsciberFields = (name) => {
     const lookupSubscriberFields = _.filter(this.props.fields, (field) => {
@@ -405,7 +390,7 @@ export default class Form0 extends Component {
     }
   };
 
-  onValueChange(name, value) {
+  onValueChange = (name, value) => {
     const valueObj = this.state[name];
     if (valueObj) {
       const type = valueObj["type"];
@@ -436,9 +421,9 @@ export default class Form0 extends Component {
           this.handleOnValueChange(valueObj, value);
       }
     }
-  }
+  };
 
-  onSummitTextInput(name) {
+  onSummitTextInput = (name) => {
     const index = Object.keys(this.state).indexOf(name);
     if (
       index !== -1 &&
@@ -449,7 +434,7 @@ export default class Form0 extends Component {
     } else {
       Keyboard.dismiss();
     }
-  }
+  };
 
   getOtpByRefData = (field, cb) => {
     const validatedRes = customValidateData(field, "otp");
@@ -513,7 +498,7 @@ export default class Form0 extends Component {
     } else return field.value;
   };
 
-  getValues() {
+  getValues = () => {
     this.onValidateFields();
     const values = {};
     let isValidFields = true;
@@ -540,9 +525,9 @@ export default class Form0 extends Component {
     } else {
       return null;
     }
-  }
+  };
 
-  resetForm() {
+  resetForm = () => {
     const newFields = {};
     Object.keys(this.state).forEach((fieldName) => {
       const field = this.state[fieldName];
@@ -562,10 +547,10 @@ export default class Form0 extends Component {
       }
     });
     this.setState({ ...newFields });
-  }
+  };
 
   // Helper function for setValues
-  getFieldValue(fieldObj, value) {
+  getFieldValue = (fieldObj, value) => {
     const field = _.cloneDeep(fieldObj);
     if (field.type === "group") {
       const subFields = {};
@@ -582,6 +567,31 @@ export default class Form0 extends Component {
       field.options.indexOf(value) < 0
     ) {
       field.value = field.options[1];
+    } else if (
+      field.type === "date" &&
+      field.refresh &&
+      field.additional_config &&
+      field.additional_config.data_source &&
+      field.additional_config.data_source === "local"
+    ) {
+      switch (field.mode) {
+        case "date":
+        case "time":
+        case "datetime":
+          field.value = moment().utc().valueOf();
+          break;
+        case "dayofweek":
+        case "dayofthemonth":
+        case "weekno":
+        case "monthno":
+        case "monthname":
+        case "year":
+          field.value = getDatePartValue(field.mode);
+          break;
+
+        default:
+          break;
+      }
     } else {
       field.value = value;
       //Validate and check for errors
@@ -600,9 +610,9 @@ export default class Form0 extends Component {
       }
     }
     return field;
-  }
+  };
 
-  setValues(...args) {
+  setValues = (...args) => {
     if (args && args.length && args[0]) {
       const newFields = {};
       Object.keys(args[0]).forEach((fieldName) => {
@@ -709,7 +719,7 @@ export default class Form0 extends Component {
         });
       });
     }
-  }
+  };
 
   /**
    * Close lookup modal
@@ -720,7 +730,7 @@ export default class Form0 extends Component {
     this.setState({ closeModal: !this.state.closeModal });
   };
 
-  generateFields() {
+  generateFields = () => {
     const theme = Object.assign(baseTheme, this.props.theme);
     const { customComponents, errorComponent, successComponent } = this.props;
 
@@ -1045,7 +1055,7 @@ export default class Form0 extends Component {
     });
 
     return renderFields;
-  }
+  };
 
   render() {
     return (

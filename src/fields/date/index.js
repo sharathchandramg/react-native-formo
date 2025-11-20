@@ -20,21 +20,19 @@ export default class DateField extends Component {
 
   constructor(props) {
     super(props);
-    this.onDateChange = this.onDateChange.bind(this);
-
     this.state = {
       modalVisible: false,
     };
   }
 
-  onDateChange(date) {
+  onDateChange = (date) => {
     const epoch = moment(date).utc().valueOf();
     this.props.updateValue(this.props.attributes.name, epoch);
-  }
+  };
 
-  setModalVisible(visible) {
+  setModalVisible = (visible) => {
     this.setState({ modalVisible: visible });
-  }
+  };
 
   dateFormatter = (date) => {
     switch (date) {
@@ -58,33 +56,41 @@ export default class DateField extends Component {
     const value = (attributes.value && moment(attributes.value)) || null;
     let dateValue = "Select";
     let isFieldDatePart = false;
-
-    switch (attributes.mode) {
-      case "datetime":
-        const datetimeFormat = attributes["is_24hour"]
-          ? "Do MMM YYYY HH:mm"
-          : "Do MMM YYYY hh:mm a";
-        dateValue = value && moment(value).format(datetimeFormat);
-        break;
-      case "date":
-        dateValue = value && moment(value).format("Do MMM YYYY");
-        break;
-      case "time":
-        const timeFormat = attributes["is_24hour"] ? "HH:mm" : "hh:mm a";
-        dateValue = value && moment(value).format(timeFormat);
-        break;
-      case "dayofweek":
-      case "dayofthemonth":
-      case "weekno":
-      case "monthno":
-      case "monthname":
-      case "year":
-        isFieldDatePart = true;
-        dateValue = !isEmpty(attributes.value) ? attributes.value : "";
-        break;
-      default:
-        dateValue = value && moment(value).format("Do MMM YYYY HH:mm");
-        break;
+    if (
+      attributes &&
+      attributes.additional_config &&
+      attributes.additional_config.data_source &&
+      ["server"].includes(attributes.additional_config.data_source)
+    ) {
+      dateValue = "Server Time";
+    } else {
+      switch (attributes.mode) {
+        case "datetime":
+          const datetimeFormat = attributes["is_24hour"]
+            ? "Do MMM YYYY HH:mm"
+            : "Do MMM YYYY hh:mm a";
+          dateValue = value && moment(value).format(datetimeFormat);
+          break;
+        case "date":
+          dateValue = value && moment(value).format("Do MMM YYYY");
+          break;
+        case "time":
+          const timeFormat = attributes["is_24hour"] ? "HH:mm" : "hh:mm a";
+          dateValue = value && moment(value).format(timeFormat);
+          break;
+        case "dayofweek":
+        case "dayofthemonth":
+        case "weekno":
+        case "monthno":
+        case "monthname":
+        case "year":
+          isFieldDatePart = true;
+          dateValue = !isEmpty(attributes.value) ? attributes.value : "";
+          break;
+        default:
+          dateValue = value && moment(value).format("Do MMM YYYY HH:mm");
+          break;
+      }
     }
 
     return (
