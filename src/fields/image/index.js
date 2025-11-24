@@ -10,9 +10,10 @@ import {
   TouchableHighlight,
   Alert,
   Modal,
+  PermissionsAndroid,
 } from "react-native";
 import { View } from "native-base";
-import ImagePicker from "react-native-image-crop-picker";
+import { launchCamera, launchImageLibrary } from "react-native-image-picker";
 import BottomSheet from "react-native-js-bottom-sheet";
 import Icon from "react-native-vector-icons/FontAwesome";
 import FastImage from "react-native-fast-image";
@@ -204,23 +205,25 @@ export default class ImageField extends Component {
     return config;
   };
 
-  renderAlert = (images, maxfiles) => {
+  renderAlert = (title, message, onOk = null) => {
     Alert.alert(
-      ``,
-      `Alert!! Only the first ${maxfiles} files will be uploaded.`,
+      title || "",
+      message || "",
       [
         {
           text: "Cancel",
           onPress: () => {
-            if (Platform.OS !== "ios") this.bottomSheet.close();
+            if (Platform.OS !== "ios") this.bottomSheet?.close();
           },
           style: "cancel",
         },
-        {},
         {
           text: "OK",
           onPress: () => {
-            this._getImageFromStorage(images);
+            if (typeof onOk === "function") {
+              onOk();
+            }
+            if (Platform.OS !== "ios") this.bottomSheet?.close();
           },
         },
       ],
@@ -228,40 +231,129 @@ export default class ImageField extends Component {
     );
   };
 
-  _openCamera = () => {
-    const config = this.getImageConfiguration();
-    ImagePicker.openCamera(config)
-      .then((images) => {
-        if (config.multiple) {
-          if (Array.isArray(images) && images.length > config.maxFiles) {
-            this.renderAlert(images, config.maxFiles);
-          } else {
-            this._getImageFromStorage(images, true);
-          }
-        } else {
-          this._getImageFromStorage(images, true);
+  requestCameraPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: "Camera Permission",
+          message: "Allow app to use your camera",
+          buttonNegative: "Cancel",
+          buttonPositive: "OK",
         }
-      })
-      .catch((e) => {
+      );
+      return granted === PermissionsAndroid.RESULTS.GRANTED;
+    } catch (err) {
+      console.warn(err);
+      return false;
+    }
+  };
+
+  _openCamera = async () => {
+    const hasPermission = await this.requestCameraPermission();
+    if (!hasPermission) {
+      this.renderAlert(
+        "",
+        "Camera permission is required to take photos.",
+        () => {
+          if (Platform.OS !== "ios") this.bottomSheet?.close();
+        }
+      );
+      return;
+    }
+    const config = this.getImageConfiguration();
+    launchCamera(
+      {
+        mediaType: config.mediaType || "photo",
+        includeBase64: config.includeBase64 ?? true,
+        maxWidth: config.compressImageMaxWidth,
+        maxHeight: config.compressImageMaxHeight,
+        quality: config.compressImageQuality,
+        cameraType: "back",
+        saveToPhotos: false, // required to avoid WRITE permissions
+      },
+      (res) => {
+        if (res.didCancel || res.errorCode) {
+          if (Platform.OS !== "ios") this.bottomSheet.close();
+          return;
+        }
+
+        const img = res.assets?.[0];
+        if (!img) {
+          if (Platform.OS !== "ios") this.bottomSheet.close();
+          return;
+        }
+
+        // Normalize to your expected structure
+        const normalized = {
+          path: img.uri,
+          mime: img.type,
+          data: img.base64,
+        };
+
+        // Camera always returns ONE image
+        this._getImageFromStorage(normalized, true);
+
         if (Platform.OS !== "ios") this.bottomSheet.close();
-        console.log("Image picker error:", e);
-      });
+      }
+    );
   };
 
   _openPicker = () => {
     const config = this.getImageConfiguration();
-    ImagePicker.openPicker(config)
-      .then((images) => {
-        if (config["multiple"] && images.length > config["maxFiles"]) {
-          this.renderAlert(images, config["maxFiles"]);
-        } else {
-          this._getImageFromStorage(images);
+
+    launchImageLibrary(
+      {
+        mediaType: config.mediaType || "photo",
+        includeBase64: config.includeBase64 ?? true,
+        selectionLimit: config.multiple ? config.maxFiles : 1,
+        maxWidth: config.compressImageMaxWidth,
+        maxHeight: config.compressImageMaxHeight,
+        quality: config.compressImageQuality,
+      },
+      (res) => {
+        if (res.didCancel || res.errorCode) {
+          if (Platform.OS !== "ios") this.bottomSheet.close();
+          return;
         }
-      })
-      .catch((e) => {
+
+        const assets = res.assets || [];
+
+        // Normalize all images
+        const normalizedImages = assets.map((img) => ({
+          path: img.uri,
+          mime: img.type,
+          data: img.base64,
+        }));
+
+        if (config.multiple) {
+          // MULTIPLE CASE
+          if (normalizedImages.length > config.maxFiles) {
+            this.renderAlert(
+              "",
+              `Alert!! Only the first ${config.maxFiles} files will be uploaded.`,
+              () => {
+                this._getImageFromStorage(
+                  normalizedImages.slice(0, config.maxFiles),
+                  false
+                );
+              }
+            );
+          } else {
+            this._getImageFromStorage(normalizedImages, false);
+          }
+        } else {
+          // SINGLE IMAGE CASE
+          const single = normalizedImages[0];
+
+          if (single) {
+            this._getImageFromStorage(single, false);
+          }
+        }
+
         if (Platform.OS !== "ios") this.bottomSheet.close();
-        console.log(e);
-      });
+      }
+    );
   };
 
   _renderOptions = () => {
@@ -308,8 +400,10 @@ export default class ImageField extends Component {
       { options: options1, cancelButtonIndex: 0 },
       (buttonIndex) => {
         if (buttonIndex === 1) {
+          // Correct: call existing method
           this._openCamera();
         } else if (buttonIndex === 2) {
+          // Correct: call existing method
           this._openPicker();
         }
       }

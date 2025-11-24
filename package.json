@@ -41,7 +41,7 @@
      "react-native-android-location-enabler": ">=2.0.1",
     "react-native-fast-image": ">=8.6.3",
     "react-native-geolocation-service": ">=5.3.1",
-    "react-native-image-crop-picker": ">=0.40.0",
+    "react-native-image-picker": ">=8.2.1",
     "react-native-js-bottom-sheet": ">=1.1.0",
     "react-native-vector-icons": ">=7.0.0",
     "react-timer-mixin": ">=0.13.4",
