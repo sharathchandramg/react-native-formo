@@ -238,7 +238,6 @@ export default class ImageField extends Component {
         {
           title: "Camera Permission",
           message: "Allow app to use your camera",
-          buttonNeutral: "Ask Me Later",
           buttonNegative: "Cancel",
           buttonPositive: "OK",
         }
