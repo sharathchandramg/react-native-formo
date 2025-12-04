@@ -250,16 +250,16 @@ export default class ImageField extends Component {
   };
 
   _openCamera = async () => {
-    const hasPermission = await this.requestCameraPermission();
-    if (!hasPermission) {
-      this.renderAlert(
-        "",
-        "Camera permission is required to take photos.",
-        () => {
-          if (Platform.OS !== "ios") this.bottomSheet?.close();
-        }
-      );
-      return;
+    if (Platform.OS === "android") {
+      const hasPermission = await this.requestCameraPermission();
+      if (!hasPermission) {
+        this.renderAlert(
+          "",
+          "Camera permission is required to take photos.",
+          () => this.bottomSheet?.close()
+        );
+        return;
+      }
     }
     const config = this.getImageConfiguration();
     launchCamera(
@@ -400,10 +400,8 @@ export default class ImageField extends Component {
       { options: options1, cancelButtonIndex: 0 },
       (buttonIndex) => {
         if (buttonIndex === 1) {
-          // Correct: call existing method
           this._openCamera();
         } else if (buttonIndex === 2) {
-          // Correct: call existing method
           this._openPicker();
         }
       }
