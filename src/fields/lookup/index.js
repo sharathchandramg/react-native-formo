@@ -3,8 +3,8 @@ import React, { Component } from "react";
 import { TouchableOpacity, Modal, Platform } from "react-native";
 import _ from "lodash";
 import { View, ArrowForwardIcon } from "native-base";
-import { RNCamera } from "react-native-camera";
 
+import BarcodeScanner from "../../components/barcodeScanner";
 import { isEmpty } from "../../utils/validators";
 import styles from "./styles";
 import SearchComponent from "../../components/search";
@@ -486,8 +486,19 @@ export default class LookupField extends Component {
     });
   };
 
-  onBarCodeRead = (code) => {
-    const searchText = code && code.data ? code.data : null;
+  /**
+   * Called by <BarcodeScanner> when a code is detected.
+   *
+   * CHANGED FROM ORIGINAL:
+   *   Old: received a code object { data, type } from react-native-camera and
+   *        accessed code.data
+   *   New: receives the scanned string value directly from BarcodeScanner
+   *
+   * The rest of the logic (building categoryToValue, calling onSearchQuery,
+   * filtering local options) is unchanged.
+   */
+  onBarCodeRead = (value) => {
+    const searchText = !isEmpty(value) ? value : null;
     if (!isEmpty(searchText)) {
       this.setLookupFilter(searchText);
       this.setLookupSearchReq();
@@ -527,23 +538,37 @@ export default class LookupField extends Component {
         barcodeModalVisible: false,
         barcodeSearchText: searchText,
         categoryToValue,
+        // On iOS the lookup modal was hidden when the barcode modal opened
+        // (see toggleBarcodeModalVisible) — bring it back so the user sees
+        // the filtered results.
+        modalVisible: true,
       });
     } else {
       this.setState({
         barcodeModalVisible: false,
+        modalVisible: true,
       });
     }
+  };
+
+  /**
+   * Called by <BarcodeScanner> when the user dismisses the scanner without
+   * scanning. Restore the lookup modal on iOS (where it was hidden) and clear
+   * the barcode modal flag.
+   */
+  closeBarcodeModal = () => {
+    this.setState({
+      barcodeModalVisible: false,
+      modalVisible: true,
+    });
   };
 
   renderModalContent = () => {
     return (
       <View style={styles.modalContainer}>
-        <RNCamera
-          style={styles.modalPreview}
-          flashMode={RNCamera.Constants.FlashMode.on}
-          onBarCodeRead={this.onBarCodeRead}
-          ref={(cam) => (this.camera = cam)}
-          captureAudio={false}
+        <BarcodeScanner
+          onScanned={(value) => this.onBarCodeRead(value)}
+          onClose={this.closeBarcodeModal}
         />
       </View>
     );
@@ -953,8 +978,10 @@ export default class LookupField extends Component {
             visible={this.state.barcodeModalVisible}
             animationType={"fade"}
             transparent={true}
-            onRequestClose={() => this.toggleBarcodeModalVisible()}
-            onPressOut={() => this.toggleBarcodeModalVisible()}
+            onRequestClose={this.closeBarcodeModal}
+            // NOTE: onPressOut prop removed — it was not a valid Modal prop
+            // and was being silently ignored. Dismissal now happens via the
+            // close button (X) inside BarcodeScanner or the Android back button.
           >
             {this.renderModalContent()}
           </Modal>
