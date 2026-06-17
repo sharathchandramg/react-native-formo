@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Modal, TouchableOpacity } from "react-native";
 import { View, ArrowForwardIcon, ArrowBackIcon } from "native-base";
-import { customAlphabet } from "nanoid";
+import { customAlphabet } from 'nanoid/non-secure';
 
 import styles from "./styles";
 import ChildField from "../childForm";
