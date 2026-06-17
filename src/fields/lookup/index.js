@@ -62,11 +62,7 @@ export default class LookupField extends Component {
   }
 
   componentWillUnmount() {
-    this.setState({
-      modalVisible: false,
-      searchModalVisible: false,
-      filterModalVisible: false,
-    });
+    if (this.timeout) clearTimeout(this.timeout);
   }
 
   setInitialData = () => {
@@ -229,7 +225,7 @@ export default class LookupField extends Component {
   setFilterCategory = (item) => {
     const categoryData = this.statusOptionsFormatter(
       item["options"],
-      item["type"]
+      item["type"],
     );
     this.setState({
       activeCategoryData: categoryData,
@@ -247,7 +243,7 @@ export default class LookupField extends Component {
       if (filterArr.length) {
         filterArr = _.filter(
           filterArr,
-          (row) => row[attributes.labelKey] !== item[attributes.labelKey]
+          (row) => row[attributes.labelKey] !== item[attributes.labelKey],
         );
       }
     }
@@ -291,7 +287,7 @@ export default class LookupField extends Component {
   applyFilterFunction = () => {
     const filter = _.filter(
       this.state.categoryToValue,
-      (sItem) => sItem["categoryLabel"] !== "Search"
+      (sItem) => sItem["categoryLabel"] !== "Search",
     );
     this.handleOnFilterQuery(filter);
   };
@@ -365,7 +361,7 @@ export default class LookupField extends Component {
           categoryToValue: categoryToValue,
           selectedFilter: categoryToValue,
         },
-        () => this.applyFilterFunction()
+        () => this.applyFilterFunction(),
       );
     } else {
       this.setState(
@@ -380,7 +376,7 @@ export default class LookupField extends Component {
         () => {
           const offset = 0;
           this.handleOnGetQuery(offset, true);
-        }
+        },
       );
     }
   };
@@ -397,7 +393,7 @@ export default class LookupField extends Component {
     const filterArr = this.updateFilter(item);
     const categoryToValue = this.mapCatagoryToValue(
       this.state.activeCategory,
-      item
+      item,
     );
     this.setState({
       filterArr: filterArr,
@@ -588,7 +584,7 @@ export default class LookupField extends Component {
         const activeCategory = attributes["filterCategory"][0];
         const categoryData = this.statusOptionsFormatter(
           activeCategory["options"],
-          activeCategory["type"]
+          activeCategory["type"],
         );
         this.setState({
           activeCategoryData: categoryData,
@@ -633,7 +629,7 @@ export default class LookupField extends Component {
           barcodeSearchText: "",
           categoryToValue: [],
         },
-        () => this.setInitialData()
+        () => this.setInitialData(),
       );
     }
   };
@@ -651,8 +647,8 @@ export default class LookupField extends Component {
       const filter = searchText
         ? searchText
         : categoryToValue.length > 0
-        ? categoryToValue
-        : null;
+          ? categoryToValue
+          : null;
       const offset = Array.isArray(attributes["options"])
         ? attributes["options"].length
         : 0;
@@ -662,7 +658,9 @@ export default class LookupField extends Component {
             attributes,
             filter,
             offset,
-            !isEmpty(this.state.barcodeSearchText) ? "barcode" : "search/filter"
+            !isEmpty(this.state.barcodeSearchText)
+              ? "barcode"
+              : "search/filter",
           );
         } else {
           pullToRefresh(attributes, "", offset, "get");
@@ -684,8 +682,8 @@ export default class LookupField extends Component {
       const filter = searchText
         ? searchText
         : categoryToValue.length > 0
-        ? categoryToValue
-        : null;
+          ? categoryToValue
+          : null;
       const offset = Array.isArray(attributes["options"])
         ? attributes["options"].length
         : 0;
@@ -694,7 +692,7 @@ export default class LookupField extends Component {
           attributes,
           filter,
           offset,
-          !isEmpty(this.state.barcodeSearchText) ? true : false
+          !isEmpty(this.state.barcodeSearchText) ? true : false,
         );
       } else {
         this.handleOnGetQuery(offset);
@@ -709,7 +707,7 @@ export default class LookupField extends Component {
       const index = attributes.objectType
         ? newSelected.findIndex(
             (option) =>
-              option[attributes.primaryKey] === value[attributes.primaryKey]
+              option[attributes.primaryKey] === value[attributes.primaryKey],
           )
         : newSelected.indexOf(value);
       if (index === -1) {
@@ -727,14 +725,14 @@ export default class LookupField extends Component {
             : false,
           modalVisible: attributes.multiple ? this.state.modalVisible : false,
         },
-        () => this.props.updateValue(attributes.name, value)
+        () => this.props.updateValue(attributes.name, value),
       );
     } else {
       this.setState(
         {
           modalVisible: attributes.multiple ? this.state.modalVisible : false,
         },
-        () => this.props.updateValue(attributes.name, newSelected)
+        () => this.props.updateValue(attributes.name, newSelected),
       );
     }
   };

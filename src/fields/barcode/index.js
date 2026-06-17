@@ -30,12 +30,10 @@ export default class BarcodeField extends Component {
       openModal: false,
       isFocused: false,
     };
-  }
-
-  UNSAFE_componentWillMount() {
-    this._animatedIsFocused = new Animated.Value(
-      isEmpty(this.getInputValue()) ? 0 : 1
-    );
+    const inputValue = !isEmpty(props.attributes["value"])
+      ? props.attributes["value"].toString()
+      : "";
+    this._animatedIsFocused = new Animated.Value(isEmpty(inputValue) ? 0 : 1);
   }
 
   componentDidUpdate() {
@@ -133,8 +131,14 @@ export default class BarcodeField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent, AppNBText, AppRNText, AppAnimatedText } =
-      this.props;
+    const {
+      theme,
+      attributes,
+      ErrorComponent,
+      AppNBText,
+      AppRNText,
+      AppAnimatedText,
+    } = this.props;
 
     return (
       <View>
@@ -157,7 +161,11 @@ export default class BarcodeField extends Component {
                 paddingVertical: 10,
               }}
             >
-              <AppAnimatedText size={16} style={this.getLabelStyles()} numberOfLines={1}>
+              <AppAnimatedText
+                size={16}
+                style={this.getLabelStyles()}
+                numberOfLines={1}
+              >
                 {attributes["required"] && (
                   <>
                     <StarIcon

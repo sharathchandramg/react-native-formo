@@ -16,16 +16,14 @@ export default class TextInputField extends Component {
     updateValue: PropTypes.func,
   };
 
-  state = {
-    isFocused: false,
-    height: 0,
-    numOfLines: 1,
-  };
-
-  UNSAFE_componentWillMount() {
-    this._animatedIsFocused = new Animated.Value(
-      this.props.isCreateForm ? 0 : 1
-    );
+  constructor(props) {
+    super(props);
+    this.state = {
+      isFocused: false,
+      height: 0,
+      numOfLines: 1,
+    };
+    this._animatedIsFocused = new Animated.Value(props.isCreateForm ? 0 : 1);
   }
 
   componentDidUpdate() {
@@ -182,7 +180,7 @@ export default class TextInputField extends Component {
               onPress={() => {
                 if (!isEmpty(attributes["value"])) {
                   this.props.openLongTxtModal(
-                    attributes["value"].toString() || ""
+                    attributes["value"].toString() || "",
                   );
                 }
               }}
@@ -203,8 +201,8 @@ export default class TextInputField extends Component {
                       AppNBText={AppNBText}
                     />
                   </>
-                )}
-                {" "}{attributes.label}
+                )}{" "}
+                {attributes.label}
                 {!isEmpty(attributes["value"]) && (
                   <AppRNText
                     size={14}
