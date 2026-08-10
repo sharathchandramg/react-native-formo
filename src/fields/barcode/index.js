@@ -1,11 +1,17 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
-import { TouchableOpacity, Animated, Modal, Platform } from "react-native";
+import {
+  TouchableOpacity,
+  Animated,
+  Modal,
+  Platform,
+  View as RNView,
+} from "react-native";
 import { View } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
-import { RNCamera } from "react-native-camera";
 import _ from "lodash";
 
+import BarcodeScanner from "../../components/barcodeScanner";
 import { isEmpty } from "./../../utils/validators";
 import StarIcon from "../../components/starIcon";
 import styles from "./styles";
@@ -24,12 +30,10 @@ export default class BarcodeField extends Component {
       openModal: false,
       isFocused: false,
     };
-  }
-
-  UNSAFE_componentWillMount() {
-    this._animatedIsFocused = new Animated.Value(
-      isEmpty(this.getInputValue()) ? 0 : 1
-    );
+    const inputValue = !isEmpty(props.attributes["value"])
+      ? props.attributes["value"].toString()
+      : "";
+    this._animatedIsFocused = new Animated.Value(isEmpty(inputValue) ? 0 : 1);
   }
 
   componentDidUpdate() {
@@ -87,25 +91,27 @@ export default class BarcodeField extends Component {
     );
   };
 
-  onBarCodeRead = (code) => {
-    this.props.updateValue(this.props.attributes.name, code.data);
+  // Preserved from original — public contract: updateValue(name, value)
+  onBarCodeRead = (value) => {
+    this.props.updateValue(this.props.attributes.name, value);
     this.setState({
       openModal: false,
-      isFocused: !isEmpty(code.data) ? true : false,
+      isFocused: !isEmpty(value) ? true : false,
     });
+  };
+
+  closeModal = () => {
+    this.setState({ openModal: false });
   };
 
   renderModalContent = () => {
     return (
-      <View style={styles.modalContainer}>
-        <RNCamera
-          style={styles.modalPreview}
-          flashMode={RNCamera.Constants.FlashMode.on}
-          onBarCodeRead={this.onBarCodeRead}
-          ref={(cam) => (this.camera = cam)}
-          captureAudio={false}
+      <RNView style={styles.modalContainer}>
+        <BarcodeScanner
+          onScanned={(value) => this.onBarCodeRead(value)}
+          onClose={this.closeModal}
         />
-      </View>
+      </RNView>
     );
   };
 
@@ -125,8 +131,14 @@ export default class BarcodeField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent, AppNBText, AppRNText, AppAnimatedText } =
-      this.props;
+    const {
+      theme,
+      attributes,
+      ErrorComponent,
+      AppNBText,
+      AppRNText,
+      AppAnimatedText,
+    } = this.props;
 
     return (
       <View>
@@ -149,7 +161,11 @@ export default class BarcodeField extends Component {
                 paddingVertical: 10,
               }}
             >
-              <AppAnimatedText size={16} style={this.getLabelStyles()} numberOfLines={1}>
+              <AppAnimatedText
+                size={16}
+                style={this.getLabelStyles()}
+                numberOfLines={1}
+              >
                 {attributes["required"] && (
                   <>
                     <StarIcon
@@ -176,8 +192,7 @@ export default class BarcodeField extends Component {
               visible={this.state.openModal}
               animationType={"fade"}
               transparent={true}
-              onRequestClose={() => this.setState({ openModal: false })}
-              onPressOut={() => this.setState({ openModal: false })}
+              onRequestClose={this.closeModal}
             >
               {this.renderModalContent()}
             </Modal>

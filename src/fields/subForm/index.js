@@ -2,12 +2,14 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import { Modal, TouchableOpacity } from "react-native";
 import { View, ArrowForwardIcon, ArrowBackIcon } from "native-base";
-import shortid from "shortid";
+import { customAlphabet } from 'nanoid/non-secure';
 
 import styles from "./styles";
 import ChildField from "../childForm";
 import LinearGradientHeader from "./../../components/headers/linearGradientHeader";
 import StarIcon from "../../components/starIcon";
+
+const nanoid = customAlphabet("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$@", 9);
 
 export default class SubForm extends Component {
   static propTypes = {
@@ -30,7 +32,7 @@ export default class SubForm extends Component {
     if (value && typeof value._id !== "undefined" && value._id !== null) {
       this.props.onAddNewFields(name, value);
     } else if (value && value !== null) {
-      value["_id"] = shortid.generate();
+      value["_id"] = nanoid();
       this.props.onAddNewFields(name, value);
     }
   };

@@ -739,7 +739,6 @@ export default class Form0 extends Component {
       const field = this.state[fieldName];
       if (!field.hidden) {
         const commonProps = {
-          key: index,
           theme,
           attributes:
             field.type === "image"
@@ -772,6 +771,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 onSummitTextInput={this.onSummitTextInput}
                 {...this.props}
@@ -784,6 +784,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
               />
@@ -795,6 +796,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
               />
@@ -806,6 +808,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
               />
@@ -816,6 +819,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
               />
@@ -827,6 +831,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
               />
@@ -838,6 +843,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
               />
@@ -849,6 +855,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
               />
@@ -860,6 +867,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
               />
@@ -871,6 +879,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
               />
@@ -882,6 +891,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
               />
@@ -893,6 +903,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
               />
@@ -904,6 +915,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
               />
@@ -915,6 +927,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
               />
@@ -926,6 +939,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
               />
@@ -937,6 +951,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
               />
@@ -948,6 +963,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 closeModal={this.state.closeModal}
                 closeLookupModal={this.closeLookupModal}
                 {...commonProps}
@@ -962,6 +978,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
               />
@@ -973,6 +990,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
               />
@@ -984,6 +1002,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
               />
@@ -995,6 +1014,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
               />
@@ -1006,6 +1026,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
                 getFormatedValues={this.getFormatedValues}
@@ -1018,6 +1039,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
                 state={this.state}
@@ -1030,6 +1052,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
                 state={this.state}
@@ -1043,6 +1066,7 @@ export default class Form0 extends Component {
                 ref={(c) => {
                   this[field.name] = c;
                 }}
+                key={field.name ?? index}
                 {...commonProps}
                 {...this.props}
               />

@@ -18,16 +18,14 @@ export default class TextInputField extends Component {
     updateValue: PropTypes.func,
   };
 
-  state = {
-    isFocused: false,
-    numOfLines: 1,
-    lineSpace: Platform.OS !== "ios" ? 12 : 15,
-  };
-
-  UNSAFE_componentWillMount() {
-    this._animatedIsFocused = new Animated.Value(
-      this.props.isCreateForm ? 0 : 1
-    );
+  constructor(props) {
+    super(props);
+    this.state = {
+      isFocused: false,
+      numOfLines: 1,
+      lineSpace: Platform.OS !== "ios" ? 12 : 15,
+    };
+    this._animatedIsFocused = new Animated.Value(props.isCreateForm ? 0 : 1);
   }
 
   componentDidUpdate() {
@@ -60,7 +58,7 @@ export default class TextInputField extends Component {
       let scope = {};
       for (let i = 0; i < calculateOnFields.length; i++) {
         scope[calculateOnFields[i]] = parseFloat(
-          this.props.getValue(calculateOnFields[i])
+          this.props.getValue(calculateOnFields[i]),
         );
       }
       if (Object.values(scope).length === calculateOnFields.length) {
@@ -209,8 +207,14 @@ export default class TextInputField extends Component {
   };
 
   render() {
-    const { theme, attributes, ErrorComponent, AppRNText, AppNBText, AppAnimatedText } =
-      this.props;
+    const {
+      theme,
+      attributes,
+      ErrorComponent,
+      AppRNText,
+      AppNBText,
+      AppAnimatedText,
+    } = this.props;
     return (
       <View>
         <View
@@ -253,8 +257,8 @@ export default class TextInputField extends Component {
                     AppNBText={AppNBText}
                   />
                 </>
-              )}
-              {" "}{attributes.label}
+              )}{" "}
+              {attributes.label}
             </AppAnimatedText>
             {typeof attributes.type !== "undefined" &&
             attributes.type === "calculated"

@@ -6,20 +6,39 @@ import {
   FlatList,
   Dimensions,
   Modal,
+  Platform,
 } from "react-native";
 import { View } from "native-base";
 import Icon from "react-native-vector-icons/FontAwesome";
 import FastImage from "react-native-fast-image";
+import SignatureScreen from "react-native-signature-canvas";
 import _ from "lodash";
 
 import styles from "./styles";
 import { isEmpty } from "../../utils/validators";
 import StarIcon from "../../components/starIcon";
 import ZoomImage from "../../components/zoomImage";
-import SignatureCapture from "react-native-signature-capture";
 
 const DEVICE_WIDTH = Dimensions.get("window").width;
 const moment = require("moment");
+
+// CSS injected into the signature canvas WebView.
+//   .m-signature-pad--footer { display: none; }
+//     Hides the library's built-in Save/Clear buttons since we render our own.
+//   .m-signature-pad--body   { border: none; }
+//     Removes the default canvas border (we draw our own outline below).
+//   body, html { background-color: #fff; height: 100%; width: 100%; }
+//     Ensures a white background — matches the original component's appearance.
+const SIGNATURE_WEB_STYLE = `
+  .m-signature-pad--footer { display: none; margin: 0px; }
+  .m-signature-pad--body { border: none; }
+  .m-signature-pad { box-shadow: none; border: none; }
+  body, html {
+    width: 100%; height: 100%;
+    background-color: #fff;
+    margin: 0; padding: 0;
+  }
+`;
 
 export default class SignatureField extends Component {
   static propTypes = {
@@ -33,7 +52,7 @@ export default class SignatureField extends Component {
     super(props);
     this.isLocal = false;
     this.isFirstTime = true;
-    this.myRef = React.createRef();
+    this.signatureRef = React.createRef();
     this.state = {
       openImageModal: false,
       imgDetails: null,
@@ -130,47 +149,98 @@ export default class SignatureField extends Component {
     return null;
   };
 
+  /**
+   * Trigger a signature read. The library is asynchronous — calling
+   * readSignature() causes the WebView to capture the canvas and then fire
+   * onOK (with base64) or onEmpty (no strokes drawn).
+   *
+   * CHANGED FROM ORIGINAL:
+   *   Old: ref.current.saveImage()
+   *   New: ref.current.readSignature()
+   */
   saveSign = () => {
-    this.myRef.current.saveImage();
-  };
-
-  resetSign = () => {
-    this.myRef.current.resetImage();
-  };
-
-  getUpdatedPath = (filePath) => {
-    const splitPath = filePath ? filePath.split("/") : [];
-    if (splitPath.length > 0) {
-      splitPath[splitPath.length - 1] = `signature_${moment()
-        .utc()
-        .valueOf()}.png`;
+    if (this.signatureRef.current) {
+      this.signatureRef.current.readSignature();
     }
-    return splitPath.join("/");
   };
 
-  _onSaveEvent = (result) => {
+  /**
+   * Clear the canvas.
+   *
+   * CHANGED FROM ORIGINAL:
+   *   Old: ref.current.resetImage()
+   *   New: ref.current.clearSignature()
+   */
+  resetSign = () => {
+    if (this.signatureRef.current) {
+      this.signatureRef.current.clearSignature();
+    }
+  };
+
+  /**
+   * Build a synthetic filename for the signature, since the new library does
+   * not write a file to disk. Downstream code (handleDocumentUpdateAndDownload)
+   * expects a file_path string, so we synthesize one matching the original
+   * format: `signature_<utc-timestamp>.png`.
+   *
+   * CHANGED FROM ORIGINAL:
+   *   The old version received a real on-disk path from the native library
+   *   and rewrote its last segment. We don't have a real path, so we just
+   *   generate the filename directly.
+   */
+  getSyntheticFilePath = () => {
+    return `signature_${moment().utc().valueOf()}.png`;
+  };
+
+  /**
+   * Called by react-native-signature-canvas when readSignature() captures a
+   * non-empty signature.
+   *
+   * CHANGED FROM ORIGINAL `_onSaveEvent`:
+   *   Old signature: result = { encoded: "base64...", pathName: "/abs/path.png" }
+   *   New signature: signature = "data:image/png;base64,iVBORw0KGgo..."
+   *
+   *   We strip the data URL prefix to keep `base64_data` consistent with what
+   *   downstream code used to receive (raw base64, no "data:image/png;base64,"
+   *   prefix). If your backend / handleDocumentUpdateAndDownload actually
+   *   expected the data URL prefix, remove the .replace() call below.
+   */
+  _onOK = (signature) => {
     const { attributes, handleDocumentUpdateAndDownload } = this.props;
-    this.setState({ signature: result, viewMode: "portrait" }, () => {
-      this.closeImageModalView();
-      this.isLocal = true;
-    });
+
+    // Strip the data URL prefix → keep behavior consistent with the old
+    // result["encoded"] which was raw base64.
+    const base64Data = signature.replace(/^data:image\/png;base64,/, "");
+
+    this.setState(
+      { signature: { encoded: base64Data }, viewMode: "portrait" },
+      () => {
+        this.closeImageModalView();
+        this.isLocal = true;
+      }
+    );
 
     if (typeof handleDocumentUpdateAndDownload === "function") {
-      const filePath = Platform.OS.match(/ios/i)
-        ? result["pathName"].replace("file://", "", 1)
-        : result["pathName"];
       handleDocumentUpdateAndDownload(
         attributes,
         [
           {
             mime_type: "image/png",
-            file_path: this.getUpdatedPath(filePath),
-            base64_data: result["encoded"],
+            file_path: this.getSyntheticFilePath(),
+            base64_data: base64Data,
           },
         ],
         "write"
       );
     }
+  };
+
+  /**
+   * Called when readSignature() is invoked but the canvas is empty.
+   * We just no-op (don't close the modal so user can try again).
+   */
+  _onEmpty = () => {
+    // Could optionally show a toast: "Please sign before saving"
   };
 
   getImguri = (item, isFromLocal = false) => {
@@ -281,19 +351,29 @@ export default class SignatureField extends Component {
           </View>
         ) : (
           <View style={{ flex: 1, flexDirection: "column" }}>
-            <SignatureCapture
+            <View
               style={{
                 flex: 1,
                 borderColor: "#000033",
                 borderWidth: 1,
               }}
-              ref={this.myRef}
-              onSaveEvent={this._onSaveEvent}
-              saveImageFileInExtStorage={false}
-              showNativeButtons={false}
-              showTitleLabel={false}
-              viewMode={this.state.viewMode}
-            />
+            >
+              <SignatureScreen
+                ref={this.signatureRef}
+                onOK={this._onOK}
+                onEmpty={this._onEmpty}
+                webStyle={SIGNATURE_WEB_STYLE}
+                // We render our own Save/Reset buttons below, so disable the
+                // library's built-in footer entirely.
+                autoClear={false}
+                // Pen color & background — matches what react-native-signature-capture
+                // rendered with by default.
+                penColor="#000000"
+                backgroundColor="#ffffff"
+                // imageType "image/png" matches the old library's output format.
+                imageType="image/png"
+              />
+            </View>
             <View style={{ flexDirection: "row" }}>
               <TouchableOpacity
                 style={styles.button}
@@ -385,11 +465,16 @@ export default class SignatureField extends Component {
 
           {this.state.openImageModal && (
             <Modal
-              isVisible={this.state.openImageModal}
+              visible={this.state.openImageModal}
               animationType={"fade"}
               transparent={true}
               onRequestClose={() => this.closeImageModalView()}
-              onPressOut={() => this.closeImageModalView()}
+              // NOTE: onPressOut prop removed — not a valid Modal prop.
+              // Dismissal happens via the Close button or Android back button.
+              // NOTE: changed `isVisible` (wrong prop name) → `visible`.
+              // `isVisible` was being silently ignored by RN's Modal; the
+              // modal was rendering only because of the parent conditional.
+              // This is a latent bug fix.
             >
               {this.renderModalContent(this.state.imgDetails)}
             </Modal>

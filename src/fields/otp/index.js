@@ -19,20 +19,20 @@ export default class OTPField extends Component {
     SuccessComponent: PropTypes.func,
     getOtpByRefData: PropTypes.func,
   };
-  intervalId;
-  state = {
-    isFocused: false,
-    numOfLines: 1,
-    lineSpace: Platform.OS !== "ios" ? 12 : 15,
-    disableBtn: false,
-    btnText: "Send OTP",
-    btnCounter: 60,
-  };
 
-  UNSAFE_componentWillMount() {
-    this._animatedIsFocused = new Animated.Value(
-      this.props.isCreateForm ? 0 : 1
-    );
+  intervalId;
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isFocused: false,
+      numOfLines: 1,
+      lineSpace: Platform.OS !== "ios" ? 12 : 15,
+      disableBtn: false,
+      btnText: "Send OTP",
+      btnCounter: 60,
+    };
+    this._animatedIsFocused = new Animated.Value(props.isCreateForm ? 0 : 1);
   }
 
   componentDidUpdate() {
@@ -99,8 +99,8 @@ export default class OTPField extends Component {
               color: attributes["error"]
                 ? theme.errorMsgColor
                 : attributes["success"]
-                ? theme.backgroundColor
-                : theme.textInputIconColor,
+                  ? theme.backgroundColor
+                  : theme.textInputIconColor,
             },
           ]}
           ref={(c) => {
@@ -175,7 +175,7 @@ export default class OTPField extends Component {
             : "PHONE"
           : null,
       },
-      this.callInitTimer
+      this.callInitTimer,
     );
   };
 
@@ -187,7 +187,7 @@ export default class OTPField extends Component {
       SuccessComponent,
       AppRNText,
       AppNBText,
-      AppAnimatedText
+      AppAnimatedText,
     } = this.props;
     return (
       <View>
